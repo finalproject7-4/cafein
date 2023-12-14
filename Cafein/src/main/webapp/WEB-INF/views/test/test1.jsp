@@ -13,10 +13,10 @@
 		<fieldset>
 			<legend>스프링 MVC 회원가입</legend>
 			<form method="post">
-				아이디!: <input type="text" name="userid"> <br>
-				비밀번호!: <input type="password" name="userpw"> <br>
-				이름!: <input type="text" name="username"> <br>
-				이메일!: <input type="text" name="useremail"> <br>
+				아이디: <input type="text" name="userid"> <br>
+				비밀번호: <input type="password" name="userpw"> <br>
+				이름: <input type="text" name="username"> <br>
+				이메일: <input type="text" name="useremail"> <br>
 			
 				<input type="submit" value="회원가입">
 			</form>
