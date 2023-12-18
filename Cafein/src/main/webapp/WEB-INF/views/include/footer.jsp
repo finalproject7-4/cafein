@@ -4,7 +4,7 @@
                 <div class="bg-transparent rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Cafe In</a>, 2013 CafeIn Corp. 
+                            &copy; <a href="#" style="color:#610B0B;">Cafe In</a>, 2013 CafeIn Corp. 
                         </div>
                         
                     </div>
@@ -16,7 +16,7 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" style="background: #ECE0F8; border:solid transparent">
+        <a href="#" class="btn btn-primary btn-lg-square back-to-top" style="background: #610B0B; border: transparent;">
         <i class="bi bi-arrow-up"></i></a>
     </div>
 

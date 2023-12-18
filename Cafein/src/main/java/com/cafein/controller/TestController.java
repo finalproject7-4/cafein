@@ -75,4 +75,7 @@ public class TestController {
 			return "redirect:/test/test2";			
 		}
 	}
+	
+	
+	
 }
