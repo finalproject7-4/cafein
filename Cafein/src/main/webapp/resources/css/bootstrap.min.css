@@ -2350,6 +2350,10 @@ textarea.form-control-lg {
 	}
 }
 
+.fa fa-bell me-lg-2, .fa fa-envelope me-lg-2 {
+	color:#610b0b;
+}
+
 .form-floating>.form-control::placeholder {
 	color: transparent
 }
