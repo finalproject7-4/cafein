@@ -10,4 +10,6 @@ public interface TestDAO {
 	public TestVO selectLoginMember(TestVO vo);
 	
 
+	
+
 }
