@@ -1,5 +1,7 @@
 package com.cafein.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -18,13 +20,21 @@ public class SalesServiceImpl implements SalesService {
 
 	@Inject
 	private SalesDAO sdao;
-
+	
+	/*수주조회*/
 	@Override
-	public void purorders(SalesVO svo) {
-		logger.debug("purorders 메서드 호출");
-		sdao.insertPOList(svo);
-		
+	public List<SalesVO> AllPOList() {
+		logger.debug("AllPOList()");
+		return sdao.getPOList();
 	}
+
+	/*수주등록*/
+	@Override
+	public void registPO(SalesVO svo) {
+		logger.debug("registPOList 메서드 호출");
+		sdao.insertPOList(svo);
+	}
+
 
 
 	

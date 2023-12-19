@@ -6,6 +6,12 @@
 <!-- SalesMapper.xml -->
 <mapper namespace="com.cafein.mapper.SalesMapper">
 
+<!-- 수주 등록 -->
+<select id="getPOList" resultType="com.cafein.domain.SalesVO">
+	select * from purchaseorder
+</select>
+
+<!-- 수주 조회 -->
 <insert id="insertPOList">
        insert into purchaseorder(postate,pocode,clientid,itemid,pocnt,ordersduedate,membercode) 
        values(#{postate},#{pocode},#{clientid},#{itemid},#{pocnt},#{ordersduedate},#{membercode})

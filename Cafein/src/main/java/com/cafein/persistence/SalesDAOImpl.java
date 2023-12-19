@@ -1,5 +1,7 @@
 package com.cafein.persistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -22,9 +24,17 @@ public class SalesDAOImpl implements SalesDAO {
 	// mapper 위치정보
 	private static final String NAMESPACE ="com.cafein.mapper.SalesMapper";
 
+	// 수주 조회
+	@Override
+	public List<SalesVO> getPOList() {
+		logger.debug("수주조회");
+		return sqlSession.selectList(NAMESPACE+".getPOList");
+	}
+
+	// 수주 등록
 	@Override
 	public void insertPOList(SalesVO svo) {
-		logger.debug("수주정보");
+		logger.debug("수주등록");
 		sqlSession.insert(NAMESPACE+".insertPOList",svo);
 	}
 	

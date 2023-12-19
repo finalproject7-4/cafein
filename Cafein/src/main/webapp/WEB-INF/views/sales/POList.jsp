@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
 
 <h1>수주관리</h1>
@@ -23,6 +24,7 @@
 			<div class="bg-light rounded h-100 p-4">
 				<h6 class="mb-4">총 #건</h6>
 				<div class="table-responsive">
+				
 					<table class="table">
 						<thead>
 							<tr>
@@ -38,39 +40,21 @@
 							</tr>
 						</thead>
 						<tbody>
+						<c:forEach items="${getPOList}" var="spo">
 							<tr>
-								<th scope="row">1</th>
-								<td>John</td>
-								<td>Doe</td>
-								<td>jhon@email.com</td>
-								<td>USA</td>
-								<td>123</td>
-								<td>Member</td>
-								<td>Member</td>
-								<td>Member</td>
+<%-- 								<td scope="row">${spo.poid }</td> --%>
+								<td>${spo.poid }</td>
+								<td>${spo.postate }</td>
+								<td>${spo.pocode }</td>
+								<td>${spo.clientid}</td>
+								<td>${spo.itemid}</td>
+								<td>${spo.pocnt}</td>
+								<td>${spo.ordersdate}</td>
+								<td>${spo.updatedate}</td>
+								<td>${spo.ordersduedate}</td>
+								<td>${spo.membercode}</td>
 							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td>Mark</td>
-								<td>Otto</td>
-								<td>mark@email.com</td>
-								<td>UK</td>
-								<td>Member</td>
-								<td>Member</td>
-								<td>Member</td>
-								<td>456</td>
-							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td>Jacob</td>
-								<td>Thornton</td>
-								<td>jacob@email.com</td>
-								<td>AU</td>
-								<td>789</td>
-								<td>Member</td>
-								<td>Member</td>
-								<td>Member</td>
-							</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

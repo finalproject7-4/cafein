@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,26 +21,35 @@ public class SalesController {
 
 	@Inject
 	private SalesService sService;
-
-	// http://localhost:8088/sales/POList
+	
+	// 수주조회
+	// http://localhost:8080/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
-	public void purordersGET() {
-		logger.debug("purordersGET() 실행");
+	public void AllPOListGET(Model model) {
+		logger.debug("AllPOListGET() 실행");
+		model.addAttribute("AllPOList", sService.AllPOList());
+	}
+	/********************************************************************/
+	// 수주등록
+	// http://localhost:8080/sales/regist
+	@RequestMapping(value = "/regist", method = RequestMethod.GET)
+	public void registPOListGET() {
+		logger.debug("registPOListGET() 실행");
 
 	}
 
-	@RequestMapping(value = "/POList", method = RequestMethod.POST)
-	public String purordersPOST(/* @ModelAttribute */ SalesVO svo) {
-		logger.debug("  purordersPOST() 호출 ");
+	@RequestMapping(value = "/regist", method = RequestMethod.POST)
+	public String registPOListPOST(/* @ModelAttribute */ SalesVO svo) {
+		logger.debug("  registPOListPOST() 호출 ");
 		logger.debug(" svo :" + svo);
 
 		// DB에 정보를 저장 => 서비스 객체 사용
 		logger.debug(" 서비스 회원가입 동작을 호출 - 시작");
-		sService.purorders(svo);
-		logger.debug(" 서비스 회원가입 동작을 호출 - 끝");
+		sService.registPO(svo);
 
 		return "redirect:/sales/POList2";
 	}
+	/********************************************************************/
 	
 	
 }
