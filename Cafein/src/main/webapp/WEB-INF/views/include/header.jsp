@@ -79,43 +79,43 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-info-circle' style='font-size:24px; '></i><b> 기준정보관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="typography.html" class="dropdown-item">품목관리</a>
-                            <a href="button.html" class="dropdown-item">거래처관리</a>
-                            <a href="element.html" class="dropdown-item">사원관리</a>
+                            <a href="/information/items" class="dropdown-item">품목관리</a>
+                            <a href="/information/clients" class="dropdown-item">거래처관리</a>
+                            <a href="/information/members" class="dropdown-item">사원관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-leaf' style='font-size:24px'></i><b> 생산관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">생산목록</a>
-                            <a href="typography.html" class="dropdown-item">완제품</a>
-                            <a href="element.html" class="dropdown-item">작업지시관리</a>
+                            <a href="/production/produceList class="dropdown-item">생산목록</a>
+                            <a href="/production/roastedList" class="dropdown-item">완제품</a>
+                            <a href="/production/direction" class="dropdown-item">작업지시관리</a>
                         </div>
                     </div>
                  
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-sitemap' style='font-size:24px'></i><b> 자재관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="blank.html" class="dropdown-item">재고현황</a>
-                            <a href="signin.html" class="dropdown-item">발주관리</a>
-                            <a href="signup.html" class="dropdown-item">입고관리</a>
-                            <a href="404.html" class="dropdown-item">출고관리</a>
+                            <a href="/material/stock" class="dropdown-item">재고현황</a>
+                            <a href="/material/orders" class="dropdown-item">발주관리</a>
+                            <a href="/material/receive" class="dropdown-item">입고관리</a>
+                            <a href="/material/releases" class="dropdown-item">출고관리</a>
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-tools' style='font-size:24px'></i><b> 품질관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="signin.html" class="dropdown-item">품질관리</a>
-                            <a href="signup.html" class="dropdown-item">반품관리</a>
+                            <a href="/quality/qualities" class="dropdown-item">품질관리</a>
+                            <a href="/quality/returns" class="dropdown-item">반품관리</a>
                
                         </div>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-poll' style='font-size:24px'></i><b> 영업관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0"> 
-                            <a href="signin.html" class="dropdown-item">수주관리</a>
-                            <a href="signup.html" class="dropdown-item">출하관리</a>
-                            <a href="404.html" class="dropdown-item">실적관리</a>
+                            <a href="/sales/purorders" class="dropdown-item">수주관리</a>
+                            <a href="/sales/ship" class="dropdown-item">출하관리</a>
+                            <a href="/sales/record" class="dropdown-item">실적관리</a>
                         </div>
                     </div>
                 </div>
