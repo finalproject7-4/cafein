@@ -87,7 +87,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-leaf' style='font-size:24px'></i><b> 생산관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="/production/produceList class="dropdown-item">생산목록</a>
+                            <a href="/production/produceList" class="dropdown-item">생산목록</a>
                             <a href="/production/roastedList" class="dropdown-item">완제품</a>
                             <a href="/production/direction" class="dropdown-item">작업지시관리</a>
                         </div>
