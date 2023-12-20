@@ -8,12 +8,16 @@
 
 <!-- 수주 조회 -->
 <select id="getPOList" resultType="com.cafein.domain.SalesVO">
-	select * from purchaseorder
+<!-- 	select * from purchaseorder -->
+	SELECT po.poid, po.postate, po.pocode, cli.clientname, 
+           item.itemname, po.pocnt, po.ordersdate, 
+           po.updatedate, po.ordersduedate, po.membercode
+    FROM purchaseorder po
+    JOIN item ON po.itemid = item.itemid
+    JOIN client cli ON po.clientid = cli.clientid;
 </select>
 
 <!-- 수주 등록 -->
-<!-- ,pocode,clientid,itemid,pocnt,ordersduedate,membercode -->
-<!-- ,#{pocode},#{clientid},#{itemid},#{pocnt},#{ordersduedate}+3,#{membercode} -->
 <insert id="registPO">
        insert into purchaseorder(postate) 
        values(#{postate})

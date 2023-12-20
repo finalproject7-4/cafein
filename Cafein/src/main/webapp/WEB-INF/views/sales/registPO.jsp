@@ -5,10 +5,11 @@
 <h1>수주등록</h1>
 <fieldset>
 	<legend>수주등록</legend>
-	<form role="form" method="post"> 
+<!-- 	<form role="form" method="post">  -->
+	<form method="post"> 
 		<input id="cancel" class="btn btn-danger m-2" type="button" value="취소">
 		
-		<input id="save" class="btn btn-primary m-2" type="submit" value="저장">
+		<input id="save" class="btn btn-primary m-2" type="button" value="저장">
 	</form>
 </fieldset>
 
@@ -19,14 +20,14 @@ $(document).ready(function() {
 		location.href="/sales/POList";
 	});
 	
-	var formObj = $('form[role="form"]');
-	console.log(formObj);
+// 	var formObj = $('form[role="form"]');
+// 	console.log(formObj);
 		
-	$("#save").click(function() {
-		formObj.attr("action","/sales/POList");
-		formObj.attr("method","GET");
-		formObj.submit(); 
-	});
+// 	$("#save").click(function() {
+// 		formObj.attr("action","/sales/POList");
+// 		formObj.attr("method","GET");
+// 		formObj.submit(); 
+// 	});
 });
 
 </script>
