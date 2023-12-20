@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.TestVO;
 
-
 @Repository
 public class SalesDAOImpl implements SalesDAO {
 	
@@ -26,16 +25,16 @@ public class SalesDAOImpl implements SalesDAO {
 
 	// 수주 조회
 	@Override
-	public List<SalesVO> getPOList() {
+	public List<SalesVO> getPOList() throws Exception{
 		logger.debug("수주조회");
 		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
 
 	// 수주 등록
 	@Override
-	public void insertPOList(SalesVO svo) {
-		logger.debug("수주등록");
-		sqlSession.insert(NAMESPACE+".insertPOList",svo);
+	public void registPO(SalesVO svo) throws Exception{
+		logger.debug(" DAO : registPO(SalesVO svo)");
+		sqlSession.insert(NAMESPACE+".registPO",svo);
 	}
 	
 	

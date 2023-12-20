@@ -15,6 +15,7 @@ public class SalesVO {
 	private String pocode;
 	private int clientid;
 	private int itemid;
+	private int pocnt;
 	private Timestamp ordersdate;
 	private Timestamp updatedate;
 	private Timestamp ordersduedate;

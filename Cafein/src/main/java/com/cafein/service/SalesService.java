@@ -7,9 +7,9 @@ import com.cafein.domain.SalesVO;
 public interface SalesService {
 	
 	// 수주 조회
-	public List<SalesVO> AllPOList();
+	public List<SalesVO> AllPOList() throws Exception;
 	
 	//수주 등록
-	public void registPO(SalesVO svo);
+	public void registPO(SalesVO svo) throws Exception;
 	
 }

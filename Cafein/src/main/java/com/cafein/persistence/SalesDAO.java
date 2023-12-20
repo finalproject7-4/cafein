@@ -7,10 +7,10 @@ import com.cafein.domain.SalesVO;
 public interface SalesDAO {
 	
 	// 수주 조회
-	public List<SalesVO> getPOList();
+	public List<SalesVO> getPOList() throws Exception;
 	
 	// 수주 등록
-	public void insertPOList(SalesVO svo);
+	public void registPO(SalesVO svo) throws Exception;
 	
 	
 

@@ -18,7 +18,7 @@
 		<input class="btn btn-secondary m-2" type="button" value="대기">
 		<input class="btn btn-secondary m-2" type="button" value="진행중">
 		<input class="btn btn-secondary m-2" type="button" value="완료"><br>
-		<input id="insertPO" class="btn btn-primary m-2" type="button" value="신규 등록">
+		<input id="regist" class="btn btn-primary m-2" type="button" value="신규 등록">
 		<input class="btn btn-success m-2" type="button" value="수정">
 		<input class="btn btn-danger m-2" type="button" value="삭제">
 			<div class="bg-light rounded h-100 p-4">
@@ -35,14 +35,14 @@
 								<th scope="col">품명</th>
 								<th scope="col">수량</th>
 								<th scope="col">수주일자</th>
+								<th scope="col">수정일자</th>
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${getPOList}" var="spo">
+						<c:forEach items="${AllPOList}" var="spo">
 							<tr>
-<%-- 								<td scope="row">${spo.poid }</td> --%>
 								<td>${spo.poid }</td>
 								<td>${spo.postate }</td>
 								<td>${spo.pocode }</td>
@@ -50,7 +50,14 @@
 								<td>${spo.itemid}</td>
 								<td>${spo.pocnt}</td>
 								<td>${spo.ordersdate}</td>
-								<td>${spo.updatedate}</td>
+								 <c:choose>
+					            <c:when test="${empty spo.updatedate}">
+					                <td>업데이트 날짜 없음</td>
+					            </c:when>
+					            <c:otherwise>
+					                <td>${spo.updatedate}</td>
+					            </c:otherwise>
+					        	</c:choose>
 								<td>${spo.ordersduedate}</td>
 								<td>${spo.membercode}</td>
 							</tr>
@@ -65,8 +72,8 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#insertPO").click(function() {
-		location.href="/sales/insertPO";
+	$("#regist").click(function() {
+		location.href="/sales/registPO";
 	});
 });
 
