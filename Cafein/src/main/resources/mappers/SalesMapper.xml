@@ -19,8 +19,8 @@
 
 <!-- 수주 등록 -->
 <insert id="registPO">
-       insert into purchaseorder(postate) 
-       values(#{postate})
+<!--        insert into purchaseorder(postate, pocode, clientname,)  -->
+<!--        values(#{postate}) -->
 </insert>
 
 </mapper>
