@@ -29,5 +29,14 @@ public class ShipController {
 		logger.debug("출하 리스트 출력!");
 	}
 	
+	// 작업지시 조회
+	// http://localhost:8088/sales/WKList
+	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
+	public void AllWKListGET(Model model) throws Exception{
+		logger.debug("AllWKListGET() 실행");
+		model.addAttribute("AllWKList", shService.AllWKList());
+		logger.debug("작업지시 리스트 출력!");
+	}
+	
 	
 }

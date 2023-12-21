@@ -28,6 +28,13 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("출하 조회 성공");
 		return sqlSession.selectList(NAMESPACE+".getSHList");
 	}
+
+	@Override
+	public List<ShipVO> getWKList() throws Exception {
+		logger.debug("작업 지시 조회 성공");
+		return sqlSession.selectList(NAMESPACE+".getWKList");
+	}
+	
 	
 	
 	

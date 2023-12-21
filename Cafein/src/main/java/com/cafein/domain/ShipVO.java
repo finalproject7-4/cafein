@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class ShipVO {
 	
+	// 출하
 	private int shipid;
 	private String shipcode;
 	private int shipcount;
@@ -18,5 +19,7 @@ public class ShipVO {
 	private int stockid;
 	private String membercode;
 	private String lotnumber;
+	
+	
 	
 }

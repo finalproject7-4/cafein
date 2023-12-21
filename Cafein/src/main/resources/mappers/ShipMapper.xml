@@ -5,13 +5,20 @@
 
 <mapper namespace="com.cafein.mapper.ShipMapper">
 
-<!-- 수주 조회 -->
-<select id="getSHList" resultType="com.cafein.domain.ShipVO">
-<!-- 	select * from ship -->
-	SELECT sh.shipid, sh.shipcode, sh.shipcount, sh.shipsts, 
-			stock.stockid, sh.shipdate, sh.pocode, sh.membercode, sh.lotnumber
-    FROM ship sh
-    JOIN stock ON sh.stockid = stock.stockid
-</select>
+	<!-- 출하 조회 -->
+	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
+		<!-- select * from ship -->
+		SELECT sh.shipid, sh.shipcode, sh.shipcount, sh.shipsts,
+		stock.stockid, sh.shipdate, sh.pocode, sh.membercode, sh.lotnumber
+		FROM ship sh
+		JOIN stock ON sh.stockid = stock.stockid
+	</select>
+	
+	<!-- 작업지시 조회 -->
+	<select id="getWKList" resultType="com.cafein.domain.ShipVO">
+		<!-- select * from ship -->
+		SELECT 
+		FROM work wk
+	</select>
 
 </mapper>

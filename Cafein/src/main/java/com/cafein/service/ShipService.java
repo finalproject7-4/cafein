@@ -9,5 +9,7 @@ public interface ShipService {
 	// 출하 조회
 	public List<ShipVO> AllSHList() throws Exception;
 	
+	// 작업 지시 조회
+	public List<ShipVO> AllWKList() throws Exception;
 	
 }

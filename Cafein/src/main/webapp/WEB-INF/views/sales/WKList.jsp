@@ -31,7 +31,7 @@
 <!-- 출하 조회 -->
 <div class="col-12" style="margin-top: 20px;">
 	<div class="bg-light rounded h-100 p-4">
-		<h6 class="mb-4">작업 지시 관리</h6>
+		<h6 class="mb-4">출하 관리</h6>
 
 		<div class="btn-group" role="group">
 			<form role="form">

@@ -22,9 +22,17 @@ public class ShipServiceImpl implements ShipService {
 	/*출하 조회*/
 	@Override
 	public List<ShipVO> AllSHList() throws Exception{
-		logger.debug("AllPOList()");
+		logger.debug("AllSHList()");
 		return shdao.getSHList();
 	}
+
+	@Override
+	public List<ShipVO> AllWKList() throws Exception {
+		logger.debug("AllWKList()");
+		return shdao.getWKList();
+	}
+	
+	
 
 
 
