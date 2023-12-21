@@ -91,6 +91,9 @@
                                  <tbody>
                                  <c:forEach items="${AllPOList}" var="spo">
                                     <tr>
+                                    	<td>${spo.poid }</td> 
+                                    	<td>${spo.clientname }</td> 
+                                    	<td>${spo.clientcode }</td> 
                                     </tr>
                                     </c:forEach>
                                     </tbody>
