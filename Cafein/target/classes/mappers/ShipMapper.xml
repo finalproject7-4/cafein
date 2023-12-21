@@ -8,12 +8,10 @@
 <!-- 수주 조회 -->
 <select id="getSHList" resultType="com.cafein.domain.ShipVO">
 <!-- 	select * from ship -->
-	SELECT po.poid, po.postate, po.pocode, cli.clientname, 
-           item.itemname, po.pocnt, po.ordersdate, 
-           po.updatedate, po.ordersduedate, po.membercode
-    FROM purchaseorder po
-    JOIN item ON po.itemid = item.itemid
-    JOIN client cli ON po.clientid = cli.clientid;
+	SELECT sh.shipid, sh.shipcode, sh.shipcount, sh.shipsts, 
+			stock.stockid, sh.shipdate, sh.pocode, sh.membercode, sh.lotnumber
+    FROM ship sh
+    JOIN stock ON sh.stockid = stock.stockid
 </select>
 
 </mapper>
