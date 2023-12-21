@@ -19,12 +19,16 @@ public class ProductionServiceImpl implements ProductionService{
 	@Inject
 	private ProductionDAO pdao;
 
+	// 생산 목록 조회
 	@Override
-	public List<ProduceVO> getList() {
-		logger.debug("Service - 생산지시 목록 조회 getList() 실행");
-		
-		return pdao.getList();
+	public List<ProduceVO> getProduceList(ProduceVO vo) {
+		logger.debug("Service - 생산지시 목록 조회 getProduceList() 실행");
+		return pdao.getProduceList(vo);
 	}
+
+
+	
+	
 	
 	
 	

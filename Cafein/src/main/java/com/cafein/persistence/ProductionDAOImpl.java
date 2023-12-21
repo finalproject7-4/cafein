@@ -1,5 +1,6 @@
 package com.cafein.persistence;
 
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,11 +26,17 @@ public class ProductionDAOImpl implements ProductionDAO {
 	
 	// 생산지시 목록조회 메서드
 	@Override
-	public List<ProduceVO> getList() {
-		logger.debug("DAO - 생산지시 목록 조회 getList() 실행!");
+	public List<ProduceVO> getProduceList(ProduceVO vo) {
+		logger.debug("DAO - 생산지시 목록 조회 getProduceList() 실행!");
+		logger.debug("produceList : "+ vo.getStartDate());
+		System.out.println("produceList : "+ vo.getStartDate());
+		System.out.println("produceList : "+ vo.getEndDate());
+		logger.debug("DAO - vo end : "+ vo.getEndDate());
 	
-		return sqlSession.selectList(NAMESPACE+".getList");
+		return sqlSession.selectList(NAMESPACE+".getProduceList", vo);
 	}
+
+	
 
 	
 }
