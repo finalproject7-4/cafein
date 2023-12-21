@@ -4,31 +4,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
+
 <h1>수주관리</h1>
 <fieldset>
 	<legend>수주관리</legend>
 	<form method="post">
-		수주일자 <input type="date" name="podate"> &nbsp;&nbsp;
+		수주일자 <input type="date" name="podate"> ~ <input type="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
 		납품처조회 <input class="clientSearch" type="text" name="client" placeholder="납품처코드"> 
 				<input class="clientSearch" type="text" name="worknumber" placeholder="납품처명"> <br>
-		납품예정일 <input type="date" name="ordersduedate"> &nbsp;&nbsp;
-		품목조회 <input class="itemSearch" type="text" name="itemname" placeholder="품목코드"> 
+		납품예정일 <input type="date" name="ordersduedate"> ~ <input type="date" name="podate">
+		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch" type="text" name="itemname" placeholder="품목코드"> 
 			<input class="itemSearch" type="text" name="worknumber" placeholder="품명"> 
-		<input class="btn btn-secondary m-2" type="submit" value="조회"><br>
+		<button type="submit" class="btn btn-dark m-2">조회</button>
 		<br>
 
 		<div class="col-12">
-			<input class="btn btn-secondary m-2" type="button" value="전체"> 
-			<input class="btn btn-secondary m-2" type="button" value="대기"> 
-			<input class="btn btn-secondary m-2" type="button" value="진행중"> 
-			<input class="btn btn-secondary m-2" type="button" value="완료"><br>
-			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규 등록</button>
-			<input class="btn btn-success m-2	" type="button" value="수정"> 
-			<input class="btn btn-danger m-2" type="button" value="삭제">
-			
+		
+			<button type="button" class="btn btn-dark m-2">전체</button>
+			<button type="button" class="btn btn-dark m-2">대기</button>
+			<button type="button" class="btn btn-dark m-2">진행중</button>
+		
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
-				<h6 class="mb-4">총 ${fn:length(AllPOList)}건</h6>
+				<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
+				<span id="buttonset1"><button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규 등록</button>
+			<button type="button" class="btn btn-dark m-2">수정</button>
+			<button type="button" class="btn btn-dark m-2">삭제</button></span>
 				<div class="table-responsive">
 
 					<table class="table">
@@ -47,6 +48,7 @@
 								<th scope="col">담당자</th>
 							</tr>
 						</thead>
+						<!-- http://localhost:8088/sales/POList -->
 						<tbody>
 							<c:forEach items="${AllPOList}" var="spo">
 								<tr>
@@ -88,7 +90,7 @@
                   
                   납품처명 <input type="search" class="clientNS" ><br>
                   납품처코드 <input type="search" class="clientCS">
-                  <input class="btn btn-secondary m-2" type="submit" value="조회"><br>
+                <button type="submit" class="btn btn-dark m-2">조회</button><br>
 					<br>
                      <div class="col-12">
                         <div class="bg-light rounded h-100 p-4">
@@ -129,7 +131,7 @@
                   
                   품명 <input type="search" class="clientNS" ><br>
                   품목코드 <input type="search" class="clientCS">
-                  <input class="btn btn-secondary m-2" type="submit" value="조회"><br>
+                  <button type="submit" class="btn btn-dark m-2">조회</button><br>
 					<br>	
                      <div class="col-12">
                         <div class="bg-light rounded h-100 p-4">
@@ -189,7 +191,7 @@
 								수량<input type="number" class="form-control" id="floatingInput" placeholder="숫자만 입력하세요">
 							</div>
 							<div class="mb-3">
-								수주일자<input type="date" class="form-control" id="floatingInput" placeholder="수주일자">
+								수주일자<input id="todaypo" type="text" class="form-control" id="floatingInput" placeholder="수주일자(클릭)">
 							</div>
 							<div class="mb-3">
 								완납예정일<input type="date" class="form-control" id="floatingInput" placeholder="완납예정일">
@@ -201,7 +203,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary">저장</button>
+						<button type="submit" class="btn btn-primary">저장</button>
 					</div>
 				</div>
 			</div>
@@ -331,8 +333,14 @@
 	    $(".itemSearch").click(function() {
 	        $("#itemSM").modal('show');
 	   	});
-		
-	    
+	 
+	 $('#todaypo').click(function(){
+            var today = new Date();
+            // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+            var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+            $('#todaypo').val(formattedDate);
+        });
+
 	});
     </script>
 <%@ include file="../include/footer.jsp"%>

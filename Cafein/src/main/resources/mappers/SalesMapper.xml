@@ -15,6 +15,7 @@
     FROM purchaseorder po
     JOIN item ON po.itemid = item.itemid
     JOIN client cli ON po.clientid = cli.clientid
+    
 </select>
 
 

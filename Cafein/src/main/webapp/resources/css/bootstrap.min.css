@@ -7134,7 +7134,10 @@ opacity
 }
 
 .mb-4 {
-	margin-bottom: 1.5rem !important
+	font-size: 1rem;
+	margin-bottom: 1.5rem !important;
+	font-weight: bold;
+	
 }
 
 .mb-5 {
