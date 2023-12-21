@@ -32,6 +32,7 @@ public class SalesVO {
 	private String clientfax; //팩스번호
 	
 	//item 테이블
+	private String itemcode; //품목코드
 	private String itemname; //품명
 	private String origin; // 원산지
 	private int itemweight;//중량

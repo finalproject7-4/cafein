@@ -10,17 +10,12 @@
 <select id="getPOList" resultType="com.cafein.domain.SalesVO">
 <!-- 	select * from purchaseorder -->
 	SELECT po.poid, po.postate, po.pocode, cli.clientname, cli.clientcode,
-           item.itemname, po.pocnt, po.ordersdate, 
+           item.itemname, po.pocnt, po.ordersdate, item.itemcode,
            po.updatedate, po.ordersduedate, po.membercode
     FROM purchaseorder po
     JOIN item ON po.itemid = item.itemid
     JOIN client cli ON po.clientid = cli.clientid
 </select>
 
-<!-- 수주 등록 -->
-<insert id="registPO">
-<!--        insert into purchaseorder(postate, pocode, clientname,)  -->
-<!--        values(#{postate}) -->
-</insert>
 
 </mapper>
