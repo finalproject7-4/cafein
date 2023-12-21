@@ -64,17 +64,17 @@
 				</thead>
 				<tbody>
 
-					<c:forEach var="shlist" items="${ SHList }">
+					<c:forEach items="${ AllSHList }" var="sh">
 						<tr>
-							<td>${shlist.shipid }</td>
-							<td><fmt:formatDate value="${shlist.shipdate }"
+							<td>${sh.shipid }</td>
+							<td><fmt:formatDate value="${sh.shipdate }"
 									pattern="yyyy-MM-dd" /></td>
-							<td>${shlist.pocode }</td>
-							<td>${shlist.shipcode }</td>
-							<td>${shlist.workcode }</td>
-							<td>${shlist.itemname }</td>
-							<td>${shlist.shipsts }</td>
-							<td>${shlist.membercode }</td>
+							<td>${sh.pocode }</td>
+							<td>${sh.shipcode }</td>
+							<td>${sh.workcode }</td>
+							<td>${sh.itemname }</td>
+							<td>${sh.shipsts }</td>
+							<td>${sh.membercode }</td>
 						</tr>
 					</c:forEach>
 

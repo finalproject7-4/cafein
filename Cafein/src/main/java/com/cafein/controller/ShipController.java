@@ -26,6 +26,7 @@ public class ShipController {
 	public void AllPOListGET(Model model) throws Exception{
 		logger.debug("AllSHListGET() 실행");
 		model.addAttribute("AllSHList", shService.AllSHList());
+		logger.debug("출하 리스트 출력!");
 	}
 	
 	
