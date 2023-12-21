@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.cafein.mapper.stockMapper">
+ 	<!-- 재고 목록 조회 (생산 [포장] + 반품) -->
+ 	<select id="selectStockList" resultType="QualityVO">
+ 		SELECT stockid, s.qualityid, q.itemtype, s.itemid, i.itemcode, i.itemname, lotnumber, stockquantity, s.storageid, 
+ 		storagename, storagecode, s.registerationdate, updatedate, updatehistory, workerbycode
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
+ 		ORDER BY stockid DESC
+ 	</select>
+ 	
+ 	<!-- 재고 입력 (생산 [포장] + 반품) -->
+ 	<insert id="insertStock">
+ 		INSERT INTO stock (qualityid, itemid, stockquantity, workerbycode)
+ 		VALUES (#{qualityid}, #{itemid}, #{stockquantity}, #{workerbycode})
+ 	</insert>
+ 	
+ 	<!-- 재고 등록 중복 확인 (생산 [포장] + 반품) -->
+	<select id="selectDupilcateStock" resultType="integer">
+		SELECT stockid FROM stock WHERE qualityid = #{qualityid}
+	</select>
+	
+	<!-- 재고량 변경 (생산 [포장] + 반품) -->
+	<update id="updateStockQuantity">
+		UPDATE stock
+		SET stockquantity = #{stockquantity}, updatedate = NOW(), 
+		updatehistory = '재고량 변경', 
+		workerbycode = #{workerbycode}
+		WHERE stockid = #{stockid}
+	</update>                                                                            
+	
+	<!-- 창고 목록 조회 (생산 [포장] + 반품) -->
+	<select id="selectStorageList" resultType="QualityVO">
+		SELECT storageid, storagename, storagecode, storagetype
+		FROM storage
+		WHERE storagetype = '완제품'
+	</select>
+	
+	<!-- 창고 변경 (생산 [포장] + 반품) -->
+	<update id="updateStockStorage">
+		UPDATE stock 
+		SET storageid = #{storageid}, updatedate = NOW(), updatehistory = '창고 변경', workerbycode = #{workerbycode} 
+		WHERE stockid = #{stockid}
+	</update>  
+ 
+ </mapper>
