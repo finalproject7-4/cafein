@@ -5,8 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
-<h1>출하관리</h1>
-
 <!-- 검색 폼 -->
 <div class="col-12" style="margin-top: 20px;">
 	<div class="bg-light rounded h-100 p-4">
@@ -61,22 +59,22 @@
 						<th scope="col">작업지시코드</th>
 						<th scope="col">제품명</th>
 						<th scope="col">출하상태</th>
+						<th scope="col">담당자</th>
 					</tr>
 				</thead>
 				<tbody>
 
-					<c:forEach var="shlist" items="${produceList }">
+					<c:forEach var="shlist" items="${ SHList }">
 						<tr>
-							<td>${plist.produceid }</td>
-							<td><fmt:formatDate value="${plist.submitdate }"
+							<td>${shlist.shipid }</td>
+							<td><fmt:formatDate value="${shlist.shipdate }"
 									pattern="yyyy-MM-dd" /></td>
-							<td><fmt:formatDate value="${plist.producedate }"
-									pattern="yyyy-MM-dd" /></td>
-							<td>${plist.itemname }</td>
-							<td>${plist.produceline }</td>
-							<td>${plist.process }</td>
-							<td>${plist.qualitycheck }</td>
-							<td>${plist.state }</td>
+							<td>${shlist.pocode }</td>
+							<td>${shlist.shipcode }</td>
+							<td>${shlist.workcode }</td>
+							<td>${shlist.itemname }</td>
+							<td>${shlist.shipsts }</td>
+							<td>${shlist.membercode }</td>
 						</tr>
 					</c:forEach>
 
