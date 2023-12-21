@@ -40,10 +40,10 @@
 									</select>
 								</div>
 								<div class="mb-3">
-									수주코드<input id="pocode" class="form-control" id="floatingInput" placeholder="수주코드">
+									수주코드<input class="form-control" id="floatingInput" placeholder="수주코드">
 								</div>
 								<div class="mb-3">
-									거래처<input class="form-control" id="floatingInput" placeholder="거래처">
+									거래처<input id="client" class="form-control" id="floatingInput" placeholder="거래처">
 								</div>
 								<div class="mb-3">
 									품명<input class="form-control" id="floatingInput" placeholder="품명">
@@ -70,42 +70,48 @@
 				</div>
 			</div>
 
-<div class="modal fade" id="pocodeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">수주 등록</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="mb-3">
-									<label for="recipient-name" class="col-form-label">수주상태</label> <select class="form-select" id="floatingSelect"
-										aria-label="Floating label select example">
-										<optgroup label="수주상태">
-											<option value="1">대기</option>
-											<option value="2">진행</option>
-											<option value="3">완료</option>
-											<option value="3">취소</option>
-										</optgroup>
-									</select>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-							<button type="button" class="btn btn-primary">확인</button>
-						</div>
-					</div>
-				</div>
-			</div>
+        <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel">거래처</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                     <div class="col-12">
+                        <div class="bg-light rounded h-100 p-4">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">No.</th>
+                                       <th scope="col">거래처명</th>
+                                       <th scope="col">거래처코드</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                 <c:forEach items="${AllPOList}" var="spo">
+                                    <tr>
+                                    </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                    </table>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary"
+                                 data-bs-dismiss="modal">취소</button>
+                              <button type="button" class="btn btn-primary">확인</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+			  </div>
+		  </div>
   
   
   
   
   
-  
-	<script>
+   <script>
     var exampleModal = document.getElementById('exampleModal')
     exampleModal.addEventListener('show.bs.modal', function (event) {
       var button = event.relatedTarget
@@ -115,11 +121,12 @@
     })
     
     $(document).ready(function() {
-    $("#pocode").click(function() {
-        $("#pocodeModal").modal('show');
+    $("#client").click(function() {
+        $("#clientModal").modal('show');
     });
 });
     </script>
+
 
 			<input class="btn btn-success m-2" type="button" value="수정"> <input class="btn btn-danger m-2" type="button" value="삭제">
 			<div class="bg-light rounded h-100 p-4">

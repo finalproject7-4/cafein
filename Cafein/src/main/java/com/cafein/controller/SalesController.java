@@ -22,8 +22,9 @@ public class SalesController {
 	@Inject
 	private SalesService sService;
 	
+	// http://localhost:8080/sales/POList 집
 	// 수주조회
-	// http://localhost:8088/sales/POList
+	// http://localhost:8088/sales/POList 학원
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
 	public void AllPOListGET(Model model) throws Exception{
 		logger.debug("AllPOListGET() 실행");

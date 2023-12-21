@@ -22,6 +22,7 @@ public class SalesVO {
 	private String membercode;
 
 	//client 테이블
+	private String clientcode; // 거래처코드
 	private String clientname; // 거래처명
 	private String categoryofclient; // 거래처구분
 	private String businessnumber; // 사업자번호
