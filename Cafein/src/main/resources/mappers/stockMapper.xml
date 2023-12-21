@@ -52,5 +52,20 @@
 		SET storageid = #{storageid}, updatedate = NOW(), updatehistory = '창고 변경', workerbycode = #{workerbycode} 
 		WHERE stockid = #{stockid}
 	</update>  
+	
+	<!-- 재고 목록 조회 (자재) -->
+ 	<select id="selectMStockList" resultType="QualityVO">
+ 		SELECT stockid, s.qualityid, q.itemtype, s.itemid, i.itemcode, i.itemname, lotnumber, stockquantity, s.storageid, 
+ 		storagename, storagecode, s.registerationdate, updatedate, updatehistory, workerbycode
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		WHERE q.itemtype = '자재'
+ 		ORDER BY stockid DESC
+ 	</select>
  
  </mapper>
