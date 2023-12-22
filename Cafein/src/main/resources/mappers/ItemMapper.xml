@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ItemMapper.xml -->
+<mapper namespace="com.cafein.mapper.ItemMapper">
+	
+	<!-- 품목 목록 -->
+	<select id="itemList" resultType="com.cafein.domain.ItemVO">
+		select * from item
+	</select>
+	
+	<!-- 품목 검색 -->
+	<select id="searchItemList" resultType="com.cafein.domain.ItemVO">
+		select * from item
+		<if test="option.equals('itemtype')">
+			where itemtype like concat('%', #{keyword}, '%')
+		</if>
+		<if test="option.equals('itemname')">
+			where itemname like concat('%', #{keyword}, '%')
+		</if>
+	</select>
+	
+</mapper>
