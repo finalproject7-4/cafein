@@ -2350,10 +2350,6 @@ textarea.form-control-lg {
 	}
 }
 
-.fa fa-bell me-lg-2, .fa fa-envelope me-lg-2 {
-	color:#610b0b;
-}
-
 .form-floating>.form-control::placeholder {
 	color: transparent
 }
@@ -5363,6 +5359,8 @@ keyframes progress-bar-stripes { 0%{
 }
 
 .modal-content {
+	margin-top: 20%;
+    height: 50em;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -7132,7 +7130,10 @@ opacity
 }
 
 .mb-4 {
-	margin-bottom: 1.5rem !important
+	font-size: 1rem;
+	margin-bottom: 1.5rem !important;
+	font-weight: bold;
+	
 }
 
 .mb-5 {
