@@ -94,5 +94,19 @@
        //초기값을 설정
        $('#datepicker3').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
        
+       
+    // 모달창 달력 제어
+    var now_utc = Date.now(); // 현재 날짜를 밀리초로
+   	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+   	var today1 = new Date(now_utc - timeOff).toISOString().split("T")[0];
+   	
+   	//id="date"
+   	document.getElementById("date").setAttribute("min", today1);
+   	
+   	// class="date"인 모든 요소에 날짜 비활성화
+   	document.querySelectorAll('.date').forEach(function(input) {
+   	  input.setAttribute('min', today1);
+   	});
+       
       
    })(jQuery);
