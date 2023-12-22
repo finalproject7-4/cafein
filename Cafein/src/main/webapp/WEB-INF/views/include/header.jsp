@@ -12,6 +12,8 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
     
+    
+    
     <!-- 적용된 배경색: #FBF8EF, a태그 활성화 색상: #610B0B -->
     
      <!-- 별도로 추가한 부분: 부트스트랩, 달력 작동위한 추가. 제이쿼리, 스타일시트 -->
@@ -24,6 +26,7 @@
    
   	<!-- 아이콘 -->
 	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
 	
     <!-- Favicon -->
     <link href="../resources/img/bean.ico" rel="icon">
@@ -46,10 +49,6 @@
 
     <!-- Template Stylesheet -->
     <link href="../resources/css/style.css" rel="stylesheet">
-    
-    <!-- POList.css -->
-    <link href="../resources/css/POList.css" rel="stylesheet">
-    
 </head>
 
 <body>
@@ -80,21 +79,16 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Elements</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-info-circle' style='font-size:24px; '></i><b> 기준정보관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">Buttons</a>
-                            <a href="typography.html" class="dropdown-item">Typography</a>
-                            <a href="element.html" class="dropdown-item">Other Elements</a>
+                            <a href="/information/items" class="dropdown-item">품목관리</a>
+                            <a href="/information/clients" class="dropdown-item">거래처관리</a>
+                            <a href="/information/members" class="dropdown-item">사원관리</a>
                         </div>
                     </div>
-                    <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
-                    <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-leaf' style='font-size:24px'></i><b> 생산관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="/production/produceList" class="dropdown-item">생산목록</a>
                             <a href="/production/roastedList" class="dropdown-item">완제품</a>
