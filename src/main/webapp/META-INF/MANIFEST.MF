@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD:src/main/webapp/META-INF/MANIFEST.MF
 Built-By: 97_12
+=======
+Built-By: ITWILL
+>>>>>>> 048131a52a8ca5f26735cbbc8907057847f6092c:Cafein/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
 Build-Jdk: 11.0.15
 Created-By: Maven Integration for Eclipse
 
