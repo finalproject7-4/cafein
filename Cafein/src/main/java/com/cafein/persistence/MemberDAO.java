@@ -12,11 +12,8 @@ public interface MemberDAO {
 	// 직원 목록 조회
 	public List<MemberVO> getMemberList() throws Exception;
 	
-	// 직원 로그인 동작
-	public MemberVO selectLoginMember(MemberVO vo) throws Exception;
-	
 	// 직원 정보 조회
-	public MemberVO getMember(String memberid) throws Exception;
+	public MemberVO getMember(int memberid) throws Exception;
 	
 	// 직원 정보 수정
 	public void updateMember(MemberVO vo) throws Exception;

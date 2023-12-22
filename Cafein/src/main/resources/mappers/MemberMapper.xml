@@ -15,14 +15,8 @@
 </insert>
 
 <!-- 직원 목록 조회 -->
-<select id="getMemberList">
+<select id="getMemberList" resultType="MemberVO">
 	select * from member
-</select>
-
-<!-- 직원 로그인 -->
-<select id="loginMember" resultType="MemberVO">
-	select * from member 
-	where memberid=#{memberid} and memberpw=#{memberpw}
 </select>
 
 <!-- 직원 정보 조회 -->
