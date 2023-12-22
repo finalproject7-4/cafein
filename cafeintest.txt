@@ -1,0 +1,18 @@
+<src/main/java>
+
+com.cafein.controller
+- 컨트롤러.java 파일
+
+com.cafein.domain
+- VO 파일
+
+com.cafein.persistence
+- DAO, DAOImpl 파일
+
+mappers
+- 각 파트 별 Mapper.xml 생성
+
+Test파일은 삭제하지 말고 참고용으로 보면서 작업!!(마지막에 삭제)
+
+<view>
+view 폴더 안 새 폴더 생성해서 작업
