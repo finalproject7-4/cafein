@@ -32,8 +32,8 @@ public class StockController {
 	public void stockListGET(Model model, HttpSession session) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		List<QualityVO> resultList = sService.stockList();
-		List<QualityVO> storageList = sService.storageList();
+		List<QualityVO> resultList = sService.stockList(); // 재고 목록
+		List<QualityVO> storageList = sService.storageList(); // 창고 목록
 		
 		model.addAttribute("list", resultList);
 		model.addAttribute("slist", storageList);

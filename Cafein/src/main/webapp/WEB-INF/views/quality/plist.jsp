@@ -90,7 +90,17 @@
 									<td>
 										<c:if test="${clist.auditstatus.equals('대기') || clist.auditstatus.equals('검수중') }">
 											<c:if test="${clist.produceid != 0 && clist.returnid == 0 }"> <!-- 생산ID 존재 -->
-												<input type="button" value="생산검수" onclick="location.href='/quality/paudit?produceid=${clist.produceid}';">
+<%-- 											<input type="button" value="생산검수" onclick="location.href='/quality/paudit?produceid=${clist.produceid}';"> --%>
+												<button type="button" class="btn btn-primary btn-sm" 
+												data-bs-toggle="modal" data-bs-target="#exampleModal"
+												data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
+												data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
+												data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
+												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
+												data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
+												data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
+ 												생산검수
+												</button>
 											</c:if>
 											<c:if test="${clist.produceid == 0 && clist.returnid != 0}"> <!-- 반품ID 존재 -->
 												<input type="button" value="반품검수" onclick="location.href='/quality/raudit?returnid=${clist.returnid}';">				
@@ -155,6 +165,100 @@
 			</div>
 		</div>
 	</div>
+	
+<!-- 모달창1 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form action="/stock/updateStockQuantity" method="POST">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      	<div class="row">
+ 			<div class="col">
+           		<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="produceid" class="col-form-label">생산ID:</label>
+            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="auditcode" class="col-form-label">검수번호:</label>
+            	<input type="text" class="form-control" id="auditcode" name="auditcode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="process" class="col-form-label">생산단계:</label>
+            	<input type="text" class="form-control" id="process" name="process" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="productquantity" class="col-form-label">생산량:</label>
+            	<input type="number" class="form-control" id="productquantity" name="productquantity" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="auditquantity" class="col-form-label">검수량:</label>
+            	<input type="number" class="form-control" id="number" name="number" value="" required>
+  			</div>
+		</div>
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="submit" class="btn btn-primary">검수 저장</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 모달창1 -->
+
+<!-- 모달 1 출력 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let myModal = document.getElementById('exampleModal');
+    myModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
+        let qualityid = button.getAttribute('data-qualityid'); // qualityid
+        let produceid = button.getAttribute('data-produceid'); // produceid
+        let auditcode = button.getAttribute('data-auditcode'); // auditcode
+        let itemtype = button.getAttribute('data-itemtype'); // itemtype
+        let process = button.getAttribute('data-process'); // process
+        let productquantity = button.getAttribute('data-productquantity'); // productquantity
+        let auditquantity = button.getAttribute('data-auditquantity'); // auditquantity
+        
+        
+        
+        // 모달 내부의 입력 필드에 값을 설정
+        let qinputField = myModal.querySelector('input[name="qualityid"]');
+        qinputField.value = qualityid;
+        
+        let pinputField = myModal.querySelector('input[name="produceid"]');
+        pinputField.value = produceid;
+        
+        let ainputField = myModal.querySelector('input[name="auditcode"]');
+        ainputField.value = auditcode;
+        
+        let proinputField = myModal.querySelector('input[name="process"]');
+        proinputField.value = itemtype + " - " + process;
+        
+        let pqinputField = myModal.querySelector('input[name="productquantity"]');
+        pqinputField.value = productquantity;
+        
+        let aqinputField = myModal.querySelector('input[name="auditquantity"]');
+        aqinputField.value = auditquantity;
+        
+    });
+});
+</script>
+<!-- 모달 1 출력 -->	
+	
 
 <script>
  var result = "${result}";

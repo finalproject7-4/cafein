@@ -17,6 +17,7 @@
 		ON q.produceid = p.produceid
 		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
 		ORDER BY q.qualityid DESC
+		LIMIT 0, 10
 	</select>
 	
 	<!-- 검수 폼 출력 (생산) -->
