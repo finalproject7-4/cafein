@@ -12,11 +12,23 @@
 			<div class="form-check form-check-inline">
   				<input class="form-check-input" type="radio" name="stocktype" id="inlineRadio2" value="자재" onclick="navigatePage('자재')">
   				<label class="form-check-label" for="inlineRadio2">자재</label>
-			</div>
-			<form action="/stock/slist" method="POST">
-				<input type="text" name="search" placeholder="검색어를 입력하세요">
+			</div><br>
+			<input type="button" class="btn btn-sm btn-primary" value="블렌딩" onclick="location.href='/quality/plist?searchBtn=블렌딩';">
+			<input type="button" class="btn btn-sm btn-danger" value="냉각" onclick="location.href='/quality/plist?searchBtn=냉각';">
+			<input type="button" class="btn btn-sm btn-warning" value="포장" onclick="location.href='/quality/plist?searchBtn=포장';">
+			<input type="button" class="btn btn-sm btn-secondary" value="반품" onclick="location.href='/quality/plist?searchBtn=반품';">
+			<input type="button" class="btn btn-sm btn-success" value="전체" onclick="location.href='/quality/plist';">
+			
+			<form action="/quality/plist" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+				</c:if>
+				<input type="date" name="startDate"> ~
+				<input type="date" name="endDate">
 				<input type="submit" value="검색">
-			</form>
+			</form>	
+				
+				
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -58,7 +70,17 @@
 									</c:if>
 									</td>
 									<td>${clist.itemcode }</td>
-									<td>${clist.itemname }</td>
+									<td>
+									<c:if test="${!empty clist.process && clist.process.equals('포장') }">
+									${clist.itemname } (${clist.weight }g)
+									</c:if>
+									<c:if test="${!empty clist.process && !clist.process.equals('포장') }">
+									${clist.itemname }
+									</c:if>
+									<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">
+									${clist.itemname }
+									</c:if>
+									</td>
 									<td>${clist.auditbycode }</td>
 									<td>
 										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.process && clist.process == '포장')}">${clist.productquantity }(개)</c:if>
@@ -101,20 +123,20 @@
 									<td>
 										<c:if test="${clist.auditstatus.equals('대기') || clist.auditstatus.equals('검수중') }">
 											<c:if test="${clist.produceid != 0 && clist.returnid == 0 }"> <!-- 생산ID 존재 -->
-												<c:if test="${!empty clist.process && clist.process.equals('포장')}">
+												<c:if test="${!empty clist.process && clist.process.equals('포장')}"> <!-- 포장 O -->
 <%-- 											<input type="button" value="생산검수" onclick="location.href='/quality/paudit?produceid=${clist.produceid}';"> --%>
 												<button type="button" class="btn btn-primary btn-sm" 
 												data-bs-toggle="modal" data-bs-target="#exampleModal"
 												data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 												data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 												data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
+												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" data-weight="${clist.weight }" 
 												data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
 												data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
  												생산검수
 												</button>
 												</c:if>
-												<c:if test="${!empty clist.process && !clist.process.equals('포장') }">
+												<c:if test="${!empty clist.process && !clist.process.equals('포장') }"> <!-- 포장 X -->
 												<button type="button" class="btn btn-primary btn-sm" 
 												data-bs-toggle="modal" data-bs-target="#produceAuditModal2"
 												data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
@@ -152,6 +174,7 @@
 												<form action="/stock/new" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
+													<input type="hidden" value="${clist.produceid }" name="produceid">
 													<input type="hidden" value="${clist.productquantity - clist.defectquantity }" name="stockquantity">
 													<input type="submit" class="btn btn-success btn-sm" value="정상">
 												</form>
@@ -180,6 +203,7 @@
 												<form action="/stock/new" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
+													<input type="hidden" value="${clist.produceid }" name="produceid">
 													<input type="hidden" value="${clist.productquantity - clist.defectquantity }" name="stockquantity">
 													<input type="submit" value="정상" class="btn btn-success btn-sm" >
 <%-- 													<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/pdefects?qualityid=${clist.qualityid}'"> <!-- 생산 상태 업데이트 --> --%>
@@ -290,7 +314,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      
       	<div class="row">
  			<div class="col">
            		<label for="qualityid" class="col-form-label">품질관리ID:</label>
@@ -313,6 +336,16 @@
 		</div>
 		<div class="row">
  			<div class="col">
+           		<label for="itemcode" class="col-form-label">품목코드:</label>
+            	<input type="text" class="form-control" id="itemcode" name="itemcode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="itemname" class="col-form-label">제품명:</label>
+            	<input type="text" class="form-control" id="itemname" name="itemname" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
            		<label for="productquantity" class="col-form-label">생산량:</label>
             	<input type="number" class="form-control" id="productquantity" name="productquantity" value="" readonly>
   			</div>
@@ -331,7 +364,6 @@
             	<input type="number" class="form-control" id="defectquantity" name="defectquantity" value="" required>
   			</div>
 		</div>
-		
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -354,6 +386,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let auditcode = button.getAttribute('data-auditcode'); // auditcode
         let itemtype = button.getAttribute('data-itemtype'); // itemtype
         let process = button.getAttribute('data-process'); // process
+        let itemcode = button.getAttribute('data-itemcode'); // itemcode
+        let itemname = button.getAttribute('data-itemname'); // itemname
+        let weight = button.getAttribute('data-weight'); // weight
         let productquantity = button.getAttribute('data-productquantity'); // productquantity
         let auditquantity = button.getAttribute('data-auditquantity'); // auditquantity
         let defectquantity = button.getAttribute('data-defectquantity'); // defectquantity
@@ -371,6 +406,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let proinputField = myModal.querySelector('input[name="process"]');
         proinputField.value = itemtype + " - " + process;
+        
+        let icinputField = myModal.querySelector('input[name="itemcode"]');
+        icinputField.value = itemcode;
+        
+        let ininputField = myModal.querySelector('input[name="itemname"]');
+        ininputField.value = itemname + " (" + weight + "g)";
         
         let pqinputField = myModal.querySelector('input[name="productquantity"]');
         pqinputField.value = productquantity;
@@ -449,42 +490,42 @@ document.addEventListener('DOMContentLoaded', function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="qualityid" class="col-form-label">품질관리ID:</label>
-            	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
+           		<label for="qualityid3" class="col-form-label">품질관리ID:</label>
+            	<input type="text" class="form-control" id="qualityid3" name="qualityid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="produceid" class="col-form-label">생산ID:</label>
-            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
+            	<label for="produceid3" class="col-form-label">생산ID:</label>
+            	<input type="text" class="form-control" id="produceid3" name="produceid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="auditcode" class="col-form-label">검수번호:</label>
-            	<input type="text" class="form-control" id="auditcode" name="auditcode" value="" readonly>
+           		<label for="auditcode3" class="col-form-label">검수번호:</label>
+            	<input type="text" class="form-control" id="auditcode3" name="auditcode" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="process" class="col-form-label">생산단계:</label>
-            	<input type="text" class="form-control" id="process" name="process" value="" readonly>
+            	<label for="process3" class="col-form-label">생산단계:</label>
+            	<input type="text" class="form-control" id="process3" name="process" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="productquantity" class="col-form-label">생산량:</label>
-            	<input type="number" class="form-control" id="productquantity" name="productquantity" value="" readonly>
+           		<label for="productquantity3" class="col-form-label">생산량:</label>
+            	<input type="number" class="form-control" id="productquantity3" name="productquantity" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="auditquantity" class="col-form-label">검수량:</label>
-            	<input type="number" class="form-control" id="auditquantity" name="auditquantity" value="" required>
+            	<label for="auditquantity3" class="col-form-label">검수량:</label>
+            	<input type="number" class="form-control" id="auditquantity3" name="auditquantity" value="" required>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="normalquantity" class="col-form-label">정상 (자동 계산):</label>
-            	<input type="number" class="form-control" id="normalquantity" name="normalquantity" value="" readonly>
+           		<label for="normalquantity3" class="col-form-label">정상 (자동 계산):</label>
+            	<input type="number" class="form-control" id="normalquantity3" name="normalquantity" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="defectquantity" class="col-form-label">불량 입력:</label>
-            	<input type="number" class="form-control" id="defectquantity" name="defectquantity" value="" required>
+            	<label for="defectquantity3" class="col-form-label">불량 입력:</label>
+            	<input type="number" class="form-control" id="defectquantity3" name="defectquantity" value="" required>
   			</div>
 		</div>
 		
@@ -540,9 +581,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let dqinputField = myModal.querySelector('input[name="defectquantity"]');
         dqinputField.value = defectquantity;
         
-    	const productQuantityInput = document.getElementById("productquantity");
-    	const auditQuantityInput = document.getElementById("auditquantity");
-    	const defectiveQuantityInput = document.getElementById("defectquantity");
+    	const productQuantityInput = document.getElementById("productquantity3");
+    	const auditQuantityInput = document.getElementById("auditquantity3");
+    	const defectiveQuantityInput = document.getElementById("defectquantity3");
             
     	// 검수량 입력 필드의 blur 이벤트 리스너 추가
     	auditQuantityInput.addEventListener("blur", function() {
@@ -563,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
         		return;
     		}
 				const normalQuantity = auditQuantity - defectiveQuantity;
- 				document.getElementById("normalquantity").value = normalQuantity;
+ 				document.getElementById("normalquantity3").value = normalQuantity;
     	});
 
     	// 불량 개수 입력 필드의 blur 이벤트 리스너 추가
@@ -584,7 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
     			return;
     		}
     			const normalQuantity = auditQuantity - defectiveQuantity;
-     			document.getElementById("normalquantity").value = normalQuantity;
+     			document.getElementById("normalquantity3").value = normalQuantity;
     		
     	});
     });

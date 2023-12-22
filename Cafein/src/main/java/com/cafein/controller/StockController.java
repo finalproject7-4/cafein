@@ -52,6 +52,8 @@ public class StockController {
 		}else {
 		String workerbycode = (String) session.getAttribute("membercode");
 		vo.setWorkerbycode(workerbycode);
+		vo.setLotnumber(sService.roastedbeanLotNum(vo));
+		
 		int result = sService.newStock(vo);
 		if(result == 0) {
 			rttr.addFlashAttribute("result", "STOCKNO");

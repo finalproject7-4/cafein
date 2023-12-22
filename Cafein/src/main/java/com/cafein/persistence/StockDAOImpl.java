@@ -28,6 +28,14 @@ public class StockDAOImpl implements StockDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(NAMESPACE + ".selectStockList");
 	}
+	
+	
+	// roastedbean - LOT번호 조회
+	@Override
+	public String selectRoastedBeanLotNum(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectRoastedBeanLotNum", vo);
+	}
 
 	// 재고 입력
 	@Override

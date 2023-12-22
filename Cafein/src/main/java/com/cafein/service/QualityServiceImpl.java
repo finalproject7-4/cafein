@@ -55,6 +55,14 @@ public class QualityServiceImpl implements QualityService {
 		// TODO Auto-generated method stub
 		return qdao.updateProduceQualityCheck(vo);
 	}
+	
+	// 검수ID 입력 (반품 테이블)
+	@Override
+	public void returnsQualityid(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		qdao.updateReturnsQualityid(vo);
+		
+	}
 
 	// 검수 폼 출력 (반품)
 	@Override
@@ -103,6 +111,13 @@ public class QualityServiceImpl implements QualityService {
 	public Integer duplicateDefects(int qualityid) throws Exception {
 		// TODO Auto-generated method stub
 		return qdao.selectDupilcateDefects(qualityid);
+	}
+
+	// 품질 관리 목록 검색 버튼 (생산 / 반품)
+	@Override
+	public List<QualityVO> qualityListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectQualityListSearchBtn(vo);
 	}
 	
 	

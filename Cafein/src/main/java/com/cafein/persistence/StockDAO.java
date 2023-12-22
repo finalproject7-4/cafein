@@ -23,4 +23,7 @@ public interface StockDAO {
 	
 	// 창고 변경 (생산 [포장] + 반품)
 	public int updateStockStorage(QualityVO vo) throws Exception;
+	
+	// roastedbean - LOT번호 조회 
+	public String selectRoastedBeanLotNum(QualityVO vo) throws Exception;
 }

@@ -8,13 +8,16 @@
 	<!-- 품질 관리 목록 (생산 / 반품) -->
 	<select id="selectQualityList" resultType="QualityVO">
 		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, process, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
-		productquantity, auditquantity, normalquantity, defectquantity, 
-		auditstatus, registerationdate, completedate 
+		weight, productquantity, auditquantity, normalquantity, defectquantity, 
+		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
+		quantity
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
 		ORDER BY q.qualityid DESC
 	</select>
@@ -52,6 +55,13 @@
 	<!-- 검수 - 합격 / 불합격 (생산) -->
 	<update id="updateProduceQualityCheck">
 		UPDATE produce SET qualitycheck = #{qualitycheck} WHERE produceid = #{produceid}
+	</update>
+	
+	<!-- 검수ID 입력 (반품 테이블) -->
+	<update id="updateReturnsQualityid">
+		UPDATE returns 
+		SET qualityid = #{qualityid}
+		WHERE returnid = #{returnid}
 	</update>
 	
 	<!-- 검수 폼 출력 (반품) -->
@@ -115,6 +125,42 @@
 	<!-- 불량 현황 중복 확인 (생산 / 반품) -->
 	<select id="selectDupilcateDefects" resultType="integer">
 		SELECT defectid FROM defects WHERE qualityid = #{qualityid}
+	</select>
+	
+	<!-- 품질 관리 목록 검색 버튼 (생산 / 반품) -->
+	<select id="selectQualityListSearchBtn" resultType="QualityVO">
+		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, process, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
+		weight, productquantity, auditquantity, normalquantity, defectquantity, 
+		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
+		quantity
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		LEFT OUTER JOIN produce p
+		ON q.produceid = p.produceid
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
+		<where>
+		<if test="searchBtn != null and searchBtn != '반품' and startDate == null and endDate == null">
+		process = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchBtn == '반품' and startDate == null and endDate == null">
+		q.itemtype = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="searchBtn != null and searchBtn != '반품' and startDate != null and endDate != null">
+		process = #{searchBtn} AND
+		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="searchBtn != null and searchBtn == '반품' and startDate != null and endDate != null">
+		q.itemtype = #{searchBtn} AND
+		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+		ORDER BY q.qualityid DESC
+		LIMIT 0, 10
 	</select>
 
 	<!-- 품질 관리 목록 (생산 / 반품) 추가 : WHERE q.itemtype = '생산' OR q.itemtype = '반품' -->

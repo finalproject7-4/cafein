@@ -33,13 +33,16 @@ public class QualityController {
 	// http://localhost:8088/quality/plist
 	// 품질 관리 (생산 + 반품) 목록
 	@GetMapping(value = "/plist")
-	public void qualityList(Model model, HttpSession session) throws Exception{
+	public void qualityList(Model model, HttpSession session, QualityVO vo) throws Exception{
 		
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		// 품질 관리 (생산 + 반품) 목록
-		model.addAttribute("list", qService.qualityList());
+//		model.addAttribute("list", qService.qualityList());
+		model.addAttribute("list", qService.qualityListSearchBtn(vo));
+
 		
+			
+
 	}
 	
 	// http://localhost:8088/quality/pdlist	
@@ -87,6 +90,16 @@ public class QualityController {
 			logger.debug(" vo : " + vo);
 			result = qService.productAuditFull(vo);
 			
+			if(result != 0) {
+				if(vo.getDefectquantity() == 0) { // 생산 검수 - 정상
+					vo.setQualitycheck("정상");
+					qService.productQualityCheck(vo);
+				}else { // 생산 검수 - 불량
+					vo.setQualitycheck("불량");
+					qService.productQualityCheck(vo);
+				}
+			}
+			
 		}else if(vo.getAuditquantity() != 0 && vo.getProductquantity() > vo.getAuditquantity()) { // 생산량 > 검수량 ("검수중")
 			vo.setAuditstatus("검수중");
 			
@@ -111,13 +124,6 @@ public class QualityController {
 			return "redirect:/quality/paudit?produceid=" + vo.getProduceid();
 		}
 		logger.debug(" 검수 성공 ");
-			if(vo.getDefectquantity() == 0) { // 생산 검수 - 정상
-				vo.setQualitycheck("정상");
-				qService.productQualityCheck(vo);
-			}else { // 생산 검수 - 불량
-				vo.setQualitycheck("불량");
-				qService.productQualityCheck(vo);
-			}
 		return "redirect:/quality/plist";
 	}
 	
@@ -178,6 +184,7 @@ public class QualityController {
 			return "redirect:/quality/raudit?returnid=" + vo.getReturnid();
 		}
 		logger.debug(" 검수 성공 ");
+		qService.returnsQualityid(vo);
 		return "redirect:/quality/plist";
 	}
 	
@@ -208,6 +215,14 @@ public class QualityController {
 		logger.debug(" 불량 현황 입력 성공 ");
 		return "redirect:/quality/plist";
 		
+	}
+	
+	// 검색 처리 (생산 + 반품) - POST
+	@PostMapping(value = "/plist")
+	public String productQualityListSearch(@ModelAttribute("search") String search, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) {
+		
+		return "redirect:/quality/plist";
 	}
 	
 

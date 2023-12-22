@@ -13,7 +13,7 @@
   				<label class="form-check-label" for="inlineRadio2">자재</label>
 			</div>
 			<form action="/stock/slist" method="POST">
-				<input type="text" name="search" placeholder="검색어를 입력하세요">
+				<input type="text" name="search" placeholder="제품명을 입력하세요">
 				<input type="submit" value="검색">
 			</form>
 				<div class="table-responsive">
@@ -25,6 +25,7 @@
 								<th scope="col">코드</th>
 								<th scope="col">품명</th>
 								<th scope="col">LOT</th>
+								<th scope="col">중량</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고</th>
 								<th scope="col">작업자</th>
@@ -41,6 +42,7 @@
 									<th>${slist.itemcode }</th>
 									<th>${slist.itemname }</th>
 									<th>${slist.lotnumber }</th>
+									<th>${slist.weight }g</th>
 									<th>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개

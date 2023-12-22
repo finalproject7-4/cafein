@@ -21,6 +21,9 @@ public interface QualityService {
 	// 검수 - 합격 / 불합격 (생산)
 	public int productQualityCheck(QualityVO vo) throws Exception;
 	
+	// 검수ID 입력 (반품 테이블)
+	public void returnsQualityid(QualityVO vo) throws Exception;
+	
 	// 검수 폼 출력 (반품)
 	public QualityVO returnInfo(int returnid) throws Exception;
 	
@@ -41,5 +44,8 @@ public interface QualityService {
 	
 	// 불량 현황 중복 확인 (생산 / 반품)
 	public Integer duplicateDefects(int qualityid) throws Exception;
+	
+	// 품질 관리 목록 검색 버튼 (생산 / 반품)
+	public List<QualityVO> qualityListSearchBtn(QualityVO vo) throws Exception;
 
 }

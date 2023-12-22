@@ -49,6 +49,13 @@ public class QualityDAOImpl implements QualityDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.update(NAMESPACE + ".updateProduceQualityCheck", vo);
 	}
+	
+	// 검수ID 입력 (반품 테이블)
+	@Override
+	public void updateReturnsQualityid(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateReturnsQualityid", vo);
+	}
 
 	// 검수 폼 출력 (반품)
 	@Override
@@ -97,6 +104,13 @@ public class QualityDAOImpl implements QualityDAO {
 	public Integer selectDupilcateDefects(int qualityid) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".selectDupilcateDefects", qualityid);
+	}
+
+	// 품질 관리 목록 검색 버튼 (생산 / 반품)
+	@Override
+	public List<QualityVO> selectQualityListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectQualityListSearchBtn", vo);
 	}
 
 	

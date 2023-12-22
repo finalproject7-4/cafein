@@ -21,6 +21,9 @@ public interface QualityDAO {
 	// 검수 - 합격 / 불합격 (생산)
 	public int updateProduceQualityCheck(QualityVO vo) throws Exception;
 	
+	// 검수ID 입력 (반품 테이블)
+	public void updateReturnsQualityid(QualityVO vo) throws Exception;
+	
 	// 검수 폼 출력 (반품)
 	public QualityVO selectReturnInfo(int returnid) throws Exception;
 	
@@ -41,4 +44,7 @@ public interface QualityDAO {
 	
 	// 불량 현황 중복 확인 (생산 / 반품)
 	public Integer selectDupilcateDefects(int qualityid) throws Exception;
+	
+	// 품질 관리 목록 검색 버튼 (생산 / 반품)
+	public List<QualityVO> selectQualityListSearchBtn(QualityVO vo) throws Exception;
 }
