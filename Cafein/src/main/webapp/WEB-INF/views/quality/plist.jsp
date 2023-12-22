@@ -280,13 +280,13 @@
 </script>
 <!-- 경고 메세지 출력 -->	
 	
-<!-- 생산 검수 모달창 -->
+<!-- 생산 검수 모달창 (포장) -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/quality/paudit" method="POST">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (포장)</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -341,9 +341,9 @@
    </form>
   </div>
 </div>
-<!-- 생산 검수 모달창 -->
+<!-- 생산 검수 모달창 (포장) -->
 
-<!-- 생산 검수 모달창 데이터 -->
+<!-- 생산 검수 모달창 데이터 (포장) -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let myModal = document.getElementById('exampleModal');
@@ -434,7 +434,163 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<!-- 생산 검수 모달창 데이터 -->	
+<!-- 생산 검수 모달창 데이터 (포장) -->
+
+<!-- 생산 검수 모달창 (포장 X) -->
+<div class="modal fade" id="produceAuditModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form action="/quality/paudit" method="POST">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (블렌딩 / 냉각)</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      	<div class="row">
+ 			<div class="col">
+           		<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="produceid" class="col-form-label">생산ID:</label>
+            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="auditcode" class="col-form-label">검수번호:</label>
+            	<input type="text" class="form-control" id="auditcode" name="auditcode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="process" class="col-form-label">생산단계:</label>
+            	<input type="text" class="form-control" id="process" name="process" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="productquantity" class="col-form-label">생산량:</label>
+            	<input type="number" class="form-control" id="productquantity" name="productquantity" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="auditquantity" class="col-form-label">검수량:</label>
+            	<input type="number" class="form-control" id="auditquantity" name="auditquantity" value="" required>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="normalquantity" class="col-form-label">정상 (자동 계산):</label>
+            	<input type="number" class="form-control" id="normalquantity" name="normalquantity" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="defectquantity" class="col-form-label">불량 입력:</label>
+            	<input type="number" class="form-control" id="defectquantity" name="defectquantity" value="" required>
+  			</div>
+		</div>
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="submit" class="btn btn-primary">검수 저장</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 생산 검수 모달창 (포장 X) -->
+
+<!-- 생산 검수 모달창 데이터 (포장 X) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let myModal = document.getElementById('produceAuditModal2');
+    myModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
+        let qualityid = button.getAttribute('data-qualityid'); // qualityid
+        let produceid = button.getAttribute('data-produceid'); // produceid
+        let auditcode = button.getAttribute('data-auditcode'); // auditcode
+        let itemtype = button.getAttribute('data-itemtype'); // itemtype
+        let process = button.getAttribute('data-process'); // process
+        let productquantity = button.getAttribute('data-productquantity'); // productquantity
+        let auditquantity = button.getAttribute('data-auditquantity'); // auditquantity
+        let defectquantity = button.getAttribute('data-defectquantity'); // defectquantity
+        let normalquantity = button.getAttribute('data-normalquantity'); // normalquantity
+        
+        // 모달 내부의 입력 필드에 값을 설정
+        let qinputField = myModal.querySelector('input[name="qualityid"]');
+        qinputField.value = qualityid;
+        
+        let pinputField = myModal.querySelector('input[name="produceid"]');
+        pinputField.value = produceid;
+        
+        let ainputField = myModal.querySelector('input[name="auditcode"]');
+        ainputField.value = auditcode;
+        
+        let proinputField = myModal.querySelector('input[name="process"]');
+        proinputField.value = itemtype + " - " + process;
+        
+        let pqinputField = myModal.querySelector('input[name="productquantity"]');
+        pqinputField.value = productquantity;
+        
+        let aqinputField = myModal.querySelector('input[name="auditquantity"]');
+        aqinputField.value = auditquantity;
+        
+        let nqinputField = myModal.querySelector('input[name="normalquantity"]');
+        nqinputField.value = normalquantity;
+        
+        let dqinputField = myModal.querySelector('input[name="defectquantity"]');
+        dqinputField.value = defectquantity;
+        
+    	const productQuantityInput = document.getElementById("productquantity");
+    	const auditQuantityInput = document.getElementById("auditquantity");
+    	const defectiveQuantityInput = document.getElementById("defectquantity");
+            
+    	// 검수량 입력 필드의 blur 이벤트 리스너 추가
+    	auditQuantityInput.addEventListener("blur", function() {
+    		const productQuantity = parseInt(productQuantityInput.value, 10); // 생산량
+    		const auditQuantity = parseInt(auditQuantityInput.value, 10);     // 검수량
+    		const defectiveQuantity = parseInt(defectiveQuantityInput.value, 10);          // 불량 개수
+    		
+        	// 검수량이 생산량보다 큰 경우
+        	if (auditQuantity > productquantity) {
+        		alert("검수량은 생산량보다 많을 수 없습니다!");
+        		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
+        		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스
+        		return;
+        	}else if(auditQuantity < auditquantity){
+        		alert("검수량은 기존 검수량보다 적을 수 없습니다!");
+        		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
+        		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스 
+        		return;
+    		}
+				const normalQuantity = auditQuantity - defectiveQuantity;
+ 				document.getElementById("normalquantity").value = normalQuantity;
+    	});
+
+    	// 불량 개수 입력 필드의 blur 이벤트 리스너 추가
+    	defectiveQuantityInput.addEventListener("blur", function() {
+    		const auditQuantity = parseInt(auditQuantityInput.value, 10);                  // 검수량
+    		const defectiveQuantity = parseInt(defectiveQuantityInput.value, 10);          // 불량 개수
+
+    		// 불량 개수가 검수량을 초과하는 경우
+    		if (defectiveQuantity > auditQuantity) {
+    			alert("불량 개수는 검수량을 초과할 수 없습니다!");
+    			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
+    			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
+    			return;
+    		}else if(defectiveQuantity < defectquantity){
+    			alert("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
+    			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
+    			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
+    			return;
+    		}
+    			const normalQuantity = auditQuantity - defectiveQuantity;
+     			document.getElementById("normalquantity").value = normalQuantity;
+    		
+    	});
+    });
+});
+</script>
+<!-- 생산 검수 모달창 데이터 (포장 X) -->		
 
 <!-- 반품 검수 모달창 -->
 <div class="modal fade" id="returnAuditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
