@@ -21,15 +21,15 @@ public class ClientServiceImpl implements CleintService {
 	private ClientDAO cdao;
 
 	@Override
-	public void clientJoin(ClientVO vo) {
+	public void clientJoin(ClientVO vo) throws Exception {
 		logger.debug(" Service : 거래처 등록 clientJoin(ClientVO vo) ");
 		cdao.insertClient(vo);
 	}
 
 	@Override
-	public List<ClientVO> clientListAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ClientVO> clientList() throws Exception {
+		logger.debug(" Service : 거래처 목록 조회 clientList() ");
+		return cdao.getClientList();
 	}
 	
 	
