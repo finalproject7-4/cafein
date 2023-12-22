@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.cafein.domain.ClientVO;
 import com.cafein.domain.MemberVO;
-import com.cafein.persistence.ClientDAO;
 import com.cafein.persistence.MemberDAO;
 
 @Service
@@ -29,14 +27,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberVO memberLogin(MemberVO vo) throws Exception {
-		logger.debug(" Service : 직원 로그인 처리 memberLogin(MemberVO vo) ");
-		return mdao.selectLoginMember(vo);
-	}
-
-	@Override
-	public List<MemberVO> memberListAll() throws Exception {
-		logger.debug(" Service : 직원 목록 조회 memberListAll() ");
+	public List<MemberVO> memberList() throws Exception {
+		logger.debug(" Service : 직원 목록 조회 memberList() ");
 		return mdao.getMemberList();
 	}
 

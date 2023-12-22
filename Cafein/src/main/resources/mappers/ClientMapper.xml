@@ -13,4 +13,9 @@
 	#{manager},#{clientaddress},#{clientphone},#{clientfax},#{clientemail})
 </insert>
 
+<!-- 거래처 목록 조회 -->
+<select id="getClientList" resultType="ClientVO">
+	select * from client
+</select>
+
 </mapper>

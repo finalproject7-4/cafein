@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.cafein.domain.ClientVO;
 import com.cafein.domain.MemberVO;
 
 @Repository
@@ -31,20 +30,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public List<MemberVO> getMemberList() throws Exception {
 		logger.debug(" DAO : 직원 목록 조회 getMemberList() ");
-		return sqlSession.selectOne(NAMESPACE + ".getMemberList");
+		return sqlSession.selectList(NAMESPACE + ".getMemberList");
 	}
 
 	@Override
-	public MemberVO selectLoginMember(MemberVO vo) throws Exception {
-		logger.debug(" DAO : 직원 로그인 처리 selectLoginMember(MemberVO vo) ");
-		MemberVO resultVo 
-		= sqlSession.selectOne(NAMESPACE + ".loginMember", vo);
-		return resultVo;
-	}
-
-	@Override
-	public MemberVO getMember(String memberid) throws Exception {
-		logger.debug(" DAO : 직원 정보 조회 getMember(String userid) ");
+	public MemberVO getMember(int memberid) throws Exception {
+		logger.debug(" DAO : 직원 정보 조회 getMember(String memberid) ");
 		return sqlSession.selectOne(NAMESPACE + ".getMember", memberid);
 	}
 

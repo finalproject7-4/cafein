@@ -6,8 +6,8 @@ import com.cafein.domain.ClientVO;
 
 public interface CleintService {
 	
-	public void clientJoin(ClientVO vo);
+	public void clientJoin(ClientVO vo) throws Exception;
 	
-	public List<ClientVO> clientListAll();
+	public List<ClientVO> clientList() throws Exception;
 
 }
