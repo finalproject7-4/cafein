@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
-
-<h1>pdlist (생산 / 반품 불량 현황)</h1>
-	
+<br>
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<h6 class="mb-4">Responsive Table</h6>

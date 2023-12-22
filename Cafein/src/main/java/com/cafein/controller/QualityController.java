@@ -111,11 +111,11 @@ public class QualityController {
 			return "redirect:/quality/paudit?produceid=" + vo.getProduceid();
 		}
 		logger.debug(" 검수 성공 ");
-			if(vo.getDefectquantity() == 0) { // 생산 검수 - 합격
-				vo.setQualitycheck("합격");
+			if(vo.getDefectquantity() == 0) { // 생산 검수 - 정상
+				vo.setQualitycheck("정상");
 				qService.productQualityCheck(vo);
-			}else { // 생산 검수 - 불합격
-				vo.setQualitycheck("불합격");
+			}else { // 생산 검수 - 불량
+				vo.setQualitycheck("불량");
 				qService.productQualityCheck(vo);
 			}
 		return "redirect:/quality/plist";

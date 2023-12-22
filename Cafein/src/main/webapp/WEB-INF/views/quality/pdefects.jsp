@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
-
-	<h1>pdefects (불량 현황 입력 폼)</h1>
-
 	<form method="POST">
 		<fieldset>
 			<legend>불량 현황 등록</legend>

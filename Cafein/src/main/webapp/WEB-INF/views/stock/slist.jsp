@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
-
-<br>
-
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<h2>완제품 재고 관리</h2>
