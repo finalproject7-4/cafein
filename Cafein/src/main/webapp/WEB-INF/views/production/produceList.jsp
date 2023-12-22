@@ -240,6 +240,21 @@
 	
 	
 	/* 모달창 */
+	
+	 /*달력 이전날짜 비활성화*/
+	var now_utc = Date.now(); // 현재 날짜를 밀리초로
+	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+	
+	//id="date"
+	document.getElementById("date").setAttribute("min", today);
+	
+	// class="date"인 모든 요소에 날짜 비활성화
+	document.querySelectorAll('.date').forEach(function(input) {
+	  input.setAttribute('min', today);
+	});
+	
+	
 	var exampleModal = document.getElementById('exampleModal')
 	exampleModal.addEventListener('show.bs.modal', function (event) {
 	  // Button that triggered the modal
@@ -253,6 +268,7 @@
 	  var modalTitle = exampleModal.querySelector('.modal-title')
 	  var modalBodyInput = exampleModal.querySelector('.modal-body input')
 	});
+	/* 모달창 */
 	 
  });
 </script>
