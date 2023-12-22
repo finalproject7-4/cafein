@@ -36,7 +36,8 @@
 					</div>
 					<div class="modal-body">
 						<form>
-							<div class="mb-3">
+						<div class="row">
+							<div class="col">
 								<label for="produce" class="col-form-label">공정과정</label> <select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="process">
 									<optgroup label="공정과정">
@@ -46,7 +47,13 @@
 									</optgroup>
 								</select>
 							</div>
-							<div class="mb-3">
+							<div class="col">
+								<label for="producedate" class="col-form-label">생산일자</label> 
+								<input type="date" name="producedate" value="today()" class="form-control" id="floatingInput" placeholder="생산일">
+							</div>
+						</div>
+							<div class="row">
+							<div class="col">
 								<label for="produce" class="col-form-label">생산라인</label> <select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="produceline">
 									<optgroup label="생산라인">
@@ -59,7 +66,7 @@
 									</optgroup>
 								</select>
 							</div>
-							<div class="mb-3">
+							<div class="col">
 								<label for="produce" class="col-form-label">생산타임</label> <select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="producetime">
 									<optgroup label="생산타임">
@@ -71,28 +78,34 @@
 									</optgroup>
 								</select>
 							</div>
+							</div>
+					<div class="row">
 							<div class="col">
-							<div class="row">
-								제품명<input type="text" id="itemname" class="form-control" id="floatingInput" data-toggle="modal" data-target="#modal2">
+								<label for="itemname" class="col-form-label">제품명</label>
+								<input type="text" id="itemname" class="form-control" id="floatingInput" data-toggle="modal" data-target="#modal2">
+							</div>
+							<div class="col">
+								<label for="amount" class="col-form-label">생산량</label>
+								<input type="number" id="amount" class="form-control" id="floatingInput" min="20000" max="60000" step="10000" placeholder="생산량(g)">
+							</div>
 							</div>
 							<div class="row">
-								생산량<input type="number" id="amount" class="form-control" id="floatingInput" min="20000" max="60000" step="10000" placeholder="생산량(g)">
+							<div class="col">
+								<label for="itemname1" class="col-form-label">원재료1</label>
+								<input name="itemname1" type="text" class="form-control" id="floatingInput" >
+							</div>
+							<div class="col">
+								<label for="itemname2" class="col-form-label">원재료2</label>
+								<input type="text" name="itemname2" class="form-control" id="floatingInput" >
+							</div>
+							<div class="col">
+								<label for="itemname3" class="col-form-label">원재료3</label>
+								<input type="text" name="itemname3" class="form-control" id="floatingInput" >
 							</div>
 							</div>
 							<div class="mb-3">
-								원재료1<input name="itemname1" type="text" class="form-control" id="floatingInput" >
-							</div>
-							<div class="mb-3">
-								원재료2<input type="text" name="itemname2" class="form-control" id="floatingInput" >
-							</div>
-							<div class="mb-3">
-								원재료3<input type="text" name="itemname3" class="form-control" id="floatingInput" >
-							</div>
-							<div class="mb-3">
-								생산일자<input type="date" name="producedate" value="today()" class="form-control" id="floatingInput" placeholder="생산일">
-							</div>
-							<div class="mb-3">
-								담당자<input name="membercode" class="form-control" id="floatingInput">
+								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
+								<input name="membercode" class="form-control" id="floatingInput">
 							</div>
 						</form>
 					</div>
@@ -151,7 +164,7 @@
 </form>
 <form role="form3">
 <input type="hidden" name="qualitycheck" value="검사전">
-<button type="button" class="btn btn-outline-secondary ${state ==value?'active': '' }"  value="검사전" id="qccheck" style="background-color: #ffca2c; margin-left: 5px;">
+<button type="button" class="btn btn-outline-secondary"  value="검사전" id="qccheck" style="background-color: #ffca2c; margin-left: 5px;">
 검사대기</button>
 </form>
 <div>
@@ -183,15 +196,7 @@
 <td>${plist.produceline }</td>
 <td>${plist.process }</td>
 <td>${plist.qualitycheck }<br>
-<c:if test="${plist.qualitycheck == '검사전'}">
 
-<form class="qualitycheck">
-<input type="hidden" name="produceid1" value="${producelist.produceid }">
-<button class="btn btn-success" id="normalButton" name="qualitycheck" value="정상">정상</button>
-<button class="btn btn-danger" id="defectiveButton" name="qualitycheck" value="불량">불량</button>
-</form>
-
-</c:if>
 </td>
 <td>${plist.state }</td>
 </tr>

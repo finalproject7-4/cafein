@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- ClientMapper.xml -->
+<mapper namespace="com.cafein.mapper.ClientMapper">
+
+<insert id="insertClient">
+	insert into client(clientcode,clientname,categoryofclient,typeofclient,businessnumber,representative,
+	manager,clientaddress,clientphone,clientfax,clientemail) 
+	values(#{clientcode},#{clientname},#{categoryofclient},#{typeofclient},#{businessnumber},#{representative},
+	#{manager},#{clientaddress},#{clientphone},#{clientfax},#{clientemail})
+</insert>
+
+</mapper>
