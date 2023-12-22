@@ -14,5 +14,5 @@ public class ItemVO {
 	private int itemweight;
 	private int itemprice;
 	private String available;
-	
+
 }
