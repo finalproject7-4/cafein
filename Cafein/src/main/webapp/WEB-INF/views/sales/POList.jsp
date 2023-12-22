@@ -9,10 +9,10 @@
 <fieldset>
 	<legend>수주관리</legend>
 	<form method="post">
-		수주일자 <input type="date" name="podate"> ~ <input type="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
+		수주일자 <input type="date" class="date" name="podate"> ~ <input type="date" class="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
 		납품처조회 <input class="clientSearch" type="text" name="client" placeholder="납품처코드"> 
 				<input class="clientSearch" type="text" name="worknumber" placeholder="납품처명"> <br>
-		납품예정일 <input type="date" name="ordersduedate"> ~ <input type="date" name="podate">
+		납품예정일 <input type="date" class="date" name="ordersduedate"> ~ <input type="date" class="date" name="podate">
 		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch" type="text" name="itemname" placeholder="품목코드"> 
 			<input class="itemSearch" type="text" name="worknumber" placeholder="품명"> 
 		<button type="submit" class="btn btn-dark m-2">조회</button>
@@ -194,7 +194,7 @@
 								수주일자<input id="todaypo" type="text" class="form-control" id="floatingInput" placeholder="수주일자(클릭)">
 							</div>
 							<div class="mb-3">
-								완납예정일<input type="date" class="form-control" id="floatingInput" placeholder="완납예정일">
+								완납예정일<input type="date" id="date" class="form-control" id="floatingInput" placeholder="완납예정일">
 							</div>
 							<div class="mb-3">
 								담당자<input class="form-control" id="floatingInput">
@@ -289,6 +289,20 @@
 
   <!-- 모달 js&jq -->
    <script>
+   /*달력 이전날짜 비활성화*/
+	var now_utc = Date.now(); // 현재 날짜를 밀리초로
+	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+	
+	//id="date"
+	document.getElementById("date").setAttribute("min", today);
+	
+	// class="date"인 모든 요소에 날짜 비활성화
+	document.querySelectorAll('.date').forEach(function(input) {
+	  input.setAttribute('min', today);
+	});
+	   
+   
     var exampleModal = document.getElementById('exampleModal')
     exampleModal.addEventListener('show.bs.modal', function (event) {
       var button = event.relatedTarget
@@ -340,7 +354,8 @@
             var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
             $('#todaypo').val(formattedDate);
         });
-
-	});
+	 
+    });
     </script>
+
 <%@ include file="../include/footer.jsp"%>
