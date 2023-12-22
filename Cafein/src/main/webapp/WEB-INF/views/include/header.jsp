@@ -24,8 +24,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
    
-   <!--  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
-	<!-- 아이콘 -->
+  	<!-- 아이콘 -->
 	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
 	
@@ -117,7 +116,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-poll' style='font-size:24px'></i><b> 영업관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0"> 
-                            <a href="/sales/purorders" class="dropdown-item">수주관리</a>
+                            <a href="/sales/POList" class="dropdown-item">수주관리</a>
                             <a href="/sales/ship" class="dropdown-item">출하관리</a>
                             <a href="/sales/record" class="dropdown-item">실적관리</a>
                         </div>
