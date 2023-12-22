@@ -14,12 +14,15 @@
     
     <!-- 적용된 배경색: #FBF8EF, a태그 활성화 색상: #610B0B -->
     
-     <!-- 별도로 추가한 부분: 부트스트랩 작동위한 추가. 제이쿼리, 스타일시트 -->
+     <!-- 별도로 추가한 부분: 부트스트랩, 달력 작동위한 추가. 제이쿼리, 스타일시트 -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	<!-- 아이콘 -->
+   
+  	<!-- 아이콘 -->
 	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 	
     <!-- Favicon -->
@@ -43,6 +46,10 @@
 
     <!-- Template Stylesheet -->
     <link href="../resources/css/style.css" rel="stylesheet">
+    
+    <!-- POList.css -->
+    <link href="../resources/css/POList.css" rel="stylesheet">
+    
 </head>
 
 <body>
@@ -89,10 +96,35 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="signin.html" class="dropdown-item">Sign In</a>
-                            <a href="signup.html" class="dropdown-item">Sign Up</a>
-                            <a href="404.html" class="dropdown-item">404 Error</a>
-                            <a href="blank.html" class="dropdown-item">Blank Page</a>
+                            <a href="/production/produceList" class="dropdown-item">생산목록</a>
+                            <a href="/production/roastedList" class="dropdown-item">완제품</a>
+                            <a href="/production/direction" class="dropdown-item">작업지시관리</a>
+                        </div>
+                    </div>
+                 
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-sitemap' style='font-size:24px'></i><b> 자재관리</b></a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="/material/stock" class="dropdown-item">재고현황</a>
+                            <a href="/material/orders" class="dropdown-item">발주관리</a>
+                            <a href="/material/receive" class="dropdown-item">입고관리</a>
+                            <a href="/material/releases" class="dropdown-item">출고관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-tools' style='font-size:24px'></i><b> 품질관리</b></a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="/quality/qualities" class="dropdown-item">품질관리</a>
+                            <a href="/quality/returns" class="dropdown-item">반품관리</a>
+               
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-poll' style='font-size:24px'></i><b> 영업관리</b></a>
+                        <div class="dropdown-menu bg-transparent border-0"> 
+                            <a href="/sales/POList" class="dropdown-item">수주관리</a>
+                            <a href="/sales/ship" class="dropdown-item">출하관리</a>
+                            <a href="/sales/record" class="dropdown-item">실적관리</a>
                         </div>
                     </div>
                 </div>

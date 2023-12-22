@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- SalesMapper.xml -->
+<mapper namespace="com.cafein.mapper.SalesMapper">
+
+<!-- 수주 조회 -->
+<select id="getPOList" resultType="com.cafein.domain.SalesVO">
+<!-- 	select * from purchaseorder -->
+	SELECT po.poid, po.postate, po.pocode, cli.clientname, cli.clientcode,
+           item.itemname, po.pocnt, po.ordersdate, item.itemcode,
+           po.updatedate, po.ordersduedate, po.membercode
+    FROM purchaseorder po
+    JOIN item ON po.itemid = item.itemid
+    JOIN client cli ON po.clientid = cli.clientid
+    
+</select>
+
+
+</mapper>
