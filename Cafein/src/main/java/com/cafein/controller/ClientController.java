@@ -17,7 +17,7 @@ import com.cafein.domain.ClientVO;
 import com.cafein.service.CleintService;
 
 @Controller
-@RequestMapping(value = "information/clients/*")
+@RequestMapping(value = "information/*")
 public class ClientController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
@@ -25,8 +25,8 @@ public class ClientController {
 	@Inject
 	private CleintService cService;
 	
-	// http://localhost:8088/information/clients/join
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	// http://localhost:8088/information/clientJoin
+	@RequestMapping(value = "/clientJoin", method = RequestMethod.GET)
 	public void clientJoinGET() throws Exception {
 		logger.debug(" /clients/join -> clientJoinGET() 호출 ");
 		logger.debug(" /views/information/clientJoin.jsp 페이지로 이동 ");
@@ -41,19 +41,20 @@ public class ClientController {
 		logger.debug(" 거래처 등록 완료! ");
 		
 		rttr.addFlashAttribute("result","CREATEOK");
-		logger.debug(" /clients/listAll 이동 ");
+		logger.debug(" /information/clients 이동 ");
 		
-		return "redirect:/clients/listAll";
+		return "redirect:/information/clients";
 	}
 	
-	// http://localhost:8088/information/clients/listAll
-	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	// http://localhost:8088/information/clients
+	@RequestMapping(value = "/clients", method = RequestMethod.GET)
 	public String listAllGET(Model model) throws Exception {
-		logger.debug(" /clients/listAll -> listAllGET() 호출 ");
+		logger.debug(" /clients/clients -> clientListGET() 호출 ");
 		
-		List<ClientVO> clientList = cService.clientListAll();
-		logger.debug(" ");
-		return "/clients/listAll";
+		List<ClientVO> clientList = cService.clientList();
+		model.addAttribute("clientList", cService.clientList());
+		
+		return "/information/clients";
 	}
 	
 
