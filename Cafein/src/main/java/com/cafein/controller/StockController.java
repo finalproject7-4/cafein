@@ -48,7 +48,7 @@ public class StockController {
 		if(duResult != null) {
 			logger.debug(" 이미 재고 정보가 등록된 검수 내역입니다. ");
 			rttr.addFlashAttribute("result", "duplicateStock");
-			return "redirect:/quality/plist";
+			return "redirect:/quality/productQualityList";
 		}else {
 		String workerbycode = (String) session.getAttribute("membercode");
 		vo.setWorkerbycode(workerbycode);
@@ -58,7 +58,7 @@ public class StockController {
 		if(result == 0) {
 			rttr.addFlashAttribute("result", "STOCKNO");
 			logger.debug(" 재고 등록 실패! ");
-			return "redirect:/quality/plist";
+			return "redirect:/quality/productQualityList";
 		}else {
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");

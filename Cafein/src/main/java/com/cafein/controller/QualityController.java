@@ -30,41 +30,48 @@ public class QualityController {
 	@Inject
 	private QualityService qService;
 	
-	// http://localhost:8088/quality/plist
+	// 품질 관리 통합 페이지 (생산 + 반품 / 자재)
+	// http://localhost:8088/quality/productQuality
+	@GetMapping(value = "/qualities")
+	public void qualities(HttpSession session) {
+		
+	}
+	
+	// http://localhost:8088/quality/productQualityList
 	// 품질 관리 (생산 + 반품) 목록
-	@GetMapping(value = "/plist")
+	@GetMapping(value = "/productQualityList")
 	public void qualityList(Model model, HttpSession session, QualityVO vo) throws Exception{
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 ()
 		
 //		model.addAttribute("list", qService.qualityList());
 		model.addAttribute("list", qService.qualityListSearchBtn(vo));
-
-		
-			
-
 	}
 	
-	// http://localhost:8088/quality/pdlist	
+	// 품질 관리 (자재) 목록
+	@GetMapping(value = "/materialQualityList")
+	public void materialQualityList() throws Exception{
+		
+	}
+	
+	// http://localhost:8088/quality/productDefectList	
 	// 불량 현황 (생산 + 반품) 목록
-	@GetMapping(value = "/pdlist")
+	@GetMapping(value = "/productDefectList")
 	public void qualityDefectList(Model model, HttpSession session) throws Exception{
 		
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		// 불량 현황 (생산 + 반품) 목록
 		model.addAttribute("defectList", qService.defectsList());
-	}	
+	}
 	
-	// 생산 검수 입력 폼 - GET
-	@GetMapping(value = "/paudit")
-	public void pQualityAuditGET(@ModelAttribute("produceid") int produceid, Model model) throws Exception{
+	// 불량 현황 (자재) 목록
+	@GetMapping(value = "/materialDefectList")
+	public void  materialDefectList() throws Exception{
 		
-		model.addAttribute("vo", qService.produceInfo(produceid));
 	}
 	
 	// 생산 검수 입력 처리 - POST
-	@PostMapping(value = "/paudit")
+	@PostMapping(value = "/productAudit")
 	public String pQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
@@ -121,21 +128,14 @@ public class QualityController {
 		
 		if(result == 0) {
 			logger.debug(" 검수 실패 ");
-			return "redirect:/quality/paudit?produceid=" + vo.getProduceid();
+			return "redirect:/quality/productAudit?produceid=" + vo.getProduceid();
 		}
 		logger.debug(" 검수 성공 ");
-		return "redirect:/quality/plist";
-	}
-	
-	// 반품 검수 입력 폼 - GET
-	@GetMapping(value = "/raudit")
-	public void rQualityAuditGET(@ModelAttribute("returnid") int returnid, Model model) throws Exception{
-		
-		model.addAttribute("vo", qService.returnInfo(returnid));
+		return "redirect:/quality/productQualityList";
 	}
 	
 	// 반품 검수 입력 처리 - POST
-	@PostMapping(value = "/raudit")
+	@PostMapping(value = "/returnAudit")
 	public String rQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
@@ -181,48 +181,48 @@ public class QualityController {
 		
 		if(result == 0) {
 			logger.debug(" 검수 실패 ");
-			return "redirect:/quality/raudit?returnid=" + vo.getReturnid();
+			return "redirect:/quality/returnAudit?returnid=" + vo.getReturnid();
 		}
 		logger.debug(" 검수 성공 ");
 		qService.returnsQualityid(vo);
-		return "redirect:/quality/plist";
+		return "redirect:/quality/productQualityList";
 	}
 	
 	// 불량 현황 입력 폼 (생산 + 반품) - GET
-	@GetMapping(value = "/pdefects")
+	@GetMapping(value = "/productReturnNewDefect")
 	public String pQualityDefects(@RequestParam("qualityid") int qualityid, Model model, RedirectAttributes rttr) throws Exception{
 		
 		Integer result = qService.duplicateDefects(qualityid);
 		if(result != null) {
 			logger.debug(" 이미 불량 정보가 등록된 검수 내역입니다. ");
 			rttr.addFlashAttribute("result", "duplicate");
-			return "redirect:/quality/plist";
+			return "redirect:/quality/productQualityList";
 		}else {
 			model.addAttribute("vo", qService.defectInfo(qualityid));
-			return "/quality/pdefects";
+			return "/quality/productReturnNewDefect";
 		}
 	}
 	
 	// 불량 현황 입력 처리 (생산 + 반품) - POST
-	@PostMapping(value = "/pdefects")
+	@PostMapping(value = "/productReturnNewDefect")
 	public String pQualityDefects(QualityVO vo) throws Exception{
 		
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
 			logger.debug(" 불량 현황 입력 실패 ");
-			return "redirect:/quality/plist";
+			return "redirect:/quality/productQualityList";
 		}
 		logger.debug(" 불량 현황 입력 성공 ");
-		return "redirect:/quality/plist";
+		return "redirect:/quality/productQualityList";
 		
 	}
 	
 	// 검색 처리 (생산 + 반품) - POST
-	@PostMapping(value = "/plist")
+	@PostMapping(value = "/productQualityList")
 	public String productQualityListSearch(@ModelAttribute("search") String search, 
 			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) {
 		
-		return "redirect:/quality/plist";
+		return "redirect:/quality/productQualityList";
 	}
 	
 

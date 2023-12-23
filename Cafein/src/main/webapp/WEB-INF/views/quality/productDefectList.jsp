@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../include/header.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <br>
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<h6 class="mb-4">Responsive Table</h6>
+			<h2>생산 / 반품 불량 현황</h2>
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -56,5 +56,3 @@
 			</div>
 		</div>
 	</div>	
-
-<%@ include file="../include/footer.jsp" %>
