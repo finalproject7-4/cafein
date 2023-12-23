@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../include/header.jsp" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <br>
 
 		<div class="col-12">
@@ -15,7 +14,7 @@
   				<input class="form-check-input" type="radio" name="stocktype" id="inlineRadio2" value="자재" checked onclick="navigatePage('자재')">
   				<label class="form-check-label" for="inlineRadio2">자재</label>
 			</div>
-			<form action="/stock/slist" method="POST">
+			<form action="/stock/productStockList" method="POST">
 				<input type="text" name="search" placeholder="검색어를 입력하세요">
 				<input type="submit" value="검색">
 			</form>
@@ -278,12 +277,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
     function navigatePage(type) {
         if (type === '완제품') {
-            window.location.href = '/stock/slist';
+            window.location.href = '/stock/productStockList';
         } else if (type === '자재') {
-            window.location.href = '/stock/smlist';
+            window.location.href = '/stock/materialStockList';
         }
     }
 </script>
 <!-- 라디오 버튼 이동 -->
-
-<%@ include file="../include/footer.jsp" %>

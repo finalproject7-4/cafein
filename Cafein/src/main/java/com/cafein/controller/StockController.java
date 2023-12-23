@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,10 +27,17 @@ public class StockController {
 	@Inject
 	private StockService sService;
 	
-	// http://localhost:8088/stock/slist
+	// 재고 관리 통합 페이지 (자재 / 생산 + 반품)
+	// http://localhost:8088/stock/stock
+	@GetMapping(value = "/stock")
+	public void allStockGET(HttpSession session) {
+		
+	}
+	
+	// http://localhost:8088/stock/productStockList
 	// 재고 목록 조회 (생산 [포장] + 반품)
-	@RequestMapping(value = "/slist", method = RequestMethod.GET)
-	public void stockListGET(Model model, HttpSession session) throws Exception{
+	@RequestMapping(value = "/productStockList", method = RequestMethod.GET)
+	public void productStockListGET(Model model, HttpSession session) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
 		List<QualityVO> resultList = sService.stockList(); // 재고 목록
@@ -63,7 +71,7 @@ public class StockController {
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");
 		}
-		return "redirect:/stock/slist";
+		return "redirect:/stock/productStockList";
 		}
 	}
 	
@@ -84,7 +92,7 @@ public class StockController {
 			logger.debug(" 재고량 변경 성공! ");			
 		}
 		
-		return "redirect:/stock/slist";
+		return "redirect:/stock/productStockList";
 	}
 	
 	// 창고 변경 (생산 [포장] + 반품)
@@ -104,11 +112,11 @@ public class StockController {
 			logger.debug(" 창고 변경 성공! ");			
 		}
 		
-		return "redirect:/stock/slist";
+		return "redirect:/stock/productStockList";
 	}
 	
 	// 재고 목록 조회 (자재)
-	@RequestMapping(value = "/smlist", method = RequestMethod.GET)
+	@RequestMapping(value = "/materialStockList", method = RequestMethod.GET)
 	public void stockMListGET(Model model, HttpSession session) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
