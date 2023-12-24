@@ -119,6 +119,16 @@ public class QualityServiceImpl implements QualityService {
 		// TODO Auto-generated method stub
 		return qdao.selectQualityListSearchBtn(vo);
 	}
+
+	// 반품 등록 여부 업데이트
+	@Override
+	public void registerDefectY(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		qdao.updateRegisterDefect(vo);
+		
+	}
+	
+	
 	
 	
 	

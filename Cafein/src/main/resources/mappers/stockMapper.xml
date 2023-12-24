@@ -76,5 +76,12 @@
  		WHERE q.itemtype = '자재'
  		ORDER BY stockid DESC
  	</select>
+ 	
+ 	<!-- 재고 등록 여부 업데이트 -->
+ 	<update id="updateRegisterStock">
+		UPDATE quality 
+		SET registerstock = 'Y'
+		WHERE qualityid = #{qualityid}
+	</update>
  
  </mapper>

@@ -113,6 +113,18 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.selectList(NAMESPACE + ".selectQualityListSearchBtn", vo);
 	}
 
+	// 반품 등록 여부 업데이트
+	@Override
+	public void updateRegisterDefect(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateRegisterDefect", vo);
+		
+	}
+	
+	
+	
+	
+
 	
 	
 	

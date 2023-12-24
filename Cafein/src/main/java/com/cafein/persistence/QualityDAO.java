@@ -47,4 +47,7 @@ public interface QualityDAO {
 	
 	// 품질 관리 목록 검색 버튼 (생산 / 반품)
 	public List<QualityVO> selectQualityListSearchBtn(QualityVO vo) throws Exception;
+	
+	// 반품 등록 여부 업데이트
+	public void updateRegisterDefect(QualityVO vo) throws Exception;
 }

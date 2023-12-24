@@ -26,4 +26,7 @@ public interface StockDAO {
 	
 	// roastedbean - LOT번호 조회 
 	public String selectRoastedBeanLotNum(QualityVO vo) throws Exception;
+	
+	// 재고 등록 여부 업데이트
+	public void updateRegisterStock(QualityVO vo) throws Exception;
 }

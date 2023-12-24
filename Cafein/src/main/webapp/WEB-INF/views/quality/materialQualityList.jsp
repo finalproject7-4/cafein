@@ -187,7 +187,7 @@
 													<!-- <input type="button" value="정상"> --> <!-- 생산 상태 업데이트 [포장이 아닌 경우는 불량이 조금이라도 발생 시 전체 불량 처리] -->
 <%-- 												<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/productReturnNewDefect?qualityid=${clist.qualityid}'"> <!-- 생산 상태 업데이트 --> --%>
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newPDefect"
+													data-bs-toggle="modal" data-bs-target="#/newProductDefectModal"
 													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
@@ -206,7 +206,7 @@
 													<input type="submit" value="정상" class="btn btn-success btn-sm" >
 <%-- 													<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/productReturnNewDefect?qualityid=${clist.qualityid}'"> <!-- 생산 상태 업데이트 --> --%>
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newPDefect"
+													data-bs-toggle="modal" data-bs-target="#/newProductDefectModal"
 													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
@@ -221,7 +221,7 @@
 													<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 재고로 -->
 <%-- 												<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/productReturnNewDefect?qualityid=${clist.qualityid}'"> --%>
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newRDefect"
+													data-bs-toggle="modal" data-bs-target="#/newReturnDefectModal"
 													data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
@@ -236,7 +236,7 @@
 												<c:if test="${!empty clist.process && !clist.process.equals('포장')}"> <!-- 포장이 아닌 경우 -->
 <%-- 												<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/productReturnNewDefect?qualityid=${clist.qualityid}'"> --%>
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newPDefect"
+													data-bs-toggle="modal" data-bs-target="#/newProductDefectModal"
 													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
@@ -249,7 +249,7 @@
 												<c:if test="${!empty clist.process && clist.process.equals('포장')}"> <!-- 포장인 경우 -->
 <%-- 												<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/productReturnNewDefect?qualityid=${clist.qualityid}'"> --%>
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newPDefect"
+													data-bs-toggle="modal" data-bs-target="#/newProductDefectModal"
 													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
@@ -262,7 +262,7 @@
 												<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품')}"> <!-- 반품인 경우 -->
 <%-- 													<input type="button" value="불량" class="pdefects btn btn-danger btn-sm" onclick="location.href='/quality/productReturnNewDefect?qualityid=${clist.qualityid}'"> --%>
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newRDefect"
+													data-bs-toggle="modal" data-bs-target="#/newReturnDefectModal"
 													data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 

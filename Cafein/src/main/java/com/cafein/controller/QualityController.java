@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
 import com.cafein.domain.QualityVO;
 import com.cafein.service.QualityService;
 
@@ -31,7 +33,7 @@ public class QualityController {
 	private QualityService qService;
 	
 	// 품질 관리 통합 페이지 (생산 + 반품 / 자재)
-	// http://localhost:8088/quality/productQuality
+	// http://localhost:8088/quality/qualities
 	@GetMapping(value = "/qualities")
 	public void allQualityGET(HttpSession session) {
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
@@ -41,10 +43,18 @@ public class QualityController {
 	// http://localhost:8088/quality/productQualityList
 	// 품질 관리 (생산 + 반품) 목록
 	@GetMapping(value = "/productQualityList")
-	public void productQualityListGET(Model model, HttpSession session, QualityVO vo) throws Exception{
+	public void productQualityListGET(Model model, HttpSession session, QualityVO vo, 
+			Criteria cri) throws Exception{
 		
 //		model.addAttribute("list", qService.qualityList());
+		vo.setCri(cri);
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(43);
+		
 		model.addAttribute("list", qService.qualityListSearchBtn(vo));
+		model.addAttribute("pageVO", pageVO);
 	}
 	
 	// 품질 관리 (자재) 목록
@@ -56,7 +66,8 @@ public class QualityController {
 	// http://localhost:8088/quality/productDefectList	
 	// 불량 현황 (생산 + 반품) 목록
 	@GetMapping(value = "/productDefectList")
-	public void productQualityDefectListGET(Model model, HttpSession session) throws Exception{
+	public void productQualityDefectListGET(Model model, HttpSession session, 
+			Criteria cri) throws Exception{
 		
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
@@ -75,6 +86,7 @@ public class QualityController {
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
+			return "redirect:/quality/qualities";
 		}
 		
 		int result = 0;
@@ -127,9 +139,11 @@ public class QualityController {
 		
 		if(result == 0) {
 			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
 			return "redirect:/quality/qualities";
 		}
 		logger.debug(" 검수 성공 ");
+		rttr.addFlashAttribute("AUDIT", "O");
 		return "redirect:/quality/qualities";
 	}
 	
@@ -139,6 +153,7 @@ public class QualityController {
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
+			return "redirect:/quality/qualities";
 		}
 		
 		int result = 0;
@@ -180,40 +195,29 @@ public class QualityController {
 		
 		if(result == 0) {
 			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
 			return "redirect:/quality/qualities";
 		}
 		logger.debug(" 검수 성공 ");
 		qService.returnsQualityid(vo);
+		rttr.addFlashAttribute("AUDIT", "O");
 		return "redirect:/quality/qualities";
-	}
-	
-	// 불량 현황 입력 폼 (생산 + 반품) - GET
-	@GetMapping(value = "/productReturnNewDefect")
-	public String productReturnQualityNewDefectGET(@RequestParam("qualityid") int qualityid, Model model, RedirectAttributes rttr) throws Exception{
-		
-		Integer result = qService.duplicateDefects(qualityid);
-		if(result != null) {
-			logger.debug(" 이미 불량 정보가 등록된 검수 내역입니다. ");
-			rttr.addFlashAttribute("result", "duplicate");
-			return "redirect:/quality/productQualityList";
-		}else {
-			model.addAttribute("vo", qService.defectInfo(qualityid));
-			return "/quality/productReturnNewDefect";
-		}
 	}
 	
 	// 불량 현황 입력 처리 (생산 + 반품) - POST
 	@PostMapping(value = "/productReturnNewDefect")
-	public String productReturnQualityNewDefectPOST(QualityVO vo) throws Exception{
+	public String productReturnQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
 		
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
 			logger.debug(" 불량 현황 입력 실패 ");
+			rttr.addFlashAttribute("DEFECT", "X");
 			return "redirect:/quality/qualities";
 		}
 		logger.debug(" 불량 현황 입력 성공 ");
+		// 품질 관리에서 불량 등록 여부 업데이트
+		qService.registerDefectY(vo);
+		rttr.addFlashAttribute("DEFECT", "O");
 		return "redirect:/quality/qualities";
-		
 	}
-	
 }

@@ -22,15 +22,12 @@ public class StockServiceImpl implements StockService {
 		return sdao.selectStockList();
 	}
 	
-	
 	// roastedbean - LOT번호 조회
 	@Override
 	public String roastedbeanLotNum(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return sdao.selectRoastedBeanLotNum(vo);
 	}
-
-
 
 	// 재고 입력 (생산 [포장] + 반품)
 	@Override
@@ -66,6 +63,15 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		return sdao.updateStockStorage(vo);
 	}
+
+	// 재고 등록 여부 업데이트
+	@Override
+	public void registerStockY(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sdao.updateRegisterStock(vo);
+	}
+	
+	
 	
 	
 	

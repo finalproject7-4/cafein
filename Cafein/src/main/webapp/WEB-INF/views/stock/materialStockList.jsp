@@ -7,12 +7,12 @@
 		<div class="bg-light rounded h-100 p-4">
 			<h2>자재 재고 관리</h2>
 			<div class="form-check form-check-inline">
-  				<input class="form-check-input" type="radio" name="stocktype" id="inlineRadio1" value="완제품" onclick="navigatePage('완제품')">
-  				<label class="form-check-label" for="inlineRadio1">완제품</label>
-			</div>
-			<div class="form-check form-check-inline">
   				<input class="form-check-input" type="radio" name="stocktype" id="inlineRadio2" value="자재" checked onclick="navigatePage('자재')">
   				<label class="form-check-label" for="inlineRadio2">자재</label>
+			</div>
+			<div class="form-check form-check-inline">
+  				<input class="form-check-input" type="radio" name="stocktype" id="inlineRadio1" value="완제품" onclick="navigatePage('완제품')">
+  				<label class="form-check-label" for="inlineRadio1">완제품</label>
 			</div>
 			<form action="/stock/productStockList" method="POST">
 				<input type="text" name="search" placeholder="검색어를 입력하세요">
@@ -189,28 +189,9 @@
 </div>
 <!-- 모달창2 -->
 
-<script>
-	// 재고 등록 성공 / 실패 알림
-	var result = "${result}";
-	
-	if(result == "STOCKNO"){
-		alert("재고 등록 실패!");
-	}else if(result == "STOCKYES"){
-		alert("재고 등록 성공!");
-	}else if(result == "STOCKUPNO"){
-		alert("재고량 변경 실패!");
-	}else if(result == "STOCKUPYES"){
-		alert("재고량 변경 성공!");
-	}else if(result == "STOCKSUPNO"){
-		alert("창고 변경 실패!");
-	}else if(result == "STOCKSUPYES"){
-		alert("창고 변경 성공!")
-	}
-</script>
-
 <!-- 모달 1 출력 -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     let myModal = document.getElementById('exampleModal');
     myModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
@@ -242,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- 모달 2 출력 -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     let myModal = document.getElementById('exampleModal2');
     myModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴

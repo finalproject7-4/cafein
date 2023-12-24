@@ -26,4 +26,7 @@ public interface StockService {
 	
 	// 창고 변경 (생산 [포장] + 반품)
 	public int stockStorage(QualityVO vo) throws Exception;
+	
+	// 재고 등록 여부 업데이트
+	public void registerStockY(QualityVO vo) throws Exception;
 }

@@ -47,5 +47,8 @@ public interface QualityService {
 	
 	// 품질 관리 목록 검색 버튼 (생산 / 반품)
 	public List<QualityVO> qualityListSearchBtn(QualityVO vo) throws Exception;
+	
+	// 반품 등록 여부 업데이트
+	public void registerDefectY(QualityVO vo) throws Exception;
 
 }

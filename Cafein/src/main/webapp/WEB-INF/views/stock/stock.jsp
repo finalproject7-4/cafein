@@ -20,9 +20,25 @@ $(document).ready(function() {
 });
 </script>
 
-
 <div id="stockListContainer">
     <!-- /stock/materialStockList 페이지의 데이터가 여기에 동적으로 삽입됩니다. -->
 </div>
+
+<script>
+	// 재고 등록 성공 / 실패 알림
+	var result = "${result}";
+	
+	if(result == "STOCKYES"){
+		alert("재고 등록 성공!");
+	}else if(result == "STOCKUPNO"){
+		alert("재고량 변경 실패!");
+	}else if(result == "STOCKUPYES"){
+		alert("재고량 변경 성공!");
+	}else if(result == "STOCKSUPNO"){
+		alert("창고 변경 실패!");
+	}else if(result == "STOCKSUPYES"){
+		alert("창고 변경 성공!")
+	}
+</script>
 
 <%@ include file="../include/footer.jsp"%>

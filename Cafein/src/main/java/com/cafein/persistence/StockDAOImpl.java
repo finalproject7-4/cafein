@@ -71,6 +71,17 @@ public class StockDAOImpl implements StockDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.update(NAMESPACE + ".updateStockStorage", vo);
 	}
+
+	// 재고 등록 여부 업데이트
+	@Override
+	public void updateRegisterStock(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateRegisterStock", vo);
+		
+	}
+	
+	
+	
 	
 	
 	

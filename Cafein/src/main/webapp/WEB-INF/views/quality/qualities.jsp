@@ -42,4 +42,32 @@ $(document).ready(function() {
     <!-- /quality/productDefectList 페이지의 데이터가 여기에 동적으로 삽입됩니다. -->
 </div>
 
+<!-- 경고 메세지 출력 -->	
+<script>
+ var result = "${result}";
+ var resultAudit = "${AUDIT}";
+ var resultDefect = "${DEFECT}";
+ 
+ if(result == "duplicate"){
+	 alert("이미 불량 정보가 등록된 검수 내역입니다.");
+ }else if(result == "duplicateStock"){
+	 alert("이미 재고 정보가 등록된 검수 내역입니다."); 
+ }else if(result == "STOCKNO"){
+	 alert("상품의 재고 등록이 실패했습니다.");
+ }
+ 
+ if(resultAudit == "O"){
+	 alert("검수가 성공적으로 저장되었습니다.");
+ }else if(resultAudit == "X"){
+	 alert("검수 저장에 실패했습니다.");
+ }
+ 
+ if(resultDefect == "O"){
+	 alert("상품의 불량 현황이 등록되었습니다.");
+ }else if(resultDefect == "X"){
+	 alert("상품 불량 등록이 실패했습니다.")
+ }
+</script>
+<!-- 경고 메세지 출력 -->
+
 <%@ include file="../include/footer.jsp" %>

@@ -23,6 +23,8 @@ public class QualityVO {
 	private String auditstatus;
 	private Date registerationdate;
 	private Date completedate;
+	private String registerstock;
+	private String registerdefect;
 	
 	// defects 테이블
 	private int defectid;
@@ -98,6 +100,9 @@ public class QualityVO {
 	private String endDate;
 	private String searchText;
 	private String searchBtn;
+	
+	// Criteria 객체
+	private Criteria cri;
 	
 	
 	

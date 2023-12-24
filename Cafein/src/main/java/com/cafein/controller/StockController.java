@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,7 +47,7 @@ public class StockController {
 	}
 
 	// 재고 입력 (생산 [포장] + 반품)
-	@RequestMapping(value = "/new", method = RequestMethod.POST)
+	@RequestMapping(value = "/newStock", method = RequestMethod.POST)
 	public String newStockPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
 		int qualityid = vo.getQualityid();
 		logger.debug(" qualityid : " + qualityid);
@@ -56,7 +55,7 @@ public class StockController {
 		if(duResult != null) {
 			logger.debug(" 이미 재고 정보가 등록된 검수 내역입니다. ");
 			rttr.addFlashAttribute("result", "duplicateStock");
-			return "redirect:/quality/productQualityList";
+			return "redirect:/quality/qualities";
 		}else {
 		String workerbycode = (String) session.getAttribute("membercode");
 		vo.setWorkerbycode(workerbycode);
@@ -66,12 +65,14 @@ public class StockController {
 		if(result == 0) {
 			rttr.addFlashAttribute("result", "STOCKNO");
 			logger.debug(" 재고 등록 실패! ");
-			return "redirect:/quality/productQualityList";
+			return "redirect:/quality/qualities";
 		}else {
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");
 		}
-		return "redirect:/stock/productStockList";
+		// 재고 등록 여부 업데이트
+		sService.registerStockY(vo);
+		return "redirect:/stock/stock";
 		}
 	}
 	
@@ -92,7 +93,7 @@ public class StockController {
 			logger.debug(" 재고량 변경 성공! ");			
 		}
 		
-		return "redirect:/stock/productStockList";
+		return "redirect:/stock/stock";
 	}
 	
 	// 창고 변경 (생산 [포장] + 반품)
@@ -112,7 +113,7 @@ public class StockController {
 			logger.debug(" 창고 변경 성공! ");			
 		}
 		
-		return "redirect:/stock/productStockList";
+		return "redirect:/stock/stock";
 	}
 	
 	// 재고 목록 조회 (자재)
