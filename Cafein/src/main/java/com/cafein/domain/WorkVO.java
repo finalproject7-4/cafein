@@ -2,6 +2,9 @@ package com.cafein.domain;
 
 import java.sql.Date;
 
+import lombok.Data;
+
+@Data
 public class WorkVO {
 	
 	// 작업지시+실적
