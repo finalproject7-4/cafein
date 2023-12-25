@@ -22,9 +22,27 @@ ${result } <br>
 	</form>
 		<div class="col-12">
 		
-			<button type="button" class="btn btn-dark m-2">전체</button>
-			<button type="button" class="btn btn-dark m-2">대기</button>
-			<button type="button" class="btn btn-dark m-2">진행중</button>
+			<div class="btn-group" role="group">
+			<form role="form1">
+				<input type="hidden" name="state" value="전체">
+				<button type="button" class="btn btn-outline-dark"
+					id="allpo">전체</button>
+			</form>
+			<form role="form2">
+				<input type="hidden" name="state" value="대기">
+				<button type="button" class="btn btn-outline-dark"
+					id="stop">대기</button>
+			</form>
+			<form role="form3">
+				<input type="hidden" name="state" value="진행">
+				<button type="button" class="btn btn-outline-dark" id="ingpro">진행</button>
+			</form>
+			<form role="form4">
+				<input type="hidden" name="state" value="완료">
+				<button type="button" class="btn btn-outline-dark"
+					id="complete">완료</button>
+			</form>
+		</div>
 		
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
@@ -174,16 +192,42 @@ ${result } <br>
 	  input.setAttribute('min', today);
 	});
    
-    var exampleModal = document.getElementById('exampleModal')
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-      var button = event.relatedTarget
-      var recipient = button.getAttribute('data-bs-whatever')
-      var modalTitle = exampleModal.querySelector('.modal-title')
-      var modalBodyInput = exampleModal.querySelector('.modal-body input')
-    })
+	var exampleModal = document.getElementById('exampleModal');
+	exampleModal.addEventListener('show.bs.modal', function (event) {
+	  var button = event.relatedTarget;
+	  var recipient = button.getAttribute('data-bs-whatever');
+	  var modalTitle = exampleModal.querySelector('.modal-title');
+	  var modalBodyInput = exampleModal.querySelector('.modal-body input');
+	});
     
     $(document).ready(function() {
-	    
+    	
+    	//납품처 모달
+    	$("#clientid").click(function() {
+    	    $("#clientModal").modal('show');
+    		});
+    	
+    	$(".clientset").click(function() {
+    	    var columns = $(this).find('td');
+    	    var selectedClientName = $(columns[1]).text(); // 납품처명
+    	    var selectedClientCode = $(columns[2]).text(); // 납품처코드
+    	    $('#client').val(selectedClientName);
+    	    $('#clientModal').modal('hide');
+    	});
+    	
+    	// 품목 모달    	
+        $("#itemid").click(function() {
+            $("#itemModal").modal('show');
+       	});
+        
+        $(".itemset").click(function() {
+            var columns = $(this).find('td');
+            var selectedItemName = $(columns[1]).text(); // 품명
+            var selectedItemCode = $(columns[2]).text(); // 품목코드
+            $('#items').val(selectedItemName);
+            $('#itemModal').modal('hide');
+        });
+        
 	 	// 납품처 조회 모달
 	    $(".clientSearch").click(function() {
 	        $("#clientSM").modal('show');

@@ -8,14 +8,24 @@
 
 <!-- 수주 등록 -->
 <insert id="registPO" parameterType="com.cafein.domain.SalesVO">
-    INSERT INTO purchaseorder (postate, pocode, clientid, itemid, pocnt, ordersdate, updatedate, ordersduedate, membercode)
-    VALUES (#{postate}, #{pocode}, #{clientid}, #{itemid}, #{pocnt}, #{ordersdate}, #{updatedate}, #{ordersduedate}, #{membercode})
+     INSERT INTO purchaseorder (postate, pocode, clientid, itemid, pocnt, ordersdate, updatedate, ordersduedate, membercode)
+    VALUES (
+        #{postate},
+        #{pocode},
+        (SELECT clientid FROM client WHERE client_identifier = #{clientIdentifier}),
+        (SELECT itemid FROM item WHERE item_identifier = #{itemIdentifier}),
+        #{pocnt},
+        #{ordersdate},
+        #{updatedate},
+        #{ordersduedate},
+        #{membercode}
+    )
 </insert>
 
 <!-- 수주 조회 -->
 <select id="getPOList" resultType="com.cafein.domain.SalesVO">
-<!-- 	select * from purchaseorder -->
-	SELECT *
+	SELECT  po.postate, po.pocode, cli.clientname, item.itemname, 
+    po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
     FROM purchaseorder po
     JOIN item ON po.itemid = item.itemid
     JOIN client cli ON po.clientid = cli.clientid

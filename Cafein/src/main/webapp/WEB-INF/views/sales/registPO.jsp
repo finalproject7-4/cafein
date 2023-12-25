@@ -22,7 +22,7 @@
 </div>
 
 수주상태
-<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+<select name="postate" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
 <optgroup label="수주상태">
 <option value="1">대기</option>
 <option value="2">진행</option>
