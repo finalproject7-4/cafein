@@ -23,7 +23,7 @@ public class ShipController {
 	// 출하 조회
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/SHList", method = RequestMethod.GET)
-	public void AllPOListGET(Model model) throws Exception {
+	public void AllSHListGET(Model model) throws Exception {
 		logger.debug("AllSHListGET() 실행");
 		model.addAttribute("AllSHList", shService.AllSHList());
 		logger.debug("출하 리스트 출력!");
