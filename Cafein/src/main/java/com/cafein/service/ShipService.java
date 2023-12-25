@@ -3,6 +3,7 @@ package com.cafein.service;
 import java.util.List;
 
 import com.cafein.domain.ShipVO;
+import com.cafein.domain.WorkVO;
 
 public interface ShipService {
 	
@@ -10,6 +11,6 @@ public interface ShipService {
 	public List<ShipVO> AllSHList() throws Exception;
 	
 	// 작업 지시 조회
-	public List<ShipVO> AllWKList() throws Exception;
+	public List<WorkVO> AllWKList() throws Exception;
 	
 }

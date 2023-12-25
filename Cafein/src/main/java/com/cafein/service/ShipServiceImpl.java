@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.cafein.domain.ShipVO;
+import com.cafein.domain.WorkVO;
 import com.cafein.persistence.ShipDAO;
 
 @Service
@@ -27,7 +28,7 @@ public class ShipServiceImpl implements ShipService {
 	}
 
 	@Override
-	public List<ShipVO> AllWKList() throws Exception {
+	public List<WorkVO> AllWKList() throws Exception {
 		logger.debug("AllWKList()");
 		return shdao.getWKList();
 	}

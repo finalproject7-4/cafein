@@ -17,8 +17,7 @@
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT 
-		FROM work wk
+		SELECT * FROM work
 	</select>
 
 </mapper>

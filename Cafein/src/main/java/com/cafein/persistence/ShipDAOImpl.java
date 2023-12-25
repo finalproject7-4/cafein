@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.cafein.domain.ShipVO;
+import com.cafein.domain.WorkVO;
 
 @Repository
 public class ShipDAOImpl implements ShipDAO {
@@ -30,7 +31,7 @@ public class ShipDAOImpl implements ShipDAO {
 	}
 
 	@Override
-	public List<ShipVO> getWKList() throws Exception {
+	public List<WorkVO> getWKList() throws Exception {
 		logger.debug("작업 지시 조회 성공");
 		return sqlSession.selectList(NAMESPACE+".getWKList");
 	}
