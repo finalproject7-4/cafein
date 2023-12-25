@@ -13,4 +13,7 @@ public interface ShipService {
 	// 작업 지시 조회
 	public List<WorkVO> AllWKList() throws Exception;
 	
+	// 실적 조회
+	public List<WorkVO> AllPFList() throws Exception;
+	
 }

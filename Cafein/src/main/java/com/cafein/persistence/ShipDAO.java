@@ -12,6 +12,9 @@ public interface ShipDAO {
 	
 	// 작업 지시 조회
 	public List<WorkVO> getWKList() throws Exception;
+	
+	// 실적 조회
+	public List<WorkVO> getPFList() throws Exception;
 
 	
 

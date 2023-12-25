@@ -42,7 +42,6 @@
 						<th scope="col">작업지시코드</th>
 						<th scope="col">거래처코드</th>
 						<th scope="col">제품명</th>
-						<th scope="col">반품 여부</th>
 						<th scope="col">담당자</th>
 					</tr>
 				</thead>

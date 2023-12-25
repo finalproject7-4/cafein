@@ -58,6 +58,8 @@
 						<th scope="col">수주코드</th>
 						<th scope="col">작업지시코드</th>
 						<th scope="col">제품명</th>
+						<th scope="col">납품처</th>
+						<th scope="col">출하량</th>
 						<th scope="col">출하상태</th>
 						<th scope="col">담당자</th>
 					</tr>
@@ -73,6 +75,8 @@
 							<td>${sh.shipcode }</td>
 							<td>${sh.workcode }</td>
 							<td>${sh.itemname }</td>
+							<td>${sh.clientcode }</td> <!-- 거래처 이름 -->
+							<td>${sh.shipcount }</td>
 							<td>${sh.shipsts }</td>
 							<td>${sh.membercode }</td>
 						</tr>

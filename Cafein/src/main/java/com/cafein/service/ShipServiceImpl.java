@@ -32,6 +32,14 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("AllWKList()");
 		return shdao.getWKList();
 	}
+
+	@Override
+	public List<WorkVO> AllPFList() throws Exception {
+		logger.debug("AllPFList()");
+		return shdao.getPFList();
+	}
+	
+	
 	
 	
 

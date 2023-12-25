@@ -1,5 +1,6 @@
 package com.cafein.domain;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.Data;
@@ -13,7 +14,7 @@ public class ShipVO {
 	private String shipcode;
 	private int shipcount;
 	private String shipsts;
-	private Timestamp shipsdate;
+	private Date shipsdate;
 	
 	private String pocode;
 	private int stockid;

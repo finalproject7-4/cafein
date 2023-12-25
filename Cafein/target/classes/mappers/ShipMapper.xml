@@ -15,7 +15,13 @@
 	</select>
 	
 	<!-- 작업지시 조회 -->
-	<select id="getWKList" resultType="com.cafein.domain.ShipVO">
+	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
+		<!-- select * from ship -->
+		SELECT * FROM work
+	</select>
+	
+	<!-- 실적 조회 -->
+	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
 		SELECT * FROM work
 	</select>
