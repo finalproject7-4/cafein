@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
+${POList}
+${result } <br>
 
 <h1>수주관리</h1>
 <fieldset>
@@ -17,7 +19,7 @@
 			<input class="itemSearch" type="text" name="worknumber" placeholder="품명"> 
 		<button type="submit" class="btn btn-dark m-2">조회</button>
 		<br>
-
+	</form>
 		<div class="col-12">
 		
 			<button type="button" class="btn btn-dark m-2">전체</button>
@@ -27,7 +29,7 @@
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
 				<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-				<span id="buttonset1"><button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규 등록</button>
+				<span id="buttonset1"><button type="button" class="btn btn-dark m-2" onclick="location.href='/sales/registPO';">신규 등록</button>
 			<button type="button" class="btn btn-dark m-2">수정</button>
 			<button type="button" class="btn btn-dark m-2">삭제</button></span>
 				<div class="table-responsive">
@@ -50,26 +52,26 @@
 						</thead>
 						<!-- http://localhost:8088/sales/POList -->
 						<tbody>
-							<c:forEach items="${AllPOList}" var="spo">
+							<c:forEach items="${POList}" var="po">
 								<tr>
 									<td><input type="checkbox"></td>
-									<td>${spo.poid }</td>
-									<td>${spo.postate }</td>
-									<td>${spo.pocode }</td>
-									<td>${spo.clientname}</td>
-									<td>${spo.itemname}</td>
-									<td>${spo.pocnt}</td> 
-									<td><fmt:formatDate value="${spo.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									<td>${po.poid }</td>
+									<td>${po.postate }</td>
+									<td>${po.pocode }</td>
+									<td>${po.clientname}</td>
+									<td>${po.itemname}</td>
+									<td>${po.pocnt}</td> 
+									<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 									<c:choose>
-										<c:when test="${empty spo.updatedate}">
+										<c:when test="${empty po.updatedate}">
 											<td>업데이트 날짜 없음</td>
 										</c:when>
 										<c:otherwise>
-											<td><fmt:formatDate value="${spo.updatedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+											<td><fmt:formatDate value="${po.updatedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 										</c:otherwise>
 									</c:choose>
-									<td><fmt:formatDate value="${spo.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-									<td>${spo.membercode}</td>
+									<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									<td>${po.membercode}</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -102,10 +104,10 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 <c:forEach items="${AllPOList}" var="spo">
+                                 <c:forEach items="${POList}" var="po">
                                     <tr class="clientset">
-                                    	<td>${spo.clientname }</td> 
-                                    	<td>${spo.clientcode }</td>
+                                    	<td>${po.clientname }</td> 
+                                    	<td>${po.clientcode }</td>
                                     </tr>
                                     </c:forEach>
                                     </tbody>
@@ -143,10 +145,10 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 <c:forEach items="${AllPOList}" var="spo">
+                                 <c:forEach items="${POList}" var="po">
                                     <tr class="clientset">
-                                    	<td>${spo.clientname }</td> 
-                                    	<td>${spo.clientcode }</td>
+                                    	<td>${po.clientname }</td> 
+                                    	<td>${po.clientcode }</td>
                                     </tr>
                                     </c:forEach>
                                     </tbody>
@@ -159,138 +161,7 @@
                   </div>
 			  </div>
 		  </div>
-		
-		<!-- 수주 등록 모달 -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">수주 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="mb-3">
-								<label for="recipient-name" class="col-form-label"><b>수주상태</b></label> <select class="form-select" id="floatingSelect"
-									aria-label="Floating label select example">
-									<optgroup label="수주상태">
-										<option value="1">대기</option>
-										<option value="2">진행</option>
-										<option value="3">완료</option>
-										<option value="3">취소</option>
-									</optgroup>
-								</select>
-							</div><br>
-							<div class="row">
-								<div class="col">
-									<b>납품처</b><input id="client" class="form-control" id="floatingInput" placeholder="납품처">
-								</div>
-								<div class="col">
-									<b>품명</b><input id="items" class="form-control" id="floatingInput" placeholder="품명">
-								</div>
-							</div><br>
-							<div class="mb-3">
-								<b>수량</b><input type="number" class="form-control" id="floatingInput" placeholder="숫자만 입력하세요">
-							</div>
-							<div class="row">
-								<div class="col">
-									<b>수주일자</b><input id="todaypo" type="text" class="form-control" id="floatingInput" placeholder="수주일자(클릭)">
-								</div>
-								<div class="col">
-									<b>완납예정일</b><input type="date" id="date" class="form-control" id="floatingInput" placeholder="완납예정일">
-								</div>
-							</div><br>
-							<div class="mb-3">
-									<b>담당자</b><input class="form-control" id="floatingInput">
-								</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="submit" class="btn btn-primary">저장</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- 수주등록 - 납품처 모달 -->
-        <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLabel">납품처</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                     <div class="col-12">
-                        <div class="bg-light rounded h-100 p-4">
-                              <table class="table">
-                                 <thead>
-                                    <tr>
-                                       <th scope="col">No.</th>
-                                       <th scope="col">납품처명</th>
-                                       <th scope="col">납품처코드</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                 <c:forEach items="${AllPOList}" var="spo">
-                                    <tr class="clientset">
-                                    	<td>${spo.poid }</td> 
-                                    	<td>${spo.clientname }</td> 
-                                    	<td>${spo.clientcode }</td>
-                                    </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                    </table>
-                           </div>
-                           <div class="modal-footer">
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-			  </div>
-		  </div>
-		
-		<!-- 수주등록 - 품목 모달 -->
-        <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLabel">품목</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                     <div class="col-12">
-                        <div class="bg-light rounded h-100 p-4">
-                              <table class="table">
-                                 <thead>
-                                    <tr>
-                                       <th scope="col">No.</th>
-                                       <th scope="col">품명</th>
-                                       <th scope="col">품목코드</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                 <c:forEach items="${AllPOList}" var="spo">
-                                    <tr class="itemset">
-                                    	<td>${spo.poid }</td> 
-                                    	<td>${spo.itemname }</td> 
-                                    	<td>${spo.itemcode }</td> 
-                                    </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                    </table>
-                         	  </div>
-                           <div class="modal-footer">
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-			  </div>
-		  </div>
-	</form>
-</fieldset>
-
+		</fieldset>
   <!-- 모달 js&jq -->
    <script>
    /*달력 이전날짜 비활성화*/
@@ -298,14 +169,10 @@
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
 	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
 	
-	//id="date"
-	document.getElementById("date").setAttribute("min", today);
-	
 	// class="date"인 모든 요소에 날짜 비활성화
 	document.querySelectorAll('.date').forEach(function(input) {
 	  input.setAttribute('min', today);
 	});
-	   
    
     var exampleModal = document.getElementById('exampleModal')
     exampleModal.addEventListener('show.bs.modal', function (event) {
@@ -316,38 +183,13 @@
     })
     
     $(document).ready(function() {
-    	// 납품처 모달
-	    $("#client").click(function() {
-	        $("#clientModal").modal('show');
-	   	});
-    	
-	    $(".clientset").click(function() {
-	        var columns = $(this).find('td');
-	        var selectedClientName = $(columns[1]).text(); // 납품처명
-	        var selectedClientCode = $(columns[2]).text(); // 납품처코드
-	        $('#client').val(selectedClientName);
-	        $('#clientModal').modal('hide');
-	    });
 	    
 	 	// 납품처 조회 모달
 	    $(".clientSearch").click(function() {
 	        $("#clientSM").modal('show');
 	   	});
-	 
-		// 품목 모달    	
-	    $("#items").click(function() {
-	        $("#itemModal").modal('show');
-	   	});
-	    
-	    $(".itemset").click(function() {
-	        var columns = $(this).find('td');
-	        var selectedItemName = $(columns[1]).text(); // 품명
-	        var selectedItemCode = $(columns[2]).text(); // 품목코드
-            $('#items').val(selectedItemName);
-	        $('#itemModal').modal('hide');
-	    });
-	    
-	 // 품목 조회 모달
+
+	 	// 품목 조회 모달
 	    $(".itemSearch").click(function() {
 	        $("#itemSM").modal('show');
 	   	});

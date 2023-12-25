@@ -20,13 +20,6 @@ public class SalesServiceImpl implements SalesService {
 
 	@Inject
 	private SalesDAO sdao;
-	
-	/*수주조회*/
-	@Override
-	public List<SalesVO> AllPOList() throws Exception{
-		logger.debug("AllPOList()");
-		return sdao.getPOList();
-	}
 
 	/*수주등록*/
 	@Override
@@ -35,6 +28,12 @@ public class SalesServiceImpl implements SalesService {
 		sdao.registPO(svo);
 	}
 
+	/*수주조회*/
+	@Override
+	public List<SalesVO> AllPOList() throws Exception{
+		logger.debug("AllPOList()");
+		return sdao.getPOList();
+	}
 
 
 	

@@ -38,6 +38,13 @@ public class SalesVO {
 	
 	// ship 테이블
 	private String lotnumber; //LOT번호
+	
+	@Override
+	public String toString() {
+		return "SalesVO [poid=" + poid + ", postate=" + postate + ", pocode=" + pocode + ", clientid=" + clientid
+				+ ", itemid=" + itemid + ", pocnt=" + pocnt + ", ordersdate=" + ordersdate + ", updatedate="
+				+ updatedate + ", ordersduedate=" + ordersduedate + ", membercode=" + membercode + "]";
+	}
 
 	public int getPoid() {
 		return poid;

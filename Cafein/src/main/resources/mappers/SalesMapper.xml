@@ -6,17 +6,28 @@
 <!-- SalesMapper.xml -->
 <mapper namespace="com.cafein.mapper.SalesMapper">
 
+<!-- 수주 등록 -->
+<insert id="registPO" parameterType="com.cafein.domain.SalesVO">
+    INSERT INTO purchaseorder (postate, pocode, clientid, itemid, pocnt, ordersdate, updatedate, ordersduedate, membercode)
+    VALUES (#{postate}, #{pocode}, #{clientid}, #{itemid}, #{pocnt}, #{ordersdate}, #{updatedate}, #{ordersduedate}, #{membercode})
+</insert>
+
 <!-- 수주 조회 -->
 <select id="getPOList" resultType="com.cafein.domain.SalesVO">
 <!-- 	select * from purchaseorder -->
-	SELECT po.poid, po.postate, po.pocode, cli.clientname, cli.clientcode,
-           item.itemname, po.pocnt, po.ordersdate, item.itemcode,
-           po.updatedate, po.ordersduedate, po.membercode
+	SELECT *
     FROM purchaseorder po
     JOIN item ON po.itemid = item.itemid
     JOIN client cli ON po.clientid = cli.clientid
-    
 </select>
+
+
+
+
+
+
+
+
 
 
 </mapper>
