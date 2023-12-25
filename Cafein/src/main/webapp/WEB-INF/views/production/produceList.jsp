@@ -15,11 +15,12 @@
 
 <!-- 달력 -->
 
-생산기간 : <input type="text" class="m-2" id="datepicker1" name="startDate">
+<input type="hidden" id="date" class="form-control" id="floatingInput"> <!-- 달력js파일이 공존하기위한 hidden값 -->
+생산기간 :
+<input type="text" class="m-2" id="datepicker1" name="startDate">
 ~ <input type="text" class="m-2" id="datepicker2" name="endDate">
 <!-- 달력 -->
-<!-- Date: <input type="text" id="datepicker3" name="startDate">
-~  <input type="text" id="datepicker4" name="endDate"> -->
+
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
@@ -49,7 +50,7 @@
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedate" value="today()" class="form-control" id="floatingInput" placeholder="생산일">
+								<input type="date" name="producedate" value="today()" class="date" id="floatingInput">
 							</div>
 						</div>
 							<div class="row">
@@ -240,20 +241,6 @@
 	
 	
 	/* 모달창 */
-	
-	 /*달력 이전날짜 비활성화*/
-	var now_utc = Date.now(); // 현재 날짜를 밀리초로
-	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
-	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
-	
-	//id="date"
-	document.getElementById("date").setAttribute("min", today);
-	
-	// class="date"인 모든 요소에 날짜 비활성화
-	document.querySelectorAll('.date').forEach(function(input) {
-	  input.setAttribute('min', today);
-	});
-	
 	
 	var exampleModal = document.getElementById('exampleModal')
 	exampleModal.addEventListener('show.bs.modal', function (event) {
