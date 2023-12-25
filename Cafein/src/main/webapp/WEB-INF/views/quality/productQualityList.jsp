@@ -279,6 +279,162 @@
 					</tbody>
 				</table>
 			</div>
+			
+			<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO.prev }">
+      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+        					
+        				<!-- 페이지 블럭 Ajax 동적 이동 - prev (1) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockPrev').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   						            var prevPage = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var startDate = "${param.startDate}";
+   									var endDate = "${param.endDate}";
+
+   									var dataObject = {
+   										"page" : prevPage	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (startDate) {
+   									    dataObject.startDate = startDate;
+   									}
+   									if (endDate) {
+   									    dataObject.endDate = endDate;
+   									}
+   									
+   									console.log("Page Block clicked!", prevPage);
+   									
+        						$.ajax({
+       								url: "/quality/productQualityList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#qualityListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - prev (1) -->
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+    					
+    					<!-- 페이지 블럭 Ajax 동적 이동 - num (2) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNum').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+
+   						            var pageNum = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var startDate = "${param.startDate}";
+   									var endDate = "${param.endDate}";
+
+   									var dataObject = {
+   										"page" : pageNum	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (startDate) {
+   									    dataObject.startDate = startDate;
+   									}
+   									if (endDate) {
+   									    dataObject.endDate = endDate;
+   									}
+   									
+   									console.log("Page Block clicked!");
+   									
+        						$.ajax({
+       								url: "/quality/productQualityList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#qualityListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - num (2) -->
+
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO.next }">
+      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        				<span aria-hidden="true">&raquo;</span>
+      					</a>
+      					
+    					<!-- 페이지 블럭 Ajax 동적 이동 - next (3) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   						            var nextPage = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var startDate = "${param.startDate}";
+   									var endDate = "${param.endDate}";
+
+   									var dataObject = {
+   										"page" : nextPage	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (startDate) {
+   									    dataObject.startDate = startDate;
+   									}
+   									if (endDate) {
+   									    dataObject.endDate = endDate;
+   									}
+   									
+   									console.log("Page Block clicked!", nextPage);
+   									
+        						$.ajax({
+       								url: "/quality/productQualityList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#qualityListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - next (3) -->      					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
+			
 		</div>
 	</div>	
 	
@@ -888,59 +1044,109 @@ $(document).ready(function() {
 
         let dqinputField = myModal.querySelector('input[name="defectquantity"]');
         dqinputField.value = defectquantity;
-        
-    	const productQuantityInput = document.getElementById("productquantity2");
-    	const auditQuantityInput = document.getElementById("auditquantity2");
-    	const defectiveQuantityInput = document.getElementById("defectquantity2");
-        
-    	// 검수량 입력 필드의 blur 이벤트 리스너 추가
-    	auditQuantityInput.addEventListener("blur", function() {
-    		const productQuantity = parseInt(productQuantityInput.value, 10); // 생산량
-    		const auditQuantity = parseInt(auditQuantityInput.value, 10);     // 검수량
-    		const defectiveQuantity = parseInt(defectiveQuantityInput.value, 10);          // 불량 개수
-    		
-        	// 검수량이 생산량보다 큰 경우
-        	if (auditQuantity > productquantity) {
-        		alert("검수량은 반품량보다 많을 수 없습니다!");
-        		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
-        		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스
-        		return;
-        	}else if(auditQuantity < auditquantity){
-        		alert("검수량은 기존 검수량보다 적을 수 없습니다!");
-        		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
-        		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스 
-        		return;
-    		}
-				const normalQuantity = auditQuantity - defectiveQuantity;
- 				document.getElementById("normalquantity2").value = normalQuantity;
-    	});
-
-    	// 불량 개수 입력 필드의 blur 이벤트 리스너 추가
-    	defectiveQuantityInput.addEventListener("blur", function() {
-    		const auditQuantity = parseInt(auditQuantityInput.value, 10);                  // 검수량
-    		const defectiveQuantity = parseInt(defectiveQuantityInput.value, 10);          // 불량 개수
-
-    		// 불량 개수가 검수량을 초과하는 경우
-    		if (defectiveQuantity > auditQuantity) {
-    			alert("불량 개수는 검수량을 초과할 수 없습니다!");
-    			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
-    			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
-    			return;
-    		}else if(defectiveQuantity < defectquantity){
-    			alert("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
-    			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
-    			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
-    			return;
-    		}
-    			const normalQuantity = auditQuantity - defectiveQuantity;
-     			document.getElementById("normalquantity2").value = normalQuantity;
-    		
-    	});
-            
+             
     });
 });
 </script>
-<!-- 불량 입력 모달창 데이터 -->
+<!-- 불량 입력 모달창 데이터 (생산) -->
+
+<!-- 불량 입력 모달창 (반품) -->
+<div class="modal fade" id="newReturnDefectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form action="/quality//productReturnNewDefect" method="POST">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">불량 등록 (생산)</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<input type="hidden" name="qualityid" value="" readonly>
+      	<div class="row">
+ 			<div class="col">
+           		<label for="auditcode" class="col-form-label">검수번호:</label>
+            	<input type="text" class="form-control" id="auditcode" name="auditcode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="defectitemtype" class="col-form-label">상품구분:</label>
+            	<input type="text" class="form-control" id="defectitemtype" name="itemtype" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="defectitemcode" class="col-form-label">상품코드:</label>
+            	<input type="text" class="form-control" id="defectitemcode" name="itemcode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="defectitemname" class="col-form-label">상품명:</label>
+            	<input type="text" class="form-control" id="defectitemname" name="itemname" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="productdefectquantity" class="col-form-label">불량:</label>
+            	<input type="number" class="form-control" id="productdefectquantity" name="defectquantity" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="productprocessmethod" class="col-form-label">처리방식:</label>
+				<select class="form-select" aria-label="Small select example" id="productprocessmethod" name="processmethod">
+  					<option value="폐기" selected>폐기</option>
+				</select>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="productdefecttype" class="col-form-label">불량사유:</label>
+            	<input type="text" class="form-control" id="productdefecttype" name="defecttype" value="" required>
+  			</div>
+  		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="submit" class="btn btn-primary">불량 저장</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 불량 입력 모달창 (반품) -->
+
+<!-- 불량 입력 모달창 데이터 (반품) -->
+<script>
+$(document).ready(function() {
+    let myModal = document.getElementById('newReturnDefectModal');
+    myModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
+        let qualityid = button.getAttribute('data-qualityid'); // qualityid
+        let produceid = button.getAttribute('data-return'); // returnid
+        let auditcode = button.getAttribute('data-auditcode'); // auditcode
+        let itemtype = button.getAttribute('data-itemtype'); // itemtype
+        let itemcode = button.getAttribute('data-itemcode'); // itemcode
+        let itemname = button.getAttribute('data-itemname'); // itemname
+        let defectquantity = button.getAttribute('data-defectquantity'); // defectquantity
+        
+        // 모달 내부의 입력 필드에 값을 설정
+        let qinputField = myModal.querySelector('input[name="qualityid"]');
+        qinputField.value = qualityid;
+        
+        let ainputField = myModal.querySelector('input[name="auditcode"]');
+        ainputField.value = auditcode;
+        
+        let iinputField = myModal.querySelector('input[name="itemtype"]');
+        iinputField.value = itemtype;
+        
+        let icinputField = myModal.querySelector('input[name="itemcode"]');
+        icinputField.value = itemcode;
+        
+        let ininputField = myModal.querySelector('input[name="itemname"]');
+        ininputField.value = itemname;
+
+        let dqinputField = myModal.querySelector('input[name="defectquantity"]');
+        dqinputField.value = defectquantity;
+        
+    });
+});
+</script>
+<!-- 불량 입력 모달창 데이터 (반품) -->
 
 <!-- 라디오 버튼 이동 -->
 <script>

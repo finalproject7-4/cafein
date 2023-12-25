@@ -5,6 +5,19 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<h2>생산 / 반품 불량 현황</h2>
+			<input type="button" class="btn btn-sm btn-primary" value="블렌딩" id="blending2nd">
+			<input type="button" class="btn btn-sm btn-danger" value="냉각" id="cooling2nd">
+			<input type="button" class="btn btn-sm btn-warning" value="포장" id="packaging2nd">
+			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return2nd">
+			<input type="button" class="btn btn-sm btn-success" value="전체" id="all2nd">
+			
+			<form action="/quality/productDefectList" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+				</c:if>
+				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+				<input type="submit" value="검색">
+			</form>			
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -54,5 +67,242 @@
 					</tbody>
 				</table>
 			</div>
+			
+						<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO2.prev }">
+      					<a class="page-link pageBlockPrev2" href="" aria-label="Previous" data-page="${pageVO2.startPage - 1}">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+        					
+        				<!-- 페이지 블럭 Ajax 동적 이동 - prev (1) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockPrev2').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   						            var prevPage = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var searchTxt = "${param.searchTxt}";
+
+   									var dataObject = {
+   										"page" : prevPage	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (searchTxt) {
+   									    dataObject.searchTxt = searchTxt;
+   									}
+   									
+   									console.log("Page Block clicked!", prevPage);
+   									
+        						$.ajax({
+       								url: "/quality/productDefectList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#defectListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - prev (1) -->
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO2.startPage }" end="${pageVO2.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO2.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum2" href="" data-page="${i}">${i }</a></li>
+    					
+    					<!-- 페이지 블럭 Ajax 동적 이동 - num (2) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNum2').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+
+   						            var pageNum = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var searchTxt = "${param.searchTxt}";
+   									
+   									var dataObject = {
+   										"page" : pageNum	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (searchTxt) {
+   									    dataObject.searchTxt = searchTxt;
+   									}
+   									
+   									console.log("Page Block clicked!");
+   									
+        						$.ajax({
+       								url: "/quality/productDefectList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#defectListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - num (2) -->
+
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO2.next }">
+      					<a class="page-link pageBlockNext2" href="" aria-label="Next" data-page="${pageVO2.endPage + 1}">
+        				<span aria-hidden="true">&raquo;</span>
+      					</a>
+      					
+    					<!-- 페이지 블럭 Ajax 동적 이동 - next (3) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext2').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   						            var nextPage = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var searchTxt = "${param.searchTxt}";
+   									
+   									var dataObject = {
+   										"page" : nextPage	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (searchTxt) {
+   									    dataObject.searchTxt = searchTxt;
+   									}
+   									
+   									console.log("Page Block clicked!", nextPage);
+   									
+        						$.ajax({
+       								url: "/quality/productDefectList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#defectListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - next (3) -->      					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
+			
 		</div>
 	</div>	
+	
+<!-- 페이지 Ajax 동적 이동 (1) -->
+<script>
+$(document).ready(function() {
+    // 블렌딩 버튼 클릭
+    $("#blending2nd").click(function() {
+        fetchData2("블렌딩");
+    });
+
+    // 냉각 버튼 클릭
+    $("#cooling2nd").click(function() {
+        fetchData2("냉각");
+    });
+
+    // 포장 버튼 클릭
+    $("#packaging2nd").click(function() {
+        fetchData2("포장");
+    });
+
+    // 반품 버튼 클릭
+    $("#return2nd").click(function() {
+        fetchData2("반품");
+    });
+
+    // 전체 버튼 클릭
+    $("#all2nd").click(function() {
+        $.ajax({
+            url: "/quality/productDefectList",
+            type: "GET",
+            success: function(data) {
+                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+                $("#defectListContainer").html(data);
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+
+function fetchData2(searchBtnValue) {
+    $.ajax({
+        url: "/quality/productDefectList",
+        type: "GET",
+        data: {
+        	searchBtn: searchBtnValue
+        },
+        success: function(data) {
+            // 성공적으로 데이터를 받아왔을 때 처리할 코드
+            $("#defectListContainer").html(data);
+        },
+        error: function(error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+</script>
+<!-- 페이지 Ajax 동적 이동 (1) -->
+
+<!-- 페이지 Ajax 동적 이동 (2) -->
+<script>
+$(document).ready(function() {
+    // 폼의 submit 이벤트 감지
+    $("form[action='/quality/productDefectList']").submit(function(event) {
+        event.preventDefault(); // 기본 폼 제출 동작 방지
+
+        // 폼 데이터 수집
+        let formData = {
+            searchText: $("input[name='searchText']").val()
+        };
+
+        // 선택된 검색 버튼 값이 있으면 추가
+        if ($("input[name='searchBtn']").length > 0) {
+            formData.searchBtn = $("input[name='searchBtn']").val();
+        }
+
+        // AJAX 요청 수행
+        $.ajax({
+            url: "/quality/productDefectList",
+            type: "GET",
+            data: formData,
+            success: function(data) {
+                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+                $("#defectListContainer").html(data); // 결과를 화면에 표시
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 페이지 Ajax 동적 이동 (2) -->

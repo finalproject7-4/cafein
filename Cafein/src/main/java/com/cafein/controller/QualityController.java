@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
@@ -47,11 +45,13 @@ public class QualityController {
 			Criteria cri) throws Exception{
 		
 //		model.addAttribute("list", qService.qualityList());
+		cri.setPageSize(5);
 		vo.setCri(cri);
 		
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
-		pageVO.setTotalCount(43);
+		pageVO.setTotalCount(qService.qualityListSearchBtnCount(vo));
+		logger.debug(" 총 개수 : " + pageVO.getTotalCount());
 		
 		model.addAttribute("list", qService.qualityListSearchBtn(vo));
 		model.addAttribute("pageVO", pageVO);
@@ -67,11 +67,20 @@ public class QualityController {
 	// 불량 현황 (생산 + 반품) 목록
 	@GetMapping(value = "/productDefectList")
 	public void productQualityDefectListGET(Model model, HttpSession session, 
-			Criteria cri) throws Exception{
+			Criteria cri, QualityVO vo) throws Exception{
 		
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		model.addAttribute("defectList", qService.defectsList());
+		cri.setPageSize(5);
+		vo.setCri(cri);
+		
+		PageVO pageVO2 = new PageVO();
+		pageVO2.setCri(cri);
+		pageVO2.setTotalCount(qService.defectsListSearchBtnCount(vo));
+		logger.debug(" pageVO2.setTotalCount : " + pageVO2.getTotalCount());
+		
+		model.addAttribute("pageVO2", pageVO2);
+		model.addAttribute("defectList", qService.defectsListSearchBtn(vo));
 	}
 	
 	// 불량 현황 (자재) 목록

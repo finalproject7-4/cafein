@@ -27,12 +27,19 @@ public class QualityServiceImpl implements QualityService {
 
 		return qdao.selectQualityList();
 	}
-
-	// 검수 폼 출력 (생산)
+	
+	// 품질 관리 목록 검색 버튼 (생산 / 반품)
 	@Override
-	public QualityVO produceInfo(int produceid) throws Exception{
+	public List<QualityVO> qualityListSearchBtn(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return qdao.selectProduceInfo(produceid);
+		return qdao.selectQualityListSearchBtn(vo);
+	}
+	
+	// 품질 관리 목록 검색 버튼 개수 조회 (생산 / 반품)
+	@Override
+	public Integer qualityListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectQualityListSearchBtnCount(vo);
 	}
 
 	// 검수 입력 (생산)
@@ -64,13 +71,6 @@ public class QualityServiceImpl implements QualityService {
 		
 	}
 
-	// 검수 폼 출력 (반품)
-	@Override
-	public QualityVO returnInfo(int returnid) throws Exception {
-		// TODO Auto-generated method stub
-		return qdao.selectReturnInfo(returnid);
-	}
-
 	// 검수 입력 (반품)
 	@Override
 	public int returnAudit(QualityVO vo) throws Exception {
@@ -85,6 +85,13 @@ public class QualityServiceImpl implements QualityService {
 		return qdao.updateReturnAuditFull(vo);
 	}
 	
+	// 불량 현황 등록 (생산 / 반품)
+	@Override
+	public int produceReturnDefects(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.insertDefects(vo);
+	}
+	
 	// 불량 현황 목록 (생산 / 반품)
 	@Override
 	public List<QualityVO> defectsList() throws Exception {
@@ -92,34 +99,23 @@ public class QualityServiceImpl implements QualityService {
 		return qdao.selectDefectsList();
 	}
 	
-	// 불량 현황 폼 출력 (생산 / 반품)
+	// 불량 현황 목록 검색 버튼 (생산 / 반품)
 	@Override
-	public QualityVO defectInfo(int qualityid) throws Exception {
+	public List<QualityVO> defectsListSearchBtn(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return qdao.selectDefectInfo(qualityid);
+		return qdao.selectDefectsListSearchBtn(vo);
 	}
 
-	// 불량 현황 등록 (생산 / 반품)
+	// 불량 현황 목록 검색 버튼 개수 확인 (생산 / 반품)
 	@Override
-	public int produceReturnDefects(QualityVO vo) throws Exception {
+	public Integer defectsListSearchBtnCount(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return qdao.insertDefects(vo);
+		return qdao.selectDefectsListSearchBtnCount(vo);
 	}
-
-	// 불량 현황 중복 확인 (생산 / 반품)
-	@Override
-	public Integer duplicateDefects(int qualityid) throws Exception {
-		// TODO Auto-generated method stub
-		return qdao.selectDupilcateDefects(qualityid);
-	}
-
-	// 품질 관리 목록 검색 버튼 (생산 / 반품)
-	@Override
-	public List<QualityVO> qualityListSearchBtn(QualityVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return qdao.selectQualityListSearchBtn(vo);
-	}
-
+	
+	// 재고 등록 여부 업데이트
+	// StockService 참고
+	
 	// 반품 등록 여부 업데이트
 	@Override
 	public void registerDefectY(QualityVO vo) throws Exception {
@@ -127,6 +123,8 @@ public class QualityServiceImpl implements QualityService {
 		qdao.updateRegisterDefect(vo);
 		
 	}
+
+
 	
 	
 	
