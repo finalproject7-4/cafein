@@ -41,13 +41,28 @@ public class QualityServiceImpl implements QualityService {
 		// TODO Auto-generated method stub
 		return qdao.selectQualityListSearchBtnCount(vo);
 	}
-
+	
+	// 품질 관리 목록 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> materialQualityListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectMaterialQualityListSearchBtn(vo);
+	}
+	
+	// 품질 관리 목록 검색 버튼 개수 조회 (자재)
+	@Override
+	public Integer materialQualityListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectMaterialQualityListSearchBtnCount(vo);
+	}
+	
 	// 검수 입력 (생산)
 	@Override
 	public int produceAudit(QualityVO vo) throws Exception{
 		// TODO Auto-generated method stub
 		return qdao.updateProduceAudit(vo);
 	}
+
 
 	// 검수 입력 - 완료 (생산)
 	@Override
@@ -113,6 +128,20 @@ public class QualityServiceImpl implements QualityService {
 		return qdao.selectDefectsListSearchBtnCount(vo);
 	}
 	
+	// 불량 현황 목록 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> materialDefectsListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectMaterialDefectsListSearchBtn(vo);
+	}
+	
+	// 불량 현황 목록 검색 버튼 개수 확인 (자재)
+	@Override
+	public Integer materialDefectsListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectMaterialDefectsListSearchBtnCount(vo);
+	}
+	
 	// 재고 등록 여부 업데이트
 	// StockService 참고
 	
@@ -123,6 +152,7 @@ public class QualityServiceImpl implements QualityService {
 		qdao.updateRegisterDefect(vo);
 		
 	}
+
 
 
 	

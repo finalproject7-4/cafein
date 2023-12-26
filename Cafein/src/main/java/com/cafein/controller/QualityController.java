@@ -19,6 +19,7 @@ import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
 import com.cafein.domain.QualityVO;
 import com.cafein.service.QualityService;
+import com.cafein.service.StockService;
 
 @Controller
 @RequestMapping(value = "/quality/*")
@@ -29,6 +30,9 @@ public class QualityController {
 	
 	@Inject
 	private QualityService qService;
+	
+	@Inject
+	private StockService sService;
 	
 	// 품질 관리 통합 페이지 (생산 + 반품 / 자재)
 	// http://localhost:8088/quality/qualities
@@ -59,8 +63,19 @@ public class QualityController {
 	
 	// 품질 관리 (자재) 목록
 	@GetMapping(value = "/materialQualityList")
-	public void materialQualityList() throws Exception{
+	public void materialQualityList(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		
+		cri.setPageSize(5);
+		vo.setCri(cri);
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(qService.materialQualityListSearchBtnCount(vo));
+		logger.debug(" 총 개수 : " + pageVO.getTotalCount());
+		
+		model.addAttribute("list", qService.materialQualityListSearchBtn(vo));
+		model.addAttribute("pageVO", pageVO);
+
 	}
 	
 	// http://localhost:8088/quality/productDefectList	
@@ -85,7 +100,21 @@ public class QualityController {
 	
 	// 불량 현황 (자재) 목록
 	@GetMapping(value = "/materialDefectList")
-	public void  materialDefectListGET() throws Exception{
+	public void  materialDefectListGET(Model model, HttpSession session, 
+			Criteria cri, QualityVO vo) throws Exception{
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		
+		cri.setPageSize(5);
+		vo.setCri(cri);
+		
+		PageVO pageVO2 = new PageVO();
+		pageVO2.setCri(cri);
+		pageVO2.setTotalCount(qService.materialDefectsListSearchBtnCount(vo));
+		logger.debug(" pageVO2.setTotalCount : " + pageVO2.getTotalCount());
+		
+		model.addAttribute("pageVO2", pageVO2);
+		model.addAttribute("defectList", qService.materialDefectsListSearchBtn(vo));
 		
 	}
 	
@@ -118,9 +147,14 @@ public class QualityController {
 			result = qService.productAuditFull(vo);
 			
 			if(result != 0) {
-				if(vo.getDefectquantity() == 0) { // 생산 검수 - 정상
+				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
 					vo.setQualitycheck("정상");
 					qService.productQualityCheck(vo);
+					
+					if(vo.getProcess() != null && !vo.getProcess().equals("생산 - 포장")) {
+						sService.registerStockY(vo);
+					}
+					
 				}else { // 생산 검수 - 불량
 					vo.setQualitycheck("불량");
 					qService.productQualityCheck(vo);
@@ -213,6 +247,63 @@ public class QualityController {
 		return "redirect:/quality/qualities";
 	}
 	
+	// 자재 검수 입력 처리 - POST
+	@PostMapping(value = "/materialAudit")
+	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+		if(vo.getAuditquantity() == 0) {
+			logger.debug(" 검수량 0개 불가 ");
+			rttr.addFlashAttribute("auditQuantity", "zero");
+			return "redirect:/quality/qualities";
+		}
+		
+		int result = 0;
+		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
+			vo.setAuditstatus("검수완료");
+			
+			// 검수코드 생성
+			if(vo.getAuditcode().equals("")) {
+			LocalDateTime now = LocalDateTime.now();
+			String fmt = "yyMMddHHmmss";
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+			String dateTime = now.format(dtf);
+			vo.setAuditcode("QM" + dateTime);
+			}else if(!vo.getAuditcode().equals("")) {
+				vo.setAuditcode(vo.getAuditcode());
+			}
+			
+			logger.debug(" 검수 상태 : " + vo.getAuditstatus());
+			logger.debug(" vo : " + vo);
+			result = qService.returnAuditFull(vo);
+		}else if(vo.getAuditquantity() != 0 && vo.getProductquantity() > vo.getAuditquantity()) { // 생산량 > 검수량 ("검수중")
+			vo.setAuditstatus("검수중");
+			
+			// 검수코드 생성
+			if(vo.getAuditcode().equals("")) {
+			LocalDateTime now = LocalDateTime.now();
+			String fmt = "yyMMddHHmmss";
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+			String dateTime = now.format(dtf);
+			vo.setAuditcode("QM" + dateTime);
+			}else if(!vo.getAuditcode().equals("")) {
+				vo.setAuditcode(vo.getAuditcode());
+			}
+			
+			logger.debug(" 검수 상태 : " + vo.getAuditstatus());
+			logger.debug(" vo : " + vo);
+			result = qService.returnAudit(vo);
+		}
+		
+		if(result == 0) {
+			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
+			return "redirect:/quality/qualities";
+		}
+		logger.debug(" 검수 성공 ");
+		qService.returnsQualityid(vo);
+		rttr.addFlashAttribute("AUDIT", "O");
+		return "redirect:/quality/qualities";
+	}
+	
 	// 불량 현황 입력 처리 (생산 + 반품) - POST
 	@PostMapping(value = "/productReturnNewDefect")
 	public String productReturnQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
@@ -229,4 +320,22 @@ public class QualityController {
 		rttr.addFlashAttribute("DEFECT", "O");
 		return "redirect:/quality/qualities";
 	}
+	
+	// 불량 현황 입력 처리 (자재) - POST
+	@PostMapping(value = "/materialNewDefect")
+	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+		
+		int result = qService.produceReturnDefects(vo);
+		if(result == 0) {
+			logger.debug(" 불량 현황 입력 실패 ");
+			rttr.addFlashAttribute("DEFECT", "X");
+			return "redirect:/quality/qualities";
+		}
+		logger.debug(" 불량 현황 입력 성공 ");
+		// 품질 관리에서 불량 등록 여부 업데이트
+		qService.registerDefectY(vo);
+		rttr.addFlashAttribute("DEFECT", "O");
+		return "redirect:/quality/qualities";
+	}
+	
 }

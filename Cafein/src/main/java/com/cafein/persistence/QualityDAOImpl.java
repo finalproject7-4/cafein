@@ -37,12 +37,27 @@ public class QualityDAOImpl implements QualityDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".selectQualityListSearchBtnCount", vo);
 	}
-
+	
+	// 품질 관리 목록 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> selectMaterialQualityListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialQualityListSearchBtn", vo);
+	}
+	
+	// 품질 관리 목록 검색 버튼 개수 확인 (자재)
+	@Override
+	public Integer selectMaterialQualityListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectMaterialQualityListSearchBtnCount", vo);
+	}
+	
 	// 검수 입력 (생산)
 	@Override
 	public int updateProduceAudit(QualityVO vo) throws Exception{
 		return sqlSession.update(NAMESPACE + ".updateProduceAudit", vo);
 	}
+
 
 	// 검수 입력 - 완료 (생산)
 	@Override
@@ -107,6 +122,20 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.selectOne(NAMESPACE + ".selectDefectsListSearchBtnCount", vo);
 	}
 	
+	// 불량 현황 목록 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> selectMaterialDefectsListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialDefectsListSearchBtn", vo);
+	}
+	
+	// 불량 현황 목록 검색 버튼 개수 조회 (자재)
+	@Override
+	public Integer selectMaterialDefectsListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectMaterialDefectsListSearchBtnCount", vo);
+	}
+	
 	// 재고 등록 여부 업데이트
 	// StockDAO 참고
 	
@@ -116,6 +145,7 @@ public class QualityDAOImpl implements QualityDAO {
 		// TODO Auto-generated method stub
 		sqlSession.update(NAMESPACE + ".updateRegisterDefect", vo);	
 	}
+
 
 
 	

@@ -34,7 +34,7 @@
 								<th scope="col">품질관리번호</th>
 								<th scope="col">검수번호</th>
 								<th scope="col">상품구분</th>
-								<th scope="col">생산/반품ID</th>
+								<th scope="col">입고ID</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
 								<th scope="col">검수자</th>
@@ -49,226 +49,99 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="clist" items="${list }" varStatus="loop">
+							<c:forEach var="mlist" items="${list }" varStatus="loop">
 								<tr>
-									<th>${clist.qualityid }</th>
-									<td>${clist.auditcode }</td>
-									<c:if test="${empty clist.process }">
-										<td>${clist.itemtype }</td>
-									</c:if>
-									<c:if test="${!empty clist.process }">
-										<td>${clist.itemtype }-${clist.process }</td>
-									</c:if>			
+									<th>${mlist.qualityid }</th>
+									<td>${mlist.auditcode }</td>
+									<td>${mlist.itemtype }</td>	
+									<td>${mlist.receiveid }</td>
+									<td>${mlist.itemcode }</td>
+									<td>${mlist.itemname }</td>
+									<td>${mlist.auditbycode }</td>
+									<td>${mlist.productquantity }(개)</td>
+									<td>${mlist.auditquantity }(개)</td>
+									<td>${mlist.normalquantity }(개)</td>
 									<td>
-									<c:if test="${clist.returnid == 0}">
-										${clist.produceid }
+									<c:if test="${mlist.defectquantity == 0}">
+										${mlist.defectquantity }(개)
 									</c:if>
-									<c:if test="${clist.produceid == 0}">
-										${clist.returnid }
-									</c:if>
-									</td>
-									<td>${clist.itemcode }</td>
-									<td>
-									<c:if test="${!empty clist.process && clist.process.equals('포장') }">
-									${clist.itemname } (${clist.weight }g)
-									</c:if>
-									<c:if test="${!empty clist.process && !clist.process.equals('포장') }">
-									${clist.itemname }
-									</c:if>
-									<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">
-									${clist.itemname }
-									</c:if>
-									</td>
-									<td>${clist.auditbycode }</td>
-									<td>
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.process && clist.process == '포장')}">${clist.productquantity }(개)</c:if>
-										<c:if test="${!empty clist.process && !clist.process.equals('포장') }">${clist.productquantity }(g)</c:if>
-									</td>
-									<td>
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.process && clist.process == '포장')}">${clist.auditquantity }(개)</c:if>
-										<c:if test="${!empty clist.process && !clist.process.equals('포장') }">${clist.auditquantity }(g)</c:if>
-									</td>
-									<td>
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.process && clist.process == '포장')}">${clist.normalquantity }(개)</c:if>
-										<c:if test="${!empty clist.process && !clist.process.equals('포장') }">${clist.normalquantity }(g)</c:if>
-									</td>
-									<td>
-									<c:if test="${clist.defectquantity == 0}">
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.process && clist.process == '포장')}">${clist.defectquantity }(개)</c:if>
-										<c:if test="${!empty clist.process && !clist.process.equals('포장') }">${clist.defectquantity }(g)</c:if>
-									</c:if>
-									<c:if test="${clist.defectquantity != 0}">
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.process && clist.process == '포장')}"><b style="color: red;">${clist.defectquantity }</b>(개)</c:if>
-										<c:if test="${!empty clist.process && !clist.process.equals('포장') }"><b style="color: red;">${clist.defectquantity }</b>(g)</c:if>
+									<c:if test="${mlist.defectquantity != 0}">
+										<b style="color: red;">${mlist.defectquantity }</b>(개)
 									</c:if>
 									</td>
 									<td>
-									<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity == 0}">
-										<b style="color: brown;">${clist.auditstatus }</b>
+									<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0}">
+										<b style="color: brown;">${mlist.auditstatus }</b>
 									</c:if>
-									<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity != 0}">
-										<b style="color: red;">${clist.auditstatus }</b>
+									<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity != 0}">
+										<b style="color: red;">${mlist.auditstatus }</b>
 									</c:if>									
-									<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수중')}">
-										<b style="color: black;">${clist.auditstatus }</b>
+									<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수중')}">
+										<b style="color: black;">${mlist.auditstatus }</b>
 									</c:if>
-									<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('대기')}">
-										${clist.auditstatus }
+									<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('대기')}">
+										${mlist.auditstatus }
 									</c:if>									
 									</td>
-									<td>${clist.registerationdate }</td>
-									<td>${clist.completedate }</td>
+									<td>${mlist.registerationdate }</td>
+									<td>${mlist.completedate }</td>
 									<td>
-										<c:if test="${clist.auditstatus.equals('대기') || clist.auditstatus.equals('검수중') }">
-											<c:if test="${clist.produceid != 0 && clist.returnid == 0 }"> <!-- 생산ID 존재 -->
-												<c:if test="${!empty clist.process && clist.process.equals('포장')}"> <!-- 포장 O -->
-<%-- 											<input type="button" value="생산검수" onclick="location.href='/quality/productAudit?produceid=${clist.produceid}';"> --%>
-												<button type="button" class="btn btn-primary btn-sm" 
-												data-bs-toggle="modal" data-bs-target="#exampleModal"
-												data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-												data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-												data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" data-weight="${clist.weight }" 
-												data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
-												data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
- 												생산검수
-												</button>
-												</c:if>
-												<c:if test="${!empty clist.process && !clist.process.equals('포장') }"> <!-- 포장 X -->
-												<button type="button" class="btn btn-primary btn-sm" 
-												data-bs-toggle="modal" data-bs-target="#produceAuditModal2"
-												data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-												data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-												data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-												data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
-												data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
- 												생산검수
-												</button>
-												</c:if>
-											</c:if>
-											<c:if test="${clist.produceid == 0 && clist.returnid != 0}"> <!-- 반품ID 존재 -->
-<%-- 											<input type="button" value="반품검수" onclick="location.href='/quality/returnAudit?returnid=${clist.returnid}';">				 --%>
-												<button type="button" class="btn btn-primary btn-sm" 
-												data-bs-toggle="modal" data-bs-target="#returnAuditModal"
-												data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-												data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-												data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-												data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
-												data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
- 												반품검수
-												</button>
-											</c:if>
-											<c:if test="${clist.produceid == 0 && clist.returnid == 0 }"> <!-- 생산ID, 반품ID 둘 다 미존재 = 자재 -->
-												<input type="button" value="자재검수" onclick="location.href='/quality/iaudit?itemid=${clist.itemid}';">								
-											</c:if>
+										<c:if test="${mlist.auditstatus.equals('대기') || mlist.auditstatus.equals('검수중') }">
+											<button type="button" class="btn btn-primary btn-sm" 
+												data-bs-toggle="modal" data-bs-target="#materialAuditModal"
+												data-receiveid="${mlist.receiveid }" data-qualityid="${mlist.qualityid}" data-itemtype="${mlist.itemtype }" 
+												data-auditcode="${mlist.auditcode }" 
+												data-itemid="${mlist.itemid }" data-itemcode="${mlist.itemcode }" 
+												data-itemname="${mlist.itemname }" data-auditbycode="${mlist.auditbycode }" 
+												data-productquantity="${mlist.productquantity }" data-auditquantity="${mlist.auditquantity }" 
+												data-normalquantity="${mlist.normalquantity }" data-defectquantity="${mlist.defectquantity }">
+ 												자재검수
+											</button>
 										</c:if>
-										<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity == 0 }"> <!-- 불량 X -->
-											<c:if test="${!empty clist.process && !clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장이 아닌 경우 -->
-												<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 생산 상태 업데이트 -->
-											</c:if>	
-											<c:if test="${!empty clist.process && clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장인 경우 -->
-												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
-													<input type="hidden" value="${clist.qualityid }" name="qualityid">
-													<input type="hidden" value="${clist.itemid }" name="itemid">
-													<input type="hidden" value="${clist.produceid }" name="produceid">
-													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
-													<input type="submit" class="btn btn-success btn-sm" value="정상">
-												</form>
-											</c:if>
-											<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 반품인 경우 -->
-												<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
-											</c:if>	
+										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0 }"> <!-- 불량 X -->
+											<form action="/stock/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
+												<input type="hidden" value="${mlist.qualityid }" name="qualityid">
+												<input type="hidden" value="${mlist.itemid }" name="itemid">
+												<input type="hidden" value="${mlist.receiveid }" name="receiveid">
+												<input type="hidden" value="${mlist.normalquantity }" name="stockquantity">
+												<input type="submit" class="btn btn-success btn-sm" value="정상">
+											</form>
 										</c:if>
-										<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity != 0 }"> <!-- 불량 O -->
-											<c:if test="${clist.normalquantity != 0 }"> <!-- 불량도 있고 정상도 있는 경우 (포장이 아닌 경우라면 전체 불량 처리) -->
-												<c:if test="${!empty clist.process && !clist.process.equals('포장') && !empty clist.registerdefect && clist.registerdefect.equals('N')}"> <!-- 포장이 아닌 경우 -->
-													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newProductDefectModal"
-													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-													data-defectquantity="${clist.defectquantity }">
- 													불량
-													</button>
-												</c:if>	
-												<c:if test="${!empty clist.process && clist.process.equals('포장')}"> <!-- 포장인 경우 -->
-												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
-													<input type="hidden" value="${clist.qualityid }" name="qualityid">
-													<input type="hidden" value="${clist.itemid }" name="itemid">
-													<input type="hidden" value="${clist.produceid }" name="produceid">
-													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
-													<c:if test="${!empty clist.registerstock && clist.registerstock.equals('N') }">
+										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity != 0 }"> <!-- 불량 O -->
+											<c:if test="${mlist.normalquantity != 0 }"> <!-- 불량도 있고 정상도 있는 경우 -->
+												<form action="/stock/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
+													<input type="hidden" value="${mlist.qualityid }" name="qualityid">
+													<input type="hidden" value="${mlist.itemid }" name="itemid">
+													<input type="hidden" value="${mlist.receiveid }" name="receiveid">
+													<input type="hidden" value="${mlist.normalquantity }" name="stockquantity">
+													<c:if test="${!empty mlist.registerstock && mlist.registerstock.equals('N') }">
 													<input type="submit" value="정상" class="btn btn-success btn-sm" >
 													</c:if>
-													<c:if test="${!empty clist.registerdefect && clist.registerdefect.equals('N') }">
+													<c:if test="${!empty mlist.registerdefect && mlist.registerdefect.equals('N') }">
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newProductDefectModal"
-													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-													data-defectquantity="${clist.defectquantity }">
+													data-bs-toggle="modal" data-bs-target="#newMaterialDefectModal"
+													data-receiveid="${mlist.receiveid }" data-qualityid="${mlist.qualityid}" data-itemtype="${mlist.itemtype }" 
+													data-auditcode="${mlist.auditcode }" 
+													data-itemid="${mlist.itemid }" data-itemcode="${mlist.itemcode }" 
+													data-itemname="${mlist.itemname }" data-auditbycode="${mlist.auditbycode }" 
+													data-defectquantity="${mlist.defectquantity }">
  													불량
 													</button>
 													</c:if>
 												</form>
-												</c:if>	
-												<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품')}"> <!-- 반품인 경우 -->
-													<c:if test="${!empty clist.registerstock && clist.registerstock.equals('N') }">
-													<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 재고로 -->
-													</c:if>
-													<c:if test="${!empty clist.registerdefect && clist.registerdefect.equals('N') }">
-													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newReturnDefectModal"
-													data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-													data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
-													data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
- 													불량
-													</button>
-													</c:if>
-												</c:if>	
 											</c:if>
-											<c:if test="${clist.normalquantity == 0 }"> <!-- 불량은 있지만 정상은 없는 경우 -->
-												<c:if test="${!empty clist.process && !clist.process.equals('포장') && !empty clist.registerdefect && clist.registerdefect.equals('N')}"> <!-- 포장이 아닌 경우 -->
+											<c:if test="${mlist.normalquantity == 0 }"> <!-- 불량은 있지만 정상은 없는 경우 -->
+												<c:if test="${!empty clist.registerdefect && mlist.registerdefect.equals('N')}"> <!-- 포장이 아닌 경우 -->
 													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newProductDefectModal"
-													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-													data-defectquantity="${clist.defectquantity }">
+													data-bs-toggle="modal" data-bs-target="#newMaterialDefectModal"
+													data-receiveid="${mlist.receiveid }" data-qualityid="${mlist.qualityid}" data-itemtype="${mlist.itemtype }" 
+													data-auditcode="${mlist.auditcode }"
+													data-itemid="${mlist.itemid }" data-itemcode="${mlist.itemcode }" 
+													data-itemname="${mlist.itemname }" data-auditbycode="${mlist.auditbycode }" 
+													data-defectquantity="${mlist.defectquantity }">
  													불량
 													</button>												
-												</c:if>	
-												<c:if test="${!empty clist.process && clist.process.equals('포장') && !empty clist.registerdefect && clist.registerdefect.equals('N')}"> <!-- 포장인 경우 -->
-													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newProductDefectModal"
-													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-													data-defectquantity="${clist.defectquantity }">
- 													불량
-													</button>													
-												</c:if>	
-												<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품') && !empty clist.registerdefect && clist.registerdefect.equals('N')}"> <!-- 반품인 경우 -->
-													<button type="button" class="btn btn-danger btn-sm" 
-													data-bs-toggle="modal" data-bs-target="#newReturnDefectModal"
-													data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
-													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
-													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
-													data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
-													data-normalquantity="${clist.normalquantity }" data-defectquantity="${clist.defectquantity }">
- 													불량
-													</button>												
-												</c:if>	
+												</c:if>		
 											</c:if>
 										</c:if>
 									</td>
@@ -315,7 +188,7 @@
    									console.log("Page Block clicked!", prevPage);
    									
         						$.ajax({
-       								url: "/quality/productQualityList",
+       								url: "/quality/materialQualityList",
             						type: "GET",
             						data: dataObject,
             						success: function(data) {
@@ -363,7 +236,7 @@
    									console.log("Page Block clicked!");
    									
         						$.ajax({
-       								url: "/quality/productQualityList",
+       								url: "/quality/materialQualityList",
             						type: "GET",
             						data: dataObject,
             						success: function(data) {
@@ -413,7 +286,7 @@
    									console.log("Page Block clicked!", nextPage);
    									
         						$.ajax({
-       								url: "/quality/productQualityList",
+       								url: "/quality/materialQualityList",
             						type: "GET",
             						data: dataObject,
             						success: function(data) {
@@ -436,10 +309,10 @@
 		</div>
 	</div>	
 	
-<!-- 생산 검수 모달창 (포장) -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- 자재 검수 모달창 -->
+<div class="modal fade" id="materialAuditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-  <form action="/quality/productAudit" method="POST">
+  <form action="/quality/materialAudit" method="POST">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (포장)</h1>
@@ -452,8 +325,8 @@
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="produceid" class="col-form-label">생산ID:</label>
-            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
+            	<label for="receiveid" class="col-form-label">입고ID:</label>
+            	<input type="text" class="form-control" id="receiveid" name="receiveid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
@@ -462,8 +335,8 @@
             	<input type="text" class="form-control" id="auditcode" name="auditcode" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="process" class="col-form-label">생산단계:</label>
-            	<input type="text" class="form-control" id="process" name="process" value="" readonly>
+            	<label for="itemtype" class="col-form-label">상품구분:</label>
+            	<input type="text" class="form-control" id="itemtype" name="itemtype" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
@@ -478,7 +351,7 @@
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="productquantity" class="col-form-label">생산량 (개):</label>
+           		<label for="productquantity" class="col-form-label">입고량 (개):</label>
             	<input type="number" class="form-control" id="productquantity" name="productquantity" value="" readonly>
   			</div>
   			<div class="col">
@@ -505,22 +378,20 @@
    </form>
   </div>
 </div>
-<!-- 생산 검수 모달창 (포장) -->
+<!-- 자재 검수 모달창 -->
 
-<!-- 생산 검수 모달창 데이터 (포장) -->
+<!-- 자재 검수 모달창 데이터 -->
 <script>
 $(document).ready(function() {
-    let myModal = document.getElementById('exampleModal');
+    let myModal = document.getElementById('materialAuditModal');
     myModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let qualityid = button.getAttribute('data-qualityid'); // qualityid
-        let produceid = button.getAttribute('data-produceid'); // produceid
+        let receiveid = button.getAttribute('data-receiveid'); // receiveid
         let auditcode = button.getAttribute('data-auditcode'); // auditcode
         let itemtype = button.getAttribute('data-itemtype'); // itemtype
-        let process = button.getAttribute('data-process'); // process
         let itemcode = button.getAttribute('data-itemcode'); // itemcode
         let itemname = button.getAttribute('data-itemname'); // itemname
-        let weight = button.getAttribute('data-weight'); // weight
         let productquantity = button.getAttribute('data-productquantity'); // productquantity
         let auditquantity = button.getAttribute('data-auditquantity'); // auditquantity
         let defectquantity = button.getAttribute('data-defectquantity'); // defectquantity
@@ -530,20 +401,20 @@ $(document).ready(function() {
         let qinputField = myModal.querySelector('input[name="qualityid"]');
         qinputField.value = qualityid;
         
-        let pinputField = myModal.querySelector('input[name="produceid"]');
-        pinputField.value = produceid;
+        let riinputField = myModal.querySelector('input[name="receiveid"]');
+        riinputField.value = receiveid;
         
         let ainputField = myModal.querySelector('input[name="auditcode"]');
         ainputField.value = auditcode;
-        
-        let proinputField = myModal.querySelector('input[name="process"]');
-        proinputField.value = itemtype + " - " + process;
         
         let icinputField = myModal.querySelector('input[name="itemcode"]');
         icinputField.value = itemcode;
         
         let ininputField = myModal.querySelector('input[name="itemname"]');
-        ininputField.value = itemname + " (" + weight + "g)";
+        ininputField.value = itemname;
+        
+        let itinputField = myModal.querySelector('input[name="itemtype"]');
+        itinputField.value = itemtype;
         
         let pqinputField = myModal.querySelector('input[name="productquantity"]');
         pqinputField.value = productquantity;
@@ -569,7 +440,7 @@ $(document).ready(function() {
     		
         	// 검수량이 생산량보다 큰 경우
         	if (auditQuantity > productquantity) {
-        		alert("검수량은 생산량보다 많을 수 없습니다!");
+        		alert("검수량은 입고량보다 많을 수 없습니다!");
         		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
         		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스
         		return;
@@ -602,17 +473,16 @@ $(document).ready(function() {
     		}
     			const normalQuantity = auditQuantity - defectiveQuantity;
      			document.getElementById("normalquantity").value = normalQuantity;
-    		
     	});
     });
 });
 </script>
-<!-- 생산 검수 모달창 데이터 (포장) -->
+<!-- 자재 검수 모달창 데이터 -->
 
-<!-- 불량 입력 모달창 (생산) -->
-<div class="modal fade" id="newProductDefectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- 불량 입력 모달창 (자재) -->
+<div class="modal fade" id="newMaterialDefectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-  <form action="/quality//productReturnNewDefect" method="POST">
+  <form action="/quality/materialNewDefect" method="POST">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel2">불량 등록 (생산)</h1>
@@ -667,19 +537,18 @@ $(document).ready(function() {
    </form>
   </div>
 </div>
-<!-- 불량 입력 모달창 (생산) -->
+<!-- 불량 입력 모달창 (자재) -->
 
-<!-- 불량 입력 모달창 데이터 (생산) -->
+<!-- 불량 입력 모달창 데이터 (자재) -->
 <script>
 $(document).ready(function() {
-    let myModal = document.getElementById('newProductDefectModal');
+    let myModal = document.getElementById('newMaterialDefectModal');
     myModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let qualityid = button.getAttribute('data-qualityid'); // qualityid
-        let produceid = button.getAttribute('data-produceid'); // produceid
+        let receiveid = button.getAttribute('data-receiveid'); // receiveid
         let auditcode = button.getAttribute('data-auditcode'); // auditcode
         let itemtype = button.getAttribute('data-itemtype'); // itemtype
-        let process = button.getAttribute('data-process'); // process
         let itemcode = button.getAttribute('data-itemcode'); // itemcode
         let itemname = button.getAttribute('data-itemname'); // itemname
         let defectquantity = button.getAttribute('data-defectquantity'); // defectquantity
@@ -692,7 +561,7 @@ $(document).ready(function() {
         ainputField.value = auditcode;
         
         let iinputField = myModal.querySelector('input[name="itemtype"]');
-        iinputField.value = itemtype + " - " + process;
+        iinputField.value = itemtype;
         
         let icinputField = myModal.querySelector('input[name="itemcode"]');
         icinputField.value = itemcode;
@@ -754,7 +623,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<!-- 불량 입력 모달창 데이터 -->
+<!-- 불량 입력 모달창 데이터 (자재) -->
 
 <!-- 라디오 버튼 이동 -->
 <script>
@@ -815,7 +684,7 @@ $(document).ready(function() {
     });
 
     // 전체 버튼 클릭
-    $("#all").click(function() {
+    $("#allmaterial").click(function() {
         $.ajax({
             url: "/quality/materialQualityList",
             type: "GET",

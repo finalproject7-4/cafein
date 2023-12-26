@@ -154,7 +154,7 @@
 												<button type="button" class="btn btn-primary btn-sm" 
 												data-bs-toggle="modal" data-bs-target="#returnAuditModal"
 												data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-												data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
+												data-auditcode="${clist.auditcode }" 
 												data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
 												data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
 												data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 
@@ -162,16 +162,16 @@
  												반품검수
 												</button>
 											</c:if>
-											<c:if test="${clist.produceid == 0 && clist.returnid == 0 }"> <!-- 생산ID, 반품ID 둘 다 미존재 = 자재 -->
-												<input type="button" value="자재검수" onclick="location.href='/quality/iaudit?itemid=${clist.itemid}';">								
-											</c:if>
 										</c:if>
 										<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity == 0 }"> <!-- 불량 X -->
 											<c:if test="${!empty clist.process && !clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장이 아닌 경우 -->
-												<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 생산 상태 업데이트 -->
+												<form action="/quality/updateQualityCheck" method="POST"> <!-- 재고로 가진 않지만 재고 등록 여부 업데이트 (검수 완료 시 자동 업데이트 [생산 - 포장이 아닐 때]) --> <!-- 생산 상태 업데이트 -->
+													<input type="hidden" value="${clist.produceid }" name="produceid">
+													<input type="submit" class="btn btn-success btn-sm" value="정상">
+												</form>
 											</c:if>	
 											<c:if test="${!empty clist.process && clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장인 경우 -->
-												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
+												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
@@ -180,7 +180,12 @@
 												</form>
 											</c:if>
 											<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 반품인 경우 -->
-												<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
+												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
+													<input type="hidden" value="${clist.qualityid }" name="qualityid">
+													<input type="hidden" value="${clist.itemid }" name="itemid">
+													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
+													<input type="submit" class="btn btn-success btn-sm" value="정상">
+												</form>
 											</c:if>	
 										</c:if>
 										<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity != 0 }"> <!-- 불량 O -->
@@ -220,7 +225,12 @@
 												</c:if>	
 												<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품')}"> <!-- 반품인 경우 -->
 													<c:if test="${!empty clist.registerstock && clist.registerstock.equals('N') }">
-													<input type="button" class="btn btn-success btn-sm" value="정상"> <!-- 재고로 -->
+													<form action="/stock/newStock" method="POST"> <!-- 재고로 -->
+														<input type="hidden" value="${clist.qualityid }" name="qualityid">
+														<input type="hidden" value="${clist.itemid }" name="itemid">
+														<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
+														<input type="submit" class="btn btn-success btn-sm" value="정상">
+													</form>
 													</c:if>
 													<c:if test="${!empty clist.registerdefect && clist.registerdefect.equals('N') }">
 													<button type="button" class="btn btn-danger btn-sm" 
@@ -263,7 +273,7 @@
 													<button type="button" class="btn btn-danger btn-sm" 
 													data-bs-toggle="modal" data-bs-target="#newReturnDefectModal"
 													data-returnid="${clist.returnid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
-													data-auditcode="${clist.auditcode }" data-process="${clist.process }" 
+													data-auditcode="${clist.auditcode }"
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
 													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
 													data-productquantity="${clist.productquantity }" data-auditquantity="${clist.auditquantity }" 

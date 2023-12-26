@@ -29,26 +29,11 @@
 									<th>${dlist.defectid }</th>
 									<td>${dlist.qualityid }</td>
 									<!-- 상품 구분 출력 -->
-									<c:if test="${empty dlist.process }"> <!-- 반품인 경우 (process == null) -->
-										<td>${dlist.itemtype }</td>									
-									</c:if>
-									<c:if test="${!empty dlist.process }"> <!-- 생산인 경우 (process != null) -->
-										<td>${dlist.itemtype }-${dlist.process }</td>									
-									</c:if>
+									<td>${dlist.itemtype }</td>									
 									<td>${dlist.itemcode }</td>
 									<td>${dlist.itemname }</td>
 									<!-- 불량 출력 -->
-									<td>
-									<c:if test="${!empty dlist.itemtype && dlist.itemtype.equals('반품')}">
-										<b style="color: red;">${dlist.defectquantity }</b>(개)
-									</c:if>
-									<c:if test="${!empty dlist.process && dlist.process.equals('포장')}">
-										<b style="color: red;">${dlist.defectquantity }</b>(개)
-									</c:if>
-									<c:if test="${!empty dlist.process && !dlist.process.equals('포장') }">
-										<b style="color: red;">${dlist.defectquantity }</b>(g)
-									</c:if>
-									</td>
+									<td><b style="color: red;">${dlist.defectquantity }</b>(개)</td>
 									<td>${dlist.defecttype }</td>
 									<td>${dlist.processmethod }</td>
 									<td>${dlist.registerationdate }</td>

@@ -91,6 +91,43 @@
 		</where>
 	</select>
 	
+	<!-- 품질 관리 목록 검색 버튼 (자재) -->
+	<select id="selectMaterialQualityListSearchBtn" resultType="QualityVO">
+		SELECT q.qualityid, auditcode, i.itemtype, q.receiveid, q.itemid, i.itemcode, i.itemname, auditbycode, 
+		productquantity, auditquantity, normalquantity, defectquantity, 
+		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
+		registerstock, registerdefect 
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		JOIN receive r
+		ON q.receiveid = r.receiveid
+		<where>
+		(q.itemtype = '자재')
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND i.itemtype = #{searchBtn}
+		</if>
+		</where>
+		ORDER BY q.qualityid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+	<!-- 품질 관리 목록 검색 버튼 개수 확인 (자재) -->
+	<select id="selectMaterialQualityListSearchBtnCount" resultType="integer">
+		SELECT COUNT(*)
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		JOIN receive r
+		ON q.receiveid = r.receiveid
+		<where>
+		(q.itemtype = '자재')
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND i.itemtype = #{searchBtn}
+		</if>
+		</where>
+	</select>
+	
 	<!-- 검수 입력 (생산) -->
 	<update id="updateProduceAudit">
 		UPDATE quality
@@ -171,10 +208,10 @@
 		ON q.itemid = i.itemid
 		<where>
 		(q.itemtype = '생산' OR q.itemtype = '반품')
-		<if test="searchBtn != null and searchBtn != '반품'">
+		<if test="searchBtn != null and searchBtn != '반품' and searchText == null">
 		AND process = #{searchBtn}
 		</if>
-		<if test="searchBtn != null and searchBtn == '반품'">
+		<if test="searchBtn != null and searchBtn == '반품' and searchText == null">
 		AND q.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
@@ -201,10 +238,10 @@
 		ON q.itemid = i.itemid
 		<where>
 		(q.itemtype = '생산' OR q.itemtype = '반품')
-		<if test="searchBtn != null and searchBtn != '반품'">
+		<if test="searchBtn != null and searchBtn != '반품' and searchText == null">
 		AND process = #{searchBtn}
 		</if>
-		<if test="searchBtn != null and searchBtn == '반품'">
+		<if test="searchBtn != null and searchBtn == '반품' and searchText == null">
 		AND q.itemtype = #{searchBtn}
 		</if>	
 		<if test="searchBtn == null and searchText != null">
@@ -217,6 +254,42 @@
 		</where>	
 	</select>
 	<!-- 불량 현황 목록 개수 확인 (생산 / 반품) -->
+	
+	<!-- 불량 현황 목록 검색 버튼 (자재) -->
+	<select id="selectMaterialDefectsListSearchBtn" resultType="QualityVO">
+		SELECT defectid, d.qualityid, i.itemtype, i.itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
+		FROM defects d
+		JOIN quality q
+		ON d.qualityid = q.qualityid
+		JOIN item i
+		ON q.itemid = i.itemid
+		<where>
+		(q.itemtype = '자재') 
+		<if test="searchBtn != null and searchText == null">
+		AND i.itemtype = #{searchBtn}
+		</if>
+		</where>
+		ORDER BY defectid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	<!-- 불량 현황 목록 검색 버튼 (자재) -->
+	
+	<!-- 불량 현황 목록 검색 버튼 개수 확인 (자재) -->
+	<select id="selectMaterialDefectsListSearchBtnCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM defects d
+		JOIN quality q
+		ON d.qualityid = q.qualityid
+		JOIN item i
+		ON q.itemid = i.itemid
+		<where>
+		(q.itemtype = '자재') 
+		<if test="searchBtn != null and searchText == null">
+		AND i.itemtype = #{searchBtn}
+		</if>					
+		</where>
+	</select>
+	<!-- 불량 현황 목록 검색 버튼 개수 확인 (자재) -->
 	
 	<!-- 재고 등록 여부 업데이트 -->
 	<!-- stockMapper 참고 -->

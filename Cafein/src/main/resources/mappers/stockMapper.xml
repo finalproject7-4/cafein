@@ -33,7 +33,7 @@
  		INSERT INTO stock (qualityid, itemid, lotnumber, stockquantity, workerbycode)
  		VALUES (#{qualityid}, #{itemid}, #{lotnumber}, #{stockquantity}, #{workerbycode})
  	</insert>
- 	
+ 	 	
  	<!-- 재고 등록 중복 확인 (생산 [포장] + 반품) -->
 	<select id="selectDupilcateStock" resultType="integer">
 		SELECT stockid FROM stock WHERE qualityid = #{qualityid}

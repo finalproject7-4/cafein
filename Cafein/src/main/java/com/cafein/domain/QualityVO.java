@@ -95,6 +95,13 @@ public class QualityVO {
 //	private Sting lotnumber;
 	private String note;
 	
+	// receive 테이블
+	private int receiveid;
+	private String receivecode;
+//	private String membercode;
+	private Timestamp receivedate;
+	private int receivequantity;
+	
 	// 검색용 특별 변수
 	private String startDate;
 	private String endDate;
@@ -103,6 +110,7 @@ public class QualityVO {
 	
 	// Criteria 객체
 	private Criteria cri;
+	
 	
 	
 	

@@ -15,6 +15,12 @@ public interface QualityService {
 	// 품질 관리 목록 검색 버튼 개수 조회 (생산 / 반품)
 	public Integer qualityListSearchBtnCount(QualityVO vo) throws Exception;
 	
+	// 품질 관리 목록 검색 버튼 (자재)
+	public List<QualityVO> materialQualityListSearchBtn(QualityVO vo) throws Exception;
+	
+	// 품질 관리 목록 검색 버튼 개수 조회 (자재)
+	public Integer materialQualityListSearchBtnCount(QualityVO vo) throws Exception;
+	
 	// 검수 입력 (생산)
 	public int produceAudit(QualityVO vo) throws Exception;
 	
@@ -42,8 +48,14 @@ public interface QualityService {
 	// 불량 현황 목록 검색 버튼 (생산 / 반품)
 	public List<QualityVO> defectsListSearchBtn(QualityVO vo) throws Exception;
 	
-	// 불량 현황 목록 개수 확인 (생산 / 반품)
+	// 불량 현황 목록 검색 버튼 개수 확인 (생산 / 반품)
 	public Integer defectsListSearchBtnCount(QualityVO vo) throws Exception;
+	
+	// 불량 현황 목록 검색 버튼 (자재)
+	public List<QualityVO> materialDefectsListSearchBtn(QualityVO vo) throws Exception;
+	
+	// 불량 현황 목록 검색 버튼 개수 조회 (자재)
+	public Integer materialDefectsListSearchBtnCount(QualityVO vo) throws Exception;	
 	
 	// 재고 등록 여부 업데이트
 	// stockService 참고
