@@ -12,6 +12,5 @@ public interface SalesDAO {
 	// 수주 조회
 	public List<SalesVO> getPOList() throws Exception;
 
-	
 
 }
