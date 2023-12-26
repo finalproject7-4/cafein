@@ -16,9 +16,9 @@ public interface MemberService {
 	public MemberVO memberInfo(int memberid) throws Exception;
 	
 	// 특정 직원 정보 수정 동작
-	public int memberUpdate(MemberVO vo) throws Exception;
+	public void memberUpdate(MemberVO vo) throws Exception;
 	
 	// 특정 직원 정보 삭제 동작
-	public int memberDelete(MemberVO vo) throws Exception;
+	public void memberDelete(MemberVO vo) throws Exception;
 
 }

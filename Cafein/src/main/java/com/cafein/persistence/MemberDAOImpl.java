@@ -40,15 +40,15 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public int updateMember(MemberVO vo) throws Exception {
+	public void updateMember(MemberVO vo) throws Exception {
 		logger.debug(" DAO : 직원 정보 수정 updateMember(MemberVO vo) ");
-		return sqlSession.update(NAMESPACE + ".updateMember", vo);
+		sqlSession.update(NAMESPACE + ".updateMember", vo);
 	}
 
 	@Override
-	public int deleteMember(MemberVO vo) throws Exception {
+	public void deleteMember(MemberVO vo) throws Exception {
 		logger.debug(" DAO : 직원 정보 삭제(비활성화) deleteMember(MemberVO vo) ");
-		return sqlSession.update(NAMESPACE + ".deleteMember", vo);
+		sqlSession.update(NAMESPACE + ".deleteMember", vo);
 	}
 
 	

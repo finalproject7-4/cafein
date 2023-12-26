@@ -16,10 +16,10 @@ public interface MemberDAO {
 	public MemberVO getMember(int memberid) throws Exception;
 	
 	// 직원 정보 수정
-	public int updateMember(MemberVO vo) throws Exception;
+	public void updateMember(MemberVO vo) throws Exception;
 	
 	// 직원 정보 삭제
-	public int deleteMember(MemberVO vo) throws Exception;
+	public void deleteMember(MemberVO vo) throws Exception;
 	
 	
 

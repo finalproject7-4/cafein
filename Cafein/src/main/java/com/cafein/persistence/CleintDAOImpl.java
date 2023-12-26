@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.cafein.domain.ClientVO;
-import com.cafein.domain.MemberVO;
 
 @Repository
 public class CleintDAOImpl implements ClientDAO {
@@ -34,23 +33,7 @@ public class CleintDAOImpl implements ClientDAO {
 		return sqlSession.selectList(NAMESPACE + ".getClientList");
 	}
 	
-	@Override
-	public ClientVO getClient(int clientid) throws Exception {
-		logger.debug(" DAO : 거래처 정보 조회 getClient(int clientid) ");
-		return sqlSession.selectOne(NAMESPACE + ".getClient", clientid);
-	}
-
-	@Override
-	public int updateClient(ClientVO vo) throws Exception {
-		logger.debug(" DAO : 거래처 정보 수정 updateClient(ClientVO vo) ");
-		return sqlSession.update(NAMESPACE + ".updateClient", vo);
-	}
-
-	@Override
-	public int deleteClient(ClientVO vo) throws Exception {
-		logger.debug(" DAO : 거래처 정보 삭제(비활성화) deleteClient(ClientVO vo) ");
-		return sqlSession.update(NAMESPACE + ".deleteClient", vo);
-	}
+	
 
 }
 
