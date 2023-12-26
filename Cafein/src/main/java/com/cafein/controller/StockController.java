@@ -76,6 +76,36 @@ public class StockController {
 		}
 	}
 	
+	// 재고 입력 (자재)
+	@RequestMapping(value = "/newMaterialStock", method = RequestMethod.POST)
+	public String newMaterialStockPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+		int qualityid = vo.getQualityid();
+		logger.debug(" qualityid : " + qualityid);
+		Integer duResult = sService.duplicateStock(qualityid);
+		if(duResult != null) {
+			logger.debug(" 이미 재고 정보가 등록된 검수 내역입니다. ");
+			rttr.addFlashAttribute("result", "duplicateStock");
+			return "redirect:/quality/qualities";
+		}else {
+		String workerbycode = (String) session.getAttribute("membercode");
+		vo.setWorkerbycode(workerbycode);
+		vo.setLotnumber(sService.receiveLotNum(vo));
+		
+		int result = sService.newStock(vo);
+		if(result == 0) {
+			rttr.addFlashAttribute("result", "STOCKNO");
+			logger.debug(" 재고 등록 실패! ");
+			return "redirect:/quality/qualities";
+		}else {
+			rttr.addFlashAttribute("result", "STOCKYES");
+			logger.debug(" 재고 등록 성공! ");
+		}
+		// 재고 등록 여부 업데이트
+		sService.registerStockY(vo);
+		return "redirect:/stock/stock";
+		}
+	}
+	
 	// 재고량 변경 (생산 [포장] + 반품)
 	@RequestMapping(value = "/updateStockQuantity", method = RequestMethod.POST)
 	public String updateStockQuantityPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{

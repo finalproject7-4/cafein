@@ -12,6 +12,9 @@ public interface StockService {
 	// roastedbean - LOT번호 조회
 	public String roastedbeanLotNum(QualityVO vo) throws Exception;
 	
+	// receive - LOT번호 조회
+	public String receiveLotNum(QualityVO vo) throws Exception;
+	
 	// 재고 입력 (생산 [포장] + 반품)
 	public int newStock(QualityVO vo) throws Exception;
 	

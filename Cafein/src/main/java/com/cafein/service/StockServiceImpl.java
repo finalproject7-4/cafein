@@ -28,6 +28,13 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		return sdao.selectRoastedBeanLotNum(vo);
 	}
+	
+	// receive - LOT번호 조회
+	@Override
+	public String receiveLotNum(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectReceiveLotNum(vo);
+	}
 
 	// 재고 입력 (생산 [포장] + 반품)
 	@Override

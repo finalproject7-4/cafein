@@ -28,6 +28,13 @@
  		WHERE produceid = #{produceid}
  	</select>
  	
+ 	<!-- receive - LOT 번호 조회 -->
+ 	<select id="selectReceiveLotNum" resultType="string">
+ 		SELECT lotnumber 
+ 		FROM receive
+ 		WHERE receiveid = #{receiveid} 	
+ 	</select>
+ 	
  	<!-- 재고 입력 (생산 [포장] + 반품) -->
  	<insert id="insertStock">
  		INSERT INTO stock (qualityid, itemid, lotnumber, stockquantity, workerbycode)

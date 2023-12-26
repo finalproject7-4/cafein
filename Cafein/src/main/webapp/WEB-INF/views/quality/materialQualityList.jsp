@@ -18,7 +18,7 @@
 			<input type="button" class="btn btn-sm btn-danger" value="부자재" id="submaterial">
 			<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
 			
-			<form action="/quality/productQualityList" method="GET">
+			<form action="/quality/materialQualityList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
@@ -722,7 +722,7 @@ function fetchData(searchBtnValue) {
 <script>
 $(document).ready(function() {
     // 폼의 submit 이벤트 감지
-    $("form[action='/quality/productQualityList']").submit(function(event) {
+    $("form[action='/quality/materialQualityList']").submit(function(event) {
         event.preventDefault(); // 기본 폼 제출 동작 방지
 
         // 폼 데이터 수집
@@ -738,7 +738,7 @@ $(document).ready(function() {
 
         // AJAX 요청 수행
         $.ajax({
-            url: "/quality/productQualityList",
+            url: "/quality/materialQualityList",
             type: "GET",
             data: formData,
             success: function(data) {

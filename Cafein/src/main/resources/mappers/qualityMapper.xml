@@ -107,6 +107,13 @@
 		<if test="searchBtn != null and startDate == null and endDate == null">
 		AND i.itemtype = #{searchBtn}
 		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="searchBtn != null and startDate != null and endDate != null">
+		AND i.itemtype = #{searchBtn} AND
+		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
 		</where>
 		ORDER BY q.qualityid DESC
 		LIMIT #{cri.startPage}, #{cri.pageSize}
@@ -124,6 +131,13 @@
 		(q.itemtype = '자재')
 		<if test="searchBtn != null and startDate == null and endDate == null">
 		AND i.itemtype = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="searchBtn != null and startDate != null and endDate != null">
+		AND i.itemtype = #{searchBtn} AND
+		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
 		</where>
 	</select>
@@ -219,7 +233,8 @@
 		process LIKE CONCAT('%', #{searchText}, '%') OR 
 		d.qualityid = #{searchText} OR 
 		itemcode LIKE CONCAT('%', #{searchText}, '%') OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		i.itemname LIKE CONCAT('%', #{searchText}, '%')) OR
+		defectid = #{searchText}
 		</if>					
 		</where>
 		ORDER BY defectid DESC
@@ -249,7 +264,8 @@
 		process LIKE CONCAT('%', #{searchText}, '%') OR 
 		d.qualityid = #{searchText} OR 
 		itemcode LIKE CONCAT('%', #{searchText}, '%') OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		i.itemname LIKE CONCAT('%', #{searchText}, '%')) OR
+		defectid = #{searchText}
 		</if>				
 		</where>	
 	</select>
@@ -268,6 +284,13 @@
 		<if test="searchBtn != null and searchText == null">
 		AND i.itemtype = #{searchBtn}
 		</if>
+		<if test="searchBtn == null and searchText != null">
+		AND (i.itemtype LIKE CONCAT('%', #{searchText}, '%') OR 
+		d.qualityid = #{searchText} OR 
+		itemcode LIKE CONCAT('%', #{searchText}, '%') OR 
+		i.itemname LIKE CONCAT('%', #{searchText}, '%')) OR
+		defectid = #{searchText}
+		</if>	
 		</where>
 		ORDER BY defectid DESC
 		LIMIT #{cri.startPage}, #{cri.pageSize}
@@ -286,7 +309,14 @@
 		(q.itemtype = '자재') 
 		<if test="searchBtn != null and searchText == null">
 		AND i.itemtype = #{searchBtn}
-		</if>					
+		</if>
+		<if test="searchBtn == null and searchText != null">
+		AND (i.itemtype LIKE CONCAT('%', #{searchText}, '%') OR 
+		d.qualityid = #{searchText} OR 
+		itemcode LIKE CONCAT('%', #{searchText}, '%') OR 
+		i.itemname LIKE CONCAT('%', #{searchText}, '%')) OR
+		defectid = #{searchText}
+		</if>	
 		</where>
 	</select>
 	<!-- 불량 현황 목록 검색 버튼 개수 확인 (자재) -->

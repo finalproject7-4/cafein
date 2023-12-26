@@ -8,6 +8,14 @@
 			<input type="button" class="btn btn-sm btn-primary" value="원자재" id="rawmaterial2nd">
 			<input type="button" class="btn btn-sm btn-danger" value="부자재" id="submaterial2nd">
 			<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial2nd">
+			
+			<form action="/quality/materialDefectList" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+				</c:if>
+				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+				<input type="submit" value="검색">
+			</form>	
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -207,3 +215,37 @@ function fetchData2(searchBtnValue) {
 </script>
 <!-- 페이지 Ajax 동적 이동 (1) -->
 	
+<!-- 페이지 Ajax 동적 이동 (2) -->
+<script>
+$(document).ready(function() {
+    // 폼의 submit 이벤트 감지
+    $("form[action='/quality/materialDefectList']").submit(function(event) {
+        event.preventDefault(); // 기본 폼 제출 동작 방지
+
+        // 폼 데이터 수집
+        let formData = {
+            searchText: $("input[name='searchText']").val()
+        };
+
+        // 선택된 검색 버튼 값이 있으면 추가
+        if ($("input[name='searchBtn']").length > 0) {
+            formData.searchBtn = $("input[name='searchBtn']").val();
+        }
+
+        // AJAX 요청 수행
+        $.ajax({
+            url: "/quality/materialDefectList",
+            type: "GET",
+            data: formData,
+            success: function(data) {
+                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+                $("#defectListContainer").html(data); // 결과를 화면에 표시
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 페이지 Ajax 동적 이동 (2) -->
