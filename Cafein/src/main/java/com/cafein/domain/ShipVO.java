@@ -14,12 +14,14 @@ public class ShipVO {
 	private String shipcode;
 	private int shipcount;
 	private String shipsts;
-	private Date shipsdate;
+	private Date shipdate;
 	
 	private String pocode;
 	private int stockid;
 	private String membercode;
 	private String lotnumber;
+	
+	private String workcode;
 	
 	
 	

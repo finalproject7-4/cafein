@@ -55,7 +55,7 @@
 					<tr>
 						<th scope="col">No.</th>
 						<th scope="col">출하일</th>
-						<th scope="col">수주코드</th>
+						<th scope="col">출하코드</th>
 						<th scope="col">작업지시코드</th>
 						<th scope="col">제품명</th>
 						<th scope="col">납품처</th>
@@ -71,11 +71,10 @@
 							<td>${sh.shipid }</td>
 							<td><fmt:formatDate value="${sh.shipdate }"
 									pattern="yyyy-MM-dd" /></td>
-							<td>${sh.pocode }</td>
 							<td>${sh.shipcode }</td>
 							<td>${sh.workcode }</td>
 							<td>${sh.itemname }</td>
-							<td>${sh.clientcode }</td> <!-- 거래처 이름 -->
+							<td>거래처</td> <!-- 거래처 이름 -->
 							<td>${sh.shipcount }</td>
 							<td>${sh.shipsts }</td>
 							<td>${sh.membercode }</td>

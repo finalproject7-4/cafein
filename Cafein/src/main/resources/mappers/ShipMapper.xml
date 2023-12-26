@@ -8,10 +8,12 @@
 	<!-- 출하 조회 -->
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT sh.shipid, sh.shipcode, sh.shipcount, sh.shipsts,
-		stock.stockid, sh.shipdate, sh.pocode, sh.membercode, sh.lotnumber
+		SELECT sh.shipid, sh.shipcode, sh.shipdate, sh.membercode,
+		sh.shipcount, sh.stockid, sh.shipsts, sh.lotnumber, sh.pocode 
 		FROM ship sh
-		JOIN stock ON sh.stockid = stock.stockid
+		JOIN stock st ON sh.stockid = st.stockid;
+<!-- 		JOIN work wk ON sh.workcode = wk.workcode -->
+<!-- 		JOIN client cli on sh.clientcode = cli.clientcode; -->
 	</select>
 	
 	<!-- 작업지시 조회 -->
