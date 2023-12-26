@@ -22,6 +22,10 @@
     )
 </insert>
 
+<select id="clipick" parameterType="com.cafein.domain.ClientVO">
+    select clientid, clientname, clientcode from client
+</select></select>
+
 <!-- 수주 조회 -->
 <select id="getPOList" resultType="com.cafein.domain.SalesVO">
 	SELECT  po.poid, po.postate, po.pocode, cli.clientname, cli.clientcode, item.itemname, item.itemcode,

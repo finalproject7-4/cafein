@@ -58,8 +58,6 @@
 <button type="button" class="btn btn-secondary" onclick="location.href='/sales/POList';">취소</button>
 <button type="submit" class="btn btn-primary">등록</button>
 </div>
-
-
 </div>
 </div>
 </form>
@@ -88,11 +86,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${POList}" var="spo">
+								<c:forEach items="${cliPick}" var="cp">
 									<tr class="clientset">
-										<td>${spo.poid }</td>
-										<td>${spo.clientname }</td>
-										<td>${spo.clientcode }</td>
+										<td>${cp.poid }</td>
+										<td>${cp.clientname }</td>
+										<td>${cp.clientcode }</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -127,11 +125,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${POList}" var="spo">
+								<c:forEach items="${cliPick}" var="cp">
 									<tr class="itemset">
-										<td>${spo.poid }</td>
-										<td>${spo.itemname }</td>
-										<td>${spo.itemcode }</td>
+										<td>${cp.poid }</td>
+										<td>${cp.itemname }</td>
+										<td>${cp.itemcode }</td>
 									</tr>
 								</c:forEach>
 							</tbody>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.ClientVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.service.SalesService;
 
@@ -49,13 +50,19 @@ public class SalesController {
 		return "redirect:/sales/POList";
 	}
 	
+	
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
 	public String AllPOListGET(Model model, @ModelAttribute("result") String result) throws Exception{
 		logger.debug("AllPOListGET() 실행");
+		
 		List<SalesVO> POList = sService.AllPOList();
 		logger.debug(" @@@ " + POList);
+
+		List<ClientVO> cliPick = sService.getAddCliList();
+		logger.debug(" @@@ " + cliPick);
+		
 		model.addAttribute("POList", POList);
 		model.addAttribute("result", result);
 		return "/sales/POList";

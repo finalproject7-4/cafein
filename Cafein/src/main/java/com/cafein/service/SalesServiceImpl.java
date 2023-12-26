@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.cafein.domain.ClientVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.TestVO;
 import com.cafein.persistence.SalesDAO;
@@ -33,6 +34,12 @@ public class SalesServiceImpl implements SalesService {
 	public List<SalesVO> AllPOList() throws Exception{
 		logger.debug("AllPOList()");
 		return sdao.getPOList();
+	}
+
+	@Override
+	public List<ClientVO> getAddCliList() throws Exception {
+		logger.debug("getAddCliList()");
+		return sdao.getAddCliList();
 	}
 
 

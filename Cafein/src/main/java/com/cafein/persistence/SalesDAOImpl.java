@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.cafein.domain.ClientVO;
 import com.cafein.domain.SalesVO;
 
 @Repository
@@ -35,6 +36,14 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("수주조회");
 		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
+
+	@Override
+	public List<ClientVO> getAddCliList() throws Exception {
+		logger.debug("추가적인 수주조회 - 납품처");
+		return sqlSession.selectList(NAMESPACE+".clipick");
+	}
+	
+	
 
 	
 	
