@@ -218,7 +218,7 @@ ${result } <br>
 	  // 클릭한 행의 정보를 가져와서 clientNS와 clientCS에 입력
       $(".clientset").click(function() {
          var clientName = $(this).find('td:eq(0)').text();
-         var clientCode = $(this).find('td:eq(1)').text();
+         var clientCode = $(this).find('td:eq(1)').text(); 
 
          $(".clientNS").val(clientName);
          $(".clientCS").val(clientCode);
