@@ -24,25 +24,37 @@
 </head>
 <body>
 
-     
-        <form action="/quality/returns" method="post">
+     <!-- 검색창 -->
+        <form action="" method="get">
         <h6 class="mb-4">반품 조회</h6>
             <div class="form-group">
                 <label for="returncode">반품 코드</label>
-                <input type="text" class="form-control" id="returncode" name="returncode" placeholder="반품 코드">
+                <input type="text" class="form-control" id="returncode" name="returncode" value="${returnVO.returncode }" placeholder="반품 코드">
             </div>
             <div class="form-group">
                 <label for="reuturntype">품목</label>
-                <input type="text" class="form-control" id="returntype" name="returntype" placeholder="품목">
+                <select name="returntype" class="form-control" id="returntype">
+                	<option ${returnVO.returntype eq "전체" ? "selected" : "" }>전체</option>
+                	<option ${returnVO.returntype eq "MOT" ? "selected" : "" }>MOT</option>
+                	<option ${returnVO.returntype eq "PRO" ? "selected" : "" }>PRO</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="returndate">반품 날짜</label>
-                <div class="input-group">
-                    <input type="date" class="form-control" id="returndate" name="returndate"  placeholder="반품 날짜">
+                <div class="input-group" style="width: 400px">
+                    <input type="date" class="form-control" id="returndate" name="returndate" value="${returnVO.returndate }" placeholder="반품 날짜">
+                <div>
+                &nbsp;~&nbsp;
+                </div>
+                    <input type="date" class="form-control" id="returndate2" name="returndate2" value="${returnVO.returndate2 }" placeholder="반품 날짜">
                 </div>
             </div>
             <button type="submit" class="btn btn-outline-warning m-2">조회</button>
         </form>
+     <!-- 검색창 -->
+     
+     
+     
 	
         
 	<button onclick="showTab('all')" class="btn btn-outline-warning m-2">전체</button>
@@ -63,7 +75,6 @@
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
                         <th scope="col">품목</th>
-                        <th scope="col">등록</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,9 +88,6 @@
                             <td>${returnVO.returnstatus}</td>
                             <td>${returnVO.reprocessmethod}</td>
                             <td>${returnVO.returntype}</td>
-                            <td>
-                            <button class="btn btn-danger pull-right">등록</button>
-                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -102,7 +110,6 @@
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
                         <th scope="col">품목</th>
-                        <th scope="col">등록</th>
                     </tr>
 		        </thead>
 		        <tbody>
@@ -117,9 +124,6 @@
                            <td>${returnVO.returnstatus}</td>
                            <td>${returnVO.reprocessmethod}</td>
                            <td>${returnVO.returntype}</td>
-                           <td>
-                           <button class="btn btn-danger pull-right">등록</button>
-                   		   </td>
                         </tr>  
                         </c:if>
 		            </c:forEach>
@@ -144,7 +148,6 @@
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
                         <th scope="col">품목</th>
-                        <th scope="col">등록</th>
                     </tr>
 		        </thead>
 		        <tbody>
@@ -159,9 +162,6 @@
                            <td>${returnVO.returnstatus}</td>
                            <td>${returnVO.reprocessmethod}</td>
                            <td>${returnVO.returntype}</td>
-                           <td>
-                           <button class="btn btn-danger pull-right">등록</button>
-                   		   </td> 
 		                </tr>
 	              	</c:if>
 		            </c:forEach>
@@ -185,7 +185,6 @@
                     <th scope="col">반품상태</th>
                     <th scope="col">검수상태</th>
                     <th scope="col">품목</th>
-                    <th scope="col">등록</th>
                 </tr>
 		        
 		        </thead>
@@ -201,9 +200,6 @@
                            <td>${returnVO.returnstatus}</td>
                            <td>${returnVO.reprocessmethod}</td>
                            <td>${returnVO.returntype}</td>
-                           <td>
-                           <button class="btn btn-danger pull-right">등록</button>
-                   		   </td> 
 		                </tr>
 		 			</c:if>
 		            </c:forEach>

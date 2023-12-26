@@ -20,8 +20,6 @@ public class ReturnServiceImpl implements ReturnService {
 	@Inject
 	private ReturnDAO tdao;
 
-	// mapper 위치정보
-	private static final String NAMESPACE ="com.cafein.mapper.ReturnsMapper";
 
 	@Override
 	public List<ReturnVO> searchReturns() throws Exception {

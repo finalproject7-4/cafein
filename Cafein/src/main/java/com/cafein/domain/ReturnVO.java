@@ -10,12 +10,29 @@ public class ReturnVO {
     private int returnid;
     private int qualityid;
     private String returncode;
-    private Date returndate;
+    private String returndate;
+    private String returndate2;
     private Date exchangedate;
     private String returnstatus;
     private int returnquantity;
     private String reprocessmethod;
     private int returnprice;
     private String returntype;
+    
+    
+	
+    
+    
+    
+    
+    
+    
 
+	
+
+
+    
+    
+    
+    
 }
