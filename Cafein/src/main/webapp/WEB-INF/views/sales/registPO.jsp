@@ -145,11 +145,11 @@
 $(document).ready(function() {
 	// 클릭한 행의 정보를 가져와서 clientid에 입력
    $(".clientset").click(function() {
-    var clientInfo = $(this).find('td:eq(1)').text();
+    var clientInfo = $(this).find('td:eq(1)').text(); //clientname
     $("#clientid").val(clientInfo);
 	});
    $(".itemset").click(function() {
-    var clientInfo = $(this).find('td:eq(1)').text();
+    var clientInfo = $(this).find('td:eq(1)').text(); //itemname
     $("#itemid").val(clientInfo);
 	});
 	 

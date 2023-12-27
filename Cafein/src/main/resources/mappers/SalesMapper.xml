@@ -8,9 +8,9 @@
 
 	<!-- 수주 등록 -->
 	<insert id="registPO" parameterType="com.cafein.domain.SalesVO">
-		INSERT INTO purchaseorder (postate, ordersdate, ordersduedate)
+		INSERT INTO purchaseorder (postate, ordersdate, ordersduedate, clientid, itemid, membercode)
 		VALUES (
-		#{postate}, #{ordersdate}, #{ordersduedate}
+		#{postate}, #{ordersdate}, #{ordersduedate}, #{clientind}, #{itemid}, #{membercode}
 		)
 	</insert>
 

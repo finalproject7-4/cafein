@@ -58,7 +58,6 @@ public class SalesController {
 //		return "redirect:/sales/POList";
 //	}
 	
-	
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
@@ -79,8 +78,8 @@ public class SalesController {
 		
 		return "/sales/POList";
 	}
-	
-	// 수주조회 - POST
+		
+	// 수주등록 - POST
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
 	public String registPOST(SalesVO svo, 
@@ -93,11 +92,11 @@ public class SalesController {
 
 		svo.setOrdersdate(Date.valueOf(ordersdate));
 		svo.setOrdersduedate(Date.valueOf(ordersduedate));
-	                                                                                 
+	                                         
+		
 		sService.registPO(svo);                                                      
 		logger.debug(" 글작성 완료! ");                                                   
          
-		
 		rttr.addFlashAttribute("result", "CREATEOK");                                
 	                                                                                 
 		logger.debug("/sales/registPO 이동");                                          
