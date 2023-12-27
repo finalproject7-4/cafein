@@ -142,7 +142,7 @@ public class StockController {
 		}
 	}
 	
-	// 재고량 변경
+	// 재고량 변경 (생산 [포장] + 반품)
 	@RequestMapping(value = "/updateStockQuantity", method = RequestMethod.POST)
 	public String updateStockQuantityPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
 		

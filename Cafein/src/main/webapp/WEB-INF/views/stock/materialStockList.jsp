@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<br>
-
 		<div class="col-12">
-		<div class="bg-light rounded h-100 p-4">
+		<div class="bg-light rounded h-100 p-4"  style="margin-top: 20px;">
 			<h2>자재 재고 관리</h2>
 			<div class="form-check form-check-inline">
   				<input class="form-check-input" type="radio" name="stocktype" id="materialRadio" value="자재" checked>
@@ -62,7 +60,7 @@
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
 									data-stockquantity="${slist.stockquantity }" data-itemname="${slist.itemname }" 
-									data-lotnumber="${slist.lotnumber }">
+									data-lotnumber="${slist.lotnumber }" data-itemtype=${slist.itemtype }>
  									실사 변경
 									</button>
 									</td>
@@ -72,7 +70,8 @@
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
 									data-itemname="${slist.itemname }" data-lotnumber="${slist.lotnumber }" 
-									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
+									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }" 
+									data-itemtype="${slist.itemtype }">
 									창고 이동
 									</button>
 									</c:if>
@@ -81,7 +80,8 @@
 									data-bs-toggle="modal" data-bs-target="#exampleModal3"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
 									data-itemname="${slist.itemname }" data-lotnumber="${slist.lotnumber }" 
-									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
+									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }" 
+									data-itemtype="${slist.itemtype }">
 									창고 이동
 									</button>
 									</c:if>
@@ -95,6 +95,150 @@
 					</tbody>
 				</table>
 			</div>
+			
+									<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO.prev }">
+      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+        					
+        				<!-- 페이지 블럭 Ajax 동적 이동 - prev (1) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockPrev').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   						            var prevPage = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var searchTxt = "${param.searchTxt}";
+
+   									var dataObject = {
+   										"page" : prevPage	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (searchTxt) {
+   									    dataObject.searchTxt = searchTxt;
+   									}
+   									
+   									console.log("Page Block clicked!", prevPage);
+   									
+        						$.ajax({
+       								url: "/material/materialStockList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#stockListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - prev (1) -->
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+    					
+    					<!-- 페이지 블럭 Ajax 동적 이동 - num (2) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNum').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+
+   						            var pageNum = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var searchTxt = "${param.searchTxt}";
+   									
+   									var dataObject = {
+   										"page" : pageNum	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (searchTxt) {
+   									    dataObject.searchTxt = searchTxt;
+   									}
+   									
+   									console.log("Page Block clicked!");
+   									
+        						$.ajax({
+       								url: "/material/materialStockList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#stockListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - num (2) -->
+
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO.next }">
+      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        				<span aria-hidden="true">&raquo;</span>
+      					</a>
+      					
+    					<!-- 페이지 블럭 Ajax 동적 이동 - next (3) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   						            var nextPage = $(this).data('page');
+   									
+   									var searchBtn = "${param.searchBtn}";
+   									var searchTxt = "${param.searchTxt}";
+   									
+   									var dataObject = {
+   										"page" : nextPage	
+   									};
+   									
+   									if (searchBtn) {
+   									    dataObject.searchBtn = searchBtn;
+   									}
+   									if (searchTxt) {
+   									    dataObject.searchTxt = searchTxt;
+   									}
+   									
+   									console.log("Page Block clicked!", nextPage);
+   									
+        						$.ajax({
+       								url: "/material/materialStockList",
+            						type: "GET",
+            						data: dataObject,
+            						success: function(data) {
+                						$("#stockListContainer").html(data);
+            						},
+           						 	error: function(error) {
+                						console.error("Error fetching data:", error);
+            						}
+        							});
+    							});
+							});
+						</script>
+						<!-- 페이지 블럭 Ajax 동적 이동 - next (3) -->      					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
+			
 		</div>
 	</div>	
 

@@ -37,11 +37,11 @@ public class QualityController {
 	// 품질 관리 통합 페이지 (생산 + 반품 / 자재)
 	// http://localhost:8088/quality/qualities
 	@GetMapping(value = "/qualities")
-	public void allQualityGET(HttpSession session) {
+	public void productQualityGET(HttpSession session) {
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
 		
 	}
-	
+
 	// http://localhost:8088/quality/productQualityList
 	// 품질 관리 (생산 + 반품) 목록
 	@GetMapping(value = "/productQualityList")
@@ -249,7 +249,7 @@ public class QualityController {
 	
 	// 자재 검수 입력 처리 - POST
 	@PostMapping(value = "/materialAudit")
-	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");

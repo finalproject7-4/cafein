@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<br>
 		<div class="col-12">
-		<div class="bg-light rounded h-100 p-4">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>생산 / 반품 품질 관리</h2>
 			<div class="form-check form-check-inline">
   				<input class="form-check-input" type="radio" name="type" id="productRadio" value="생산" checked>
@@ -28,7 +26,7 @@
 				<input type="date" name="endDate" required>
 				<input type="submit" value="검색">
 			</form>	
-		
+			<br>
 				<div class="table-responsive">
 					<table class="table">
 						<thead>

@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<br>
 		<div class="col-12">
-		<div class="bg-light rounded h-100 p-4">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>자재 품질 관리</h2>
 			<div class="form-check form-check-inline">
   				<input class="form-check-input" type="radio" name="type" id="productRadio" value="생산">
@@ -26,7 +24,7 @@
 				<input type="date" name="endDate" required>
 				<input type="submit" value="검색">
 			</form>	
-		
+			<br>		
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -94,7 +92,8 @@
 												data-itemid="${mlist.itemid }" data-itemcode="${mlist.itemcode }" 
 												data-itemname="${mlist.itemname }" data-auditbycode="${mlist.auditbycode }" 
 												data-productquantity="${mlist.productquantity }" data-auditquantity="${mlist.auditquantity }" 
-												data-normalquantity="${mlist.normalquantity }" data-defectquantity="${mlist.defectquantity }">
+												data-normalquantity="${mlist.normalquantity }" data-defectquantity="${mlist.defectquantity }" 
+												data-page="${param.page }">
  												자재검수
 											</button>
 										</c:if>
@@ -315,10 +314,13 @@
   <form action="/quality/materialAudit" method="POST">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (포장)</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">자재 검수</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      	<c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      	</c:if>
       	<div class="row">
  			<div class="col">
            		<label for="qualityid" class="col-form-label">품질관리ID:</label>

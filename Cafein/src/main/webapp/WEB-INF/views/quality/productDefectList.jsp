@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<br>
 	<div class="col-12">
-		<div class="bg-light rounded h-100 p-4">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>생산 / 반품 불량 현황</h2>
 			<input type="button" class="btn btn-sm btn-primary" value="블렌딩" id="blending2nd">
 			<input type="button" class="btn btn-sm btn-danger" value="냉각" id="cooling2nd">
@@ -17,7 +16,8 @@
 				</c:if>
 				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
 				<input type="submit" value="검색">
-			</form>			
+			</form>
+			<br>						
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
