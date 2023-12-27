@@ -138,8 +138,8 @@
                               <table class="table">
                                  <thead>
                                     <tr>
-                                       <th scope="col">납품처명</th>
-                                       <th scope="col">납품처코드</th>
+                                       <th scope="col">품명</th>
+                                       <th scope="col">품목코드</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -171,7 +171,7 @@
 					<div class="modal-body">
 						<form>
 							<div class="mb-3">
-								<label for="recipient-name" class="col-form-label">수주상태</label> <select class="form-select" id="floatingSelect"
+								<label for="recipient-name" class="col-form-label"><b>수주상태</b></label> <select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example">
 									<optgroup label="수주상태">
 										<option value="1">대기</option>
@@ -180,25 +180,29 @@
 										<option value="3">취소</option>
 									</optgroup>
 								</select>
-							</div>
+							</div><br>
+							<div class="row">
+								<div class="col">
+									<b>납품처</b><input id="client" class="form-control" id="floatingInput" placeholder="납품처">
+								</div>
+								<div class="col">
+									<b>품명</b><input id="items" class="form-control" id="floatingInput" placeholder="품명">
+								</div>
+							</div><br>
 							<div class="mb-3">
-								납품처<input id="client" class="form-control" id="floatingInput" placeholder="납품처">
+								<b>수량</b><input type="number" class="form-control" id="floatingInput" placeholder="숫자만 입력하세요">
 							</div>
+							<div class="row">
+								<div class="col">
+									<b>수주일자</b><input id="todaypo" type="text" class="form-control" id="floatingInput" placeholder="수주일자(클릭)">
+								</div>
+								<div class="col">
+									<b>완납예정일</b><input type="date" id="date" class="form-control" id="floatingInput" placeholder="완납예정일">
+								</div>
+							</div><br>
 							<div class="mb-3">
-								품명<input id="items" class="form-control" id="floatingInput" placeholder="품명">
-							</div>
-							<div class="mb-3">
-								수량<input type="number" class="form-control" id="floatingInput" placeholder="숫자만 입력하세요">
-							</div>
-							<div class="mb-3">
-								수주일자<input id="todaypo" type="text" class="form-control" id="floatingInput" placeholder="수주일자(클릭)">
-							</div>
-							<div class="mb-3">
-								완납예정일<input type="date" id="date" class="form-control" id="floatingInput" placeholder="완납예정일">
-							</div>
-							<div class="mb-3">
-								담당자<input class="form-control" id="floatingInput">
-							</div>
+									<b>담당자</b><input class="form-control" id="floatingInput">
+								</div>
 						</form>
 					</div>
 					<div class="modal-footer">
