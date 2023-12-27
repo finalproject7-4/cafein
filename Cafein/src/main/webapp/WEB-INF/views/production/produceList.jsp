@@ -29,7 +29,16 @@
 <!-- 달력 -->
 <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;&nbsp;&nbsp;
 
+<<<<<<< HEAD
 <!-- 달력 -->
+=======
+<input type="hidden" id="date" class="form-control" id="floatingInput"> <!-- 달력js파일이 공존하기위한 hidden값 -->
+생산기간 :
+<input type="text" class="m-2" id="datepicker1" name="startDate">
+~ <input type="text" class="m-2" id="datepicker2" name="endDate">
+<!-- 달력 -->
+
+>>>>>>> ymi
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
@@ -59,7 +68,7 @@
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedate" class="form-control" id="floatingInput" placeholder="생산일">
+								<input type="date" name="producedate" value="today()" class="date" id="floatingInput">
 							</div>
 						</div>
 							<div class="row">
