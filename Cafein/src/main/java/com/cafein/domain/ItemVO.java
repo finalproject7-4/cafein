@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ItemVO {
 
+	// item 테이블
 	private int itemid;
 	private String itemcode;
 	private String itemtype;
@@ -14,5 +15,8 @@ public class ItemVO {
 	private int itemweight;
 	private int itemprice;
 	private String available;
-
+	
+	//client 테이블
+	private String clientname; // 거래처명
+	
 }
