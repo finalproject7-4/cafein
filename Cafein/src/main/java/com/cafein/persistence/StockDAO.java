@@ -9,6 +9,9 @@ public interface StockDAO {
 	// 재고 목록 조회 (생산 [포장] + 반품)
 	public List<QualityVO> selectStockList() throws Exception;
 	
+	// 재고 목록 조회 검색 버튼 (자재)
+	public List<QualityVO> selectMaterialStockList(QualityVO vo) throws Exception;
+	
 	// 재고 입력
 	public int insertStockList(QualityVO vo) throws Exception;
 	

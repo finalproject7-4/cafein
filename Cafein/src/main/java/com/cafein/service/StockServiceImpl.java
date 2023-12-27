@@ -22,6 +22,13 @@ public class StockServiceImpl implements StockService {
 		return sdao.selectStockList();
 	}
 	
+	// 재고 목록 조회 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> materialStockList(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectMaterialStockList(vo);
+	}
+	
 	// roastedbean - LOT번호 조회
 	@Override
 	public String roastedbeanLotNum(QualityVO vo) throws Exception {

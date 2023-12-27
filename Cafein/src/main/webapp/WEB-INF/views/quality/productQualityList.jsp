@@ -171,7 +171,7 @@
 												</form>
 											</c:if>	
 											<c:if test="${!empty clist.process && clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장인 경우 -->
-												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
+												<form action="/material/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
@@ -180,7 +180,7 @@
 												</form>
 											</c:if>
 											<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 반품인 경우 -->
-												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
+												<form action="/material/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
@@ -202,7 +202,7 @@
 													</button>
 												</c:if>	
 												<c:if test="${!empty clist.process && clist.process.equals('포장')}"> <!-- 포장인 경우 -->
-												<form action="/stock/newStock" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
+												<form action="/material/newStock" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
@@ -225,7 +225,7 @@
 												</c:if>	
 												<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품')}"> <!-- 반품인 경우 -->
 													<c:if test="${!empty clist.registerstock && clist.registerstock.equals('N') }">
-													<form action="/stock/newStock" method="POST"> <!-- 재고로 -->
+													<form action="/material/newStock" method="POST"> <!-- 재고로 -->
 														<input type="hidden" value="${clist.qualityid }" name="qualityid">
 														<input type="hidden" value="${clist.itemid }" name="itemid">
 														<input type="hidden" value="${clist.normalquantity }" name="stockquantity">

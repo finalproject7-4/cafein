@@ -9,6 +9,9 @@ public interface StockService {
 	// 재고 목록 조회 (생산 [포장] + 반품)
 	public List<QualityVO> stockList() throws Exception;
 	
+	// 재고 목록 조회 검색 버튼 (자재)
+	public List<QualityVO> materialStockList(QualityVO vo) throws Exception;
+	
 	// roastedbean - LOT번호 조회
 	public String roastedbeanLotNum(QualityVO vo) throws Exception;
 	

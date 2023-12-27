@@ -99,7 +99,7 @@
 											</button>
 										</c:if>
 										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0 }"> <!-- 불량 X -->
-											<form action="/stock/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
+											<form action="/material/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
 												<input type="hidden" value="${mlist.qualityid }" name="qualityid">
 												<input type="hidden" value="${mlist.itemid }" name="itemid">
 												<input type="hidden" value="${mlist.receiveid }" name="receiveid">
@@ -109,7 +109,7 @@
 										</c:if>
 										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity != 0 }"> <!-- 불량 O -->
 											<c:if test="${mlist.normalquantity != 0 }"> <!-- 불량도 있고 정상도 있는 경우 -->
-												<form action="/stock/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
+												<form action="/material/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
 													<input type="hidden" value="${mlist.qualityid }" name="qualityid">
 													<input type="hidden" value="${mlist.itemid }" name="itemid">
 													<input type="hidden" value="${mlist.receiveid }" name="receiveid">

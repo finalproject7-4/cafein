@@ -18,7 +18,7 @@ import com.cafein.domain.QualityVO;
 import com.cafein.service.StockService;
 
 @Controller
-@RequestMapping(value = "/stock/*")
+@RequestMapping(value = "/material/*")
 public class StockController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
@@ -27,20 +27,32 @@ public class StockController {
 	private StockService sService;
 	
 	// 재고 관리 통합 페이지 (자재 / 생산 + 반품)
-	// http://localhost:8088/stock/stock
+	// http://localhost:8088/material/stock
 	@GetMapping(value = "/stock")
 	public void allStockGET(HttpSession session) {
 		
 	}
 	
-	// http://localhost:8088/stock/productStockList
+	// http://localhost:8088/material/productStockList
 	// 재고 목록 조회 (생산 [포장] + 반품)
 	@RequestMapping(value = "/productStockList", method = RequestMethod.GET)
 	public void productStockListGET(Model model, HttpSession session) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		List<QualityVO> resultList = sService.stockList(); // 재고 목록
-		List<QualityVO> storageList = sService.storageList(); // 창고 목록
+		List<QualityVO> resultList = sService.stockList(); // 생산 + 반품 재고 목록
+		List<QualityVO> storageList = sService.storageList(); // 생산 + 반품 창고 목록
+		
+		model.addAttribute("list", resultList);
+		model.addAttribute("slist", storageList);
+	}
+	
+	// 재고 목록 조회 검색 버튼 (자재)
+	@GetMapping(value = "/materialStockList")
+	public void materialStockListGET(Model model, HttpSession session, QualityVO vo) throws Exception{
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		
+		List<QualityVO> resultList = sService.materialStockList(vo); // 자재 재고 목록
+		List<QualityVO> storageList = sService.storageList(); // 자재 창고 목록
 		
 		model.addAttribute("list", resultList);
 		model.addAttribute("slist", storageList);
@@ -59,7 +71,7 @@ public class StockController {
 		}else {
 		String workerbycode = (String) session.getAttribute("membercode");
 		vo.setWorkerbycode(workerbycode);
-		vo.setLotnumber(sService.roastedbeanLotNum(vo));
+		vo.setLotnumber(sService.roastedbeanLotNum(vo)); // 생산 LOT 번호 조회
 		
 		int result = sService.newStock(vo);
 		if(result == 0) {
@@ -72,7 +84,7 @@ public class StockController {
 		}
 		// 재고 등록 여부 업데이트
 		sService.registerStockY(vo);
-		return "redirect:/stock/stock";
+		return "redirect:/material/stock";
 		}
 	}
 	
@@ -89,7 +101,7 @@ public class StockController {
 		}else {
 		String workerbycode = (String) session.getAttribute("membercode");
 		vo.setWorkerbycode(workerbycode);
-		vo.setLotnumber(sService.receiveLotNum(vo));
+		vo.setLotnumber(sService.receiveLotNum(vo)); // 입고 LOT 번호 조회
 		
 		int result = sService.newStock(vo);
 		if(result == 0) {
@@ -102,7 +114,7 @@ public class StockController {
 		}
 		// 재고 등록 여부 업데이트
 		sService.registerStockY(vo);
-		return "redirect:/stock/stock";
+		return "redirect:/material/stock";
 		}
 	}
 	
@@ -123,7 +135,7 @@ public class StockController {
 			logger.debug(" 재고량 변경 성공! ");			
 		}
 		
-		return "redirect:/stock/stock";
+		return "redirect:/material/stock";
 	}
 	
 	// 창고 변경 (생산 [포장] + 반품)
@@ -143,19 +155,6 @@ public class StockController {
 			logger.debug(" 창고 변경 성공! ");			
 		}
 		
-		return "redirect:/stock/stock";
+		return "redirect:/material/stock";
 	}
-	
-	// 재고 목록 조회 (자재)
-	@RequestMapping(value = "/materialStockList", method = RequestMethod.GET)
-	public void stockMListGET(Model model, HttpSession session) throws Exception{
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
-		
-		List<QualityVO> resultList = sService.stockList();
-		List<QualityVO> storageList = sService.storageList();
-		
-		model.addAttribute("list", resultList);
-		model.addAttribute("slist", storageList);
-	}
-
 }

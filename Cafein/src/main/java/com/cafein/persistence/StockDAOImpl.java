@@ -29,6 +29,12 @@ public class StockDAOImpl implements StockDAO {
 		return sqlSession.selectList(NAMESPACE + ".selectStockList");
 	}
 	
+	// 재고 목록 조회 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> selectMaterialStockList(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialStockList", vo);
+	}
 	
 	// roastedbean - LOT번호 조회
 	@Override
