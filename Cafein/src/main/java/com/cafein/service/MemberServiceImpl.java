@@ -34,20 +34,20 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberVO memberInfo(int memberid) throws Exception {
-		logger.debug(" Service : 회원 정보 조회 memberInfo(int memberid) ");
+		logger.debug(" Service : 직원 정보 조회 memberInfo(int memberid) ");
 		return mdao.getMember(memberid);
 	}
 
 	@Override
-	public void memberUpdate(MemberVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public int memberUpdate(MemberVO vo) throws Exception {
+		logger.debug(" Service : 직원 정보 수정 memberUpdate(MemberVO vo) ");
+		return mdao.updateMember(vo);
 	}
 
 	@Override
-	public void memberDelete(MemberVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public int memberDelete(MemberVO vo) throws Exception {
+		logger.debug(" Service : 직원 정보 비활성화 memberDelete(MemberVo vo) ");
+		return mdao.deleteMember(vo);
 	}
 
 	
