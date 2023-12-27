@@ -10,23 +10,32 @@
 <h6 class="mb-4">생산지시조회</h6>
 
 <!-- 기타 조회 -->
+
+
 <div >
-	<form name="search" action="produceList" method="get">
-		<select name="searchoption">
-			<option selected>선택</option>
-			<option value="itemname">제품명</option>
-			<option value="produceline">생산라인</option>
-			<option value="process">공정과정</option>
-		</select>
-			<input type="text" name="search">
-		<button type="button" class="btn btn-dark m-2">조회</button>
-		</form>
-	</div>
 <form action="produceList" method="get">
-
 <!-- 제품명: <input type="text" name="itemname" class="m-2"> -->
-
-
+<input type="radio" id="produceline" value="생산라인" name="search" checked> 생산라인
+<select id="producelineSel" name="produceline">
+			<option value="1">1라인</option>
+			<option value="2">2라인</option>
+			<option value="3">3라인</option>
+			<option value="4">4라인</option>
+			<option value="5">5라인</option>
+			<option value="6">6라인</option>
+</select>
+<input type="radio" id="process" value="공정과정" name="search"> 공정과정
+<select id="processSel" name="process" style="display:none;">
+			<option value="블렌딩">블렌딩</option>
+			<option value="로스팅">로스팅</option>
+			<option value="포장">포장</option>
+</select>
+<input type="radio" id="itemname" value="제품명" name="search"> 제품명
+<select id="itemnameSel" name="itemname" style="display:none;">
+	<c:forEach var="iList" items="${itemList }" begin="0" step="1">
+			<option value="${iList.itemname }">${iList.itemname}</option>
+	</c:forEach>
+</select>
 <!-- 조회 달력 -->
 <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
 <!-- 조회 달력 -->
@@ -35,6 +44,7 @@
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
+</div>
 </div>
 </div>
 
@@ -53,9 +63,9 @@
 								<label for="produce" class="col-form-label">공정과정</label> <select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="process">
 									<optgroup label="공정과정">
-										<option value="1">블렌딩</option>
-										<option value="2">로스팅</option>
-										<option value="3">포장</option>
+										<option value="블렌딩">블렌딩</option>
+										<option value="로스팅">로스팅</option>
+										<option value="포장">포장</option>
 									</optgroup>
 								</select>
 							</div>
@@ -72,14 +82,15 @@
 										<option value="1">1라인</option>
 										<option value="2">2라인</option>
 										<option value="3">3라인</option>
-										<option value="3">4라인</option>
-										<option value="3">5라인</option>
-										<option value="3">6라인</option>
+										<option value="4">4라인</option>
+										<option value="5">5라인</option>
+										<option value="6">6라인</option>
 									</optgroup>
 								</select>
 							</div>
 							<div class="col">
-								<label for="produce" class="col-form-label">생산타임</label> <select class="form-select" id="floatingSelect"
+								<label for="produce" class="col-form-label">생산타임</label> 
+								<select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="producetime">
 									<optgroup label="생산타임">
 										<option value="1">1타임</option>
@@ -93,9 +104,15 @@
 							</div>
 					<div class="row">
 							<div class="col">
-								<label for="itemname" class="col-form-label">제품명</label>
-								<input type="text" id="itemname" class="form-control" id="floatingInput" data-toggle="modal" data-target="#modal2">
-							</div>
+								<label for="itemname" class="col-form-label">제품명</label> 
+							
+								<select class="form-select" id="floatingSelect" name="itemname">
+								<c:forEach var="iList" items="${itemList }" begin="0" step="1">
+									<option value="${iList.itemname }">${iList.itemname}</option>
+								</c:forEach>
+								</select>
+							
+						</div>
 							<div class="col">
 								<label for="amount" class="col-form-label">생산량</label>
 								<input type="number" id="amount" class="form-control" id="floatingInput" min="20000" max="60000" step="10000" placeholder="생산량(g)">
@@ -248,6 +265,26 @@
  		formObj3.attr("method","GET");
  		formObj3.submit();
  	});
+	
+	/* 라디오버튼 검색 */
+	$("input[name='search']").change(function(){
+	var test = $("input[name='search']:checked").val();
+	if(test=='생산라인'){
+	$('#producelineSel').show();
+	$('#processSel').hide();
+	$('#itemnameSel').hide();
+	}else if(test=='공정과정'){
+	$('#producelineSel').hide();
+	$('#processSel').show();	
+	$('#itemnameSel').hide();
+	}else if(test=='제품명'){
+	$('#producelineSel').hide();
+	$('#processSel').hide();	
+	$('#itemnameSel').show();
+	}
+	
+	});
+
 	
 	
 	
