@@ -4,10 +4,9 @@
 
  $(function() {
 	 
-<<<<<<< HEAD
+
 	 //========================== 지시 조회 달력 시작 (start, end) 사용XXXX ============================
-=======
->>>>>>> ymi
+
 	 	//=============startDate 선택=====================
 	 
        //input을 datepicker로 선언
@@ -120,5 +119,17 @@
                endDateInput.value = startDateInput.value;
            }
        });
+       
+       /*모달창 달력 이전날짜 비활성화*/
+   		var now_utc = Date.now(); // 현재 날짜를 밀리초로
+   		var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+   		var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+   	
+   		// class="date"인 모든 요소에 날짜 비활성화
+   		document.querySelectorAll('.date').forEach(function(input) {
+   			input.setAttribute('min', today);
+   		});
+       
+       
      
    })(jQuery);

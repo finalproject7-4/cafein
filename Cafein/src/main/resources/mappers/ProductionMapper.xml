@@ -30,6 +30,7 @@
 		<if test="qualitycheck != null">
 		and qualitycheck like concat('%',"검사전",'%')
 		</if>
+		
 		order by produceid desc
 		</where>
 	

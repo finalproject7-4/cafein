@@ -2,13 +2,14 @@ package com.cafein.domain;
 
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
 @Data
 public class ProduceVO {
 	private Integer produceid;
-	private Date submitdate;
+	private Timestamp submitdate;
 	private Date producedate;
 	private int produceline;
 	private int itemid;
