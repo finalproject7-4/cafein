@@ -14,10 +14,13 @@
 			<option value="itemname">품명</option>
 		</select>
 		<input type="text" name="search">
-		<span style="margin-left: 15%;">
-			발주일자 <input type="text" class="m-2" id="datepicker1" name="startDate"> ~ <input type="text" class="m-2" id="datepicker2" name="endDate">			
+		<span style="margin-left: 2.5%;">
+			발주일자 <input type="date" class="m-2" name="startDate"> ~ <input type="date" class="m-2" name="endDate">			
 		</span>
-		<span style="margin-left: 14%;">
+		<span style="margin-left: 2.5%;">
+			납기일자 <input type="date" class="m-2" name="startDate"> ~ <input type="date" class="m-2" name="endDate">			
+		</span>
+		<span style="margin-left: 3.5%;">
 			<button type="button" class="btn btn-sm btn-dark m-2">조회</button>
 		</span>	
 		</form>
@@ -27,16 +30,16 @@
 	<!-- 발주 목록 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(ordersList)} 건</span>
-		<span style="margin-left: 81%;">
+		<span style="margin-left: 90%;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>
-			<button type="button" class="btn btn-sm btn-dark m-1">수정</button>
-			<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+			<!-- <button type="button" class="btn btn-sm btn-dark m-1">수정</button> -->
+			<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
 		</span>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
 				<thead>
-					<tr>
+					<tr style="text-align: center;">
 						<th scope="col">
 							<input type="checkbox" id="delete-list-all" name="delete-list" data-group="delete-list">
 						</th>					
@@ -50,11 +53,12 @@
 						<th scope="col">발주일자</th>
 						<th scope="col">납기일자</th>
 						<th scope="col">담당자명</th>
+						<th scope="col">관리</th>
 					</tr>
 				</thead>
 				<tbody>
 				<c:forEach var="ordersList" items="${ordersList }">
-					<tr>
+					<tr style="text-align: center;">
 						<td>
 							<input type="checkbox" id="delete-list-all" name="delete-list" data-group="delete-list">
 						</td>					
@@ -72,6 +76,10 @@
 							<fmt:formatDate value="${ordersList.deliverydate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
 						<td>${ordersList.membercode }</td> <!-- session 값 사용하여 저장 -->
+						<td>
+							<button type="button" class="btn btn-sm btn-dark m-1">수정</button>
+							<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+						</td>
 					</tr>
 				</c:forEach>	
 				</tbody>
