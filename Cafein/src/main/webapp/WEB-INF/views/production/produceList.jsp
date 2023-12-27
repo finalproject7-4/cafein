@@ -8,28 +8,27 @@
 <div class="col-12" style="margin-top:20px;">
 <div class="bg-light rounded h-100 p-4">
 <h6 class="mb-4">생산지시조회</h6>
-<form action="produceList" method="get">
 
-
-<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" action="" method="get">
+<!-- 기타 조회 -->
+<div >
+	<form name="search" action="produceList" method="get">
 		<select name="searchoption">
-			<option selected="">선택</option>
+			<option selected>선택</option>
 			<option value="itemname">제품명</option>
-			<option value="produceline">라인번호</option>
+			<option value="produceline">생산라인</option>
+			<option value="process">공정과정</option>
 		</select>
 			<input type="text" name="search">
-		<button type="button" class="btn btn-sm btn-dark m-2">조회</button>
+		<button type="button" class="btn btn-dark m-2">조회</button>
 		</form>
 	</div>
+<form action="produceList" method="get">
 
-제품명: <input type="text" name="itemname" class="m-2">
+<!-- 제품명: <input type="text" name="itemname" class="m-2"> -->
 
-
-<!-- 달력 -->
-<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;&nbsp;&nbsp;
-
-<!-- 달력 -->
+<!-- 조회 달력 -->
+<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+<!-- 조회 달력 -->
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>

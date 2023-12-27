@@ -110,5 +110,7 @@
                endDateInput.value = startDateInput.value;
            }
        });
+       
+       
      
    })(jQuery);
