@@ -10,16 +10,26 @@
 <h6 class="mb-4">생산지시조회</h6>
 <form action="produceList" method="get">
 
+
+<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+		<form name="search" action="" method="get">
+		<select name="searchoption">
+			<option selected="">선택</option>
+			<option value="itemname">제품명</option>
+			<option value="produceline">라인번호</option>
+		</select>
+			<input type="text" name="search">
+		<button type="button" class="btn btn-sm btn-dark m-2">조회</button>
+		</form>
+	</div>
+
 제품명: <input type="text" name="itemname" class="m-2">
 
 
 <!-- 달력 -->
+<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;&nbsp;&nbsp;
 
-생산기간 : <input type="text" class="m-2" id="datepicker1" name="startDate">
-~ <input type="text" class="m-2" id="datepicker2" name="endDate">
 <!-- 달력 -->
-<!-- Date: <input type="text" id="datepicker3" name="startDate">
-~  <input type="text" id="datepicker4" name="endDate"> -->
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
@@ -175,7 +185,7 @@
 <table class="table">
 <thead>
 <tr>
-<th scope="col">No.</th>
+<th scope="col">번호</th>
 <th scope="col">등록일</th>
 <th scope="col">생산일</th>
 <th scope="col">제품명</th>
