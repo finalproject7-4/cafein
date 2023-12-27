@@ -10,19 +10,15 @@
 <div class="bg-light rounded h-100 p-4">
 
 <!-- 납품처/코드 -->
-<div class="form-floating mb-3">
-<input name="clientid" type="text" class="form-control" id="clientid" placeholder="납품처/코드(클릭)" autocomplete="off" >
-<label for="floatingInput">납품처/코드</label>
-</div>
+납품처/코드
+<input id="clientid" name="clientid" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
 
 품목명/코드
-<div class="form-floating mb-3">
-<input name="itemid" type="text" class="form-control" id="itemid" placeholder="Password">
-<label for="floatingPassword">품목명/코드</label>
-</div>
+<input id="itemid" name="itemid" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
+
 
 수주상태
-<select name="postate" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+<select name="postate" class="form-select mb-3" aria-label="Default select example">
 <optgroup label="수주상태">
 <option value="1">대기</option>
 <option value="2">진행</option>
@@ -32,9 +28,7 @@
 </select>
 
 수량
-<div class="form-floating mb-3">
-<input name="pocnt" type="number" class="form-control" id="pocnt" placeholder="숫자만 입력하세요">
-</div>
+<input id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example">
 
 <div class="row">
 <div class="col">
@@ -50,9 +44,8 @@
 <br>
 
 담당자
-<div class="form-floating mb-3">
-<input name="membercode" type="text" class="form-control" id="membercode" placeholder="담당자" autocomplete="off">
-</div>
+<input id="membercode" name="membercode" class="form-control mb-3" type="number" placeholder="담당자" autocomplete="off">
+
 
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" onclick="location.href='/sales/POList';">취소</button>
@@ -86,11 +79,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${cliPick}" var="cp">
+								<c:forEach items="${cliList}" var="cli">
 									<tr class="clientset">
-										<td>${cp.poid }</td>
-										<td>${cp.clientname }</td>
-										<td>${cp.clientcode }</td>
+										<td>${cli.clientid }</td>
+										<td>${cli.clientname }</td>
+										<td>${cli.clientcode }</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -125,11 +118,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${cliPick}" var="cp">
+								<c:forEach items="${iList}" var="item">
 									<tr class="itemset">
-										<td>${cp.poid }</td>
-										<td>${cp.itemname }</td>
-										<td>${cp.itemcode }</td>
+										<td>${item.itemid }</td>
+										<td>${item.itemname }</td>
+										<td>${item.itemcode }</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -145,6 +138,16 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	// 클릭한 행의 정보를 가져와서 clientid에 입력
+   $(".clientset").click(function() {
+    var clientInfo = $(this).find('td:eq(1)').text() + " / " + $(this).find('td:eq(2)').text();
+    $("#clientid").val(clientInfo);
+	});
+   $(".itemset").click(function() {
+    var clientInfo = $(this).find('td:eq(1)').text() + " / " + $(this).find('td:eq(2)').text();
+    $("#itemid").val(clientInfo);
+	});
+	 
 	//납품처 모달
 	$("#clientid").click(function() {
 	    $("#clientModal").modal('show');

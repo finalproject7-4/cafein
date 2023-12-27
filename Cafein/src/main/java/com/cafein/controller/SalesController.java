@@ -11,10 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cafein.domain.ClientVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.service.SalesService;
 
@@ -30,9 +28,17 @@ public class SalesController {
 	//수주등록 -  GET
 	// http://localhost:8088/sales/registPO
 	@RequestMapping(value = "/registPO", method = RequestMethod.GET)
-	public void registGET() throws Exception {
+	public String registGET(Model model) throws Exception {
 		logger.debug("/sales/registPO -> registGET() 호출 ");
 		logger.debug("/sales/registPO.jsp 뷰페이지로 이동");
+		
+		model.addAttribute("cliList", sService.registCli());
+		logger.debug("cliList",sService.registCli());
+
+		model.addAttribute("iList", sService.registItem());
+		logger.debug("iList",sService.registItem());
+		
+		return "sales/registPO";
 	}
 	
 	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
@@ -42,8 +48,10 @@ public class SalesController {
 
 		sService.registPO(svo);
 		logger.debug(" 글작성 완료! ");
+		
 		model.addAttribute("POList", sService.AllPOList());
 		logger.debug("POList",sService.AllPOList());
+		
 		rttr.addFlashAttribute("result", "CREATEOK");
 
 		logger.debug("/sales/registPO 이동");
@@ -60,9 +68,6 @@ public class SalesController {
 		List<SalesVO> POList = sService.AllPOList();
 		logger.debug(" @@@ " + POList);
 
-		List<ClientVO> cliPick = sService.getAddCliList();
-		logger.debug(" @@@ " + cliPick);
-		
 		model.addAttribute("POList", POList);
 		model.addAttribute("result", result);
 		return "/sales/POList";

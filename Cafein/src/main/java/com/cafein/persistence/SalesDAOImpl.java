@@ -37,11 +37,21 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
 
+	// 수주 등록-납품처
 	@Override
-	public List<ClientVO> getAddCliList() throws Exception {
-		logger.debug("추가적인 수주조회 - 납품처");
-		return sqlSession.selectList(NAMESPACE+".clipick");
+	public List<SalesVO> registCli() throws Exception {
+		logger.debug("수주조회-납품처");
+		return sqlSession.selectList(NAMESPACE+".cliList");
 	}
+
+	// 수주 등록-품목
+	@Override
+	public List<SalesVO> registItem() throws Exception {
+		logger.debug("수주조회-품목");
+		return sqlSession.selectList(NAMESPACE+".iList");
+	}
+
+	
 	
 	
 

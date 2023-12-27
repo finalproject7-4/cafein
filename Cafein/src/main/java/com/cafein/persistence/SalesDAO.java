@@ -13,6 +13,9 @@ public interface SalesDAO {
 	// 수주 조회
 	public List<SalesVO> getPOList() throws Exception;
 
-	//수주조회 - 납품처
-	public List<ClientVO> getAddCliList() throws Exception;
+	// 수주등록 - 납품처
+	public List<SalesVO> registCli() throws Exception;
+	// 수주등록 - 품목
+	public List<SalesVO> registItem() throws Exception;
+	
 }

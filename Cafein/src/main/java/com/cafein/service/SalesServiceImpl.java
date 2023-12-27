@@ -36,11 +36,21 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.getPOList();
 	}
 
+	/*수주등록 - 납품처 */
 	@Override
-	public List<ClientVO> getAddCliList() throws Exception {
-		logger.debug("getAddCliList()");
-		return sdao.getAddCliList();
+	public List<SalesVO> registCli() throws Exception {
+		logger.debug("registCli()");
+		return sdao.registCli();
 	}
+
+	/*수주등록 - 품목 */
+	@Override
+	public List<SalesVO> registItem() throws Exception {
+		logger.debug("registItem()");
+		return sdao.registItem();
+	}
+	
+	
 
 
 	
