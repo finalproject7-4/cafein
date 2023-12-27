@@ -55,7 +55,7 @@
 		
 		// 목록 버튼 클릭 시 목록으로 페이지 이동
 		$(".btn-primary").click(function(){
-			location.href='/board/listAll';
+			location.href='/information/members';
 		});
 		
 		var formObj = $('form[role="form"]');
@@ -64,14 +64,14 @@
 		// 수정 버튼 클릭 시, 직원 번호 정보를 가지고 submit
 		// 이동하는 페이지 주소 변경, 전달방식 변경 POST -> GET
 		$(".btn-warning").click(function(){
-			formObj.attr("action","/member/update");
+			formObj.attr("action","/information/memberUpdate");
 			formObj.attr("method","GET");
 			formObj.submit();
 		});
 		
-		// 삭제 버튼 클릭 시, 글 번호를 사용해서 삭제 처리
+		// 삭제 버튼 클릭 시, 직원 번호를 사용해서 삭제 처리
 		$(".btn-danger").click(function(){
-			formObj.attr("action","/member/delete");
+			formObj.attr("action","/information/memberDelete");
 			formObj.submit();
 		});
 	});
