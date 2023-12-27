@@ -13,8 +13,16 @@
   				<input class="form-check-input" type="radio" name="stocktype" id="productRadio" value="완제품" checked>
   				<label class="form-check-label" for="productRadio">완제품</label>
 			</div>
-			<form action="/material/productStockList" method="POST">
-				<input type="text" name="search" placeholder="제품명을 입력하세요">
+			<br>
+			<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
+			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
+			<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
+			
+			<form action="/material/productStockList" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+				</c:if>
+				<input type="text" name="searchText" placeholder="제품명을 입력하세요">
 				<input type="submit" value="검색">
 			</form>
 				<div class="table-responsive">
@@ -39,12 +47,12 @@
 							<c:forEach var="slist" items="${list }" varStatus="loop">
 								<tr>
 									<th>${slist.stockid }</th>
-									<th>${slist.itemtype }</th>
-									<th>${slist.itemcode }</th>
-									<th>${slist.itemname }</th>
-									<th>${slist.lotnumber }</th>
-									<th>${slist.weight }g</th>
-									<th>
+									<td>${slist.itemtype }</td>
+									<td>${slist.itemcode }</td>
+									<td>${slist.itemname }</td>
+									<td>${slist.lotnumber }</td>
+									<td>${slist.weight }g</td>
+									<td>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개
 									</c:if>
@@ -58,8 +66,8 @@
 									data-lotnumber="${slist.lotnumber }">
  									실사 변경
 									</button>
-									</th>
-									<th>${slist.storagecode } - ${slist.storagename }
+									</td>
+									<td>${slist.storagecode } - ${slist.storagename }
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
@@ -67,11 +75,11 @@
 									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
 									창고 이동
 									</button>
-									</th>
-									<th>${slist.workerbycode }</th>
-									<th>${slist.registerationdate }</th>
-									<th>${slist.updatedate }</th>
-									<th>${slist.updatehistory }</th>
+									</td>
+									<td>${slist.workerbycode }</td>
+									<td>${slist.registerationdate }</td>
+									<td>${slist.updatedate }</td>
+									<td>${slist.updatehistory }</td>
 								</tr>
 						</c:forEach>
 					</tbody>
@@ -307,3 +315,86 @@ $(document).ready(function(){
 });
 </script>
 <!-- 라디오 버튼 이동 -->
+
+<!-- 페이지 Ajax 동적 이동 (1) -->
+<script>
+$(document).ready(function() {
+    // 원자재 버튼 클릭
+    $("#produce").click(function() {
+        fetchData("생산");
+    });
+
+    // 부자재 버튼 클릭
+    $("#return").click(function() {
+        fetchData("반품");
+    });
+
+    // 전체 버튼 클릭
+    $("#allproduct").click(function() {
+        $.ajax({
+            url: "/material/productStockList",
+            type: "GET",
+            success: function(data) {
+                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+                $("#stockListContainer").html(data);
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+
+function fetchData(searchBtnValue) {
+    $.ajax({
+        url: "/material/productStockList",
+        type: "GET",
+        data: {
+        	searchBtn: searchBtnValue
+        },
+        success: function(data) {
+            // 성공적으로 데이터를 받아왔을 때 처리할 코드
+            $("#stockListContainer").html(data);
+        },
+        error: function(error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+</script>
+<!-- 페이지 Ajax 동적 이동 (1) -->
+
+<!-- 페이지 Ajax 동적 이동 (2) -->
+<script>
+$(document).ready(function() {
+    // 폼의 submit 이벤트 감지
+    $("form[action='/material/productStockList']").submit(function(event) {
+        event.preventDefault(); // 기본 폼 제출 동작 방지
+
+        // 폼 데이터 수집
+        let formData = {
+            searchText: $("input[name='searchText']").val()
+        };
+
+        // 선택된 검색 버튼 값이 있으면 추가
+        if ($("input[name='searchBtn']").length > 0) {
+            formData.searchBtn = $("input[name='searchBtn']").val();
+        }
+
+        // AJAX 요청 수행
+        $.ajax({
+            url: "/material/productStockList",
+            type: "GET",
+            data: formData,
+            success: function(data) {
+                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+                $("#stockListContainer").html(data); // 결과를 화면에 표시
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 페이지 Ajax 동적 이동 (2) -->
