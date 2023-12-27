@@ -43,15 +43,14 @@ ${result } <br>
 					id="complete">완료</button>
 			</form>
 		</div>
-		
+
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
 				<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-				<span id="buttonset1"><button type="button" class="btn btn-dark m-2" onclick="location.href='/sales/registPO';">신규 등록</button>
+			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>			
 			<button type="button" class="btn btn-dark m-2">수정</button>
 			<button type="button" class="btn btn-dark m-2">삭제</button></span>
 				<div class="table-responsive">
-
 					<table class="table">
 						<thead>
 							<tr>
@@ -98,6 +97,7 @@ ${result } <br>
 				</div>
 			</div>
 		</div>
+		<jsp:include page="registPO.jsp"/>
 		
 		<!-- 납품처 조회 모달 -->
         <div class="modal fade" id="clientSM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -39,8 +39,6 @@
 <!-- 조회 달력 -->
 <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
 <!-- 조회 달력 -->
-
-
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>

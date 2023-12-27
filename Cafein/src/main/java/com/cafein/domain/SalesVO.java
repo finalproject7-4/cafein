@@ -1,6 +1,8 @@
 package com.cafein.domain;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -14,9 +16,9 @@ public class SalesVO {
 	private int clientid;
 	private int itemid;
 	private int pocnt;
-	private Timestamp ordersdate;
-	private Timestamp updatedate;
-	private Timestamp ordersduedate;
+	private Date ordersdate;
+	private Date updatedate;
+	private Date ordersduedate;
 	private String membercode;
 	
 	//client 테이블
