@@ -10,16 +10,35 @@
 <h6 class="mb-4">생산지시조회</h6>
 <form action="produceList" method="get">
 
+
+<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+		<form name="search" action="" method="get">
+		<select name="searchoption">
+			<option selected="">선택</option>
+			<option value="itemname">제품명</option>
+			<option value="produceline">라인번호</option>
+		</select>
+			<input type="text" name="search">
+		<button type="button" class="btn btn-sm btn-dark m-2">조회</button>
+		</form>
+	</div>
+
 제품명: <input type="text" name="itemname" class="m-2">
 
 
 <!-- 달력 -->
+<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">&nbsp;&nbsp;&nbsp;&nbsp;
 
-생산기간 : <input type="text" class="m-2" id="datepicker1" name="startDate">
+<<<<<<< HEAD
+<!-- 달력 -->
+=======
+<input type="hidden" id="date" class="form-control" id="floatingInput"> <!-- 달력js파일이 공존하기위한 hidden값 -->
+생산기간 :
+<input type="text" class="m-2" id="datepicker1" name="startDate">
 ~ <input type="text" class="m-2" id="datepicker2" name="endDate">
 <!-- 달력 -->
-<!-- Date: <input type="text" id="datepicker3" name="startDate">
-~  <input type="text" id="datepicker4" name="endDate"> -->
+
+>>>>>>> ymi
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
@@ -49,7 +68,7 @@
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedate" value="today()" class="form-control" id="floatingInput" placeholder="생산일">
+								<input type="date" name="producedate" value="today()" class="date" id="floatingInput">
 							</div>
 						</div>
 							<div class="row">
@@ -175,7 +194,7 @@
 <table class="table">
 <thead>
 <tr>
-<th scope="col">No.</th>
+<th scope="col">번호</th>
 <th scope="col">등록일</th>
 <th scope="col">생산일</th>
 <th scope="col">제품명</th>
@@ -240,20 +259,6 @@
 	
 	
 	/* 모달창 */
-	
-	 /*달력 이전날짜 비활성화*/
-	var now_utc = Date.now(); // 현재 날짜를 밀리초로
-	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
-	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
-	
-	//id="date"
-	document.getElementById("date").setAttribute("min", today);
-	
-	// class="date"인 모든 요소에 날짜 비활성화
-	document.querySelectorAll('.date').forEach(function(input) {
-	  input.setAttribute('min', today);
-	});
-	
 	
 	var exampleModal = document.getElementById('exampleModal')
 	exampleModal.addEventListener('show.bs.modal', function (event) {
