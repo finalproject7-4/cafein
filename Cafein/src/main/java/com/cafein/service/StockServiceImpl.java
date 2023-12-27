@@ -15,18 +15,32 @@ public class StockServiceImpl implements StockService {
 	@Inject
 	private StockDAO sdao;
 
-	// 재고 목록 조회 (생산 [포장] + 반품)
+	// 재고 목록 조회 검색 버튼 (생산 [포장] + 반품)
 	@Override
-	public List<QualityVO> stockList() throws Exception{
+	public List<QualityVO> stockList(QualityVO vo) throws Exception{
 		// TODO Auto-generated method stub
-		return sdao.selectStockList();
+		return sdao.selectStockList(vo);
 	}
 	
+	// 재고 목록 조회 검색 버튼 개수 조회 (생산 [포장] + 반품)
+	@Override
+	public Integer stockListCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectStockListCount(vo);
+	}
+
 	// 재고 목록 조회 검색 버튼 (자재)
 	@Override
 	public List<QualityVO> materialStockList(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return sdao.selectMaterialStockList(vo);
+	}
+	
+	// 재고 목록 조회 검색 버튼 개수 조회 (자재)
+	@Override
+	public Integer materialStockListCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectMatrialStockListCount(vo);
 	}
 	
 	// roastedbean - LOT번호 조회
@@ -70,6 +84,20 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		return sdao.selectStorageList();
 	}
+	
+	// 창고 목록 조회 (원자재)
+	@Override
+	public List<QualityVO> rawmaterialStorageList() throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectRawMaterialStorageList();
+	}
+
+	// 창고 목록 조회 (부자재)
+	@Override
+	public List<QualityVO> submaterialStorageList() throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectSubMaterialStorageList();
+	}
 
 	// 창고 변경 (생산 [포장] + 반품)
 	@Override
@@ -84,6 +112,7 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		sdao.updateRegisterStock(vo);
 	}
+
 	
 	
 	

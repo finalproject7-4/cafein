@@ -59,6 +59,7 @@
 									</button>
 									</th>
 									<th>${slist.storagecode }-${slist.storagename }
+									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('원자재') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
@@ -66,6 +67,16 @@
 									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
 									창고 이동
 									</button>
+									</c:if>
+									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('부자재') }">
+									<button type="button" class="btn btn-danger btn-sm" 
+									data-bs-toggle="modal" data-bs-target="#exampleModal3"
+									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
+									data-itemname="${slist.itemname }" data-lotnumber="${slist.lotnumber }" 
+									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
+									창고 이동
+									</button>
+									</c:if>
 									</th>
 									<th>${slist.workerbycode }</th>
 									<th>${slist.registerationdate }</th>
@@ -133,13 +144,134 @@
 </div>
 <!-- 모달창1 -->
 
-<!-- 모달창2 -->
+<!-- 모달 1 출력 -->
+<script>
+$(document).ready(function() {
+    let myModal = document.getElementById('exampleModal');
+    myModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
+        let stockId = button.getAttribute('data-stockid'); // stockid
+        let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let nowQuantity = button.getAttribute('data-stockquantity'); // stockquantity
+        let itemName = button.getAttribute('data-itemname'); // stockquantity
+        let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
+        
+        // 모달 내부의 입력 필드에 값을 설정
+        let sinputField = myModal.querySelector('input[name="stockid"]');
+        sinputField.value = stockId;
+        
+        let qinputField = myModal.querySelector('input[name="qualityid"]');
+        qinputField.value = qualityId;
+        
+        let ninputField = myModal.querySelector('input[name="nowquantity"]');
+        ninputField.value = nowQuantity;
+        
+        let iinputField = myModal.querySelector('input[name="itemname"]');
+        iinputField.value = itemName;
+        
+        let linputField = myModal.querySelector('input[name="lotnumber"]');
+        linputField.value = lotNumber;
+    });
+});
+</script>
+<!-- 모달 1 출력 -->
+
+<!-- 창고 이동 (원자재) 모달창 -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/material/updateStockStorage" method="POST">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel2">창고 이동</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">창고 이동 (원자재)</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      	<div class="row">
+ 			<div class="col">
+           		<label for="stockid" class="col-form-label">재고ID:</label>
+            	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="itemname" class="col-form-label">제품명:</label>
+            	<input type="text" class="form-control" id="itemname" name="itemname" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="lotnumber" class="col-form-label">LOT번호:</label>
+            	<input type="text" class="form-control" id="lotnumber" name="lotnumber" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="nowstorage" class="col-form-label">현재창고:</label>
+            	<input type="text" class="form-control" id="nowstorage" name="nowstorage" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="storageid" class="col-form-label">이동창고:</label>
+				<select class="form-select" aria-label="Default select example" id="storageid" name="storageid">
+				<c:forEach var="str" items="${rlist }">
+  					<option value="${str.storageid }">${str.storagecode }-${str.storagename }</option>
+  				</c:forEach>	
+				</select>
+  			</div>
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="submit" class="btn btn-primary">창고 이동</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 창고 이동 (원자재) 모달창 -->
+
+<!-- 창고 이동 (원자재) 모달창 데이터 -->
+<script>
+$(document).ready(function() {
+    let myModal = document.getElementById('exampleModal2');
+    myModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
+        let stockId = button.getAttribute('data-stockid'); // stockid
+        let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let itemName = button.getAttribute('data-itemname'); // stockquantity
+        let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
+        let storageName = button.getAttribute('data-storagename'); // storagename
+        let storageCode = button.getAttribute('data-storagecode'); // storagecode
+        
+        // 모달 내부의 입력 필드에 값을 설정
+        let sinputField = myModal.querySelector('input[name="stockid"]');
+        sinputField.value = stockId;
+        
+        let qinputField = myModal.querySelector('input[name="qualityid"]');
+        qinputField.value = qualityId;
+        
+        let iinputField = myModal.querySelector('input[name="itemname"]');
+        iinputField.value = itemName;
+        
+        let linputField = myModal.querySelector('input[name="lotnumber"]');
+        linputField.value = lotNumber;
+        
+        let stinputField = myModal.querySelector('input[name="nowstorage"]');
+        stinputField.value = storageCode + "-" + storageName;
+    });
+});
+</script>
+<!-- 창고 이동 (원자재) 모달창 데이터 -->
+
+<!-- 창고 이동 (부자재) 모달창 -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form action="/material/updateStockStorage" method="POST">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">창고 이동 (부자재)</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -187,44 +319,12 @@
    </form>
   </div>
 </div>
-<!-- 모달창2 -->
+<!-- 창고 이동 (부자재) 모달창 -->
 
-<!-- 모달 1 출력 -->
+<!-- 창고 이동 (부자재) 모달창 데이터 -->
 <script>
 $(document).ready(function() {
-    let myModal = document.getElementById('exampleModal');
-    myModal.addEventListener('show.bs.modal', function(event) {
-        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
-        let stockId = button.getAttribute('data-stockid'); // stockid
-        let qualityId = button.getAttribute('data-qualityid'); // qualityid
-        let nowQuantity = button.getAttribute('data-stockquantity'); // stockquantity
-        let itemName = button.getAttribute('data-itemname'); // stockquantity
-        let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
-        
-        // 모달 내부의 입력 필드에 값을 설정
-        let sinputField = myModal.querySelector('input[name="stockid"]');
-        sinputField.value = stockId;
-        
-        let qinputField = myModal.querySelector('input[name="qualityid"]');
-        qinputField.value = qualityId;
-        
-        let ninputField = myModal.querySelector('input[name="nowquantity"]');
-        ninputField.value = nowQuantity;
-        
-        let iinputField = myModal.querySelector('input[name="itemname"]');
-        iinputField.value = itemName;
-        
-        let linputField = myModal.querySelector('input[name="lotnumber"]');
-        linputField.value = lotNumber;
-    });
-});
-</script>
-<!-- 모달 1 출력 -->
-
-<!-- 모달 2 출력 -->
-<script>
-$(document).ready(function() {
-    let myModal = document.getElementById('exampleModal2');
+    let myModal = document.getElementById('exampleModal3');
     myModal.addEventListener('show.bs.modal', function(event) {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let stockId = button.getAttribute('data-stockid'); // stockid
@@ -252,7 +352,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<!-- 모달 2 출력 -->
+<!-- 창고 이동 (부자재) 모달창 데이터 -->
 
 <!-- 라디오 버튼 이동 -->
 <script>
