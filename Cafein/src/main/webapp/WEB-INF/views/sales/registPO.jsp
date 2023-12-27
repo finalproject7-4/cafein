@@ -5,7 +5,7 @@
 
 <h1>수주등록</h1>
 
-<form role="form" method="post"> 
+<form role="form" method="post" action="/sales/registPO"> 
 <div class="col-sm-12 col-xl-6">
 <div class="bg-light rounded h-100 p-4">
 
@@ -14,7 +14,7 @@
 <input id="clientid" name="clientid" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
 
 품목명/코드
-<input id="itemid" name="itemid" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
+<input id="itemid" name="itemid" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example">
 
 
 수주상태

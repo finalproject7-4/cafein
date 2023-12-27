@@ -2,7 +2,6 @@ package com.cafein.persistence;
 
 import java.util.List;
 
-import com.cafein.domain.ClientVO;
 import com.cafein.domain.SalesVO;
 
 public interface SalesDAO {
