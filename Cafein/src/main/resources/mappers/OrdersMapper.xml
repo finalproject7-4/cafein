@@ -8,7 +8,10 @@
 	
 	<!-- 발주 목록 -->
 	<select id="ordersList" resultType="com.cafein.domain.OrdersVO">
-		select * from orders
+		select od.ordersid, od.orderscode, it.itemcode, it.itemname,
+	   		   od.ordersquantity, od.ordersdate, od.deliverydate
+		from orders od
+		join item it on od.itemcode = it.itemcode;
 	</select>
 	
 </mapper>

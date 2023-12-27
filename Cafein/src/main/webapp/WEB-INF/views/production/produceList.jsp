@@ -26,9 +26,12 @@
 
 <!-- 제품명: <input type="text" name="itemname" class="m-2"> -->
 
+
 <!-- 조회 달력 -->
 <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
 <!-- 조회 달력 -->
+
+
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
@@ -58,7 +61,7 @@
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedate" class="form-control" id="floatingInput" placeholder="생산일">
+								<input type="date" name="producedate" value="today()" class="date" id="floatingInput">
 							</div>
 						</div>
 							<div class="row">

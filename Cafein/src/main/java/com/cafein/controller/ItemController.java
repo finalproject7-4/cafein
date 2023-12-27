@@ -26,9 +26,10 @@ public class ItemController {
 	private ItemService iService;
 	
 	// http://localhost:8088/information/items
+	// 품목 목록 출력 - GET
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
 	public String itemListAll(Model model) throws Exception {
-		logger.debug("/information/item 호출 -> itemListAll() 호출");
+		logger.debug("itemListAll() 호출");
 		// 연결된 뷰페이지로 이동
 		logger.debug("/views/information/item.jsp 페이지로 이동");
 		
@@ -42,23 +43,49 @@ public class ItemController {
 		return "/information/item";
 	}
 	
-	@RequestMapping(value = "/items", method = RequestMethod.POST)
-	public String itemList(String option, String keyword, Model model) throws Exception {
-		logger.debug("option: " + option);
-		logger.debug("keyword: " + keyword);
+	// 품목 목록 출력 (검색) - POST
+	@RequestMapping(value = "/itemSearchList", method = RequestMethod.POST)
+	public String itemSearchList(String option, String keyword, Model model) throws Exception {
+		logger.debug("itemSearchList() 호출");
+		logger.debug("option: " + option + ", keyword: " + keyword);
 		
-		Map map = new HashMap();
+		Map<String, String> map = new HashMap<String, String>();
 		
 		map.put("option", option);
 		map.put("keyword", keyword);
 		
-		List<ItemVO> searchItemList = iService.searchItemList(map);
-		
-		model.addAttribute("itemList", searchItemList);
+		model.addAttribute("itemList", iService.searchItemList(map));
 		
 		return "/information/item";
-		
 	}
 	
+	// 품목 등록 - POST
+	@RequestMapping(value = "/itemRegist", method = RequestMethod.POST)
+	public String itemRegist(ItemVO vo) throws Exception {
+		logger.debug("itemRegist() 호출");
+		logger.debug("ItemVO: " + vo);
+			
+		// 생성한 품목코드 저장
+		vo.setItemcode(generateItemCode(vo));
+		
+		iService.itemRegist(vo);
+		
+		return "redirect:/information/items";
+	} // itemRegist() 끝
 	
-}
+	// 품목코드 생성 메서드
+	public String generateItemCode(ItemVO vo) throws Exception {
+		
+		String code = "";
+		int num = 101 + iService.itemCount(vo);
+		
+		switch(vo.getItemtype()) {
+			case "원자재": code = "MM"; break;
+			case "부자재": code = "SM"; break;
+			case "완제품": code = "P"; break;
+		}
+		
+		return code + num;
+	}
+	
+} // Controller 끝

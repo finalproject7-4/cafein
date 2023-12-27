@@ -34,4 +34,16 @@ public class ItemDAOImpl implements ItemDAO {
 		return sqlSession.selectList(NAMESPACE + ".searchItemList", map);
 	}
 
+	@Override
+	public void insertItem(ItemVO vo) throws Exception {
+		logger.debug("DAO - insertItem(ItemVO vo)");
+		sqlSession.insert(NAMESPACE + ".insertItem", vo);
+	}
+
+	@Override
+	public int getItemCount(ItemVO vo) throws Exception {
+		logger.debug("DAO - getItemCount(ItemVO vo)");
+		return sqlSession.selectOne(NAMESPACE + ".getItemCount", vo);
+	}
+
 }
