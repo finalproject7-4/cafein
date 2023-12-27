@@ -27,36 +27,33 @@ public class SalesController {
 	
 	//수주등록 -  GET
 	// http://localhost:8088/sales/registPO
-	@RequestMapping(value = "/registPO", method = RequestMethod.GET)
-	public String registGET(Model model) throws Exception {
-		logger.debug("/sales/registPO -> registGET() 호출 ");
-		logger.debug("/sales/registPO.jsp 뷰페이지로 이동");
-		
-		model.addAttribute("cliList", sService.registCli());
-		logger.debug("cliList",sService.registCli());
-
-		model.addAttribute("iList", sService.registItem());
-		logger.debug("iList",sService.registItem());
-		
-		return "sales/registPO";
-	}
-	
-	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
-	public String registPOST(Model model, SalesVO svo, RedirectAttributes rttr) throws Exception {
-		logger.debug("폼submit -> registPOST() 호출 ");
-		logger.debug(" svo : " + svo);
-
-		sService.registPO(svo);
-		logger.debug(" 글작성 완료! ");
-		
-		model.addAttribute("POList", sService.AllPOList());
-		logger.debug("POList",sService.AllPOList());
-		
-		rttr.addFlashAttribute("result", "CREATEOK");
-
-		logger.debug("/sales/registPO 이동");
-		return "redirect:/sales/POList";
-	}
+//	@RequestMapping(value = "/registPO", method = RequestMethod.GET)
+//	public String registGET(Model model) throws Exception {
+//		logger.debug("/sales/registPO -> registGET() 호출 ");
+//		logger.debug("/sales/registPO.jsp 뷰페이지로 이동");
+//		
+//		model.addAttribute("cliList", sService.registCli());
+//		logger.debug("cliList",sService.registCli());
+//
+//		model.addAttribute("iList", sService.registItem());
+//		logger.debug("iList",sService.registItem());
+//		
+//		return "sales/registPO";
+//	}
+//	
+//	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
+//	public String registPOST(SalesVO svo, RedirectAttributes rttr) throws Exception {
+//		logger.debug("폼submit -> registPOST() 호출 ");
+//		logger.debug(" svo : " + svo);
+//
+//		sService.registPO(svo);
+//		logger.debug(" 글작성 완료! ");
+//		
+//		rttr.addFlashAttribute("result", "CREATEOK");
+//
+//		logger.debug("/sales/registPO 이동");
+//		return "redirect:/sales/POList";
+//	}
 	
 	
 	// 수주조회 - GET
@@ -68,9 +65,31 @@ public class SalesController {
 		List<SalesVO> POList = sService.AllPOList();
 		logger.debug(" @@@ " + POList);
 
+		model.addAttribute("cliList", sService.registCli()); 
+		logger.debug("cliList",sService.registCli());        
+		        
+		model.addAttribute("iList", sService.registItem());  
+		logger.debug("iList",sService.registItem());         
+		
 		model.addAttribute("POList", POList);
 		model.addAttribute("result", result);
 		return "/sales/POList";
 	}
+	
+	// 수주조회 - POST
+	// http://localhost:8088/sales/POList
+	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
+	public String registPOST(SalesVO svo, RedirectAttributes rttr) throws Exception {
+		logger.debug("폼submit -> registPOST() 호출 ");                                 
+		logger.debug(" svo : " + svo);                                               
+	                                                                                 
+		sService.registPO(svo);                                                      
+		logger.debug(" 글작성 완료! ");                                                   
+		                                           
+		rttr.addFlashAttribute("result", "CREATEOK");                                
+	                                                                                 
+		logger.debug("/sales/registPO 이동");                                          
+		return "redirect:/sales/POList";                                             
+	}                                                                                
 	
 }
