@@ -17,10 +17,10 @@
 				<div class="modal-body">
 				
 				납품처/코드
-				<input autocomplete="off" id="clientid" name="clientid" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
+				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
 				
 				품목명/코드
-				<input autocomplete="off"  id="itemid" name="itemid" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example">
+				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example">
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
 						<select class="form-select" id="floatingSelect" name="postate"
@@ -145,11 +145,11 @@
 $(document).ready(function() {
 	// 클릭한 행의 정보를 가져와서 clientid에 입력
    $(".clientset").click(function() {
-    var clientInfo = $(this).find('td:eq(1)').text() + " / " + $(this).find('td:eq(2)').text();
+    var clientInfo = $(this).find('td:eq(1)').text();
     $("#clientid").val(clientInfo);
 	});
    $(".itemset").click(function() {
-    var clientInfo = $(this).find('td:eq(1)').text() + " / " + $(this).find('td:eq(2)').text();
+    var clientInfo = $(this).find('td:eq(1)').text();
     $("#itemid").val(clientInfo);
 	});
 	 
