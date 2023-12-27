@@ -1,16 +1,19 @@
 package com.cafein.controller;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.SalesVO;
@@ -26,37 +29,34 @@ public class SalesController {
 	private SalesService sService;
 	
 	//수주등록 -  GET
-	// http://localhost:8088/sales/registPO
-	@RequestMapping(value = "/registPO", method = RequestMethod.GET)
-	public String registGET(Model model) throws Exception {
-		logger.debug("/sales/registPO -> registGET() 호출 ");
-		logger.debug("/sales/registPO.jsp 뷰페이지로 이동");
-		
-		model.addAttribute("cliList", sService.registCli());
-		logger.debug("cliList",sService.registCli());
-
-		model.addAttribute("iList", sService.registItem());
-		logger.debug("iList",sService.registItem());
-		
-		return "sales/registPO";
-	}
-	
-	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
-	public String registPOST(Model model, SalesVO svo, RedirectAttributes rttr) throws Exception {
-		logger.debug("폼submit -> registPOST() 호출 ");
-		logger.debug(" svo : " + svo);
-
-		sService.registPO(svo);
-		logger.debug(" 글작성 완료! ");
-		
-		model.addAttribute("POList", sService.AllPOList());
-		logger.debug("POList",sService.AllPOList());
-		
-		rttr.addFlashAttribute("result", "CREATEOK");
-
-		logger.debug("/sales/registPO 이동");
-		return "redirect:/sales/POList";
-	}
+//	// http://localhost:8088/sales/registPO
+//	@RequestMapping(value = "/registPO", method = RequestMethod.GET)
+//	public String registGET(Model model) throws Exception {
+//		logger.debug("/sales/registPO -> registGET() 호출 ");
+//		logger.debug("/sales/registPO.jsp 뷰페이지로 이동");
+//		
+//		model.addAttribute("cliList", sService.registCli());
+//		logger.debug("cliList",sService.registCli());
+//
+//		model.addAttribute("iList", sService.registItem());
+//		logger.debug("iList",sService.registItem());
+//		
+//		return "sales/registPO";
+//	}
+//	
+//	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
+//	public String registPOST(SalesVO svo, RedirectAttributes rttr) throws Exception {
+//		logger.debug("폼submit -> registPOST() 호출 ");
+//		logger.debug(" svo : " + svo);
+//
+//		sService.registPO(svo);
+//		logger.debug(" 글작성 완료! ");
+//		
+//		rttr.addFlashAttribute("result", "CREATEOK");
+//
+//		logger.debug("/sales/registPO 이동");
+//		return "redirect:/sales/POList";
+//	}
 	
 	
 	// 수주조회 - GET
@@ -70,7 +70,38 @@ public class SalesController {
 
 		model.addAttribute("POList", POList);
 		model.addAttribute("result", result);
+		
+		model.addAttribute("cliList", sService.registCli()); 
+		logger.debug("cliList",sService.registCli());        
+		        
+		model.addAttribute("iList", sService.registItem());  
+		logger.debug("iList",sService.registItem());         
+		
 		return "/sales/POList";
 	}
+	
+	// 수주조회 - POST
+	// http://localhost:8088/sales/POList
+	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
+	public String registPOST(SalesVO svo, 
+				@RequestParam(value = "ordersdate") String ordersdate,
+				@RequestParam(value = "ordersduedate") String ordersduedate,
+			
+			RedirectAttributes rttr) throws Exception {
+		logger.debug("폼submit -> registPOST() 호출 ");                                 
+		logger.debug(" svo : " + svo);                                               
+
+		svo.setOrdersdate(Date.valueOf(ordersdate));
+		svo.setOrdersduedate(Date.valueOf(ordersduedate));
+	                                                                                 
+		sService.registPO(svo);                                                      
+		logger.debug(" 글작성 완료! ");                                                   
+         
+		
+		rttr.addFlashAttribute("result", "CREATEOK");                                
+	                                                                                 
+		logger.debug("/sales/registPO 이동");                                          
+		return "redirect:/sales/POList";                                             
+	}                                                                                
 	
 }
