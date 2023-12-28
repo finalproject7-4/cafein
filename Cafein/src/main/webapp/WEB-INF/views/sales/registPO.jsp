@@ -14,8 +14,11 @@
 				</div>
 				
 				<form role="form" action="/sales/registPO" method="post">
+
+				<input type="hidden" name="clientid" id="clientidd">
+				<input type="hidden" name="itemid" id="itemidd">
+
 				<div class="modal-body">
-				
 				납품처/코드
 				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
 				
@@ -143,6 +146,20 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	$(".clientset").click(function() {
+	    console.log("클릭 이벤트 발생");
+	    var clientid = $(this).find('td:first-child').text();
+	    console.log("clientid:", clientid);
+	    $("#clientidd").val(clientid);
+	});
+	$(".itemset").click(function() {
+	    console.log("클릭 이벤트 발생");
+	    var itemid = $(this).find('td:first-child').text();
+	    console.log("itemid:", itemid);
+	    $("#itemidd").val(itemid);
+	});
+	
 	// 클릭한 행의 정보를 가져와서 clientid에 입력
    $(".clientset").click(function() {
     var clientInfo = $(this).find('td:eq(1)').text(); //clientname
