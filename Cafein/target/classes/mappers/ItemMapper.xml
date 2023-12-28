@@ -8,7 +8,10 @@
 	
 	<!-- 품목 목록 -->
 	<select id="itemList" resultType="com.cafein.domain.ItemVO">
-		select * from item
+		select it.itemid, it.itemcode, it.itemtype, it.itemname, it.origin, it.itemweight, it.itemprice, it.available,
+	   		   cli.clientname, cli.clientcode
+		from item it
+		join client cli on it.clientcode = cli.clientcode;
 	</select>
 	
 	<!-- 품목 검색 -->
@@ -21,5 +24,29 @@
 			where itemname like concat('%', #{keyword}, '%')
 		</if>
 	</select>
+	
+	<!-- 품목 총 개수 계산 -->
+	<select id="getItemCount" resultType="int" parameterType="com.cafein.domain.ItemVO">
+		select count(*) from item 
+		<where>
+		  <choose>
+			<when test="itemtype == '원자재'">
+				and itemcode like '%MM%';
+			</when>
+			<when test="itemtype == '부자재'">
+				and itemcode like '%SM%';
+			</when>
+			<otherwise>
+				and itemcode like '%P%';
+			</otherwise>
+		  </choose>
+		</where>
+	</select>
+	
+	<!-- 품목 등록 -->
+	<insert id="insertItem">
+  		insert into item(itemcode,itemtype,itemname,clientcode,origin,itemweight,itemprice)
+  		values(#{itemcode},#{itemtype},#{itemname},#{clientcode},#{origin},#{itemweight},#{itemprice})	
+	</insert>
 	
 </mapper>

@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.ClientVO;
+<<<<<<< HEAD
+=======
+import com.cafein.domain.MemberVO;
+>>>>>>> d68d9a73779bbbce1064910157636d2e9bd63623
 import com.cafein.service.ClientService;
 
 @Controller

@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.cafein.domain.ClientVO;
+<<<<<<< HEAD
+=======
+import com.cafein.domain.MemberVO;
+>>>>>>> d68d9a73779bbbce1064910157636d2e9bd63623
 
 @Repository
 public class ClientDAOImpl implements ClientDAO {

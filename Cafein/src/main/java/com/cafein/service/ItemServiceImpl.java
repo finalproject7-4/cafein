@@ -32,4 +32,16 @@ public class ItemServiceImpl implements ItemService {
 		return idao.searchItemList(map);
 	}
 
+	@Override
+	public void itemRegist(ItemVO vo) throws Exception {
+		logger.debug("Service - itemRegist(ItemVO vo)");
+		idao.insertItem(vo);
+	}
+
+	@Override
+	public int itemCount(ItemVO vo) throws Exception {
+		logger.debug("Service - itemCount(ItemVO vo)");
+		return idao.getItemCount(vo);
+	}
+
 }
