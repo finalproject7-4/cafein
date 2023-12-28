@@ -1,7 +1,6 @@
 package com.cafein.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -34,17 +33,6 @@ public class ItemController {
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
 	public String itemListAll(Model model) throws Exception {
 		logger.debug("itemListAll() 호출");
-<<<<<<< HEAD
-		
-		// 서비스
-		logger.debug("(●'◡'●)" + iService.itemList());
-		logger.debug("(●'◡'●)" + cService.clientList());
-				
-		// 데이터를 연결된 뷰페이지로 전달 (Model 객체 필요)
-		model.addAttribute("itemList", iService.itemList());
-		model.addAttribute("clientList", cService.clientList());
-		
-=======
 
 		// 서비스
 		logger.debug("(●'◡'●)" + iService.itemList());
@@ -54,7 +42,6 @@ public class ItemController {
 		model.addAttribute("itemList", iService.itemList());
 		model.addAttribute("clientList", cService.clientList());
 				
->>>>>>> hyeonjeong
 		// 연결된 뷰페이지로 이동
 		logger.debug("/views/information/item.jsp 페이지로 이동");
 		return "/information/item";
