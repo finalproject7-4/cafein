@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.service.ItemService;
 import com.cafein.service.ProductionService;
 
 
@@ -27,6 +29,9 @@ public class ProductionController {
 	@Inject
 	private ProductionService pService;
 	
+	@Inject
+	private ItemService iService;
+	
 		// 생산지시 리스트
 		//http://localhost:8088/production/produceList
 		@RequestMapping(value="/produceList", method=RequestMethod.GET)
@@ -36,7 +41,7 @@ public class ProductionController {
 				@RequestParam(value="itemname", defaultValue ="*") String itemname,
 				@RequestParam(value = "state", defaultValue = "*") String state,
 				@RequestParam(value="qualitycheck", defaultValue = "*") String qualitycheck,
-				ProduceVO vo) throws Exception {
+				ProduceVO vo, ItemVO Ivo) throws Exception {
 
 			logger.debug("컨트롤러 - produceList() 호출");
 
@@ -47,6 +52,7 @@ public class ProductionController {
 			vo.setEndDate(Date.valueOf(endDate));
 			
 			model.addAttribute("produceList", pService.getProduceList(vo));
+			model.addAttribute("itemList", iService.itemList());
 			logger.debug("생산지시 목록 출력!");
 
 		}

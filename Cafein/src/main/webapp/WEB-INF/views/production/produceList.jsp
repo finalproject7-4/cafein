@@ -8,21 +8,41 @@
 <div class="col-12" style="margin-top:20px;">
 <div class="bg-light rounded h-100 p-4">
 <h6 class="mb-4">생산지시조회</h6>
+
+<!-- 기타 조회 -->
+
+
+<div >
 <form action="produceList" method="get">
-
-제품명: <input type="text" name="itemname" class="m-2">
-
-
-<!-- 달력 -->
-
-생산기간 : <input type="text" class="m-2" id="datepicker1" name="startDate">
-~ <input type="text" class="m-2" id="datepicker2" name="endDate">
-<!-- 달력 -->
-<!-- Date: <input type="text" id="datepicker3" name="startDate">
-~  <input type="text" id="datepicker4" name="endDate"> -->
+<!-- 제품명: <input type="text" name="itemname" class="m-2"> -->
+<input type="radio" id="produceline" value="생산라인" name="search" checked> 생산라인
+<select id="producelineSel" name="produceline">
+			<option value="1">1라인</option>
+			<option value="2">2라인</option>
+			<option value="3">3라인</option>
+			<option value="4">4라인</option>
+			<option value="5">5라인</option>
+			<option value="6">6라인</option>
+</select>
+<input type="radio" id="process" value="공정과정" name="search"> 공정과정
+<select id="processSel" name="process" style="display:none;">
+			<option value="블렌딩">블렌딩</option>
+			<option value="로스팅">로스팅</option>
+			<option value="포장">포장</option>
+</select>
+<input type="radio" id="itemname" value="제품명" name="search"> 제품명
+<select id="itemnameSel" name="itemname" style="display:none;">
+	<c:forEach var="iList" items="${itemList }" begin="0" step="1">
+			<option value="${iList.itemname }">${iList.itemname}</option>
+	</c:forEach>
+</select>
+<!-- 조회 달력 -->
+<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+<!-- 조회 달력 -->
 <button type="submit" class="btn btn-dark m-2" >조회</button>
 
 </form>
+</div>
 </div>
 </div>
 
@@ -41,15 +61,15 @@
 								<label for="produce" class="col-form-label">공정과정</label> <select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="process">
 									<optgroup label="공정과정">
-										<option value="1">블렌딩</option>
-										<option value="2">로스팅</option>
-										<option value="3">포장</option>
+										<option value="블렌딩">블렌딩</option>
+										<option value="로스팅">로스팅</option>
+										<option value="포장">포장</option>
 									</optgroup>
 								</select>
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedate" value="today()" class="form-control" id="floatingInput" placeholder="생산일">
+								<input type="date" name="producedate" value="today()" class="date" id="floatingInput">
 							</div>
 						</div>
 							<div class="row">
@@ -60,14 +80,15 @@
 										<option value="1">1라인</option>
 										<option value="2">2라인</option>
 										<option value="3">3라인</option>
-										<option value="3">4라인</option>
-										<option value="3">5라인</option>
-										<option value="3">6라인</option>
+										<option value="4">4라인</option>
+										<option value="5">5라인</option>
+										<option value="6">6라인</option>
 									</optgroup>
 								</select>
 							</div>
 							<div class="col">
-								<label for="produce" class="col-form-label">생산타임</label> <select class="form-select" id="floatingSelect"
+								<label for="produce" class="col-form-label">생산타임</label> 
+								<select class="form-select" id="floatingSelect"
 									aria-label="Floating label select example" name="producetime">
 									<optgroup label="생산타임">
 										<option value="1">1타임</option>
@@ -81,9 +102,15 @@
 							</div>
 					<div class="row">
 							<div class="col">
-								<label for="itemname" class="col-form-label">제품명</label>
-								<input type="text" id="itemname" class="form-control" id="floatingInput" data-toggle="modal" data-target="#modal2">
-							</div>
+								<label for="itemname" class="col-form-label">제품명</label> 
+							
+								<select class="form-select" id="floatingSelect" name="itemname">
+								<c:forEach var="iList" items="${itemList }" begin="0" step="1">
+									<option value="${iList.itemname }">${iList.itemname}</option>
+								</c:forEach>
+								</select>
+							
+						</div>
 							<div class="col">
 								<label for="amount" class="col-form-label">생산량</label>
 								<input type="number" id="amount" class="form-control" id="floatingInput" min="20000" max="60000" step="10000" placeholder="생산량(g)">
@@ -175,7 +202,7 @@
 <table class="table">
 <thead>
 <tr>
-<th scope="col">No.</th>
+<th scope="col">번호</th>
 <th scope="col">등록일</th>
 <th scope="col">생산일</th>
 <th scope="col">제품명</th>
@@ -237,23 +264,29 @@
  		formObj3.submit();
  	});
 	
+	/* 라디오버튼 검색 */
+	$("input[name='search']").change(function(){
+	var test = $("input[name='search']:checked").val();
+	if(test=='생산라인'){
+	$('#producelineSel').show();
+	$('#processSel').hide();
+	$('#itemnameSel').hide();
+	}else if(test=='공정과정'){
+	$('#producelineSel').hide();
+	$('#processSel').show();	
+	$('#itemnameSel').hide();
+	}else if(test=='제품명'){
+	$('#producelineSel').hide();
+	$('#processSel').hide();	
+	$('#itemnameSel').show();
+	}
+	
+	});
+
+	
 	
 	
 	/* 모달창 */
-	
-	 /*달력 이전날짜 비활성화*/
-	var now_utc = Date.now(); // 현재 날짜를 밀리초로
-	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
-	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
-	
-	//id="date"
-	document.getElementById("date").setAttribute("min", today);
-	
-	// class="date"인 모든 요소에 날짜 비활성화
-	document.querySelectorAll('.date').forEach(function(input) {
-	  input.setAttribute('min', today);
-	});
-	
 	
 	var exampleModal = document.getElementById('exampleModal')
 	exampleModal.addEventListener('show.bs.modal', function (event) {

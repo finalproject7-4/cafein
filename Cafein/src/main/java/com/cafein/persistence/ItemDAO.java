@@ -13,4 +13,9 @@ public interface ItemDAO {
 	// 품목 검색
 	public List<ItemVO> searchItemList(Map map) throws Exception;
 	
+	// 품목별 총 개수 계산
+	public int getItemCount(ItemVO vo) throws Exception;
+	
+	// 품목 등록
+	public void insertItem(ItemVO vo) throws Exception;
 }
