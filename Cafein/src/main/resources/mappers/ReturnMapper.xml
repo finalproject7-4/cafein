@@ -10,13 +10,25 @@
 		 SELECT * FROM returns
 	</select>
  
- 	<select id="searchReturnsByCondition" parameterType="com.cafein.domain.ReturnVO" resultType="com.cafein.domain.ReturnVO">
+ 	<select id="searchReturnsByCondition" resultType="com.cafein.domain.ReturnVO">
         SELECT * FROM returns
-        WHERE
-        returncode = #{returncode}
-        AND returntype = #{returntype}
-        AND returndate = #{returndate}
-    </select>
+		<where>
+			<if test="returncode != ''">
+				returncode LIKE CONCAT('%', #{returncode}, '%')
+			</if>
+			<if test="returntype != '전체'">
+				AND returntype = #{returntype}
+			</if>
+			<if test="returndate != ''">
+				AND returndate &gt;= #{returndate}
+			</if>
+			<if test="returndate2 != ''">
+				AND #{returndate2} &gt;= returndate
+			</if>
+
+			
+		</where>
+	</select>
  
  
  
