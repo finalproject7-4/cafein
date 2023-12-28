@@ -34,11 +34,7 @@
 		<if test="process != null and !process.equals('')">
 			AND process like concat('%','${process}','%')
 		</if>
-<<<<<<< HEAD
-		order by produceid desc
-=======
 		
->>>>>>> 5c24e8107432a17594193bcaa802f3f87b3b1478
 		</where>
 		order by produceid desc
 	
