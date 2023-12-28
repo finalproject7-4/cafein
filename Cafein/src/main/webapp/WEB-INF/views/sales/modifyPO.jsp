@@ -20,13 +20,13 @@
 
 				<div class="modal-body">
 				납품처/코드
-				<input id="clientid" name="clientname" class="form-control mb-3" type="text"  >
+				<input id="clientid2" name="clientname" class="form-control mb-3" type="text"  >
 				
 				품목명/코드
-				<input id="itemid" name="itemname" class="form-control mb-3" type="text"  >
+				<input id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
-						<select class="form-select" id="floatingSelect" name="postate">
+						<select class="form-select" id="floatingSelect2" name="postate">
 						    <optgroup label="수주상태">
 						        <option value="대기">대기</option>
 						        <option value="진행">진행</option>
@@ -36,23 +36,23 @@
 						</select>
 					</div>	
 					수량
-					<input id="pocnt" name="pocnt" class="form-control mb-3" type="number" value="">
+					<input id="pocnt2" name="pocnt" class="form-control mb-3" type="number" value="">
 					
 					<div class="row">
 					<div class="col">
 					수주일자
-					<input name="ordersdate" id="todaypo"  type="text" class="form-control" value="">
+					<input name="ordersdate" id="todaypo2"  type="text" class="form-control" value="">
 					</div>
 					
 					<div class="col">
 					완납예정일
-					<input name="ordersduedate" type="date" id="date" class="form-control" value="">
+					<input name="ordersduedate" type="date" id="date2" class="form-control" value="">
 					</div>
 					</div>
 					<br>
 					
 					담당자
-					<input id="membercode" name="membercode" class="form-control mb-3" type="number" value="">
+					<input id="membercode2" name="membercode" class="form-control mb-3" type="number" value="">
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
