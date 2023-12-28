@@ -16,7 +16,13 @@
 		LEFT JOIN
 		item it ON st.itemid = it.itemid
 	</select>
-
+	
+	<!-- 출하 등록 -->
+	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
+		INSERT INTO ship (shipdate, shipcode, workcode, stockid, shipcount, shipsts, membercode)
+		VALUES ( #{shipdate}, #{shipcode}, #{workcode}, #{stockid}, #{shipcount}, #{shipsts}, #{membercode} )
+	</insert>
+	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
@@ -29,7 +35,7 @@
 		left JOIN item it ON wk.itemcode = it.itemcode
 		left JOIN produce pr ON wk.produceid = pr.produceid;
 	</select>
-
+	
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
