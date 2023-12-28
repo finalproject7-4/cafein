@@ -2,29 +2,36 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
 
+<!-- 재고 조회 -->
+<div class="col-12">
+	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+	<h2>자재 재고 관리</h2>
+	<div class="form-check form-check-inline">
+  		<input class="form-check-input" type="radio" name="stocktype" id="materialRadio" value="자재" checked>
+  		<label class="form-check-label" for="materialRadio">자재</label>
+	</div>
+	<div class="form-check form-check-inline">
+  		<input class="form-check-input" type="radio" name="stocktype" id="productRadio" value="완제품">
+  		<label class="form-check-label" for="productRadio">완제품</label>
+	</div>
+	<br>
+	<input type="button" class="btn btn-sm btn-warning" value="원자재" id="rawmaterial">
+	<input type="button" class="btn btn-sm btn-secondary" value="부자재" id="submaterial">
+	<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
+	<form action="/material/stock" method="GET">
+		<c:if test="${!empty param.searchBtn }">
+			<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+		</c:if>
+		<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+		<input type="submit" value="검색">
+	</form>
+	</div>
+</div>
+<!-- 재고 조회 -->
+
+<!-- 재고 내역 -->
 <div class="col-12">
 		<div class="bg-light rounded h-100 p-4"  style="margin-top: 20px;">
-			<h2>자재 재고 관리</h2>
-			<div class="form-check form-check-inline">
-  				<input class="form-check-input" type="radio" name="stocktype" id="materialRadio" value="자재" checked>
-  				<label class="form-check-label" for="materialRadio">자재</label>
-			</div>
-			<div class="form-check form-check-inline">
-  				<input class="form-check-input" type="radio" name="stocktype" id="productRadio" value="완제품">
-  				<label class="form-check-label" for="productRadio">완제품</label>
-			</div>
-			<br>
-			<input type="button" class="btn btn-sm btn-warning" value="원자재" id="rawmaterial">
-			<input type="button" class="btn btn-sm btn-secondary" value="부자재" id="submaterial">
-			<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
-			<form action="/material/stock" method="GET">
-				<c:if test="${!empty param.searchBtn }">
-				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
-				</c:if>
-				<input type="text" name="searchText" placeholder="검색어를 입력하세요">
-				<input type="submit" value="검색">
-			</form>
-			<br>
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -168,8 +175,7 @@
     					<c:if test="${pageVO.next }">
       						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
         						<span aria-hidden="true">&raquo;</span>
-      						</a>
-      						
+      						</a>	
       					<!-- 버튼에 파라미터 추가 이동 (이후) -->
 						<script>
 							$(document).ready(function(){
@@ -201,10 +207,9 @@
   				</ul>
 			</nav>
 			<!-- 페이지 블럭 생성 -->
-			
 		</div>
 	</div>	
-
+<!-- 재고 내역 -->
 
 <!-- 재고량 변경 모달창 -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

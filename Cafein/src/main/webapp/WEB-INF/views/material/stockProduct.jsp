@@ -2,30 +2,37 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
 
+<!-- 재고 조회 -->
+<div class="col-12">
+	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+		<h2>완제품 재고 관리</h2>
+		<div class="form-check form-check-inline">
+  			<input class="form-check-input" type="radio" name="stocktype" id="materialRadio" value="자재">
+  			<label class="form-check-label" for="materialRadio">자재</label>
+		</div>
+		<div class="form-check form-check-inline">
+  			<input class="form-check-input" type="radio" name="stocktype" id="productRadio" value="완제품" checked>
+  			<label class="form-check-label" for="productRadio">완제품</label>
+		</div>
+		<br>
+		<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
+		<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
+		<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
+			
+		<form action="/material/stockProduct" method="GET">
+			<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+			</c:if>
+			<input type="text" name="searchText" placeholder="제품명을 입력하세요">
+			<input type="submit" value="검색">
+		</form>
+	</div>
+</div>
+<!-- 재고 조회 -->
+
+<!-- 재고 내역 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-			<h2>완제품 재고 관리</h2>
-			<div class="form-check form-check-inline">
-  				<input class="form-check-input" type="radio" name="stocktype" id="materialRadio" value="자재">
-  				<label class="form-check-label" for="materialRadio">자재</label>
-			</div>
-			<div class="form-check form-check-inline">
-  				<input class="form-check-input" type="radio" name="stocktype" id="productRadio" value="완제품" checked>
-  				<label class="form-check-label" for="productRadio">완제품</label>
-			</div>
-			<br>
-			<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
-			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
-			<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
-			
-			<form action="/material/stockProduct" method="GET">
-				<c:if test="${!empty param.searchBtn }">
-				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
-				</c:if>
-				<input type="text" name="searchText" placeholder="제품명을 입력하세요">
-				<input type="submit" value="검색">
-			</form>
-			<br>
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -193,7 +200,7 @@
 			
 		</div>
 	</div>	
-
+<!-- 재고 내역 -->
 
 <!-- 재고량 변경 모달창 (생산) -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
