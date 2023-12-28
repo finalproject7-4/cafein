@@ -50,8 +50,7 @@
 			</form>
 		</div>
 		<span id="buttonset1"><button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규 등록</button>
-			<button type="button" class="btn btn-dark m-2">수정</button>
-			<button type="button" class="btn btn-dark m-2">삭제</button></span>
+			</span>
 				<div class="table-responsive">
 		<div class="table-responsive" style="text-align: center;">
 			<table class="table">
@@ -118,7 +117,7 @@
 					<div class="row">
 						<div class="col">
 							<b>작업지시코드</b><input id="client" class="form-control"
-								id="floatingInput" placeholder="납품처">
+								id="floatingInput" placeholder="작업지시코드">
 						</div>
 						<div class="col">
 							<b>납품처</b><input id="client" class="form-control"

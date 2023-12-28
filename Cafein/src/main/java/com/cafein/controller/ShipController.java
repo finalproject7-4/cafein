@@ -28,9 +28,6 @@ public class ShipController {
 		model.addAttribute("AllSHList", shService.AllSHList());
 		logger.debug("출하 리스트 출력!");
 	}
-	
-	// 출하 등록
-	
 
 	// 작업지시 조회
 	// http://localhost:8088/sales/WKList
