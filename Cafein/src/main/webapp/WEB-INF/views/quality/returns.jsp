@@ -141,6 +141,7 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">반품날짜</th>
+                        <th scope="col">등록일</th>
                         <th scope="col">교환날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
@@ -153,9 +154,8 @@
                         <tr>
                             <td>${returnVO.returnid}</td>
                             <td>${returnVO.returncode}</td>
-                            <td>${returnVO.returndate}</td>    
                             <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                            <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /> </td>                     
+                            <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                     
                             <td>${returnVO.exchangedate}</td>                          
                             <td>${returnVO.returnquantity}</td>
                             <td>${returnVO.returnstatus}</td>
@@ -178,6 +178,7 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">반품날짜</th>
+                        <th scope="col">등록일</th>
                         <th scope="col">교환날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
@@ -191,7 +192,8 @@
 	                    <tr>
                            <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
-                           <td>${returnVO.returndate}</td>                          
+                           <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
+                           <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                  
                            <td>${returnVO.exchangedate}</td>                          
                            <td>${returnVO.returnquantity}</td>
                            <td>${returnVO.returnstatus}</td>
@@ -216,6 +218,7 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">반품날짜</th>
+                        <th scope="col">등록일</th>
                         <th scope="col">교환날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
@@ -229,7 +232,8 @@
 		                <tr>
 	                       <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
-                           <td>${returnVO.returndate}</td>                          
+                           <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
+                           <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                                        
                            <td>${returnVO.exchangedate}</td>                          
                            <td>${returnVO.returnquantity}</td>
                            <td>${returnVO.returnstatus}</td>
@@ -253,6 +257,7 @@
                     <th scope="col">반품ID</th>
                     <th scope="col">반품코드</th>
                     <th scope="col">반품날짜</th>
+                    <th scope="col">등록일</th>
                     <th scope="col">교환날짜</th>
                     <th scope="col">수량</th>
                     <th scope="col">반품상태</th>
@@ -267,7 +272,8 @@
 		                <tr>
 		                   <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
-                           <td>${returnVO.returndate}</td>                          
+                           <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
+                           <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                                            
                            <td>${returnVO.exchangedate}</td>                          
                            <td>${returnVO.returnquantity}</td>
                            <td>${returnVO.returnstatus}</td>
