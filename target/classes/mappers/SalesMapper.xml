@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- SalesMapper.xml -->
+<mapper namespace="com.cafein.mapper.SalesMapper">
+
+	<!-- 수주 등록 -->
+	<insert id="registPO" parameterType="com.cafein.domain.SalesVO">
+		INSERT INTO purchaseorder (postate, ordersdate, ordersduedate)
+		VALUES (
+		#{postate}, #{ordersdate}, #{ordersduedate}
+		)
+	</insert>
+
+	<!-- 수주 조회 -->
+	<select id="getPOList" resultType="com.cafein.domain.SalesVO">
+		SELECT po.poid, po.postate, po.pocode, cli.clientname, cli.clientcode,
+		item.itemname, item.itemcode,
+		po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
+		FROM purchaseorder po
+		JOIN item ON po.itemid = item.itemid
+		JOIN client cli ON po.clientid = cli.clientid
+	</select>
+
+	<!-- 수주등록-납품처 -->
+	<select id="cliList" resultType="com.cafein.domain.SalesVO">
+		select * from client
+	</select>
+	<!-- 수주등록-품목 -->
+	<select id="iList" resultType="com.cafein.domain.SalesVO">
+		select * from item
+	</select>
+
+
+
+
+
+</mapper>

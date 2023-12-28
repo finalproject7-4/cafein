@@ -5,7 +5,7 @@ import java.util.List;
 import com.cafein.domain.ClientVO;
 import com.cafein.domain.MemberVO;
 
-public interface CleintService {
+public interface ClientService {
 	
 	// 거래처 정보 등록 동작
 	public void clientJoin(ClientVO vo) throws Exception;
