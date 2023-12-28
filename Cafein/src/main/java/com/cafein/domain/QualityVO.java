@@ -1,5 +1,6 @@
 package com.cafein.domain;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.Data;
@@ -20,8 +21,10 @@ public class QualityVO {
 	private int normalquantity;
 	private int defectquantity;
 	private String auditstatus;
-	private Timestamp registerationdate;
-	private Timestamp completedate;
+	private Date registerationdate;
+	private Date completedate;
+	private String registerstock;
+	private String registerdefect;
 	
 	// defects 테이블
 	private int defectid;
@@ -39,7 +42,7 @@ public class QualityVO {
 	private int storageid;
 //	private Timestamp registerationdate;
 	private String workerbycode;
-	private Timestamp updatedate;
+	private Date updatedate;
 	private String updatehistory;
 	private int nowquantity;
 	private String nowstorage;
@@ -79,6 +82,39 @@ public class QualityVO {
 	private String storagetype;
 	private String lotnumber;
 //	private String membercode;
+	
+	// roastedbean 테이블
+	private int productid;
+//	private int produceid;
+//	private String itemname;
+//	private int itemid;
+	private int weight;
+	private int quantity;
+//	private int itemprice;
+	private int roasteddate;
+//	private Sting lotnumber;
+	private String note;
+	
+	// receive 테이블
+	private int receiveid;
+	private String receivecode;
+//	private String membercode;
+	private Timestamp receivedate;
+	private int receivequantity;
+	
+	// 검색용 특별 변수
+	private String startDate;
+	private String endDate;
+	private String searchText;
+	private String searchBtn;
+	
+	// 구분용 특별 변수
+	private String type;
+	
+	// Criteria 객체
+	private Criteria cri;
+	
+	
 	
 	
 }

@@ -4,9 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
-${POList}<br>
-${result } <br>
-
 <h1>수주관리</h1>
 <fieldset>
 	<legend>수주관리</legend>
@@ -47,9 +44,9 @@ ${result } <br>
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
 				<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>			
+			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>			
 			<button type="button" class="btn btn-dark m-2">수정</button>
-			<button type="button" class="btn btn-dark m-2">삭제</button></span>
+			<button type="button" class="btn btn-dark m-2">삭제</button>
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -67,7 +64,6 @@ ${result } <br>
 								<th scope="col">담당자</th>
 							</tr>
 						</thead>
-						<!-- http://localhost:8088/sales/POList -->
 						<tbody>
 						
 							<c:forEach items="${POList}" var="po">

@@ -6,8 +6,23 @@ import com.cafein.domain.QualityVO;
 
 public interface StockService {
 	
-	// 재고 목록 조회 (생산 [포장] + 반품)
-	public List<QualityVO> stockList() throws Exception;
+	// 재고 목록 조회 검색 버튼 (생산 [포장] + 반품)
+	public List<QualityVO> stockList(QualityVO vo) throws Exception;
+	
+	// 재고 목록 조회 검색 버튼 개수 조회 (생산 [포장] + 반품)
+	public Integer stockListCount(QualityVO vo) throws Exception;
+	
+	// 재고 목록 조회 검색 버튼 (자재)
+	public List<QualityVO> materialStockList(QualityVO vo) throws Exception;
+	
+	// 재고 목록 조회 검색 버튼 개수 조회 (자재)
+	public Integer materialStockListCount(QualityVO vo) throws Exception;
+	
+	// roastedbean - LOT번호 조회
+	public String roastedbeanLotNum(QualityVO vo) throws Exception;
+	
+	// receive - LOT번호 조회
+	public String receiveLotNum(QualityVO vo) throws Exception;
 	
 	// 재고 입력 (생산 [포장] + 반품)
 	public int newStock(QualityVO vo) throws Exception;
@@ -21,6 +36,15 @@ public interface StockService {
 	// 창고 목록 조회 (생산 [포장] + 반품)
 	public List<QualityVO> storageList() throws Exception;
 	
+	// 창고 목록 조회 (원자재)
+	public List<QualityVO> rawmaterialStorageList() throws Exception;
+	
+	// 창고 목록 조회 (부자재)
+	public List<QualityVO> submaterialStorageList() throws Exception;
+	
 	// 창고 변경 (생산 [포장] + 반품)
 	public int stockStorage(QualityVO vo) throws Exception;
+	
+	// 재고 등록 여부 업데이트
+	public void registerStockY(QualityVO vo) throws Exception;
 }

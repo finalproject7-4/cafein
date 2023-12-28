@@ -58,7 +58,6 @@ public class SalesController {
 //		return "redirect:/sales/POList";
 //	}
 	
-	
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
@@ -79,13 +78,15 @@ public class SalesController {
 		
 		return "/sales/POList";
 	}
-	
-	// 수주조회 - POST
+		
+	// 수주등록 - POST
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
 	public String registPOST(SalesVO svo, 
 				@RequestParam(value = "ordersdate") String ordersdate,
 				@RequestParam(value = "ordersduedate") String ordersduedate,
+				@RequestParam(value = "clientid", defaultValue = "1") int clientid,
+				@RequestParam(value = "itemid", defaultValue = "1") int itemid,
 			
 			RedirectAttributes rttr) throws Exception {
 		logger.debug("폼submit -> registPOST() 호출 ");                                 
@@ -93,11 +94,12 @@ public class SalesController {
 
 		svo.setOrdersdate(Date.valueOf(ordersdate));
 		svo.setOrdersduedate(Date.valueOf(ordersduedate));
-	                                                                                 
+		svo.setClientid(clientid);	                                         
+		svo.setItemid(itemid);	                                         
+		
 		sService.registPO(svo);                                                      
 		logger.debug(" 글작성 완료! ");                                                   
          
-		
 		rttr.addFlashAttribute("result", "CREATEOK");                                
 	                                                                                 
 		logger.debug("/sales/registPO 이동");                                          
