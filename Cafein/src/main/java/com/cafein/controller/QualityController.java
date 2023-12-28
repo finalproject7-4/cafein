@@ -34,10 +34,18 @@ public class QualityController {
 	@Inject
 	private StockService sService;
 	
-	// 품질 관리 통합 페이지 (생산 + 반품 / 자재)
+	// 품질 관리 페이지 (생산 + 반품)
 	// http://localhost:8088/quality/qualities
 	@GetMapping(value = "/qualities")
 	public void productQualityGET(HttpSession session) {
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
+		
+	}
+	
+	// 품질 관리 페이지 (자재)
+	// http://localhost:8088/quality/qualitiesMaterial
+	@GetMapping(value = "/qualitiesMaterial")
+	public void materialQualityGET(HttpSession session) {
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
 		
 	}

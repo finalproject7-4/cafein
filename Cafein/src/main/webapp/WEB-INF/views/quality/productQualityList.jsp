@@ -1161,41 +1161,12 @@ $(document).ready(function() {
 $(document).ready(function(){
     $('#productRadio').click(function(){ // 생산을 눌렀을 때
         console.log("Product radio clicked!");
-        $.ajax({
-            url: "/quality/productQualityList",
-            type: "GET",
-            success: function(data) {
-                $("#qualityListContainer").html(data);
-            },
-            error: function(error) {
-                console.error("Error fetching data:", error);
-            }
-        });
+		location.href="/quality/qualities";
     });
     
     $('#materialRadio').click(function(){ // 자재를 눌렀을 때
         console.log("Material radio clicked!");
-        $.ajax({
-            url: "/quality/materialQualityList", // 윗 목록 전환
-            type: "GET",
-            success: function(data) {
-                $("#qualityListContainer").html(data);
-            },
-            error: function(error) {
-                console.error("Error fetching data:", error);
-            }
-        });
-        
-        $.ajax({
-            url: "/quality/materialDefectList",
-            type: "GET",
-            success: function(data) { // 아랫 목록 전환
-                $("#defectListContainer").html(data);
-            },
-            error: function(error) {
-                console.error("Error fetching data:", error);
-            }
-        });
+		location.href="/quality/qualitiesMaterial";
     });
 });
 </script>

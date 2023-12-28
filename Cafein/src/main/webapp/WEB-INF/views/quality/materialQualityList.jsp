@@ -632,41 +632,12 @@ $(document).ready(function() {
 $(document).ready(function(){
     $('#materialRadio').click(function(){ // 자재를 눌렀을 때
         console.log("Material radio clicked!");
-        $.ajax({
-            url: "/quality/materialQualityList",
-            type: "GET",
-            success: function(data) {
-                $("#qualityListContainer").html(data);
-            },
-            error: function(error) {
-                console.error("Error fetching data:", error);
-            }
-        }); 
+		location.href="/quality/qualitiesMaterial";
     });
     
     $('#productRadio').click(function(){ // 생산을 눌렀을 때
         console.log("Product radio clicked!");
-        $.ajax({
-            url: "/quality/productQualityList", // 윗 목록 전환
-            type: "GET",
-            success: function(data) {
-                $("#qualityListContainer").html(data);
-            },
-            error: function(error) {
-                console.error("Error fetching data:", error);
-            }
-        });
-        
-        $.ajax({
-            url: "/quality/productDefectList",
-            type: "GET",
-            success: function(data) { // 아랫 목록 전환
-                $("#defectListContainer").html(data);
-            },
-            error: function(error) {
-                console.error("Error fetching data:", error);
-            }
-        });
+		location.href="/quality/qualities";
     });
 });
 </script>
