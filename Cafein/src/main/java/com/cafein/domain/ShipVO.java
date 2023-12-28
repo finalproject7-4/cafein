@@ -1,7 +1,6 @@
 package com.cafein.domain;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -46,5 +45,12 @@ public class ShipVO {
 	private int itemprice;
 	private String available;
 	private String workcode;
+	
+//	@Override
+//	public String toString() {
+//		return "SalesVO [shipid=" + shipid + ", shipcode=" + shipcode + ", shipcount=" + shipcount + ", shipsts=" + shipsts
+//				+ ", shipdate=" + shipdate + ", pocode=" + pocode + ", membercode=" + membercode + ", lotnumber="
+//				+ lotnumber + "]";
+//	}
 	
 }
