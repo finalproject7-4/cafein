@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.ClientVO;
 import com.cafein.domain.MemberVO;
-import com.cafein.service.CleintService;
+import com.cafein.service.ClientService;
 
 @Controller
 @RequestMapping(value = "information/*")
@@ -25,7 +25,7 @@ public class ClientController {
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 	
 	@Inject
-	private CleintService cService;
+	private ClientService cService;
 	
 	// http://localhost:8088/information/clientJoin
 	@RequestMapping(value = "/clientJoin", method = RequestMethod.GET)

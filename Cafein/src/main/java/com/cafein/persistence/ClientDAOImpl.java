@@ -13,9 +13,9 @@ import com.cafein.domain.ClientVO;
 import com.cafein.domain.MemberVO;
 
 @Repository
-public class CleintDAOImpl implements ClientDAO {
+public class ClientDAOImpl implements ClientDAO {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CleintDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClientDAOImpl.class);
 	
 	@Inject
 	private SqlSession sqlSession;

@@ -13,7 +13,7 @@ import com.cafein.domain.MemberVO;
 import com.cafein.persistence.ClientDAO;
 
 @Service
-public class ClientServiceImpl implements CleintService {
+public class ClientServiceImpl implements ClientService {
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);

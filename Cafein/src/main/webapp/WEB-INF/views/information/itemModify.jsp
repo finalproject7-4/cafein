@@ -2,18 +2,19 @@
     pageEncoding="UTF-8"%>
 
 <!-- 품목 등록 모달창 -->
-	<div class="modal fade" id="itemRegistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="itemModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 			
 				<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">품목 등록</h5>
+				<h5 class="modal-title" id="exampleModalLabel">품목 수정</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				
 				<form role="form" action="/information/itemRegist" method="post">
 				<div class="modal-body">
+<%-- 				${itemList } --%>
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>품목유형</b></label>
 						<select class="form-select" id="floatingSelect" name="itemtype"
@@ -27,7 +28,7 @@
 					</div>	
 					<div class="row">
 						<div class="col">
-							<b>품명</b><input id="itemname" name="itemname" class="form-control" id="floatingInput">
+							<b>품명</b><input id="modalItemCode" name="itemname" class="form-control" id="floatingInput">
 						</div>
 					</div><br>
 					<div class="row">
