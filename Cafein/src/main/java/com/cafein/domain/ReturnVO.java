@@ -19,11 +19,12 @@ public class ReturnVO {
     private int returnprice;
     private String returntype;
     
-    private Date startDate;
-	private Date endDate;
+    // 검색용 
+    private String startDate;
+	private String endDate;
     
-    
-    
+    // 입력용
+	private String returnReason;
     
     
     

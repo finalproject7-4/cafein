@@ -33,6 +33,17 @@ public class ReturnServiceImpl implements ReturnService {
 		return tdao.searchReturnsByCondition(condition);
 	}
 
+	@Override
+	public int returnCount(ReturnVO vo) throws Exception {
+		
+		return tdao.getReturnCount(vo);
+	}
+
+	
+	
+
+	
+
 	
 	
 	

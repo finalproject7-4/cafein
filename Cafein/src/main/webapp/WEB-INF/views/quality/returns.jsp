@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,7 @@
    		<div class="col-12" style="margin-top:20px;">
 		<div class="bg-light rounded h-100 p-4">
         <form action="" method="get">
-        <h6 class="mb-4">반품 조회</h6>
+        <h6 class="mb-4">반품조회</h6>
 	<div class="row">
             <div class="form-group" style="width: 200px; margin-right: 20px;">
                 <label for="returncode">반품 코드</label>
@@ -47,11 +48,11 @@
             <div class="form-group " style="width: 400px;">
                 <label for="returndate">반품 날짜</label>
                 <div class="input-group" style="width: 400px">
-                    <input type="date" class="form-control" id="startDate" name="startDate"  placeholder="반품 날짜">
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="${not empty returnVO.startDate ? returnVO.startDate : ''}">
                 <div >
                 &nbsp;~&nbsp;
                 </div>
-                    <input type="date" class="form-control" id="endDate" name="endDate"  placeholder="반품 날짜">
+                    <input type="date" class="form-control" id="endDate" name="endDate" value="${not empty returnVO.endDate ? returnVO.endDate : ''}">
                 </div>
             </div>
             </div>
@@ -64,70 +65,84 @@
 		</div>
      <!-- 검색창 -->
      
-     
-     
-	
-        
-
-	
-	<!-- 반품 등록 모달 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">반품 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-			<div class="modal-body">
-		<form>
-		    <div class="row">
-		        <div class="col">
-		            <label for="produce" class="col-form-label">반품사유</label>
-		            <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="process">
-		                <option value="" disabled selected>선택하세요</option>
-		                <option value="1">품질 불량</option>
-		                <option value="2">주문오류</option>
-		            </select>
-		        </div>
-		        <div class="col">
-		            <label for="returndate" class="col-form-label">반품일자</label>
-		            <input type="date" name="returndate" value="today()" class="form-control" id="floatingInput" placeholder="반품일">
-		        </div>
-		        </div>
-		        <div class="col">
-		            <label for="exchangedate" class="col-form-label">교환일자</label>
-		            <input type="date" name="exchangedate" value="today()" class="form-control" id="floatingInput" placeholder="교환일">
-		        </div>
-		    <div class="mb-3">
-		        <label for="membercode" class="col-form-label">담당자(사원번호)</label>
-		        <input name="membercode" class="form-control" id="floatingInput">
-		    </div>
-		</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary">저장</button>
-					</div>
+	<!-- 반품 등록 모달창 -->   
+    <div class="modal fade" id="returnAuditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			
+				<div class="modal-header">
+				<h5 class="modal-title" id="returnAuditModal">반품 등록</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
 				</div>
+				
+				<form role="form" action="/quality/returnRegist" method="post">
+				<div class="modal-body">
+					<div class="row">
+					<div class="col">
+						<label for="returntype" class="col-form-label"><b>반품유형</b></label>
+						<select class="form-select" id="floatingSelect" name="returntype"
+							aria-label="Floating label select example">
+							<optgroup label="반품유형">
+								<option value="원자재">원자재</option>
+								<option value="부자재">부자재</option>
+								<option value="완제품">완제품</option>
+							</optgroup>
+						</select>
+					</div>	
+					<div class=col>
+						<label for="returnReason" class="col-form-label"><b>반품사유</b></label>
+						<select class="form-select" id="floatingSelect" name="returntype"
+							aria-label="Floating label select example">
+							<optgroup label="반품유형">
+								<option value="제품불량">제품불량</option>
+								<option value="주문오류">주문오류</option>
+							</optgroup>
+						</select>
+					</div>	
+				</div>
+					<!-- <div class="row">
+						<div class="col">
+							<b>품명</b><input id="itemname" name="itemname" class="form-control" id="floatingInput">
+						</div>
+					</div><br> -->
+					<div class="row">
+						<div class="col">
+							<b>반품 코드</b><input id="returncode" name="returncode" class="form-control" id="floatingInput">
+						</div>
+						<div class="col">
+							<b>등록일</b><input id="submitdate" name="submitdate" class="form-control" id="floatingInput" readonly>
+						</div>
+					</div><br>
+				</div>
+					
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="submit" class="btn btn-primary" id="returnRegistBtn">등록</button>
+				</div>
+				</form>
 			</div>
 		</div>
-<!-- 모달창 끝-->
+	</div> 
+	<!-- 모달창 끝 -->
+        
 	
-	
+	<!-- 반품조회 테이블 -->
 		<div class="col-12" style="margin-top:20px;">
 		<div class="bg-light rounded h-100 p-4">
-		<h6 class="mb-4">반품 목록</h6>
+		<h6  class="mb-4">총 ${fn:length(returnList)} 건</h6>
 		
 		<div class="d-flex justify-content-between">
 		<div>
-		<button onclick="showTab('all')" class="btn btn-outline-warning m-2">전체</button>
-		<button onclick="showTab('waiting')" class="btn btn-outline-warning m-2">대기</button>
-		<button onclick="showTab('inProgress')" class="btn btn-outline-warning m-2">검수중</button>
-		<button onclick="showTab('completed')" class="btn btn-outline-warning m-2">완료</button>
+		<button onclick="showTab('all') " class="btn btn-outline-warning m-2">전체</button>
+		<button onclick="showTab('waiting') " class="btn btn-outline-warning m-2">대기</button>
+		<button onclick="showTab('inProgress') " class="btn btn-outline-warning m-2">검수중</button>
+		<button onclick="showTab('completed') " class="btn btn-outline-warning m-2">완료</button>
 		</div>
 		
 		<div>
-		<button type="button" class="btn btn-outline-warning m-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">반품 등록</button>
+		<button type="button" class="btn btn-outline-warning m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
 		<button type="button" class="btn btn-outline-warning m-2">수정</button>
 		<button type="button" class="btn btn-outline-warning m-2">삭제</button>
 		</div>
@@ -141,7 +156,6 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">반품날짜</th>
-                        <th scope="col">등록일</th>
                         <th scope="col">교환날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
@@ -155,7 +169,6 @@
                             <td>${returnVO.returnid}</td>
                             <td>${returnVO.returncode}</td>
                             <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                            <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                     
                             <td>${returnVO.exchangedate}</td>                          
                             <td>${returnVO.returnquantity}</td>
                             <td>${returnVO.returnstatus}</td>
@@ -178,7 +191,6 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">반품날짜</th>
-                        <th scope="col">등록일</th>
                         <th scope="col">교환날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
@@ -193,7 +205,6 @@
                            <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
                            <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                           <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                  
                            <td>${returnVO.exchangedate}</td>                          
                            <td>${returnVO.returnquantity}</td>
                            <td>${returnVO.returnstatus}</td>
@@ -218,7 +229,6 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">반품날짜</th>
-                        <th scope="col">등록일</th>
                         <th scope="col">교환날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
@@ -233,7 +243,6 @@
 	                       <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
                            <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                           <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                                        
                            <td>${returnVO.exchangedate}</td>                          
                            <td>${returnVO.returnquantity}</td>
                            <td>${returnVO.returnstatus}</td>
@@ -257,7 +266,6 @@
                     <th scope="col">반품ID</th>
                     <th scope="col">반품코드</th>
                     <th scope="col">반품날짜</th>
-                    <th scope="col">등록일</th>
                     <th scope="col">교환날짜</th>
                     <th scope="col">수량</th>
                     <th scope="col">반품상태</th>
@@ -273,7 +281,6 @@
 		                   <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
                            <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                           <td><fmt:formatDate value="${returnVO.submitdate }" pattern="yyyy-MM-dd" /></td>                                            
                            <td>${returnVO.exchangedate}</td>                          
                            <td>${returnVO.returnquantity}</td>
                            <td>${returnVO.returnstatus}</td>
@@ -288,9 +295,16 @@
     </div>
    </div>
    </div> 
+	<!-- 반품조회 테이블 -->
+	
+
+
+
+
 
 <%@ include file="../include/footer.jsp" %>
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
     // 페이지 로딩 후에 실행될 코드
     showTab('all');
@@ -303,7 +317,24 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(tabName + 'Tab').classList.add('active');
     }
     
+    var returnAuditModal = document.getElementById('returnAuditModal')
+	returnAuditModal.addEventListener('show.bs.modal', function (event) {
+  		var button = event.relatedTarget
+  		var recipient = button.getAttribute('data-bs-whatever')
+  		var modalTitle = returnAuditModal.querySelector('.modal-title')
+ 	 	var modalBodyInput = returnAuditModal.querySelector('.modal-body input')
+	})
     
+    /* 달력 이전날짜 비활성화 */
+	var now_utc = Date.now(); // 현재 날짜를 밀리초로
+	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];   
+    
+	// 반품등록시 등록일 오늘 날짜
+	document.getElementById('submitdate').valueAsDate = new Date();
+	
+	// JavaScript를 사용하여 Date 객체로 변환
+    var serverDate = new Date(serverDateString);
     
 </script>
 </body>
