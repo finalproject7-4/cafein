@@ -19,14 +19,13 @@
 			<if test="returntype != '전체'">
 				AND returntype = #{returntype}
 			</if>
-			<if test="returndate != ''">
-				AND returndate &gt;= #{returndate}
+			<if test="startDate != ''">
+				AND returndate &gt;= #{startDate}
 			</if>
-			<if test="returndate2 != ''">
-				AND #{returndate2} &gt;= returndate
+			<if test="endDate != ''">
+				AND #{endDate} &gt;= returndate
 			</if>
 
-			
 		</where>
 	</select>
  
