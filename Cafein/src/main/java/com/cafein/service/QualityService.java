@@ -33,10 +33,10 @@ public interface QualityService {
 	// 검수ID 입력 (반품 테이블)
 	public void returnsQualityid(QualityVO vo) throws Exception;
 	
-	// 검수 입력 (생산)
+	// 검수 입력 (반품)
 	public int returnAudit(QualityVO vo) throws Exception;
 	
-	// 검수 입력 - 완료 (생산)
+	// 검수 입력 - 완료 (반품)
 	public int returnAuditFull(QualityVO vo) throws Exception;
 	
 	// 불량 현황 등록 (생산 / 반품)

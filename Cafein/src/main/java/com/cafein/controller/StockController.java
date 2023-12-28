@@ -30,17 +30,18 @@ public class StockController {
 	
 	// 재고 관리 통합 페이지 (자재 / 생산 + 반품)
 	// http://localhost:8088/material/stock
-	@GetMapping(value = "/stock")
-	public void allStockGET(HttpSession session) {
+	// @GetMapping(value = "/stock")
+	// public void allStockGET(HttpSession session) {
 		
-	}
+	// }
 	
-	// http://localhost:8088/material/productStockList
-	// 재고 목록 조회 (생산 [포장] + 반품)
-	@RequestMapping(value = "/productStockList", method = RequestMethod.GET)
+	// http://localhost:8088/material/stockProduct
+	// 재고 목록 조회 검색 버튼 (생산 [포장] + 반품)
+	@RequestMapping(value = "/stockProduct", method = RequestMethod.GET)
 	public void productStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
+		cri.setPageSize(5); // 삭제 예정
 		vo.setCri(cri);
 		List<QualityVO> resultList = sService.stockList(vo); // 생산 + 반품 재고 목록
 		List<QualityVO> storageList = sService.storageList(); // 생산 + 반품 창고 목록
@@ -54,12 +55,14 @@ public class StockController {
 		
 		model.addAttribute("pageVO", pageVO);
 	}
-	
+
+	// http://localhost:8088/material/stockProduct
 	// 재고 목록 조회 검색 버튼 (자재)
-	@GetMapping(value = "/materialStockList")
+	@GetMapping(value = "/stock")
 	public void materialStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (없어서 추가해놓은 부분 / 삭제 예정)
 		
+		cri.setPageSize(5); // 삭제 예정
 		vo.setCri(cri);
 		List<QualityVO> resultList = sService.materialStockList(vo); // 자재 재고 목록
 		List<QualityVO> rawStorageList = sService.rawmaterialStorageList(); // 원자재 창고 목록
