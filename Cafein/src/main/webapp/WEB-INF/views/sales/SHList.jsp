@@ -31,7 +31,7 @@
 <!-- 출하 조회 -->
 <div class="col-12" style="margin-top: 20px;">
 	<div class="bg-light rounded h-100 p-4">
-		<h6 class="mb-4">작업 지시 관리</h6>
+		<h6 class="mb-4">출하 관리</h6>
 
 		<div class="btn-group" role="group">
 			<form role="form">
@@ -106,11 +106,11 @@
 						<label for="recipient-name" class="col-form-label"><b>출하상태</b></label>
 						<select class="form-select" id="floatingSelect"
 							aria-label="Floating label select example">
-							<optgroup label="수주상태">
+							<optgroup label="출하상태">
 								<option value="1">대기</option>
 								<option value="2">진행</option>
 								<option value="3">완료</option>
-								<option value="3">취소</option>
+								<option value="4">취소</option>
 							</optgroup>
 						</select>
 					</div>

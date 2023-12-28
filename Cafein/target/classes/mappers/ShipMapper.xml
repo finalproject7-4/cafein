@@ -8,25 +8,28 @@
 	<!-- 출하 조회 -->
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT sh.shipid, sh.shipdate, sh.shipcode, sh.workcode, 
+		SELECT sh.shipid, sh.shipdate, sh.shipcode, sh.workcode,
 		st.itemid, it.itemname, it.clientcode,
 		sh.shipcount, sh.shipsts, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
-		LEFT JOIN item it ON st.itemid = it.itemid
+		LEFT JOIN
+		item it ON st.itemid = it.itemid
 	</select>
-	
+
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
-		SELECT wk.workid, wk.membercode, wk.workdate1, wk.workdate2,
-		wk.worksts, wk.workcount, wk.workupdate, wk.workcode,
-		wk.itemcode, wk.pocode, wk.receiptid, wk.produceid, wk.clinetcode,
-		wk.recordcount, wk.returncode
+		SELECT wk.workid, wk.workdate1, wk.workcode,
+		wk.pocode, it.itemcode, pr.produceline,
+		wk.worksts, wk.workcount, wk.workdate2,
+		wk.membercode
 		FROM work wk
 		JOIN purchaseorder po ON wk.pocode = po.pocode
+		left JOIN item it ON wk.itemcode = it.itemcode
+		left JOIN produce pr ON wk.produceid = pr.produceid;
 	</select>
-	
+
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
