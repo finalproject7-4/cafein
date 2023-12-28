@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- SweetAlert 추가 -->
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
+"></script>
+<!-- SweetAlert 추가 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>자재 품질 관리</h2>
@@ -12,9 +18,12 @@
   				<input class="form-check-input" type="radio" name="type" id="materialRadio" value="자재" checked>
   				<label class="form-check-label" for="material">자재</label>
 			</div><br>
-			<input type="button" class="btn btn-sm btn-primary" value="원자재" id="rawmaterial">
-			<input type="button" class="btn btn-sm btn-danger" value="부자재" id="submaterial">
-			<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
+			
+			<div class="buttonarea1" style="margin-bottom: 10px;">
+				<input type="button" class="btn btn-sm btn-primary" value="원자재" id="rawmaterial">
+				<input type="button" class="btn btn-sm btn-danger" value="부자재" id="submaterial">
+				<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
+			</div>
 			
 			<form action="/quality/materialQualityList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
@@ -29,10 +38,10 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">품질관리번호</th>
+								<th scope="col">번호</th>
 								<th scope="col">검수번호</th>
 								<th scope="col">상품구분</th>
-								<th scope="col">입고ID</th>
+								<th scope="col">입고번호</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
 								<th scope="col">검수자</th>

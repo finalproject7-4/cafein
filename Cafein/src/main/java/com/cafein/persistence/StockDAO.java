@@ -47,4 +47,10 @@ public interface StockDAO {
 	
 	// 재고 등록 여부 업데이트
 	public void updateRegisterStock(QualityVO vo) throws Exception;
+	
+	// 재고 토스트 데이터 (생산 [포장] + 반품)
+	public QualityVO selectProductStockToast() throws Exception;
+	
+	// 재고 토스트 데이터 (자재)
+	public QualityVO selectMaterialStockToast() throws Exception;
 }
