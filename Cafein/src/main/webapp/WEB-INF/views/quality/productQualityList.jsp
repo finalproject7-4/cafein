@@ -172,13 +172,14 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 										</c:if>
 										<c:if test="${!empty clist.auditstatus && clist.auditstatus.equals('검수완료') && clist.defectquantity == 0 }"> <!-- 불량 X -->
 											<c:if test="${!empty clist.process && !clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장이 아닌 경우 -->
-												<form action="/quality/updateQualityCheck" method="POST"> <!-- 재고로 가진 않지만 재고 등록 여부 업데이트 (검수 완료 시 자동 업데이트 [생산 - 포장이 아닐 때]) --> <!-- 생산 상태 업데이트 -->
-													<input type="hidden" value="${clist.produceid }" name="produceid">
+												<form action="/quality/updateQualityCheck" method="POST" > <!-- 재고로 가진 않지만 재고 등록 여부 업데이트 (검수 완료 시 자동 업데이트 [생산 - 포장이 아닐 때]) --> <!-- 생산 상태 업데이트 -->
+													<input type="hidden" value="${clist.qualityid }" name="qualityid">
+													<input type="hidden" value="${clist.produceid }" name="produceid">													
 													<input type="submit" class="btn btn-success btn-sm" value="정상">
 												</form>
 											</c:if>	
 											<c:if test="${!empty clist.process && clist.process.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장인 경우 -->
-												<form action="/material/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
+												<form action="/material/newStock" method="POST" > <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
@@ -187,7 +188,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 												</form>
 											</c:if>
 											<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 반품인 경우 -->
-												<form action="/material/newStock" method="POST"> <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
+												<form action="/material/newStock" method="POST" > <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
@@ -209,7 +210,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													</button>
 												</c:if>	
 												<c:if test="${!empty clist.process && clist.process.equals('포장')}"> <!-- 포장인 경우 -->
-												<form action="/material/newStock" method="POST"> <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
+												<form action="/material/newStock" method="POST" > <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
@@ -232,7 +233,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 												</c:if>	
 												<c:if test="${!empty clist.itemtype && clist.itemtype.equals('반품')}"> <!-- 반품인 경우 -->
 													<c:if test="${!empty clist.registerstock && clist.registerstock.equals('N') }">
-													<form action="/material/newStock" method="POST"> <!-- 재고로 -->
+													<form action="/material/newStock" method="POST" > <!-- 재고로 -->
 														<input type="hidden" value="${clist.qualityid }" name="qualityid">
 														<input type="hidden" value="${clist.itemid }" name="itemid">
 														<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
@@ -1274,3 +1275,32 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
+
+<!-- submit을 위한 confirm창 생성 -->
+<script>
+function showAlert(event) {
+    event.preventDefault();  // 폼의 기본 제출 동작을 중지
+    
+    return Swal.fire({
+        title: "재고 등록을 하시겠습니까??",
+        text: "등록 후 취소하실 수 없습니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "재고 등록",
+        cancelButtonText: "취소"
+    }).then(function(result) {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+            });
+            event.target.submit();  // 폼 제출
+        }
+    });
+    return false;  // 기본적으로 폼 제출을 거부
+}
+</script>
+<!-- submit을 위한 confirm창 생성 -->

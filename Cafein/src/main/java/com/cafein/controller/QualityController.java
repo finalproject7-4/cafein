@@ -344,4 +344,14 @@ public class QualityController {
 		return "redirect:/quality/qualitiesMaterial";
 	}
 	
+	// 포장, 반품이 아닐 때 생산 상태 업데이트 - POST
+	@PostMapping
+	public String updateQualityCheck(QualityVO vo) throws Exception{
+		logger.debug(" /updateQualityCheck(QualityVO vo) 실행! ");
+		System.out.println(" /updateQualityCheck(QualityVO vo) 실행! ");
+		vo.setQualitycheck("정상");
+		qService.productQualityCheck(vo);
+		sService.registerStockY(vo);
+		return "redirect:/quality/qualities";
+	}
 }
