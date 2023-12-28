@@ -30,10 +30,12 @@
 	<!-- 발주 목록 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(ordersList)} 건</span>
-		<span style="margin-left: 90%;">
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>
-			<!-- <button type="button" class="btn btn-sm btn-dark m-1">수정</button> -->
-			<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
+		
+		<c:forEach var="ordersList" items="${ordersList }">
+		<span style="margin-left: 81.5%;">
+			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap">등록</button>
+			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" onclick="modifyModal('ordersList')">수정</button>
+			<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
 		</span>
 		
 		<div class="table-responsive">
@@ -41,7 +43,7 @@
 				<thead>
 					<tr style="text-align: center;">
 						<th scope="col">
-							<input type="checkbox" id="delete-list-all" name="delete-list" data-group="delete-list">
+							<input type="checkbox" id="checkbox" name="checkbox" data-group="checkboxall">
 						</th>					
 						<th scope="col">번호</th>
 						<th scope="col">발주코드</th>
@@ -53,14 +55,13 @@
 						<th scope="col">발주일자</th>
 						<th scope="col">납기일자</th>
 						<th scope="col">담당자명</th>
-						<th scope="col">관리</th>
+						<!-- <th scope="col">관리</th> -->
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="ordersList" items="${ordersList }">
 					<tr style="text-align: center;">
 						<td>
-							<input type="checkbox" id="delete-list-all" name="delete-list" data-group="delete-list">
+							<input type="checkbox" id="checkbox" name="checkbox" data-group="checkboxall">
 						</td>					
 						<td>${ordersList.ordersid }</td>
 						<td>${ordersList.orderscode }</td>
@@ -76,20 +77,23 @@
 							<fmt:formatDate value="${ordersList.deliverydate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
 						<td>${ordersList.membercode }</td> <!-- session 값 사용하여 저장 -->
-						<td>
-							<button type="button" class="btn btn-sm btn-dark m-1">수정</button>
-							<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
-						</td>
+						<!-- <td> -->
+							<!-- <button type="button" class="btn btn-sm btn-dark m-1" >수정</button> -->
+							<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
+						<!-- </td> -->
 					</tr>
-				</c:forEach>	
 				</tbody>
 			</table>
 		</div>
+				</c:forEach>	
 	</div>
 	<!-- 발주 목록 -->
 	
 	<!-- 발주 등록 모달 -->
 	<jsp:include page="ordersRegist.jsp"/>
+	
+	<!-- 발주 수정 모달 -->
+	<jsp:include page="ordersModify.jsp"/>
 	
 	<!-- 공급처 모달 -->
     <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,13 +116,17 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 <c:forEach var="itemList" items="${itemList }">
+                                 <c:set var="counter" value="1" />
+                                  <c:forEach var="clientList" items="${clientList }" varStatus="status">
+                                   <c:if test="${clientList.categoryofclient eq '공급'}">
                                     <tr class="clientset">
-                                    	<td>${itemList.itemid }</td> 
-                                    	<td>${itemList.clientname }</td> 
-                                    	<td>${itemList.clientcode }</td>
+                                    	<td>${counter}</td>
+                                    	<td>${clientList.clientname }</td> 
+                                    	<td>${clientList.clientcode }</td>
                                     </tr>
-                                 </c:forEach>
+                                    <c:set var="counter" value="${counter + 1}" />
+                                   </c:if>	
+                                  </c:forEach>
                                  </tbody>
                         	</table>
                     	</div>
@@ -175,17 +183,25 @@
 	<!-- 품목 모달 -->
 	       	
 <script>
-	var exampleModal = document.getElementById('exampleModal')
-	exampleModal.addEventListener('show.bs.modal', function (event) {
+	var registModal = document.getElementById('registModal')
+	registModal.addEventListener('show.bs.modal', function (event) {
   		var button = event.relatedTarget
   		var recipient = button.getAttribute('data-bs-whatever')
   		var modalTitle = exampleModal.querySelector('.modal-title')
  	 	var modalBodyInput = exampleModal.querySelector('.modal-body input')
 	})
 	
+	var modifyModal = document.getElementById('modifyModal')
+	modifyModal.addEventListener('show.bs.modal', function (event) {
+  		var button = event.relatedTarget
+  		var recipient = button.getAttribute('data-bs-whatever')
+  		var modalTitle = modifyModal.querySelector('.modal-title')
+ 	 	var modalBodyInput = modifyModal.querySelector('.modal-body input')
+	})
+	
 	// 체크박스 전체 선택
-	var selectAllCheckbox = document.getElementById("delete-list-all");
-	var checkboxes = document.querySelectorAll('[data-group="delete-list"]');
+	var selectAllCheckbox = document.getElementById("checkbox");
+	var checkboxes = document.querySelectorAll('[data-group="checkboxall"]');
 	selectAllCheckbox.addEventListener("change", function () {
     	checkboxes.forEach(function (checkbox) {
         	checkbox.checked = selectAllCheckbox.checked;
@@ -209,6 +225,11 @@
     	});
 	});
 	
+	function modifyModal(ordersList) {
+        // 모달 띄우기
+        $('#modifyModal').modal('show');
+    }
+	
     $(document).ready(function() {
 	    // 공급처 모달
 	    $("#clientcode").click(function() {
@@ -223,8 +244,8 @@
 	        $('#clientModal').modal('hide');
 	    });	
 
-		// 품목 모달    	
-    	$("#items").click(function() {
+		// 품목 모달
+    	$("#itemcode").click(function() {
         	$("#itemModal").modal('show');
    		});
     
@@ -232,7 +253,7 @@
         	var columns = $(this).find('td');
         	var selectedItemName = $(columns[1]).text(); // 품명
         	var selectedItemCode = $(columns[2]).text(); // 품목코드
-        	$('#items').val(selectedItemName);
+        	$('#itemcode').val(selectedItemCode);
         	$('#itemModal').modal('hide');
     	});
     

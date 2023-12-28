@@ -8,7 +8,7 @@
 	
 	<!-- 품목 목록 -->
 	<select id="itemList" resultType="com.cafein.domain.ItemVO">
-		select it.itemid, it.itemcode, it.itemtype, it.itemname, it.origin, it.itemweight, it.itemprice,
+		select it.itemid, it.itemcode, it.itemtype, it.itemname, it.origin, it.itemweight, it.itemprice, it.available,
 	   		   cli.clientname, cli.clientcode
 		from item it
 		join client cli on it.clientcode = cli.clientcode;
