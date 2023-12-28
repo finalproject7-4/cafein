@@ -62,11 +62,11 @@
 						<th scope="col">출하량</th>
 						<th scope="col">출하상태</th>
 						<th scope="col">담당자</th>
-					</tr>
+					</tr> 
 				</thead>
 				<tbody>
 
-					<c:forEach items="${ AllSHList }" var="sh">
+					<c:forEach items="${AllSHList}" var="sh">
 						<tr>
 							<td>${sh.shipid }</td>
 							<td><fmt:formatDate value="${sh.shipdate }"
@@ -74,7 +74,7 @@
 							<td>${sh.shipcode }</td>
 							<td>${sh.workcode }</td>
 							<td>${sh.itemname }</td>
-							<td>거래처</td> <!-- 거래처 이름 -->
+							<td>${sh.clientcode}</td>
 							<td>${sh.shipcount }</td>
 							<td>${sh.shipsts }</td>
 							<td>${sh.membercode }</td>

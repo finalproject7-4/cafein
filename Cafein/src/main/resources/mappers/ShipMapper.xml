@@ -8,18 +8,23 @@
 	<!-- 출하 조회 -->
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT sh.shipid, sh.shipcode, sh.shipdate, sh.membercode,
-		sh.shipcount, sh.stockid, sh.shipsts, sh.lotnumber, sh.pocode 
+		SELECT sh.shipid, sh.shipdate, sh.shipcode, sh.workcode, 
+		st.itemid, it.itemname, it.clientcode,
+		sh.shipcount, sh.shipsts, sh.membercode
 		FROM ship sh
-		JOIN stock st ON sh.stockid = st.stockid;
-<!-- 		JOIN work wk ON sh.workcode = wk.workcode -->
-<!-- 		JOIN client cli on sh.clientcode = cli.clientcode; -->
+		LEFT JOIN stock st ON sh.stockid = st.stockid
+		LEFT JOIN item it ON st.itemid = it.itemid
 	</select>
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
-		SELECT * FROM work
+		SELECT wk.workid, wk.membercode, wk.workdate1, wk.workdate2,
+		wk.worksts, wk.workcount, wk.workupdate, wk.workcode,
+		wk.itemcode, wk.pocode, wk.receiptid, wk.produceid, wk.clinetcode,
+		wk.recordcount, wk.returncode
+		FROM work wk
+		JOIN purchaseorder po ON wk.pocode = po.pocode
 	</select>
 	
 	<!-- 실적 조회 -->
