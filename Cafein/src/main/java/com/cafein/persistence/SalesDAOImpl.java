@@ -58,11 +58,6 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.selectOne(NAMESPACE + ".getPOCount", svo);
 	}
 
-	@Override
-	public int getPageCount() throws Exception {
-		logger.debug("DAO : getPageCount()");
-		return sqlSession.selectOne(NAMESPACE + ".countPO");
-	}
 	
 	
 

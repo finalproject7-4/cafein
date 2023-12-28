@@ -57,12 +57,6 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.getPOCount(svo);
 	}
 
-	/*전체글 개수 조회*/
-	@Override
-	public int totalPOCount() throws Exception {
-		logger.debug("S : totalPOCount()");
-		return sdao.getPageCount();
-	}
 	
 	
 	

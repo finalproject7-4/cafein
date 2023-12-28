@@ -6,7 +6,9 @@
 
 <h1>수주관리</h1>
 <fieldset>
-	<legend>수주관리</legend>
+
+	<div class="col-12">
+	<div class="bg-light rounded h-100 p-4">
 	<form method="post">
 		수주일자 <input type="date" class="date" name="podate"> ~ <input type="date" class="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
 		납품처조회 <input class="clientSearch1" type="text" name="client" placeholder="납품처코드"> 
@@ -17,8 +19,10 @@
 		<button id="searchbtn" type="button" class="btn btn-dark m-2">조회</button>
 		<br>
 	</form>
+	</div>
+	</div><br>
+	
 		<div class="col-12">
-		
 			<div class="btn-group" role="group">
 			<form role="form1">
 				<input type="hidden" name="state" value="전체">
@@ -43,15 +47,14 @@
 
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
-				<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>			
-			<button type="button" class="btn btn-dark m-2">수정</button>
-			<button type="button" class="btn btn-dark m-2">삭제</button>
+			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
+			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap">등록</button>			
+			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap">수정</button>
+			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap">삭제</button>
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col"><input type="checkbox"></th>
 								<th scope="col">수주번호</th>
 								<th scope="col">수주상태</th>
 								<th scope="col">수주코드</th>
@@ -62,14 +65,14 @@
 								<th scope="col">수정일자</th>
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
+								<th scope="col">관리</th>
 							</tr>
 						</thead>
 						<tbody>
-						
-							<c:forEach items="${POList}" var="po">
+						<c:set var="counter" value="1" />
+							<c:forEach items="${POList}" var="po" varStatus="status">
 								<tr>
-									<td><input type="checkbox"></td>
-									<td>${po.poid }</td>
+									<td>${counter }</td>
 									<td>${po.postate }</td>
 									<td>${po.pocode }</td>
 									<td>${po.clientname}</td>
@@ -86,25 +89,35 @@
 									</c:choose>
 									<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 									<td>${po.membercode}</td>
+									<td>
+									<!-- 버튼 수정 -->
+									<button type="button" class="btn btn-outline-dark" 
+									        onclick="openModifyModal('${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+									        수정
+									</button>
+									</td>
 								</tr>
+								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
-			<c:if test="${pageVO.prev }">
-				<li><a href="/sales/POList?page=${pageVO.startPage - 1 }">«</a></li>
-			</c:if>
+<%-- 			<c:if test="${pageVO.prev }"> --%>
+<%-- 				<li><a href="/sales/POList?page=${pageVO.startPage - 1 }">«</a></li> --%>
+<%-- 			</c:if> --%>
 
-			<c:forEach var="i" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1">
-				<li ${pageVO.cri.page == i?  "class='active'":"" }><a href="/sales/POList?page=${i }"> ${i } </a></li>
-			</c:forEach>
+<%-- 			<c:forEach var="i" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1"> --%>
+<%-- 				<li ${pageVO.cri.page == i?  "class='active'":"" }><a href="/sales/POList?page=${i }"> ${i } </a></li> --%>
+<%-- 			</c:forEach> --%>
 
-			<c:if test="${pageVO.next }">
-				<li><a href="/sales/POList?page=${pageVO.endPage + 1 }">»</a></li>
-			</c:if>
+<%-- 			<c:if test="${pageVO.next }"> --%>
+<%-- 				<li><a href="/sales/POList?page=${pageVO.endPage + 1 }">»</a></li> --%>
+<%-- 			</c:if> --%>
 		</div>
 		</div>
 		<jsp:include page="registPO.jsp"/>
+		<jsp:include page="modifyPO.jsp"/>
+		<jsp:include page="deletePO.jsp"/>
 		
 		<!-- 납품처 조회 모달 -->
         <div class="modal fade" id="clientSM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -130,10 +143,10 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 <c:forEach items="${POList}" var="po">
+								<c:forEach items="${cliList}" var="cli">
                                     <tr class="clientset">
-                                    	<td>${po.clientname }</td> 
-                                    	<td>${po.clientcode }</td>
+                                    	<td>${cli.clientname }</td> 
+                                    	<td>${cli.clientcode }</td>
                                     </tr>
                                     </c:forEach>
                                     </tbody>
@@ -171,10 +184,10 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 <c:forEach items="${POList}" var="po">
+								<c:forEach items="${iList}" var="item">
                                     <tr class="itemset">
-                                    	<td>${po.itemname }</td> 
-                                    	<td>${po.itemcode }</td>
+                                    	<td>${item.itemname }</td> 
+                                    	<td>${item.itemcode }</td>
                                     </tr>
                                     </c:forEach>
                                     </tbody>
@@ -190,6 +203,36 @@
 		</fieldset>
   <!-- 모달 js&jq -->
    <script>
+   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+       // 가져온 값들을 모달에 설정
+       $("#clientid").val(clientname);
+       $("#itemid").val(itemname);
+       $("#floatingSelect").val(postate);
+       $("#pocnt").val(pocnt);
+       $("#todaypo").val(ordersdate);
+       $("#date").val(ordersduedate);
+       $("#membercode").val(membercode);
+
+       // 모달 열기
+       $("#modifyModal").modal('show');
+   }
+
+   // 모달이 열릴 때마다 호출되는 이벤트
+   $('#modifyModal').on('show.bs.modal', function (event) {
+       var modal = $(this);
+
+       // 모달이 열릴 때마다 해당 값들을 가져와서 모달에 설정
+       modal.find('#clientid').val(modal.find('#clientid').val());
+       modal.find('#itemid').val(modal.find('#itemid').val());
+       modal.find('#floatingSelect').val(modal.find('#floatingSelect').val());
+       modal.find('#pocnt').val(modal.find('#pocnt').val());
+       modal.find('#todaypo').val(modal.find('#todaypo').val());
+       modal.find('#date').val(modal.find('#date').val());
+       modal.find('#membercode').val(modal.find('#membercode').val());
+   });
+
+
+   
    /*달력 이전날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
@@ -210,6 +253,8 @@
 
     
     $(document).ready(function() {
+    	
+    	
     	
 	 	// 납품처 조회 모달
 	    $(".clientSearch1, .clientSearch2").click(function() {
@@ -292,7 +337,7 @@
                     itemName: itemName
                 },
                 success: function(POList) {
-                    // 성공 시에 테이블을 생성하고 화면에 표시하는 로직 추가
+                    // 성공 시에 테이블을 생성하고 화면에 표시
                     var tableHtml = '<table>';
                     for (var i = 0; i < POList.length; i++) {
                         tableHtml += '<tr>';
@@ -310,7 +355,6 @@
                     }
                     tableHtml += '</table>';
                     
-                    // 결과를 어떤 엘리먼트에 넣을 것인지 지정 (예: <div id="result"></div>)
                     $("#result").html(tableHtml);
                 },
                 error: function(error) {

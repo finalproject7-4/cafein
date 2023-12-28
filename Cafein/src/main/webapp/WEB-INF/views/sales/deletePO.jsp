@@ -2,13 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 수주 등록 모달창 -->
-	<div class="modal fade" id="registModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- 수주 수정 모달창 -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 			
 				<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">수주 등록</h5>
+				<h5 class="modal-title" id="exampleModalLabel">수주 수정</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -38,11 +38,13 @@
 					</div>	
 					수량
 					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example">
+					
 					<div class="row">
 					<div class="col">
 					수주일자
 					<input name="ordersdate" id="todaypo" autocomplete="off" type="text" class="form-control" placeholder="수주일자(클릭)">
 					</div>
+					
 					<div class="col">
 					완납예정일
 					<input name="ordersduedate" type="date" id="date" class="form-control" placeholder="완납예정일">
@@ -145,11 +147,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	$("#pocnt").on("input", function() {
-	    var pocntValue = $(this).val();
-	    console.log("수량 입력 값:", pocntValue);
-	});
-	
 	$(".clientset").click(function() {
 	    console.log("클릭 이벤트 발생");
 	    var clientid = $(this).find('td:first-child').text();
@@ -215,4 +212,34 @@ $(document).ready(function() {
 	document.getElementById("date").setAttribute("min", today);
 
 	});
+	
+<!-- modifyPO.jsp -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // modifyModal이 열릴 때 이벤트
+        $('#modifyModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // 클릭된 버튼
+
+            // 버튼에 담긴 데이터 가져오기
+            var clientname = button.data('clientname');
+            var itemname = button.data('itemname');
+            var postate = button.data('postate');
+            var pocnt = button.data('pocnt');
+            var ordersdate = button.data('ordersdate');
+            var ordersduedate = button.data('ordersduedate');
+            var membercode = button.data('membercode');
+
+            // 모달 내의 입력 필드에 값 할당
+            $("#clientname").val(clientname);
+            $("#itemname").val(itemname);
+            $("#postate").val(postate);
+            $("#pocnt").val(pocnt);
+            $("#ordersdate").val(ordersdate);
+            $("#ordersduedate").val(ordersduedate);
+            $("#membercode").val(membercode);
+        });
+    });
+</script>
+
 </script>

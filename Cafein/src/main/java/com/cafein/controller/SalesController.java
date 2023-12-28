@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cafein.domain.Criteria;
-import com.cafein.domain.PageVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.service.SalesService;
 
@@ -33,7 +31,7 @@ public class SalesController {
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
-	public String AllPOListGET(Model model, @ModelAttribute("result") String result, Criteria cri) throws Exception{
+	public String AllPOListGET(Model model, @ModelAttribute("result") String result) throws Exception{
 		logger.debug("AllPOListGET() 실행");
 		
 		List<SalesVO> POList = sService.AllPOList();
@@ -46,12 +44,6 @@ public class SalesController {
 
 		logger.debug("cliList",sService.registCli());        
 		logger.debug("iList",sService.registItem());         
-		
-		// 페이징처리
-		PageVO pageVO = new PageVO();
-		pageVO.setCri(cri);
-		pageVO.setTotalCount(sService.totalPOCount());
-		logger.debug("확인 : "+pageVO);
 		
 		return "/sales/POList";
 	}
@@ -76,7 +68,7 @@ public class SalesController {
 		svo.setPocode(makePOcode(svo));
 		
 		sService.registPO(svo);                                                      
-		logger.debug(" 글작성 완료! ");                                                   
+		logger.debug(" 글작성 완료! ");     
          
 		rttr.addFlashAttribute("result", "CREATEOK");                                
 	                                                                                 
