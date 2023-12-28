@@ -25,7 +25,6 @@ import com.cafein.service.StockService;
 @RequestMapping(value = "/quality/*")
 public class QualityController {
 	
-	
 	private static final Logger logger = LoggerFactory.getLogger(QualityController.class);
 	
 	@Inject
@@ -56,7 +55,6 @@ public class QualityController {
 	public void productQualityListGET(Model model, HttpSession session, QualityVO vo, 
 			Criteria cri) throws Exception{
 		
-//		model.addAttribute("list", qService.qualityList());
 		cri.setPageSize(5);
 		vo.setCri(cri);
 		
@@ -304,12 +302,12 @@ public class QualityController {
 		if(result == 0) {
 			logger.debug(" 검수 실패 ");
 			rttr.addFlashAttribute("AUDIT", "X");
-			return "redirect:/quality/qualities";
+			return "redirect:/quality/qualitiesMaterial";
 		}
 		logger.debug(" 검수 성공 ");
 		qService.returnsQualityid(vo);
 		rttr.addFlashAttribute("AUDIT", "O");
-		return "redirect:/quality/qualities";
+		return "redirect:/quality/qualitiesMaterial";
 	}
 	
 	// 불량 현황 입력 처리 (생산 + 반품) - POST
@@ -337,13 +335,13 @@ public class QualityController {
 		if(result == 0) {
 			logger.debug(" 불량 현황 입력 실패 ");
 			rttr.addFlashAttribute("DEFECT", "X");
-			return "redirect:/quality/qualities";
+			return "redirect:/quality/qualitiesMaterial";
 		}
 		logger.debug(" 불량 현황 입력 성공 ");
 		// 품질 관리에서 불량 등록 여부 업데이트
 		qService.registerDefectY(vo);
 		rttr.addFlashAttribute("DEFECT", "O");
-		return "redirect:/quality/qualities";
+		return "redirect:/quality/qualitiesMaterial";
 	}
 	
 }
