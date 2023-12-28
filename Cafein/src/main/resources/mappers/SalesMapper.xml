@@ -8,9 +8,8 @@
 
 	<!-- 수주 등록 -->
 	<insert id="registPO" parameterType="com.cafein.domain.SalesVO">
-		INSERT INTO purchaseorder (postate, pocnt, ordersdate, ordersduedate, clientid, itemid, membercode)
-		VALUES ( #{postate}, #{pocnt}, #{ordersdate}, #{ordersduedate}, #{clientid}, #{itemid},
-		#{membercode} )
+		INSERT INTO purchaseorder (postate, pocode, pocnt, ordersdate, ordersduedate, clientid, itemid, membercode)
+		VALUES ( #{postate}, #{pocode}, #{pocnt}, #{ordersdate}, #{ordersduedate}, #{clientid}, #{itemid}, #{membercode} )
 	</insert>
 
 	<!-- 수주 조회 -->
@@ -27,13 +26,32 @@
 	<select id="cliList" resultType="com.cafein.domain.SalesVO">
 		select * from client
 	</select>
+	
 	<!-- 수주등록-품목 -->
 	<select id="iList" resultType="com.cafein.domain.SalesVO">
 		select * from item
 	</select>
 
-
-
+	<!-- 수주코드 생성 -->
+	<select id="getPOCount" resultType="int" parameterType="com.cafein.domain.SalesVO">
+		select count(*) from purchaseorder
+		<where>
+		  <choose>
+			<when test="postate == '대기'">
+				and pocode like '%AL%';
+			</when>
+			<when test="postate == '진행'">
+				and pocode like '%SK%';
+			</when>
+			<when test="postate == '완료'">
+				and pocode like '%FJ%';
+			</when>
+			<otherwise>
+				and pocode like '%GH%';
+			</otherwise>
+		  </choose>
+		</where>
+	</select>
 
 
 </mapper>
