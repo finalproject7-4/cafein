@@ -1,5 +1,6 @@
 package com.cafein.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ public class StockController {
 	public void productStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		cri.setPageSize(5); // 삭제 예정
+		cri.setPageSize(1); // 삭제 예정
 		vo.setCri(cri);
 		List<QualityVO> resultList = sService.stockList(vo); // 생산 + 반품 재고 목록
 		List<QualityVO> storageList = sService.storageList(); // 생산 + 반품 창고 목록
@@ -62,7 +63,7 @@ public class StockController {
 	public void materialStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (없어서 추가해놓은 부분 / 삭제 예정)
 		
-		cri.setPageSize(5); // 삭제 예정
+		cri.setPageSize(1); // 삭제 예정
 		vo.setCri(cri);
 		List<QualityVO> resultList = sService.materialStockList(vo); // 자재 재고 목록
 		List<QualityVO> rawStorageList = sService.rawmaterialStorageList(); // 원자재 창고 목록
@@ -147,7 +148,7 @@ public class StockController {
 	
 	// 재고량 변경 (생산 [포장] + 반품)
 	@RequestMapping(value = "/updateStockQuantity", method = RequestMethod.POST)
-	public String updateStockQuantityPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String updateStockQuantityPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, Criteria cri) throws Exception{
 		
 		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		
@@ -163,12 +164,45 @@ public class StockController {
 			logger.debug(" 재고량 변경 성공! ");			
 		}
 		
-		return "redirect:/material/stock";
+		int page = cri.getPage();
+		String searchBtn = vo.getSearchBtn();
+		String searchText = vo.getSearchText();
+		
+		if(vo.getType() != null && vo.getType().equals("생산")) {
+		if(searchBtn != null && searchText != null) {
+			return "redirect:/material/stockProduct?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn) + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn == null && searchText != null) {
+			return "redirect:/material/stockProduct?page=" + page + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn != null && searchText == null) {
+			return "redirect:/material/stockProduct?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn);
+		}
+		
+		return "redirect:/material/stockProduct?page=" + page;
+		} 
+		
+		// 생산이 아닌 경우
+		if(searchBtn != null && searchText != null) {
+			return "redirect:/material/stock?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn) + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn == null && searchText != null) {
+			return "redirect:/material/stock?page=" + page + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn != null && searchText == null) {
+			return "redirect:/material/stock?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn);
+		}
+		
+		return "redirect:/material/stock?page=" + page;
 	}
 	
 	// 창고 변경
 	@RequestMapping(value = "/updateStockStorage", method = RequestMethod.POST)
-	public String updateStockStoragePOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String updateStockStoragePOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, Criteria cri) throws Exception{
 		
 		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		
@@ -184,6 +218,39 @@ public class StockController {
 			logger.debug(" 창고 변경 성공! ");			
 		}
 		
-		return "redirect:/material/stock";
+		int page = cri.getPage();
+		String searchBtn = vo.getSearchBtn();
+		String searchText = vo.getSearchText();
+		
+		if(vo.getType() != null && vo.getType().equals("생산")) {
+		if(searchBtn != null && searchText != null) {
+			return "redirect:/material/stockProduct?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn) + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn == null && searchText != null) {
+			return "redirect:/material/stockProduct?page=" + page + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn != null && searchText == null) {
+			return "redirect:/material/stockProduct?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn);
+		}
+		
+		return "redirect:/material/stockProduct?page=" + page;
+		} 
+		
+		// 생산이 아닌 경우
+		if(searchBtn != null && searchText != null) {
+			return "redirect:/material/stock?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn) + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn == null && searchText != null) {
+			return "redirect:/material/stock?page=" + page + "&searchText=" + URLEncoder.encode(searchText);
+		}
+		
+		if(searchBtn != null && searchText == null) {
+			return "redirect:/material/stock?page=" + page + "&searchBtn=" + URLEncoder.encode(searchBtn);
+		}
+		
+		return "redirect:/material/stock?page=" + page;
 	}
 }

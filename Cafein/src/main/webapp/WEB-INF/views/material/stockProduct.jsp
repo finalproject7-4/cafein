@@ -86,7 +86,6 @@
 					</tbody>
 				</table>
 			</div>
-			
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
@@ -95,11 +94,39 @@
       						<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
         						<span aria-hidden="true">&laquo;</span>
       						</a>
+      						
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+							<script>
+								$(document).ready(function(){
+   									$('.pageBlockPrev').click(function(e) {
+   										e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            	let prevPage = $(this).data('page');
+   									
+   										let searchBtn = "${param.searchBtn}";
+   										let searchText = "${param.searchTxt}";
+
+   				                		url = "/material/stockProduct?page=" + prevPage;
+   				                
+   				                		if (searchBtn) {
+   				                    		url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                		}
+   				                
+   				                		if (searchText) {
+   				                    		url += "&searchText=" + encodeURIComponent(searchText);
+   				                		}
+   				                		location.href = url;
+    								});
+								});
+							</script>
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+      						
     					</c:if>
     				</li>
 					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
     				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
-					<!-- 버튼에 파라미터 추가 이동 -->
+					
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
 					<script>
 					$(document).ready(function(){
 			            $('.pageBlockNum[data-page="${i}"]').click(function (e) {
@@ -123,13 +150,41 @@
 			            });
 					});	
 					</script>
-					<!-- 버튼에 파라미터 추가 이동 -->
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					
 					</c:forEach>
     				<li class="page-item">
     					<c:if test="${pageVO.next }">
       						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
         						<span aria-hidden="true">&raquo;</span>
-      						</a>  					
+      						</a>
+      						
+      					<!-- 버튼에 파라미터 추가 이동 (이후) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            let nextPage = $(this).data('page');
+   									
+   									let searchBtn = "${param.searchBtn}";
+   									let searchText = "${param.searchText}";
+
+   				                	url = "/material/stockProduct?page=" + nextPage;
+   				                
+   				                	if (searchBtn) {
+   				                    	url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                	}
+   				                
+   				                	if (searchText) {
+   				                    	url += "&searchText=" + encodeURIComponent(searchText);
+   				                	}
+   				                
+   				                	location.href = url;
+    							});
+							});
+						</script>
+						<!-- 버튼에 파라미터 추가 이동 (이전) -->  					
     					</c:if>
     				</li>
   				</ul>
@@ -140,7 +195,7 @@
 	</div>	
 
 
-<!-- 모달창1 -->
+<!-- 재고량 변경 모달창 (생산) -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/material/updateStockQuantity" method="POST">
@@ -150,6 +205,19 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      
+      <!-- 파라미터 확인 -->
+      <input type="hidden" name="type" value="생산">
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchText }">
+      	<input type="hidden" name="searchText" value="${param.searchText }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+     	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+      <!-- 파라미터 확인 -->
       
       	<div class="row">
  			<div class="col">
@@ -191,9 +259,41 @@
    </form>
   </div>
 </div>
-<!-- 모달창1 -->
+<!-- 재고량 변경 모달창 (생산) -->
 
-<!-- 모달창2 -->
+<!-- 재고량 변경 모달창 데이터 (생산) -->
+<script>
+$(document).ready(function() {
+    let myModal = document.getElementById('exampleModal');
+    myModal.addEventListener('show.bs.modal', function(event) {
+        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
+        let stockId = button.getAttribute('data-stockid'); // stockid
+        let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let nowQuantity = button.getAttribute('data-stockquantity'); // stockquantity
+        let itemName = button.getAttribute('data-itemname'); // stockquantity
+        let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
+        
+        // 모달 내부의 입력 필드에 값을 설정
+        let sinputField = myModal.querySelector('input[name="stockid"]');
+        sinputField.value = stockId;
+        
+        let qinputField = myModal.querySelector('input[name="qualityid"]');
+        qinputField.value = qualityId;
+        
+        let ninputField = myModal.querySelector('input[name="nowquantity"]');
+        ninputField.value = nowQuantity;
+        
+        let iinputField = myModal.querySelector('input[name="itemname"]');
+        iinputField.value = itemName;
+        
+        let linputField = myModal.querySelector('input[name="lotnumber"]');
+        linputField.value = lotNumber;
+    });
+});
+</script>
+<!-- 재고량 변경 모달창 데이터 (생산) -->
+
+<!-- 창고 이동 모달창 (생산) -->
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/material/updateStockStorage" method="POST">
@@ -203,6 +303,19 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      
+      <!-- 파라미터 확인 -->
+      <input type="hidden" name="type" value="생산">
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchText }">
+      	<input type="hidden" name="searchText" value="${param.searchText }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+     	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+      <!-- 파라미터 확인 -->
       
       	<div class="row">
  			<div class="col">
@@ -247,60 +360,9 @@
    </form>
   </div>
 </div>
-<!-- 모달창2 -->
+<!-- 창고 이동 모달창 (생산) -->
 
-<script>
-	// 재고 등록 성공 / 실패 알림
-	var result = "${result}";
-	
-	if(result == "STOCKNO"){
-		alert("재고 등록 실패!");
-	}else if(result == "STOCKYES"){
-		alert("재고 등록 성공!");
-	}else if(result == "STOCKUPNO"){
-		alert("재고량 변경 실패!");
-	}else if(result == "STOCKUPYES"){
-		alert("재고량 변경 성공!");
-	}else if(result == "STOCKSUPNO"){
-		alert("창고 변경 실패!");
-	}else if(result == "STOCKSUPYES"){
-		alert("창고 변경 성공!")
-	}
-</script>
-
-<!-- 모달 1 출력 -->
-<script>
-$(document).ready(function() {
-    let myModal = document.getElementById('exampleModal');
-    myModal.addEventListener('show.bs.modal', function(event) {
-        let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
-        let stockId = button.getAttribute('data-stockid'); // stockid
-        let qualityId = button.getAttribute('data-qualityid'); // qualityid
-        let nowQuantity = button.getAttribute('data-stockquantity'); // stockquantity
-        let itemName = button.getAttribute('data-itemname'); // stockquantity
-        let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
-        
-        // 모달 내부의 입력 필드에 값을 설정
-        let sinputField = myModal.querySelector('input[name="stockid"]');
-        sinputField.value = stockId;
-        
-        let qinputField = myModal.querySelector('input[name="qualityid"]');
-        qinputField.value = qualityId;
-        
-        let ninputField = myModal.querySelector('input[name="nowquantity"]');
-        ninputField.value = nowQuantity;
-        
-        let iinputField = myModal.querySelector('input[name="itemname"]');
-        iinputField.value = itemName;
-        
-        let linputField = myModal.querySelector('input[name="lotnumber"]');
-        linputField.value = lotNumber;
-    });
-});
-</script>
-<!-- 모달 1 출력 -->
-
-<!-- 모달 2 출력 -->
+<!-- 창고 이동 모달창 데이터 (생산) -->
 <script>
 $(document).ready(function() {
     let myModal = document.getElementById('exampleModal2');
@@ -331,7 +393,27 @@ $(document).ready(function() {
     });
 });
 </script>
-<!-- 모달 2 출력 -->
+<!-- 창고 이동 모달창 데이터 (생산) -->
+
+<!-- 재고 수정 관련 알림창 -->
+<script>
+	var result = "${result}";
+	
+	if(result == "STOCKNO"){
+		alert("재고 등록 실패!");
+	}else if(result == "STOCKYES"){
+		alert("재고 등록 성공!");
+	}else if(result == "STOCKUPNO"){
+		alert("재고량 변경 실패!");
+	}else if(result == "STOCKUPYES"){
+		alert("재고량 변경 성공!");
+	}else if(result == "STOCKSUPNO"){
+		alert("창고 변경 실패!");
+	}else if(result == "STOCKSUPYES"){
+		alert("창고 변경 성공!")
+	}
+</script>
+<!-- 재고 수정 관련 알림창 -->
 
 <!-- 라디오 버튼 이동 -->
 <script>
@@ -376,14 +458,19 @@ $(document).ready(function() {
 	
 	if(result == "STOCKYES"){
 		alert("재고 등록 성공!");
+		return;
 	}else if(result == "STOCKUPNO"){
 		alert("재고량 변경 실패!");
+		return;
 	}else if(result == "STOCKUPYES"){
 		alert("재고량 변경 성공!");
+		return;
 	}else if(result == "STOCKSUPNO"){
 		alert("창고 변경 실패!");
+		return;
 	}else if(result == "STOCKSUPYES"){
-		alert("창고 변경 성공!")
+		alert("창고 변경 성공!");
+		return;
 	}
 </script>
 

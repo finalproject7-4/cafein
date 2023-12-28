@@ -61,7 +61,7 @@
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
 									data-stockquantity="${slist.stockquantity }" data-itemname="${slist.itemname }" 
-									data-lotnumber="${slist.lotnumber }" data-itemtype=${slist.itemtype }>
+									data-lotnumber="${slist.lotnumber }" data-itemtype="${slist.itemtype }">
  									실사 변경
 									</button>
 									</td>
@@ -105,16 +105,97 @@
       						<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
         						<span aria-hidden="true">&laquo;</span>
       						</a>
+      						
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+							<script>
+								$(document).ready(function(){
+   									$('.pageBlockPrev').click(function(e) {
+   										e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            	let prevPage = $(this).data('page');
+   									
+   										let searchBtn = "${param.searchBtn}";
+   										let searchText = "${param.searchTxt}";
+
+   				                		url = "/material/stock?page=" + prevPage;
+   				                
+   				                		if (searchBtn) {
+   				                    		url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                		}
+   				                
+   				                		if (searchText) {
+   				                    		url += "&searchText=" + encodeURIComponent(searchText);
+   				                		}
+   				                		location.href = url;
+    								});
+								});
+							</script>
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+      						
     					</c:if>
     				</li>
 					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
     				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+					
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					<script>
+					$(document).ready(function(){
+			            $('.pageBlockNum[data-page="${i}"]').click(function (e) {
+			                e.preventDefault(); // 기본 이벤트 방지
+			                
+			               	let searchText = "${param.searchText}";	
+			                let searchBtn = "${param.searchBtn}";
+
+			                let pageValue = $(this).data('page');
+			                	url = "/material/stock?page=" + pageValue;
+			                
+			                if (searchBtn) {
+			                    url += "&searchBtn=" + encodeURIComponent(searchBtn);
+			                }
+			                
+			                if (searchText) {
+			                    url += "&searchText=" + encodeURIComponent(searchText);
+			                }
+			                
+			                location.href = url;
+			            });
+					});	
+					</script>
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					
 					</c:forEach>
     				<li class="page-item">
     					<c:if test="${pageVO.next }">
       						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
         						<span aria-hidden="true">&raquo;</span>
-      						</a>  					
+      						</a>
+      						
+      					<!-- 버튼에 파라미터 추가 이동 (이후) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            let nextPage = $(this).data('page');
+   									
+   									let searchBtn = "${param.searchBtn}";
+   									let searchText = "${param.searchText}";
+
+   				                	url = "/material/stock?page=" + nextPage;
+   				                
+   				                	if (searchBtn) {
+   				                    	url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                	}
+   				                
+   				                	if (searchText) {
+   				                    	url += "&searchText=" + encodeURIComponent(searchText);
+   				                	}
+   				                
+   				                	location.href = url;
+    							});
+							});
+						</script>
+						<!-- 버튼에 파라미터 추가 이동 (이전) -->  					
     					</c:if>
     				</li>
   				</ul>
@@ -135,6 +216,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      
+      <c:if test="${!empty param.page }">
+      	<input type="text" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchText }">
+      	<input type="text" name="searchText" value="${param.searchText }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+     	<input type="text" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
       
       	<div class="row">
  			<div class="col">
@@ -425,11 +516,13 @@ $(document).ready(function() {
 </script>
 <!-- 페이지 버튼 이동 -->
 
+<!-- 재고 수정 관련 알림창 -->
 <script>
-	// 재고 등록 성공 / 실패 알림
 	var result = "${result}";
 	
-	if(result == "STOCKYES"){
+	if(result == "STOCKNO"){
+		alert("재고 등록 실패!");
+	}else if(result == "STOCKYES"){
 		alert("재고 등록 성공!");
 	}else if(result == "STOCKUPNO"){
 		alert("재고량 변경 실패!");
@@ -441,5 +534,6 @@ $(document).ready(function() {
 		alert("창고 변경 성공!")
 	}
 </script>
+<!-- 재고 수정 관련 알림창 -->
 
 <%@ include file="../include/footer.jsp"%>

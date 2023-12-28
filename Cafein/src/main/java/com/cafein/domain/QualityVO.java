@@ -108,6 +108,9 @@ public class QualityVO {
 	private String searchText;
 	private String searchBtn;
 	
+	// 구분용 특별 변수
+	private String type;
+	
 	// Criteria 객체
 	private Criteria cri;
 	
