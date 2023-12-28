@@ -48,4 +48,5 @@ public class SalesVO {
 				+ updatedate + ", ordersduedate=" + ordersduedate + ", membercode=" + membercode + "]";
 	}
 
+
 }

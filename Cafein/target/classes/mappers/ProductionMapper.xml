@@ -9,31 +9,51 @@
 	<!-- 생산지시 목록 조회 -->
 	<select id="getProduceList" resultType="com.cafein.domain.ProduceVO">
 		select * from produce
-		<where>
 		
+		<where>
 		<if test="startDate != null and endDate != null">
-		  producedate between #{startDate} and #{endDate}
+		 	producedate between #{startDate} and #{endDate}
 		</if>
 		
 		<if test="itemname != null and !itemname.equals('')">
-		 and itemname like concat('%',#{itemname},'%')
-		</if>
-		
-		<if test="startDate != null and endDate != null and itemname != null and !itemname.equals('')">
-		and itemname like concat('%',#{itemname},'%') and producedate between #{startDate} and #{endDate}
+			AND itemname like concat('%',#{itemname},'%')
 		</if>
 		
 		<if test="state != null">
-		and state like concat('%',#{state},'%')
+			AND state like concat('%',#{state},'%')
 		</if>
 		
 		<if test="qualitycheck != null">
-		and qualitycheck like concat('%',"검사전",'%')
+			AND qualitycheck like concat('%','${qualitycheck}','%')
 		</if>
+				
+		<if test="produceline != null and !produceline.equals(0)">
+			AND produceline = #{produceline}
+		</if>
+		
+		<if test="process != null and !process.equals('')">
+			AND process like concat('%','${process}','%')
+		</if>
+<<<<<<< HEAD
 		order by produceid desc
+=======
+		
+>>>>>>> 5c24e8107432a17594193bcaa802f3f87b3b1478
 		</where>
+		order by produceid desc
 	
 	</select>
+	
+	<!-- BOM  목록 조회 -->
+	<select id="getBomList" resultType="com.cafein.domain.BomVO">
+		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, j.itemname as itemname from bom b join item j on b.itemcode = j.itemcode
+	</select>
+	
+	<!-- 생산지시 등록 -->
+	<insert id="insertProducePlan">
+		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode) 
+		values(#{producedate}, #{produceline}, #{producetime}, #{itemid}, #{itemname}, #{process}, #{temper}, #{itemname1}, #{itemname2}, #{itemname3}, #{amount}, #{membercode})
+	</insert>
 	
 	
 
