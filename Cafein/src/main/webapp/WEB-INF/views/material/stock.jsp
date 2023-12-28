@@ -562,4 +562,31 @@ $(document).ready(function() {
 </script>
 <!-- 재고 수정 관련 알림창 -->
 
+<!-- 토스트창 ajax 호출 (30초 간격) -->
+<script>
+$(document).ready(function(){
+    function fetchProductStockToast() {
+        $.ajax({
+            url: "/material/materialStockToast",
+            type: "GET",
+            dataType: "html",
+            success: function(data) {
+                // 토스트 삽입
+                $("body").append(data);
+            },
+            error: function(error) {
+                console.error("Error fetching quality list:", error);
+            }
+        });
+    }
+
+    // 초기 호출
+    fetchProductStockToast();
+
+    // 1분마다 호출
+    setInterval(fetchProductStockToast, 30000); // 60,000 밀리초 = 1분
+});
+</script>
+<!-- 토스트창 ajax 호출 (30초 간격) -->
+
 <%@ include file="../include/footer.jsp"%>

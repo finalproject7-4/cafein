@@ -47,4 +47,11 @@ public interface StockService {
 	
 	// 재고 등록 여부 업데이트
 	public void registerStockY(QualityVO vo) throws Exception;
+	
+	// 재고 토스트 데이터 (생산 [포장] + 반품)
+	public QualityVO productStockToast() throws Exception;
+	
+	// 재고 토스트 데이터 (자재)
+	public QualityVO materialStockToast() throws Exception;
+	
 }

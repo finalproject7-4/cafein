@@ -253,4 +253,16 @@ public class StockController {
 		
 		return "redirect:/material/stock?page=" + page;
 	}
+	
+	// 재고 알림용 토스트 데이터 (생산 [포장] + 반품)
+	@GetMapping(value = "/productStockToast")
+	public void productStockToast(Model model) throws Exception{
+		model.addAttribute("productToast", sService.productStockToast());
+	}
+	
+	// 재고 알림용 토스트 데이터 (자재)
+	@GetMapping(value = "/materialStockToast")
+	public void materialStockToast(Model model) throws Exception{
+		model.addAttribute("materialToast", sService.materialStockToast());
+	}
 }
