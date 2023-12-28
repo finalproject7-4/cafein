@@ -2,12 +2,20 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- SweetAlert 추가 -->
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
+"></script>
+<!-- SweetAlert 추가 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>자재 불량 현황</h2>
-			<input type="button" class="btn btn-sm btn-primary" value="원자재" id="rawmaterial2nd">
-			<input type="button" class="btn btn-sm btn-danger" value="부자재" id="submaterial2nd">
-			<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial2nd">
+			
+			<div class="buttonarea2" style="margin-bottom: 10px;">			
+				<input type="button" class="btn btn-sm btn-primary" value="원자재" id="rawmaterial2nd">
+				<input type="button" class="btn btn-sm btn-danger" value="부자재" id="submaterial2nd">
+				<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial2nd">
+			</div>
 			
 			<form action="/quality/materialDefectList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
@@ -21,8 +29,8 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">불량현황ID</th>
-								<th scope="col">품질관리ID</th>
+								<th scope="col">번호</th>
+								<th scope="col">품질관리번호</th>
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>

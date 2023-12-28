@@ -2,6 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- SweetAlert 추가 -->
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
+"></script>
+<!-- SweetAlert 추가 -->
 <!-- 재고 조회 -->
 <div class="col-12">
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
@@ -15,10 +20,11 @@
   			<label class="form-check-label" for="productRadio">완제품</label>
 		</div>
 		<br>
-		<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
-		<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
-		<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
-			
+		<div class="buttonarea" style="margin-bottom: 10px;">
+			<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
+			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
+			<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
+		</div>
 		<form action="/material/stockProduct" method="GET">
 			<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -37,11 +43,11 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">구분</th>
-								<th scope="col">코드</th>
-								<th scope="col">품명</th>
-								<th scope="col">LOT</th>
+								<th scope="col">번호</th>
+								<th scope="col">상품구분</th>
+								<th scope="col">품목코드</th>
+								<th scope="col">제품명</th>
+								<th scope="col">LOT번호</th>
 								<th scope="col">중량</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고</th>
@@ -402,26 +408,6 @@ $(document).ready(function() {
 </script>
 <!-- 창고 이동 모달창 데이터 (생산) -->
 
-<!-- 재고 수정 관련 알림창 -->
-<script>
-	var result = "${result}";
-	
-	if(result == "STOCKNO"){
-		alert("재고 등록 실패!");
-	}else if(result == "STOCKYES"){
-		alert("재고 등록 성공!");
-	}else if(result == "STOCKUPNO"){
-		alert("재고량 변경 실패!");
-	}else if(result == "STOCKUPYES"){
-		alert("재고량 변경 성공!");
-	}else if(result == "STOCKSUPNO"){
-		alert("창고 변경 실패!");
-	}else if(result == "STOCKSUPYES"){
-		alert("창고 변경 성공!")
-	}
-</script>
-<!-- 재고 수정 관련 알림창 -->
-
 <!-- 라디오 버튼 이동 -->
 <script>
 $(document).ready(function(){
@@ -459,26 +445,24 @@ $(document).ready(function() {
 </script>
 <!-- 페이지 버튼 이동 -->
 
+<!-- 재고 수정 관련 알림창 -->
 <script>
-	// 재고 등록 성공 / 실패 알림
 	var result = "${result}";
 	
-	if(result == "STOCKYES"){
-		alert("재고 등록 성공!");
-		return;
+	if(result == "STOCKNO"){
+		Swal.fire("재고 등록 실패!");
+	}else if(result == "STOCKYES"){
+		Swal.fire("재고 등록 성공!");
 	}else if(result == "STOCKUPNO"){
-		alert("재고량 변경 실패!");
-		return;
+		Swal.fire("재고량 변경 실패!");
 	}else if(result == "STOCKUPYES"){
-		alert("재고량 변경 성공!");
-		return;
+		Swal.fire("재고량 변경 성공!");
 	}else if(result == "STOCKSUPNO"){
-		alert("창고 변경 실패!");
-		return;
+		Swal.fire("창고 변경 실패!");
 	}else if(result == "STOCKSUPYES"){
-		alert("창고 변경 성공!");
-		return;
+		Swal.fire("창고 변경 성공!")
 	}
 </script>
+<!-- 재고 수정 관련 알림창 -->
 
 <%@ include file="../include/footer.jsp"%>

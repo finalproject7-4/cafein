@@ -2,14 +2,22 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- SweetAlert 추가 -->
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
+"></script>
+<!-- SweetAlert 추가 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>생산 / 반품 불량 현황</h2>
-			<input type="button" class="btn btn-sm btn-primary" value="블렌딩" id="blending2nd">
-			<input type="button" class="btn btn-sm btn-danger" value="냉각" id="cooling2nd">
-			<input type="button" class="btn btn-sm btn-warning" value="포장" id="packaging2nd">
-			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return2nd">
-			<input type="button" class="btn btn-sm btn-success" value="전체" id="all2nd">
+			
+			<div class="buttonarea2" style="margin-bottom: 10px;">
+				<input type="button" class="btn btn-sm btn-primary" value="블렌딩" id="blending2nd">
+				<input type="button" class="btn btn-sm btn-danger" value="냉각" id="cooling2nd">
+				<input type="button" class="btn btn-sm btn-warning" value="포장" id="packaging2nd">
+				<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return2nd">
+				<input type="button" class="btn btn-sm btn-success" value="전체" id="all2nd">
+			</div>
 			
 			<form action="/quality/productDefectList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
@@ -23,8 +31,8 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">불량현황ID</th>
-								<th scope="col">품질관리ID</th>
+								<th scope="col">번호</th>
+								<th scope="col">품질관리번호</th>
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>

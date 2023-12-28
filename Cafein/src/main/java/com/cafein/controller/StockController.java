@@ -110,7 +110,7 @@ public class StockController {
 		}
 		// 재고 등록 여부 업데이트
 		sService.registerStockY(vo);
-		return "redirect:/material/stock";
+		return "redirect:/material/stockProduct";
 		}
 	}
 	
@@ -135,7 +135,7 @@ public class StockController {
 		if(result == 0) {
 			rttr.addFlashAttribute("result", "STOCKNO");
 			logger.debug(" 재고 등록 실패! ");
-			return "redirect:/quality/qualities";
+			return "redirect:/quality/qualitiesMaterial";
 		}else {
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");
