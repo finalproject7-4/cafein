@@ -3,7 +3,6 @@ package com.cafein.controller;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.ClientVO;
-import com.cafein.domain.MemberVO;
-import com.cafein.service.CleintService;
+import com.cafein.service.ClientService;
 
 @Controller
 @RequestMapping(value = "information/*")
@@ -25,7 +23,7 @@ public class ClientController {
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 	
 	@Inject
-	private CleintService cService;
+	private ClientService cService;
 	
 	// http://localhost:8088/information/clientJoin
 	@RequestMapping(value = "/clientJoin", method = RequestMethod.GET)
@@ -96,7 +94,6 @@ public class ClientController {
 		model.addAttribute("resultVO", resultVO);
 	}
 	
-	// http://localhost:8088/information/clientDelete?clientid=1
 	@RequestMapping(value = "/clientDelete", method = RequestMethod.POST)
 	public String clientDeletePOST(ClientVO vo,
 								  RedirectAttributes rttr) throws Exception {

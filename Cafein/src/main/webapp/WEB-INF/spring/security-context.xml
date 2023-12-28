@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- security-context.xml  : 시큐리티 관련 모든 처리 -->
+	
+	<!-- 시큐리티 관련 객체 생성 -->
+	<bean id="customAccessDenied" class="com.cafein.security.CustomAccessDeniedHandler" />
+	<bean id="customLoginSuccess" class="com.cafein.security.CustomLoginSuccessHandler" />
+	
+<!-- 	<bean id="customNoopPasswordEncoder" class="com.itwillbs.security.CustomNoopPasswordEncoder"/> -->
+	<bean id="bcryptPasswordEncoder" 
+		  class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
+	
+	<!-- 시큐리티 웹 설정 -->
+	<security:http>
+		
+		<!-- 각 주소별 권한을 부여 -->
+<!-- 		<security:intercept-url pattern="/sample/all"  access="permitAll"/> -->
+<!-- 		<security:intercept-url pattern="/sample/member"  access="hasRole('ROLE_MEMBER')"/> -->
+<!-- 		<security:intercept-url pattern="/sample/admin"  access="hasRole('ROLE_ADMIN')"/> -->
+	
+<!-- 		<security:intercept-url pattern="/boards/*"  access="hasRole('ROLE_ADMIN')"/> -->
+		
+		<!-- 접근권한 확인하기위한 로그인페이지(기본값) -->
+<!-- 		<security:form-login/> -->
+		<security:form-login login-page="/main/login" 
+							 authentication-success-handler-ref="customLoginSuccess"/>
+	
+		<!-- 접근거부 처리(403)  -->
+<!-- 		<security:access-denied-handler error-page="/main/accessErr"/> -->
+		<security:access-denied-handler ref="customAccessDenied"/>
+		
+		<!-- 로그아웃 -->
+		<security:logout invalidate-session="true" logout-url="/main/logout"/> 
+		
+		
+	</security:http>
+	<!-- 시큐리티 웹 설정 -->
+
+	
+	<!-- 인증매니저 -->
+	<security:authentication-manager>
+		<!-- 인증 처리 담당자  -->
+		<security:authentication-provider>
+		  <!-- 사용자 인증(출입증 발급-JDBC) -->
+		  <security:jdbc-user-service data-source-ref="dataSource" />
+		  
+		  <!-- 임시 테스트용 비밀번호 인코더 객체 -->
+<!-- 		  <security:password-encoder ref="customNoopPasswordEncoder"/> -->
+		  <security:password-encoder ref="bcryptPasswordEncoder" />
+		
+			<!--사용자출입(인증정보) 정보관리 -->
+		  	<!-- 사용자 인증(출입증 발급) -->
+<!-- 			<security:user-service> -->
+<!-- 			 	<security:user name="member" password="{noop}1234" authorities="ROLE_MEMBER"/> -->
+<!-- 			  	<security:user name="admin" password="{noop}1234" authorities="ROLE_MEMBER,ROLE_ADMIN"/> -->
+<!-- 		  	</security:user-service>		 -->
+		  	
+		  
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<!-- 인증매니저 -->
+
+</beans>

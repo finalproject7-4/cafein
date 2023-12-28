@@ -9,11 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.cafein.domain.ClientVO;
-import com.cafein.domain.MemberVO;
 import com.cafein.persistence.ClientDAO;
 
 @Service
-public class ClientServiceImpl implements CleintService {
+public class ClientServiceImpl implements ClientService {
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientServiceImpl.class);

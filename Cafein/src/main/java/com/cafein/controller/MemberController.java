@@ -3,7 +3,6 @@ package com.cafein.controller;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +93,6 @@ public class MemberController {
 		model.addAttribute("resultVO", resultVO);
 	}
 	
-	// http://localhost:8088/information/memberDelete?memberid=7
 	@RequestMapping(value = "/memberDelete", method = RequestMethod.POST)
 	public String memberDeletePOST(MemberVO vo,
 								  RedirectAttributes rttr) throws Exception {

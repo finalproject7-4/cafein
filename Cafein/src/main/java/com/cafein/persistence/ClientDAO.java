@@ -3,7 +3,6 @@ package com.cafein.persistence;
 import java.util.List;
 
 import com.cafein.domain.ClientVO;
-import com.cafein.domain.MemberVO;
 
 public interface ClientDAO {
 	

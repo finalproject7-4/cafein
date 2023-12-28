@@ -17,6 +17,7 @@
 <!-- 직원 목록 조회 -->
 <select id="getMemberList" resultType="MemberVO">
 	select * from member
+	order by memberid desc
 </select>
 
 <!-- 직원 정보 조회 -->
