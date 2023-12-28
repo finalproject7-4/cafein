@@ -91,7 +91,18 @@
 						</tbody>
 					</table>
 				</div>
-			</div>
+			<c:if test="${pageVO.prev }">
+				<li><a href="/sales/POList?page=${pageVO.startPage - 1 }">«</a></li>
+			</c:if>
+
+			<c:forEach var="i" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1">
+				<li ${pageVO.cri.page == i?  "class='active'":"" }><a href="/sales/POList?page=${i }"> ${i } </a></li>
+			</c:forEach>
+
+			<c:if test="${pageVO.next }">
+				<li><a href="/sales/POList?page=${pageVO.endPage + 1 }">»</a></li>
+			</c:if>
+		</div>
 		</div>
 		<jsp:include page="registPO.jsp"/>
 		

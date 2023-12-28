@@ -53,5 +53,12 @@
 		</where>
 	</select>
 
+	<!-- 전체글 개수 조회 -->
+	<select id="countPO" resultType="int">
+		<![CDATA[
+			select count(*) from purchaseorder
+			where poid>0
+		]]>
+	</select>
 
 </mapper>

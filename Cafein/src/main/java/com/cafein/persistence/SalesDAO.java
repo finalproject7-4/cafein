@@ -20,4 +20,9 @@ public interface SalesDAO {
 	
 	// 수주코드 생성
 	public int getPOCount(SalesVO svo) throws Exception;
+	
+	//전체글 개수 조회
+	public int getPageCount() throws Exception; 
+	
+	
 }

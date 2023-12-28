@@ -10,6 +10,7 @@ import lombok.Data;
 public class SalesVO {
 	
 	//po 테이블
+	private Criteria cri;
 	private int poid;
 	private String postate;
 	private String pocode;
