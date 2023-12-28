@@ -23,18 +23,41 @@ public class QualityDAOImpl implements QualityDAO {
 	
 		return sqlSession.selectList(NAMESPACE + ".selectQualityList");
 	}
-
-	// 검수 폼 출력 (생산)
+	
+	// 품질 관리 목록 검색 버튼 (생산 / 반품)
 	@Override
-	public QualityVO selectProduceInfo(int produceid) throws Exception{
-		return sqlSession.selectOne(NAMESPACE + ".selectProduceInfo", produceid);
+	public List<QualityVO> selectQualityListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectQualityListSearchBtn", vo);
 	}
-
+	
+	// 품질 관리 목록 검색 버튼 개수 확인 (생산 / 반품)
+	@Override
+	public Integer selectQualityListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectQualityListSearchBtnCount", vo);
+	}
+	
+	// 품질 관리 목록 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> selectMaterialQualityListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialQualityListSearchBtn", vo);
+	}
+	
+	// 품질 관리 목록 검색 버튼 개수 확인 (자재)
+	@Override
+	public Integer selectMaterialQualityListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectMaterialQualityListSearchBtnCount", vo);
+	}
+	
 	// 검수 입력 (생산)
 	@Override
 	public int updateProduceAudit(QualityVO vo) throws Exception{
 		return sqlSession.update(NAMESPACE + ".updateProduceAudit", vo);
 	}
+
 
 	// 검수 입력 - 완료 (생산)
 	@Override
@@ -49,12 +72,12 @@ public class QualityDAOImpl implements QualityDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.update(NAMESPACE + ".updateProduceQualityCheck", vo);
 	}
-
-	// 검수 폼 출력 (반품)
+	
+	// 검수ID 입력 (반품 테이블)
 	@Override
-	public QualityVO selectReturnInfo(int returnid) throws Exception {
+	public void updateReturnsQualityid(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE + ".selectReturnInfo", returnid);
+		sqlSession.update(NAMESPACE + ".updateReturnsQualityid", vo);
 	}
 
 	// 검수 입력 (반품)
@@ -71,6 +94,13 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.update(NAMESPACE + ".updateReturnAuditFull", vo);
 	}
 	
+	// 불량 현황 등록 (생산 / 반품)
+	@Override
+	public int insertDefects(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.insert(NAMESPACE + ".insertDefects", vo);
+	}
+	
 	// 불량 현황 목록 (생산 / 반품)
 	@Override
 	public List<QualityVO> selectDefectsList() throws Exception {
@@ -78,26 +108,49 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.selectList(NAMESPACE + ".selectDefectsList");
 	}
 	
-	// 불량 현황 폼 출력 (생산 / 반품)
+	// 불량 현황 목록 검색 버튼 (생산 / 반품)
 	@Override
-	public QualityVO selectDefectInfo(int qualityid) throws Exception {
+	public List<QualityVO> selectDefectsListSearchBtn(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE + ".selectDefects", qualityid);
+		return sqlSession.selectList(NAMESPACE + ".selectDefectsListSearchBtn", vo);
+	}
+	
+	// 불량 현황 목록 검색 버튼 개수 확인 (생산 / 반품)
+	@Override
+	public Integer selectDefectsListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectDefectsListSearchBtnCount", vo);
+	}
+	
+	// 불량 현황 목록 검색 버튼 (자재)
+	@Override
+	public List<QualityVO> selectMaterialDefectsListSearchBtn(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialDefectsListSearchBtn", vo);
+	}
+	
+	// 불량 현황 목록 검색 버튼 개수 조회 (자재)
+	@Override
+	public Integer selectMaterialDefectsListSearchBtnCount(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectMaterialDefectsListSearchBtnCount", vo);
+	}
+	
+	// 재고 등록 여부 업데이트
+	// StockDAO 참고
+	
+	// 반품 등록 여부 업데이트
+	@Override
+	public void updateRegisterDefect(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateRegisterDefect", vo);	
 	}
 
-	// 불량 현황 등록 (생산 / 반품)
-	@Override
-	public int insertDefects(QualityVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.insert(NAMESPACE + ".insertDefects", vo);
-	}
 
-	// 불량 현황 중복 확인 (생산 / 반품)
-	@Override
-	public Integer selectDupilcateDefects(int qualityid) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE + ".selectDupilcateDefects", qualityid);
-	}
+
+	
+	
+	
 
 	
 	
