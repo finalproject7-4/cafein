@@ -42,7 +42,7 @@ public class StockController {
 	public void productStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
-		cri.setPageSize(1); // 삭제 예정
+		// cri.setPageSize(1); // 삭제 예정
 		vo.setCri(cri);
 		List<QualityVO> resultList = sService.stockList(vo); // 생산 + 반품 재고 목록
 		List<QualityVO> storageList = sService.storageList(); // 생산 + 반품 창고 목록
@@ -63,7 +63,7 @@ public class StockController {
 	public void materialStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (없어서 추가해놓은 부분 / 삭제 예정)
 		
-		cri.setPageSize(1); // 삭제 예정
+		// cri.setPageSize(1); // 삭제 예정
 		vo.setCri(cri);
 		List<QualityVO> resultList = sService.materialStockList(vo); // 자재 재고 목록
 		List<QualityVO> rawStorageList = sService.rawmaterialStorageList(); // 원자재 창고 목록
