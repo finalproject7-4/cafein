@@ -17,6 +17,8 @@ public interface SalesService {
 	// 수주등록 - 품목
 	public List<SalesVO> registItem() throws Exception;
 		
+	//수주코드 생성
+	public int poCount(SalesVO svo) throws Exception;
 		
 		
 		
