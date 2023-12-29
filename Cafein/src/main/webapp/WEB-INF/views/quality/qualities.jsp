@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- SweetAlert 추가 -->
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
+"></script>
+<!-- SweetAlert 추가 -->
 <script>
 $(document).ready(function() {
     // 첫 번째 페이지 가져오기
@@ -49,23 +55,23 @@ $(document).ready(function() {
  var resultDefect = "${DEFECT}";
  
  if(result == "duplicate"){
-	 alert("이미 불량 정보가 등록된 검수 내역입니다.");
+	 Swal.fire("이미 불량 정보가 등록된 검수 내역입니다.");
  }else if(result == "duplicateStock"){
-	 alert("이미 재고 정보가 등록된 검수 내역입니다."); 
+	 Swal.fire("이미 재고 정보가 등록된 검수 내역입니다."); 
  }else if(result == "STOCKNO"){
-	 alert("상품의 재고 등록이 실패했습니다.");
+	 Swal.fire("상품의 재고 등록이 실패했습니다.");
  }
  
  if(resultAudit == "O"){
-	 alert("검수가 성공적으로 저장되었습니다.");
+	 Swal.fire("검수가 성공적으로 저장되었습니다.");
  }else if(resultAudit == "X"){
-	 alert("검수 저장에 실패했습니다.");
+	 Swal.fire("검수 저장에 실패했습니다.");
  }
  
  if(resultDefect == "O"){
-	 alert("상품의 불량 현황이 등록되었습니다.");
+	 Swal.fire("상품의 불량 현황이 등록되었습니다.");
  }else if(resultDefect == "X"){
-	 alert("상품 불량 등록이 실패했습니다.")
+	 Swal.fire("상품 불량 등록이 실패했습니다.")
  }
 </script>
 <!-- 경고 메세지 출력 -->

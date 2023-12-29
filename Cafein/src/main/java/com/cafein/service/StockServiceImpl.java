@@ -113,6 +113,20 @@ public class StockServiceImpl implements StockService {
 		sdao.updateRegisterStock(vo);
 	}
 
+	// 재고 토스트 데이터 (생산 [포장] + 반품)
+	@Override
+	public QualityVO productStockToast() throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectProductStockToast();
+	}
+
+	// 재고 토스트 데이터 (자재)
+	@Override
+	public QualityVO materialStockToast() throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectMaterialStockToast();
+	}
+
 	
 	
 	

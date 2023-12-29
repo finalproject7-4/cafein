@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 품목 등록 모달창 -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- 수주 등록 모달창 -->
+	<div class="modal fade" id="registModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 			
@@ -38,13 +38,11 @@
 					</div>	
 					수량
 					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example">
-					
 					<div class="row">
 					<div class="col">
 					수주일자
 					<input name="ordersdate" id="todaypo" autocomplete="off" type="text" class="form-control" placeholder="수주일자(클릭)">
 					</div>
-					
 					<div class="col">
 					완납예정일
 					<input name="ordersduedate" type="date" id="date" class="form-control" placeholder="완납예정일">
@@ -146,6 +144,11 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	$("#pocnt").on("input", function() {
+	    var pocntValue = $(this).val();
+	    console.log("수량 입력 값:", pocntValue);
+	});
 	
 	$(".clientset").click(function() {
 	    console.log("클릭 이벤트 발생");

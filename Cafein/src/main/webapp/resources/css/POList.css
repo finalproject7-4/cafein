@@ -3,3 +3,9 @@
 #buttonset1 {
 	float:right;
 }
+
+.modal-content {
+	 height: 42em;
+     overflow-y: auto;
+     scroll-behavior: smooth;
+}

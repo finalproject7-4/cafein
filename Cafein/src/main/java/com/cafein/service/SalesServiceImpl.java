@@ -56,6 +56,9 @@ public class SalesServiceImpl implements SalesService {
 		logger.debug("S : poCount(SalesVO svo)");
 		return sdao.getPOCount(svo);
 	}
+
+	
+	
 	
 	
 

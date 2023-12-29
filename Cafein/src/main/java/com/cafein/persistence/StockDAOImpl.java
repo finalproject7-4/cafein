@@ -121,6 +121,19 @@ public class StockDAOImpl implements StockDAO {
 		
 	}
 	
+	// 재고 토스트 데이터 (생산 [포장] + 반품)
+	@Override
+	public QualityVO selectProductStockToast() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".productStockToast");
+	}
+	
+	// 재고 토스트 데이터 (자재)
+	@Override
+	public QualityVO selectMaterialStockToast() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".materialStockToast");
+	}
 	
 	
 	

@@ -114,7 +114,4 @@ public class QualityVO {
 	// Criteria 객체
 	private Criteria cri;
 	
-	
-	
-	
 }

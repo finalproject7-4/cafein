@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
-
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- SweetAlert 추가 -->
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
+"></script>
+<!-- SweetAlert 추가 -->
 <!-- 재고 조회 -->
 <div class="col-12">
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
@@ -15,9 +20,11 @@
   		<label class="form-check-label" for="productRadio">완제품</label>
 	</div>
 	<br>
-	<input type="button" class="btn btn-sm btn-warning" value="원자재" id="rawmaterial">
-	<input type="button" class="btn btn-sm btn-secondary" value="부자재" id="submaterial">
-	<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
+	<div class="buttonarea" style="margin-bottom: 10px;">
+		<input type="button" class="btn btn-sm btn-warning" value="원자재" id="rawmaterial">
+		<input type="button" class="btn btn-sm btn-secondary" value="부자재" id="submaterial">
+		<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
+	</div>
 	<form action="/material/stock" method="GET">
 		<c:if test="${!empty param.searchBtn }">
 			<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -36,13 +43,13 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">구분</th>
-								<th scope="col">코드</th>
-								<th scope="col">품명</th>
-								<th scope="col">LOT</th>
+								<th scope="col">번호</th>
+								<th scope="col">상품구분</th>
+								<th scope="col">품목코드</th>
+								<th scope="col">제품명</th>
+								<th scope="col">LOT번호</th>
 								<th scope="col">재고량</th>
-								<th scope="col">창고</th>
+								<th scope="col">창고명</th>
 								<th scope="col">작업자</th>
 								<th scope="col">등록일</th>
 								<th scope="col">변경일</th>
@@ -72,7 +79,7 @@
  									실사 변경
 									</button>
 									</td>
-									<td>${slist.storagecode }-${slist.storagename }
+									<td>${slist.storagecode } - ${slist.storagename }
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('원자재') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
@@ -222,15 +229,17 @@
       </div>
       <div class="modal-body">
       
+      <!-- 파라미터 확인 -->
       <c:if test="${!empty param.page }">
-      	<input type="text" name="page" value="${param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
       </c:if>
       <c:if test="${!empty param.searchText }">
-      	<input type="text" name="searchText" value="${param.searchText }">
+      	<input type="hidden" name="searchText" value="${param.searchText }">
       </c:if>
       <c:if test="${!empty param.searchBtn }">
-     	<input type="text" name="searchBtn" value="${param.searchBtn }">
+     	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
       </c:if>
+      <!-- 파라미터 확인 -->
       
       	<div class="row">
  			<div class="col">
@@ -317,6 +326,18 @@ $(document).ready(function() {
       </div>
       <div class="modal-body">
       
+      <!-- 파라미터 확인 -->
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchText }">
+      	<input type="hidden" name="searchText" value="${param.searchText }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+     	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+      <!-- 파라미터 확인 -->
+      
       	<div class="row">
  			<div class="col">
            		<label for="stockid" class="col-form-label">재고ID:</label>
@@ -346,7 +367,7 @@ $(document).ready(function() {
            		<label for="storageid" class="col-form-label">이동창고:</label>
 				<select class="form-select" aria-label="Default select example" id="storageid" name="storageid">
 				<c:forEach var="str" items="${rlist }">
-  					<option value="${str.storageid }">${str.storagecode }-${str.storagename }</option>
+  					<option value="${str.storageid }">${str.storagecode } - ${str.storagename }</option>
   				</c:forEach>	
 				</select>
   			</div>
@@ -389,7 +410,7 @@ $(document).ready(function() {
         linputField.value = lotNumber;
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + "-" + storageName;
+        stinputField.value = storageCode + " - " + storageName;
     });
 });
 </script>
@@ -435,7 +456,7 @@ $(document).ready(function() {
            		<label for="storageid" class="col-form-label">이동창고:</label>
 				<select class="form-select" aria-label="Default select example" id="storageid" name="storageid">
 				<c:forEach var="str" items="${slist }">
-  					<option value="${str.storageid }">${str.storagecode }-${str.storagename }</option>
+  					<option value="${str.storageid }">${str.storagecode } - ${str.storagename }</option>
   				</c:forEach>	
 				</select>
   			</div>
@@ -478,7 +499,7 @@ $(document).ready(function() {
         linputField.value = lotNumber;
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + "-" + storageName;
+        stinputField.value = storageCode + " - " + storageName;
     });
 });
 </script>
@@ -526,19 +547,46 @@ $(document).ready(function() {
 	var result = "${result}";
 	
 	if(result == "STOCKNO"){
-		alert("재고 등록 실패!");
+		Swal.fire("재고 등록 실패!");
 	}else if(result == "STOCKYES"){
-		alert("재고 등록 성공!");
+		Swal.fire("재고 등록 성공!");
 	}else if(result == "STOCKUPNO"){
-		alert("재고량 변경 실패!");
+		Swal.fire("재고량 변경 실패!");
 	}else if(result == "STOCKUPYES"){
-		alert("재고량 변경 성공!");
+		Swal.fire("재고량 변경 성공!");
 	}else if(result == "STOCKSUPNO"){
-		alert("창고 변경 실패!");
+		Swal.fire("창고 변경 실패!");
 	}else if(result == "STOCKSUPYES"){
-		alert("창고 변경 성공!")
+		Swal.fire("창고 변경 성공!")
 	}
 </script>
 <!-- 재고 수정 관련 알림창 -->
+
+<!-- 토스트창 ajax 호출 (30초 간격) -->
+<script>
+$(document).ready(function(){
+    function fetchProductStockToast() {
+        $.ajax({
+            url: "/material/materialStockToast",
+            type: "GET",
+            dataType: "html",
+            success: function(data) {
+                // 토스트 삽입
+                $("body").append(data);
+            },
+            error: function(error) {
+                console.error("Error fetching quality list:", error);
+            }
+        });
+    }
+
+    // 초기 호출
+    fetchProductStockToast();
+
+    // 1분마다 호출
+    setInterval(fetchProductStockToast, 30000); // 60,000 밀리초 = 1분
+});
+</script>
+<!-- 토스트창 ajax 호출 (30초 간격) -->
 
 <%@ include file="../include/footer.jsp"%>

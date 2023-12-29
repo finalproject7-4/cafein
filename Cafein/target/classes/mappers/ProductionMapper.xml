@@ -40,11 +40,19 @@
 	
 	</select>
 	
+<<<<<<< HEAD
 	<!-- BOM  목록 조회
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
 		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, j.itemname as itemname from bom b join item j on b.itemcode = j.itemcode
 	</select>
 	 -->
+=======
+	<!-- BOM  목록 조회 -->
+<!-- 	<select id="getBomList" resultType="com.cafein.domain.BomVO"> -->
+<!-- 		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, j.itemname as itemname from bom b join item j on b.itemcode = j.itemcode -->
+<!-- 	</select> -->
+	
+>>>>>>> d68d9a73779bbbce1064910157636d2e9bd63623
 	<!-- 생산지시 등록 -->
 	<insert id="insertProducePlan">
 		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode) 

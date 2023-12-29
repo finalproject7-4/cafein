@@ -20,4 +20,7 @@ public interface SalesDAO {
 	
 	// 수주코드 생성
 	public int getPOCount(SalesVO svo) throws Exception;
+	
+	
+	
 }
