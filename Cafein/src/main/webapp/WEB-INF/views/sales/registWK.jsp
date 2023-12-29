@@ -19,13 +19,13 @@
 			
 					<div class="mb-3">
 						<label for="recipient-name" class="col-form-label"><b>작업지시상태</b></label>
-						<select class="form-select" id="floatingSelect"
+						<select class="form-select" id="floatingSelect" name="worksts"
 							aria-label="Floating label select example">
 							<optgroup label="작업지시상태">
-								<option value="1">대기</option>
-								<option value="2">진행</option>
-								<option value="3">완료</option>
-								<option value="4">취소</option>
+								<option value="대기">대기</option>
+								<option value="진행">진행</option>
+								<option value="완료">완료</option>
+								<option value="취소">취소</option>
 							</optgroup>
 						</select>
 					</div>
