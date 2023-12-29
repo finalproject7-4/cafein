@@ -21,6 +21,7 @@ public interface SalesDAO {
 	// 수주코드 생성
 	public int getPOCount(SalesVO svo) throws Exception;
 	
-	
+	//수주수정
+	public int updatePO(SalesVO svo) throws Exception;
 	
 }

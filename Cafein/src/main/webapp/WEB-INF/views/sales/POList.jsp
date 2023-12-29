@@ -214,7 +214,6 @@
        console.log('Item Name:', itemname);
        console.log('Postate:', postate);
        console.log('Pocnt:', pocnt);
-       console.log('Orders Date:', ordersdate);
        console.log('Orders Due Date:', ordersduedate);
        console.log('Member Code:', membercode); 
 	   
@@ -223,12 +222,45 @@
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
 	    $("#pocnt2").val(pocnt);
-	    $("#todaypo2").val(ordersdate);
 	    $("#date2").val(ordersduedate);
 	    $("#membercode2").val(membercode);
 
 	    // 모달 열기
 	    $("#modifyModal").modal('show');
+	    
+	    // 수정된 값을 서버로 전송
+	    $("#modifyButton").click(function() {
+	        // 가져온 값들을 변수에 저장
+	        var modifiedClientName = $("#clientid2").val();
+	        var modifiedItemName = $("#itemid2").val();
+	        var modifiedPostate = $("#floatingSelect2").val();
+	        var modifiedPocnt = $("#pocnt2").val();
+	        var modifiedOrdersDate = $("#todaypo2").val();
+	        var modifiedOrdersDueDate = $("#date2").val();
+	        var modifiedMemberCode = $("#membercode2").val();
+
+	        // Ajax를 사용하여 서버로 수정된 값 전송
+	        $.ajax({
+	            type: "POST",
+	            url: "/sales/modifyPO",
+	            data: {
+	                clientname: modifiedClientName,
+	                itemname: modifiedItemName,
+	                postate: modifiedPostate,
+	                pocnt: modifiedPocnt,
+	                ordersdate: modifiedOrdersDate,
+	                ordersduedate: modifiedOrdersDueDate,
+	                membercode: modifiedMemberCode
+	            },
+	            success: function(response) {
+	                console.log("Modification success:", response);
+	                $("#modifyModal").modal('hide');
+	            },
+	            error: function(error) {
+	                console.error("Error during modification:", error);
+	            }
+	        });
+	    });
 	}
 
    function openDeleteModal() {

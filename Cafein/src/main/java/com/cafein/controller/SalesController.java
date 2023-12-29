@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -90,6 +89,28 @@ public class SalesController {
 		}
 		
 		return code + num;
+	}
+	
+	// 수주 수정 - POST
+	// http://localhost:8088/sales/POList
+	@RequestMapping(value = "/modifyPO", method = RequestMethod.POST)
+	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
+			@RequestParam(value = "clientid", defaultValue = "1") int clientid,
+			@RequestParam(value = "itemid", defaultValue = "1") int itemid,
+			@RequestParam(value = "poid", defaultValue = "1") int poid
+			) throws Exception {
+		logger.debug(" /modify form -> modifyPOST()");
+		logger.debug(" 수정할 정보 " + svo);
+		
+		svo.setClientid(clientid);	                                         
+		svo.setItemid(itemid);
+		svo.setPoid(poid);
+
+		// 서비스 - 정보수정 동작
+		int result = sService.POModify(svo);
+		rttr.addFlashAttribute("result", "modifyOK");
+		logger.debug("result", result);
+		return "redirect:/sales/POList";
 	}
 	
 }
