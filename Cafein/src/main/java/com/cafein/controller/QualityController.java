@@ -54,6 +54,8 @@ public class QualityController {
 	public void productQualityListGET(Model model, HttpSession session, QualityVO vo, 
 			Criteria cri) throws Exception{
 		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		
 		cri.setPageSize(5);
 		vo.setCri(cri);
 		
@@ -70,6 +72,8 @@ public class QualityController {
 	// 품질 관리 (자재) 목록
 	@GetMapping(value = "/materialQualityList")
 	public void materialQualityList(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -125,12 +129,15 @@ public class QualityController {
 	
 	// 생산 검수 입력 처리 - POST
 	@PostMapping(value = "/productAudit")
-	public String productQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String productQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
 			return "redirect:/quality/qualities";
 		}
+		
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -197,12 +204,15 @@ public class QualityController {
 	
 	// 반품 검수 입력 처리 - POST
 	@PostMapping(value = "/returnAudit")
-	public String returnQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String returnQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
 			return "redirect:/quality/qualities";
 		}
+		
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -254,12 +264,15 @@ public class QualityController {
 	
 	// 자재 검수 입력 처리 - POST
 	@PostMapping(value = "/materialAudit")
-	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri) throws Exception{
+	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri, HttpSession session) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
 			return "redirect:/quality/qualities";
 		}
+		
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")

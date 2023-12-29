@@ -50,7 +50,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">LOT번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
-								<th scope="col">작업자</th>
+								<th scope="col">최종 작업자</th>
 								<th scope="col">등록일</th>
 								<th scope="col">변경일</th>
 								<th scope="col">최근 변경 내역</th>
