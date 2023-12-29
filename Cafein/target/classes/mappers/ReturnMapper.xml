@@ -5,11 +5,13 @@
 
 	<!-- ReturnsMapper.xml -->
 	<mapper namespace="com.cafein.mapper.ReturnsMapper"> 
- 
+ 	
+ 	<!-- 반품 목록 -->
 	<select id="searchReturns" resultType="com.cafein.domain.ReturnVO">
 		 SELECT * FROM returns
 	</select>
- 
+ 	
+ 	<!-- 반품 검색 -->
  	<select id="searchReturnsByCondition" resultType="com.cafein.domain.ReturnVO">
         SELECT * FROM returns
 		<where>
@@ -29,6 +31,25 @@
 		</where>
 	</select>
  
+ 	<!-- 반품 유형별 개수 -->
+ 	<select id="getReturnCount" resultType="int" parameterType="com.cafein.domain.ReturnVO" >
+		select count(*) from returns
+		<where>
+			<choose>
+				<when test="returntype == '원자재'">
+					and returncode like '%MAT%';
+				</when>
+				<when test="returntype == '부자재'">
+					and returncode like '%MAT%';
+				</when>
+				<otherwise>
+					and returncode like '%PRO%';
+				</otherwise>
+			</choose>
+		</where>
+	</select> 	
+ 	
+ 	
  	
  
  

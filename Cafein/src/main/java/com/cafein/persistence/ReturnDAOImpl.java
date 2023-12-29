@@ -34,7 +34,13 @@ public class ReturnDAOImpl implements ReturnDAO {
 		return sqlSession.selectList(NAMESPACE + ".searchReturnsByCondition", condition);
 	}
 
+	@Override
+	public int getReturnCount(ReturnVO vo) throws Exception {
+		
+		return sqlSession.selectOne(NAMESPACE +".getReturnCount", vo);
+	}
 
+	
 
 	
 	
