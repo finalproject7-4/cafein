@@ -9,37 +9,33 @@
 	<!-- 생산지시 목록 조회 -->
 	<select id="getProduceList" resultType="com.cafein.domain.ProduceVO">
 		select * from produce
-		
 		<where>
+		
 		<if test="startDate != null and endDate != null">
-		 	producedate between #{startDate} and #{endDate}
+		  producedate between #{startDate} and #{endDate}
 		</if>
 		
 		<if test="itemname != null and !itemname.equals('')">
-			AND itemname like concat('%',#{itemname},'%')
+		 and itemname like concat('%',#{itemname},'%')
+		</if>
+		
+		<if test="startDate != null and endDate != null and itemname != null and !itemname.equals('')">
+		and itemname like concat('%',#{itemname},'%') and producedate between #{startDate} and #{endDate}
 		</if>
 		
 		<if test="state != null">
-			AND state like concat('%',#{state},'%')
+		and state like concat('%',#{state},'%')
 		</if>
 		
 		<if test="qualitycheck != null">
-			AND qualitycheck like concat('%','${qualitycheck}','%')
+		and qualitycheck like concat('%',"검사전",'%')
 		</if>
-				
-		<if test="produceline != null and !produceline.equals(0)">
-			AND produceline = #{produceline}
-		</if>
-		
-		<if test="process != null and !process.equals('')">
-			AND process like concat('%','${process}','%')
-		</if>
-		
-		</where>
 		order by produceid desc
+		</where>
 	
 	</select>
 	
+<<<<<<< HEAD
 
 	<!-- BOM  목록 조회
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
@@ -60,6 +56,8 @@
 	</insert>
 	
 	
+=======
+>>>>>>> 40e2af635fcd7c6527218b26da60850dacd1a5f8
 
 	
 	
