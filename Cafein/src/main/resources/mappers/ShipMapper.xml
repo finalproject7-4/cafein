@@ -9,7 +9,7 @@
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
 		SELECT sh.shipid, sh.shipdate, sh.shipcode, sh.workcode,
-		st.itemid, it.itemname, it.clientcode,
+		sh.stockid, st.itemid, it.itemname, it.clientcode,
 		sh.shipcount, sh.shipsts, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
@@ -22,6 +22,11 @@
 		INSERT INTO ship (shipdate, shipcode, workcode, stockid, shipcount, shipsts, membercode)
 		VALUES ( #{shipdate}, #{shipcode}, #{workcode}, #{stockid}, #{shipcount}, #{shipsts}, #{membercode} )
 	</insert>
+	
+	<!-- 출하 등록 작업지시코드 -->
+	<select id="workcodeList" resultType="com.cafein.domain.WorkVO">
+		select * from work
+	</select>
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">

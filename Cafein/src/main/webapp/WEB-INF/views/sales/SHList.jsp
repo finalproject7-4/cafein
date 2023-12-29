@@ -40,7 +40,7 @@
 					id="beforepro">대기</button>
 			</form>
 			<form role="form1">
-				<input type="hidden" name="state" value="생산중">
+				<input type="hidden" name="state" value="진행">
 				<button type="button" class="btn btn-outline-secondary" id="ingpro">진행</button>
 			</form>
 			<form role="form1">
@@ -128,7 +128,7 @@
 					<br>
 					<div class="row">
 						<div class="col">
-							<b>작업지시코드</b><input id="client" class="form-control"
+							<b>작업지시코드</b><input id="workcode" class="form-control"
 								id="floatingInput" placeholder="작업지시코드">
 						</div>
 						<div class="col">
@@ -171,6 +171,49 @@
 </div>
 <!-- 출하 등록 모달-->
 
+		<!-- 작업지시코드 조회 모달 -->
+        <div class="modal fade" id="workcodeSM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel">작업지시 조회 </h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                  
+                  작업지시코드 <input type="search" class="workcode">
+                <button id="wkcbtn" type="submit" class="btn btn-dark m-2">조회</button><br>
+					<br>
+                     <div class="col-12">
+                        <div class="bg-light rounded h-100 p-4">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">작업지시코드</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+								<c:forEach items="${wcList}" var="wc">
+                                    <tr class="workcodeset">
+                                    	<td>${wc.workcode }</td> 
+                                    	<td>${wc.workdate }</td> 
+                                    	<td>${wc.worksts }</td> 
+                                    	<td>${wc.workcount }</td>
+                                    	<td>${wc.pocode }</td> 
+                                    	<td>${wc.itemcode }</td>
+                                    </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                    </table>
+                           </div>
+                           <div class="modal-footer">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+			  </div>
+		  </div>
+
 	</div>
 </div>
 </form>
@@ -200,23 +243,27 @@
     })
     
     $(document).ready(function() {
-    	// 납품처 모달
-	    $("#client").click(function() {
-	        $("#clientModal").modal('show');
+    	// 작업지시코드
+	    $("#workcode").click(function() {
+	        $("#workcodeModal").modal('show');
 	   	});
     	
-	    $(".clientset").click(function() {
+	    $(".workcodeset").click(function() {
 	        var columns = $(this).find('td');
-	        var selectedClientName = $(columns[1]).text(); // 납품처명
-	        var selectedClientCode = $(columns[2]).text(); // 납품처코드
-	        $('#client').val(selectedClientName);
-	        $('#clientModal').modal('hide');
+	        var selectedWorkcode = $(columns[1]).text(); 
+	        var selectedWorkdate = $(columns[2]).text();
+	        var selectedWorkcsts = $(columns[3]).text();
+	        var selectedWorkcount = $(columns[4]).text();
+	        var selectedPocode = $(columns[5]).text();
+	        var selectedItemcode = $(columns[6]).text();
+	        $('#workcode').val(selectedClientName);
+	        $('#workcodeModal').modal('hide');
 	    });
 	    
-	 	// 납품처 조회 모달
-	    $(".clientSearch").click(function() {
-	        $("#clientSM").modal('show');
-	   	});
+	    // 작업지시코드 조회
+	    $("#wkcbtn").click(function () {
+	        $("#workcodeSM").modal('show');
+	    });
 	 
 		// 품목 모달    	
 	    $("#items").click(function() {

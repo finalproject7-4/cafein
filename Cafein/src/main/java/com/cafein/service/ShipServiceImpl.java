@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.persistence.ShipDAO;
@@ -35,6 +36,14 @@ public class ShipServiceImpl implements ShipService {
 		
 	}
 	
+	// 출하등록 - 작업지시코드
+	@Override
+	public List<WorkVO> registWC() throws Exception {
+		logger.debug("S :registWC()");
+		return shdao.registWC();
+	}
+	
+
 	// 작업 지시 조회
 	@Override
 	public List<WorkVO> AllWKList() throws Exception {

@@ -36,7 +36,14 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug(" DAO : registSH(ShipVO svo)");
 		sqlSession.insert(NAMESPACE+".registSH",svo);
 	}
-	
+
+	// 출하 등록 - 작업 지시 코드
+	@Override
+	public List<WorkVO> registWC() throws Exception {
+		logger.debug("DAO : 출하 조회/작업지시코드");
+		return sqlSession.selectList(NAMESPACE+".wcList");
+	}
+
 	// 작업 지시 조회
 	@Override
 	public List<WorkVO> getWKList() throws Exception {
