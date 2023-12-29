@@ -42,7 +42,6 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S :registWC()");
 		return shdao.registWC();
 	}
-	
 
 	// 작업 지시 조회
 	@Override
@@ -56,6 +55,20 @@ public class ShipServiceImpl implements ShipService {
 	public void registWK(WorkVO wvo) throws Exception {
 		logger.debug("registWKList 메서드 호출");
 		shdao.registWK(wvo);
+	}
+
+	// 작업 지시 등록 - 수주코드
+	@Override
+	public List<WorkVO> registPC() throws Exception {
+		logger.debug("S :registPC()");
+		return shdao.registPC();
+	}
+
+	// 작업 지시 코드 생성
+	@Override
+	public int wkCount(WorkVO wvo) throws Exception {
+		logger.debug("S : wkCount(WorkVO wvo)");
+		return shdao.getWKCount(wvo);
 	}
 
 	// 실적 조회

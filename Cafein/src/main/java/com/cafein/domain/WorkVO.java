@@ -17,10 +17,9 @@ public class WorkVO {
 	private Date workupdate;
 	private String workcode;
 
-	private String pocode;
 	private int receiptid;
 
-	private String clientcode;
+//	private String clientcode;
 	private int recordcount;
 	private String returncode;
 	
@@ -48,7 +47,34 @@ public class WorkVO {
 	private String origin;
 	private int itemweight;
 	private int itemprice;
-	private String available;
+//	private String available;
 //	private String workcode;
+	
+	//po 테이블
+	private int poid;
+	private String postate;
+	private String pocode;
+//	private int clientid;
+//	private int itemid;
+	private int pocnt;
+	private Date ordersdate;
+	private Date updatedate;
+	private Date ordersduedate;
+//	private String membercode;
+	
+	// 거래처 테이블
+	private int clientid;
+	private String clientcode;
+	private String clientname;
+	private String categoryofclient;
+	private String typeofclient;
+	private String businessnumber;
+	private String representative;
+	private String manager;
+	private String clientaddress;
+	private String clientphone;
+	private String clientfax;
+	private String clientemail;
+	private String available;
 
 }

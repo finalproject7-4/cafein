@@ -135,17 +135,17 @@
 								id="floatingInput" placeholder="작업지시코드">
 						</div>
 						<div class="col">
-							<b>납품처</b><input id="client" class="form-control"
+							<b>납품처</b><input id="clientname" class="form-control"
 								id="floatingInput" placeholder="납품처">
 						</div>
 						<div class="col">
-							<b>품명</b><input id="items" class="form-control"
+							<b>품명</b><input id="itemname" class="form-control"
 								id="floatingInput" placeholder="품명">
 						</div>
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>출하량</b><input type="number" class="form-control"
+						<b>출하량</b><input type="pocnt" class="form-control"
 							id="floatingInput" placeholder="숫자만 입력하세요">
 					</div>
 					<div class="row">

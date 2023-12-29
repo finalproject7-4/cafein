@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 
@@ -58,6 +59,20 @@ public class ShipDAOImpl implements ShipDAO {
 		sqlSession.insert(NAMESPACE+".registWK",wvo);
 	}
 	
+	// 작업 지시 등록 - 수주 코드
+	@Override
+	public List<WorkVO> registPC() throws Exception {
+		logger.debug("DAO : 작업지시 조회/수주코드");
+		return sqlSession.selectList(NAMESPACE+".pcList");
+	}
+	
+	// 작업 지시 코드 생성
+	@Override
+	public int getWKCount(WorkVO wvo) throws Exception {
+		logger.debug("DAO : getWorkCount(WorkVO wvo)");
+		return sqlSession.selectOne(NAMESPACE + ".getWKCount", wvo);
+	}
+
 	// 실적 조회
 	@Override
 	public List<WorkVO> getPFList() throws Exception {

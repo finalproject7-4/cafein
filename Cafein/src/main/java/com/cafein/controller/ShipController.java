@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
+import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
 
 @Controller
@@ -40,7 +41,7 @@ public class ShipController {
 	// 출하 등록 - POST
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
-	public String regist(ShipVO svo, 
+	public String registSH(ShipVO svo, 
 							@RequestParam(value = "shipdate") String shipdate,
 							@RequestParam(value = "stockid", defaultValue = "1") int stockid,
 							RedirectAttributes rttr) throws Exception {
@@ -66,7 +67,50 @@ public class ShipController {
 	public void AllWKListGET(Model model) throws Exception {
 		logger.debug("AllWKListGET() 실행");
 		model.addAttribute("AllWKList", shService.AllWKList());
+		model.addAttribute("pcList", shService.registPC()); 
 		logger.debug("작업지시 리스트 출력!");
+	}
+	
+	// 작업지시 등록 - POST
+	// http://localhost:8088/sales/WKList
+	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
+	public String registWK(WorkVO wvo, 
+							@RequestParam(value = "pocode") String pocode,
+							@RequestParam(value = "itemcode") String itemcode,
+							@RequestParam(value = "clientcode") String clientcode,
+							
+							RedirectAttributes rttr) throws Exception {
+		
+		logger.debug("registWK() 호출 ");                                 
+		logger.debug(" svo : " + wvo);                                               
+
+		wvo.setPocode(pocode);
+		wvo.setItemcode(itemcode);
+		wvo.setItemcode(clientcode);	                                         
+		
+		shService.registWK(wvo);                                                      
+		logger.debug(" 작업지시 등록 완료! ");     
+         
+		rttr.addFlashAttribute("result", "CREATEOK");                                
+	                                                                                 
+		logger.debug("/sales/registWK 이동");                                          
+		return "redirect:/sales/WKList";                                             
+	}
+	
+	// 작업 지시 코드 생성 메서드
+	public String makeWKcode(WorkVO wvo) throws Exception {
+		
+		String code = "";
+		int num = 1001 + shService.wkCount(wvo);
+		
+		switch(wvo.getPostate()) {
+			case "대기": code = "ST"; break;
+			case "진행": code = "PR"; break;
+			case "완료": code = "CP"; break;
+			case "취소": code = "CC"; break;
+		}
+		
+		return code + num;
 	}
 
 	// 실적 조회
