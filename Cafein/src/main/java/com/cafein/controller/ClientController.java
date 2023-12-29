@@ -3,6 +3,7 @@ package com.cafein.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.ClientVO;
-<<<<<<< HEAD
-=======
-import com.cafein.domain.MemberVO;
->>>>>>> d68d9a73779bbbce1064910157636d2e9bd63623
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
 import com.cafein.service.ClientService;
 
 @Controller
@@ -44,7 +43,7 @@ public class ClientController {
 		cService.clientJoin(vo);
 		logger.debug(" 거래처 등록 완료! ");
 		
-		rttr.addFlashAttribute("result","CREATEOK");
+		rttr.addFlashAttribute("result","JOINOK");
 		logger.debug(" /information/clients 이동 ");
 		
 		return "redirect:/information/clients";
@@ -52,12 +51,27 @@ public class ClientController {
 	
 	// http://localhost:8088/information/clients
 	@RequestMapping(value = "/clients", method = RequestMethod.GET)
-	public String listAllGET(Model model) throws Exception {
-		logger.debug(" /information/clients -> clientListGET() 호출 ");
+	public String clientListPageGET(Model model,
+							@ModelAttribute("result") String result,
+							 HttpSession session,
+							 Criteria cri) throws Exception {
+		logger.debug(" /information/clients -> clientListPageGET() 호출 ");
 		
-		List<ClientVO> clientList = cService.clientList();
-		model.addAttribute("clientList", cService.clientList());
+		session.setAttribute("viewcntCheck", true);
 		
+		List<ClientVO> clientList = cService.clientListPage(cri);
+		
+		// 페이지 출력 정보 준비 -> view 페이지 전달
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(cService.totalClientCount());
+				
+		// 페이징 처리 정보도 model 에 저장해서 전달
+		logger.debug(" 확인 : " + pageVO);
+		model.addAttribute("pageVO", pageVO);
+		// 데이터를 연결된 뷰페이지로 전달(Model)
+		model.addAttribute("clientList",clientList);
+				
 		return "/information/clients";
 	}
 	
@@ -81,7 +95,7 @@ public class ClientController {
 		logger.debug(" 수정할 정보 : " + vo);
 		
 		int result = cService.clientUpdate(vo);
-		rttr.addFlashAttribute("result", "updateOK");
+		rttr.addFlashAttribute("result", "UPDATEOK");
 		
 		return "redirect:/information/clients";
 	}
@@ -92,9 +106,9 @@ public class ClientController {
 		logger.debug(" /information/clientDelete -> clientDeleteGET() 호출 ");
 		logger.debug(" 비활성화할 거래처 번호 : " + clientid);
 		
-		// 기존의 직원 정보를 가져와서 화면에 출력
+		// 기존의 거래처 정보를 가져와서 화면에 출력
 		ClientVO resultVO = cService.clientInfo(clientid);
-		// 직원 정보를 Model 객체에 저장해서 전달
+		// 거래처 정보를 Model 객체에 저장해서 전달
 		model.addAttribute("resultVO", resultVO);
 	}
 	
@@ -105,7 +119,7 @@ public class ClientController {
 		logger.debug(" 비활성화할 정보 : " + vo);
 		
 		int result = cService.clientDelete(vo);
-		rttr.addFlashAttribute("result", "deleteOK");
+		rttr.addFlashAttribute("result", "DELETEOK");
 		
 		return "redirect:/information/clients";
 	}

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.cafein.domain.Criteria;
 import com.cafein.domain.MemberVO;
 import com.cafein.persistence.MemberDAO;
 
@@ -27,9 +28,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberVO> memberList() throws Exception {
-		logger.debug(" Service : 직원 목록 조회 memberList() ");
-		return mdao.getMemberList();
+	public List<MemberVO> memberList(Criteria cri) throws Exception {
+		logger.debug(" Service : 직원 목록 조회 memberList(Criteria cri) ");
+		return mdao.getMemberList(cri);
+	}
+		
+	@Override
+	public int totalMemberCount() throws Exception {
+		logger.debug(" Service : 총 직원 수 조회 totalMemberCount() ");
+		return mdao.getMemberCount();
 	}
 
 	@Override
@@ -49,6 +56,7 @@ public class MemberServiceImpl implements MemberService {
 		logger.debug(" Service : 직원 정보 비활성화 memberDelete(MemberVo vo) ");
 		return mdao.deleteMember(vo);
 	}
+	
 
 	
 	

@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.cafein.domain.ClientVO;
-<<<<<<< HEAD
-=======
-import com.cafein.domain.MemberVO;
->>>>>>> d68d9a73779bbbce1064910157636d2e9bd63623
+import com.cafein.domain.Criteria;
 
 @Repository
 public class ClientDAOImpl implements ClientDAO {
@@ -32,9 +29,29 @@ public class ClientDAOImpl implements ClientDAO {
 	}
 
 	@Override
+	public List<ClientVO> getClientListPage(int page) throws Exception {
+		logger.debug(" DAO : 거래처 목록 조회 getClientListPage(int page) ");
+		
+		page = (page - 1) *10;
+		return sqlSession.selectList(NAMESPACE + ".getClientListPage", page);
+	}
+	
+	@Override
+	public List<ClientVO> getClientListPage(Criteria cri) throws Exception {
+		logger.debug(" DAO : 거래처 목록 조회 getClientListPage(Criteria cri) ");
+		return sqlSession.selectList(NAMESPACE + ".getClientListPage", cri);
+	}
+	
+	@Override
 	public List<ClientVO> getClientList() throws Exception {
-		logger.debug(" DAO : 거래처 목록 조회 getClientList() ");
+		logger.debug(" DAO : 거래처 정보를 list에 담아오는 동작 getClientList() ");
 		return sqlSession.selectList(NAMESPACE + ".getClientList");
+	}
+	
+	@Override
+	public int getClientCount() throws Exception {
+		logger.debug(" DAO : 총 거래처 수 조회 getClientCount() ");
+		return sqlSession.selectOne(NAMESPACE + ".countClient");
 	}
 	
 	@Override

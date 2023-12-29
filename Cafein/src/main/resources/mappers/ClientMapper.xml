@@ -6,6 +6,24 @@
 <!-- ClientMapper.xml -->
 <mapper namespace="com.cafein.mapper.ClientMapper">
 
+<!-- 디비 컬럼과 도메인 객체를 매핑 -->
+<!-- 프로퍼티명과 컬럼명이 동일할 때 생략할 수 있음 -->
+<resultMap type="com.cafein.domain.ClientVO" id="client">
+	<result property="clientid" column="clientid"/>
+	<result property="clientcode" column="clientcode"/>
+	<result property="clientname" column="clientname"/>
+	<result property="categoryofclient" column="categoryofclient"/>
+	<result property="typeofclient" column="typeofclient"/>
+	<result property="businessnumber" column="businessnumber"/>
+	<result property="representative" column="representative"/>
+	<result property="manager" column="manager"/>
+	<result property="clientaddress" column="clientaddress"/>
+	<result property="clientphone" column="clientphone"/>
+	<result property="clientfax" column="clientfax"/>
+	<result property="clientemail" column="clientemail"/>
+	<result property="available" column="available"/>
+</resultMap>
+
 <!-- 거래처 등록 -->
 <insert id="insertClient">
 	insert into client(clientcode,clientname,categoryofclient,typeofclient,businessnumber,representative,
@@ -15,9 +33,24 @@
 </insert>
 
 <!-- 거래처 목록 조회 -->
+<select id="getClientListPage" resultType="ClientVO">
+	select * from client 
+	order by clientid desc 
+	limit #{startPage}, #{pageSize}
+</select>
+
+<!-- 거래처 정보를 list에 담기 -->
 <select id="getClientList" resultType="ClientVO">
-	select * from client
-	order by clientid desc
+	select * from client 
+	order by clientid desc 
+</select>
+
+<!-- 전체 직원 수 조회 -->
+<select id="countClient" resultType="int">
+	<![CDATA[
+ 	select count(*) from client 
+ 	where clientid > 0
+	]]>
 </select>
 
 <!-- 거래처 정보 조회 -->

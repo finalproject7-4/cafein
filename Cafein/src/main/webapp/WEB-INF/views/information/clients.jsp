@@ -58,7 +58,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		// 목록 버튼 클릭 시 거래처 등록 페이지로 이동
+		// 등록 버튼 클릭 시 거래처 등록 페이지로 이동
 		$(".btn-primary").click(function(){
 			location.href='/information/clientJoin';
 		});
@@ -79,6 +79,21 @@
 			formObj.submit();
 		});
 	});
+	
+	// 작업 완료 후 alert
+	var result = "${result}";
+	
+	if(result == "JOINOK"){
+		alert(" 거래처 등록 완료! ");
+	}
+	
+	if(result == "UPDATEOK"){
+		alert(" 거래처 수정 완료! ");
+	}
+	
+	if(result == "DELETEOK"){
+		alert(" 거래처 비활성화 완료! ");
+	}
 	
 </script>
 

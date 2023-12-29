@@ -3,6 +3,7 @@ package com.cafein.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.Criteria;
 import com.cafein.domain.MemberVO;
+import com.cafein.domain.PageVO;
 import com.cafein.service.MemberService;
 
 @Controller
@@ -48,11 +51,26 @@ public class MemberController {
 	
 	// http://localhost:8088/information/members
 	@RequestMapping(value = "/members", method = RequestMethod.GET)
-	public String memberListGET(Model model) throws Exception {
+	public String memberListGET(Model model, 
+							 @ModelAttribute("result") String result,
+							 HttpSession session,
+							 Criteria cri) throws Exception {
 		logger.debug(" /information/members -> memberListGET() 호출 ");
 		
-		List<MemberVO> memberList = mService.memberList();
-		model.addAttribute("memberList", mService.memberList());
+		session.setAttribute("viewcntCheck", true);
+		
+		List<MemberVO> memberList = mService.memberList(cri);
+		
+		// 페이지 출력 정보 준비 -> view 페이지 전달
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(mService.totalMemberCount());
+				
+		// 페이징 처리 정보도 model 에 저장해서 전달
+		logger.debug(" 확인 : " + pageVO);
+		model.addAttribute("pageVO", pageVO);
+		// 데이터를 연결된 뷰페이지로 전달(Model)
+		model.addAttribute("memberList",memberList);
 		
 		return "/information/members";
 	}
@@ -76,7 +94,7 @@ public class MemberController {
 		logger.debug(" 수정할 정보 : " + vo);
 		
 		int result = mService.memberUpdate(vo);
-		rttr.addFlashAttribute("result", "updateOK");
+		rttr.addFlashAttribute("result", "UPDATEOK");
 		
 		return "redirect:/information/members";
 	}
@@ -100,7 +118,7 @@ public class MemberController {
 		logger.debug(" 비활성화할 정보 : " + vo);
 		
 		int result = mService.memberDelete(vo);
-		rttr.addFlashAttribute("result", "deleteOK");
+		rttr.addFlashAttribute("result", "DELETEOK");
 		
 		return "redirect:/information/members";
 	}
