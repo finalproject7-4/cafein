@@ -40,7 +40,6 @@ public class ShipController {
 	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
 	public String regist(ShipVO svo, 
 							@RequestParam(value = "shipdate") String shipdate,
-							@RequestParam(value = "ordersduedate") String ordersduedate,
 							@RequestParam(value = "stockid", defaultValue = "1") int stockid,
 							RedirectAttributes rttr) throws Exception {
 		
@@ -48,7 +47,6 @@ public class ShipController {
 		logger.debug(" svo : " + svo);                                               
 
 		svo.setShipdate(Date.valueOf(shipdate));
-		svo.setOrdersduedate(Date.valueOf(ordersduedate));
 		svo.setStockid(stockid);	                                         
 		
 		shService.registSH(svo);                                                      
