@@ -13,7 +13,7 @@ public interface ShipService {
 	// 출하 등록
 	public void registSH(ShipVO svo) throws Exception;
 	
-	// 출하 등록 - 작업지시코드
+	// 출하 조회 - 작업지시코드
 	public List<WorkVO> registWC() throws Exception;
 	
 	// 작업 지시 조회

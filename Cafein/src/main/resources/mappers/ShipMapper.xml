@@ -19,13 +19,14 @@
 	
 	<!-- 출하 등록 -->
 	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
-		INSERT INTO ship (shipdate, shipcode, workcode, stockid, shipcount, shipsts, membercode)
-		VALUES ( #{shipdate}, #{shipcode}, #{workcode}, #{stockid}, #{shipcount}, #{shipsts}, #{membercode} )
+		INSERT INTO ship (shipsts, workcode, clientname, itemname, shipcount, shipdate, membercode)
+		VALUES ( #{shipsts}, #{workcode}, #{cleintcode}, #{itemname}, #{shipcount}, #{shipdate}, #{membercode} )
 	</insert>
 	
 	<!-- 출하 등록 작업지시코드 -->
-	<select id="workcodeList" resultType="com.cafein.domain.WorkVO">
-		select * from work
+	<select id="wcList" resultType="com.cafein.domain.WorkVO">
+		SELECT wk.workcode, wk.clientcode, wk.itemname, wk.shipcount, wk.shipdate, wk.memvercode
+		FROM work wk
 	</select>
 	
 	<!-- 작업지시 조회 -->

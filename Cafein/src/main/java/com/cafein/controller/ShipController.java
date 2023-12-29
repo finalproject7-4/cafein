@@ -31,7 +31,9 @@ public class ShipController {
 	@RequestMapping(value = "/SHList", method = RequestMethod.GET)
 	public void AllSHListGET(Model model) throws Exception {
 		logger.debug("AllSHListGET() 실행");
+		
 		model.addAttribute("AllSHList", shService.AllSHList());
+		model.addAttribute("wcList", shService.registWC()); 
 		logger.debug("출하 리스트 출력!");
 	}
 	
