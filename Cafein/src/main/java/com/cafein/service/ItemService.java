@@ -7,6 +7,9 @@ import com.cafein.domain.ItemVO;
 public interface ItemService {
 	
 	// 품목 목록
+	public List<ItemVO> itemList() throws Exception;
+	
+	// 품목 목록 (페이징)
 	public List<ItemVO> itemList(ItemVO vo) throws Exception;
 	
 	// 품목 목록 총 개수

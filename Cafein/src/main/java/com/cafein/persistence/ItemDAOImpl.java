@@ -1,7 +1,6 @@
 package com.cafein.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -21,11 +20,17 @@ public class ItemDAOImpl implements ItemDAO {
 	private SqlSession sqlSession;
 	
 	private static final String NAMESPACE="com.cafein.mapper.ItemMapper";
+
+	@Override
+	public List<ItemVO> getItemList() throws Exception {
+		logger.debug("DAO - getItemList()");
+		return sqlSession.selectList(NAMESPACE + ".itemList");
+	}	
 	
 	@Override
 	public List<ItemVO> getItemList(ItemVO vo) throws Exception {
 		logger.debug("DAO - getItemList(ItemVO vo)");
-		return sqlSession.selectList(NAMESPACE + ".itemList", vo);
+		return sqlSession.selectList(NAMESPACE + ".itemListPage", vo);
 	}
 
 	@Override

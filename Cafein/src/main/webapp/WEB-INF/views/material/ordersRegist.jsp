@@ -42,7 +42,7 @@
 					
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-primary" id="itemRegistBtn">등록</button>
+				<input type="submit" class="btn btn-primary" value="등록">
 			</div>
 			</form>
 			

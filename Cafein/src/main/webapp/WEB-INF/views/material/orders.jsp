@@ -3,11 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>    
 <%@ include file="../include/header.jsp" %>
 
+<!-- 발주관리 페이지 시작 -->
 <div class="col-12">
 
 	<!-- 발주 조회 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" action="" method="get">
+		<form name="search" action="orders" method="get">
 		<select name="option">
 			<option value="">선택</option>
 			<option value="clientname">거래처명</option>
@@ -32,19 +33,14 @@
 		<span class="mb-4">총 ${fn:length(ordersList)} 건</span>
 		
 		<c:forEach var="ordersList" items="${ordersList }">
-		<span style="margin-left: 81.5%;">
+		<span style="margin-left: 95%;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap">등록</button>
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" onclick="modifyModal('ordersList')">수정</button>
-			<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
 		</span>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
 				<thead>
 					<tr style="text-align: center;">
-						<th scope="col">
-							<input type="checkbox" id="checkbox" name="checkbox" data-group="checkboxall">
-						</th>					
 						<th scope="col">번호</th>
 						<th scope="col">발주코드</th>
 						<th scope="col">품목코드</th>
@@ -55,14 +51,11 @@
 						<th scope="col">발주일자</th>
 						<th scope="col">납기일자</th>
 						<th scope="col">담당자명</th>
-						<!-- <th scope="col">관리</th> -->
+						<th scope="col">관리</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr style="text-align: center;">
-						<td>
-							<input type="checkbox" id="checkbox" name="checkbox" data-group="checkboxall">
-						</td>					
 						<td>${ordersList.ordersid }</td>
 						<td>${ordersList.orderscode }</td>
 						<td>${ordersList.itemcode }</td>
@@ -77,10 +70,10 @@
 							<fmt:formatDate value="${ordersList.deliverydate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
 						<td>${ordersList.membercode }</td> <!-- session 값 사용하여 저장 -->
-						<!-- <td> -->
-							<!-- <button type="button" class="btn btn-sm btn-dark m-1" >수정</button> -->
-							<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
-						<!-- </td> -->
+						<td>
+							<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#ordersModifyodifyModal" data-bs-whatever="@getbootstrap" onclick="ordersModifyModal('ordersList')">수정</button>
+							<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>

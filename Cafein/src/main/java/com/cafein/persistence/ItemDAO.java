@@ -7,6 +7,9 @@ import com.cafein.domain.ItemVO;
 public interface ItemDAO {
 
 	// 품목 목록
+	public List<ItemVO> getItemList() throws Exception;	
+	
+	// 품목 목록 (페이징)
 	public List<ItemVO> getItemList(ItemVO vo) throws Exception;
 	
 	// 품목 목록 총 개수 계산

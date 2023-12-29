@@ -18,5 +18,10 @@ public class OrdersVO {
 	
 	// item 테이블
 	private String itemname;
+
+	// 검색용 변수
+	
+	// Criteria 객체
+	private Criteria cri;	
 	
 }

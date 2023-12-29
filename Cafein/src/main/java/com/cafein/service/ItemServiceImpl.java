@@ -20,6 +20,12 @@ public class ItemServiceImpl implements ItemService {
 	private ItemDAO idao;
 	
 	@Override
+	public List<ItemVO> itemList() throws Exception {
+		logger.debug("Service - itemList()");
+		return idao.getItemList();
+	}	
+	
+	@Override
 	public List<ItemVO> itemList(ItemVO vo) throws Exception {
 		logger.debug("Service - itemList(ItemVO vo)");
 		return idao.getItemList(vo);
