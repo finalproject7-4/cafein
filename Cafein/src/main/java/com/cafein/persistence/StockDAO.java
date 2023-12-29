@@ -53,4 +53,7 @@ public interface StockDAO {
 	
 	// 재고 토스트 데이터 (자재)
 	public QualityVO selectMaterialStockToast() throws Exception;
+	
+	// roastedBean 테이블 조회
+	public QualityVO selectRoastedBean(String lotnumber) throws Exception;
 }

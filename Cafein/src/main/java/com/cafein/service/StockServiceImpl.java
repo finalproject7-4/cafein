@@ -127,6 +127,15 @@ public class StockServiceImpl implements StockService {
 		return sdao.selectMaterialStockToast();
 	}
 
+	// roastedBean 테이블 조회
+	@Override
+	public QualityVO roastedBeanInfo(String lotnumber) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectRoastedBean(lotnumber);
+	}
+	
+	
+
 	
 	
 	

@@ -54,4 +54,7 @@ public interface StockService {
 	// 재고 토스트 데이터 (자재)
 	public QualityVO materialStockToast() throws Exception;
 	
+	// roastedBean 테이블 조회
+	public QualityVO roastedBeanInfo(String lotnumber) throws Exception;
+	
 }

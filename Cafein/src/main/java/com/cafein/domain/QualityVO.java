@@ -91,7 +91,7 @@ public class QualityVO {
 	private int weight;
 	private int quantity;
 //	private int itemprice;
-	private int roasteddate;
+	private Timestamp roasteddate;
 //	private Sting lotnumber;
 	private String note;
 	

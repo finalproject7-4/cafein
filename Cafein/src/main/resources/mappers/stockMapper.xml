@@ -240,5 +240,12 @@
  		ORDER BY stockquantity
  		LIMIT 0, 1
 	</select>
+	
+	<!-- roastedBean 테이블 조회 -->
+	<select id="selectRoastedBean" resultType="QualityVO">
+		SELECT productid, produceid, itemname, itemid, weight, quantity, itemprice, roasteddate, lotnumber, note 
+		FROM roastedbean
+		WHERE lotnumber = #{lotnumber}
+	</select>
  
  </mapper>
