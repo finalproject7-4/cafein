@@ -24,7 +24,7 @@
 		</if>
 		
 		<if test="qualitycheck != null">
-			AND qualitycheck like concat('%','${qualitycheck}','%')
+			AND qualitycheck like concat('%','#{qualitycheck}','%')
 		</if>
 				
 		<if test="produceline != null and !produceline.equals(0)">

@@ -49,11 +49,11 @@
 		</where>
 	</select> 	
  	
- 	
- 	
- 
- 
- 
+ 	 <!--  반품 등록 -->
+ 	<!-- <insert id="insertReturn">
+		insert into returns() 	
+ 	</insert> -->
+
  
  
  
