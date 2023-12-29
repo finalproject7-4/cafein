@@ -68,7 +68,7 @@ public class SalesController {
 		svo.setPocode(makePOcode(svo));
 		
 		sService.registPO(svo);                                                      
-		logger.debug(" 글작성 완료! ");                                                   
+		logger.debug(" 글작성 완료! ");     
          
 		rttr.addFlashAttribute("result", "CREATEOK");                                
 	                                                                                 

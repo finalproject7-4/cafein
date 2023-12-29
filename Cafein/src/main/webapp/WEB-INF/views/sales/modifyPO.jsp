@@ -2,13 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 수주 등록 모달창 -->
-	<div class="modal fade" id="registModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- 수주 수정 모달창 -->
+	<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 			
 				<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">수주 등록</h5>
+				<h5 class="modal-title" id="exampleModalLabel">수주 수정</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -20,38 +20,39 @@
 
 				<div class="modal-body">
 				납품처/코드
-				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
+				<input id="clientid" name="clientname" class="form-control mb-3" type="text"  >
 				
 				품목명/코드
-				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example">
+				<input id="itemid" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
-						<select class="form-select" id="floatingSelect" name="postate"
-							aria-label="Floating label select example">
-							<optgroup label="수주상태">
-								<option value="대기">대기</option>
-								<option value="진행">진행</option>
-								<option value="완료">완료</option>
-								<option value="취소">취소</option>
-							</optgroup>
+						<select class="form-select" id="floatingSelect" name="postate">
+						    <optgroup label="수주상태">
+						        <option value="대기">대기</option>
+						        <option value="진행">진행</option>
+						        <option value="완료">완료</option>
+						        <option value="취소">취소</option>
+						    </optgroup>
 						</select>
 					</div>	
 					수량
-					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example">
+					<input id="pocnt" name="pocnt" class="form-control mb-3" type="number" value="">
+					
 					<div class="row">
 					<div class="col">
 					수주일자
-					<input name="ordersdate" id="todaypo" autocomplete="off" type="text" class="form-control" placeholder="수주일자(클릭)">
+					<input name="ordersdate" id="todaypo"  type="text" class="form-control" value="">
 					</div>
+					
 					<div class="col">
 					완납예정일
-					<input name="ordersduedate" type="date" id="date" class="form-control" placeholder="완납예정일">
+					<input name="ordersduedate" type="date" id="date" class="form-control" value="">
 					</div>
 					</div>
 					<br>
 					
 					담당자
-					<input autocomplete="off"  id="membercode" name="membercode" class="form-control mb-3" type="number" placeholder="담당자" autocomplete="off">
+					<input id="membercode" name="membercode" class="form-control mb-3" type="number" value="">
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -144,11 +145,6 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	$("#pocnt").on("input", function() {
-	    var pocntValue = $(this).val();
-	    console.log("수량 입력 값:", pocntValue);
-	});
 	
 	$(".clientset").click(function() {
 	    console.log("클릭 이벤트 발생");

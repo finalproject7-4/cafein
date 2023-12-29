@@ -20,31 +20,49 @@ public class ShipServiceImpl implements ShipService {
 	@Inject
 	private ShipDAO shdao;
 	
-	/*출하 조회*/
+	// 출하 조회
 	@Override
 	public List<ShipVO> AllSHList() throws Exception{
 		logger.debug("AllSHList()");
 		return shdao.getSHList();
 	}
 
+	// 출하 등록
+	@Override
+	public void registSH(ShipVO svo) throws Exception {
+		logger.debug("registSHList 메서드 호출");
+		shdao.registSH(svo);
+		
+	}
+	
+	// 작업 지시 조회
 	@Override
 	public List<WorkVO> AllWKList() throws Exception {
 		logger.debug("AllWKList()");
 		return shdao.getWKList();
 	}
+	
+	// 작업 지시 등록
+	@Override
+	public void registWK(WorkVO wvo) throws Exception {
+		logger.debug("registWKList 메서드 호출");
+		shdao.registWK(wvo);
+	}
 
+	// 실적 조회
 	@Override
 	public List<WorkVO> AllPFList() throws Exception {
 		logger.debug("AllPFList()");
 		return shdao.getPFList();
 	}
-	
-	
-	
-	
+
+	// 실적 등록
+	@Override
+	public void registPF(WorkVO wvo) throws Exception {
+		logger.debug("registPFList 메서드 호출");
+		shdao.registWK(wvo);
+	}
 
 
-
-	
 
 }

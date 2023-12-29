@@ -11,6 +11,7 @@ public class ProduceVO {
 	private Integer produceid;
 	private Timestamp submitdate;
 	private Date producedate;
+	private int producetime;
 	private int produceline;
 	private int itemid;
 	private String itemname;
@@ -24,10 +25,16 @@ public class ProduceVO {
 	private String qualitycheck;
 	private String state;
 	
+	// 검색용 변수
 	private Date startDate;
 	private Date endDate;
+	private String searchText;
+	private String searchBtn;
 
-	
+	// Criteria 객체
+	private Criteria cri;
+	private int startPage;
+	private int pageSize;
 	
 	
 	
