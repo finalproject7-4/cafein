@@ -61,13 +61,13 @@
 		select count(*) from work
 		<where>
 		  <choose>
-			<when test="postate == '대기'">
+			<when test="worksts == '대기'">
 				and workcode like '%ST%';
 			</when>
-			<when test="postate == '진행'">
+			<when test="worksts == '진행'">
 				and workcode like '%PR%';
 			</when>
-			<when test="postate == '완료'">
+			<when test="worksts == '완료'">
 				and workcode like '%CP%';
 			</when>
 			<otherwise>

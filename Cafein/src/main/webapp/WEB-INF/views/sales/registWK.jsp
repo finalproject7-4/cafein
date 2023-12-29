@@ -47,7 +47,7 @@
 					</div>
 					<div class="row">
 						<div class="col">
-							<b>작업지시일자</b><input id="workdate1" type="date" class="form-control"  placeholder="작업지시일자">
+							<b>작업지시일자</b><input name="workdate1" id="workdate1" type="date" class="form-control"  placeholder="작업지시일자">
 						</div>
 					</div>
 					<br>
@@ -151,7 +151,7 @@
 			        var today = new Date();
 			        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
 			        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-			        $('#startwk').val(formattedDate);
+			        $('#workdate1').val(formattedDate);
 			    });
 			    
 			    /*달력 이전날짜 비활성화*/

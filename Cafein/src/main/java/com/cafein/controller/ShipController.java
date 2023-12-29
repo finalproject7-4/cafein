@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.ItemVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
@@ -74,28 +75,22 @@ public class ShipController {
 	// 작업지시 등록 - POST
 	// http://localhost:8088/sales/WKList
 	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
-	public String registWK(WorkVO wvo, 
-							@RequestParam(value = "pocode") String pocode,
-							@RequestParam(value = "itemcode") String itemcode,
-							@RequestParam(value = "clientcode") String clientcode,
-							
-							RedirectAttributes rttr) throws Exception {
+	public String registWK(WorkVO wvo,@RequestParam(value = "workdate1") String workdate1) throws Exception {
 		
 		logger.debug("registWK() 호출 ");                                 
-		logger.debug(" svo : " + wvo);                                               
-
-		wvo.setPocode(pocode);
-		wvo.setItemcode(itemcode);
-		wvo.setItemcode(clientcode);	                                         
+		logger.debug(" wvo : " + wvo);  
+		
+		wvo.setWorkcode(makeWKcode(wvo));
+		wvo.setWorkdate1(Date.valueOf(workdate1));
 		
 		shService.registWK(wvo);                                                      
 		logger.debug(" 작업지시 등록 완료! ");     
-         
-		rttr.addFlashAttribute("result", "CREATEOK");                                
+                                       
 	                                                                                 
 		logger.debug("/sales/registWK 이동");                                          
 		return "redirect:/sales/WKList";                                             
 	}
+
 	
 	// 작업 지시 코드 생성 메서드
 	public String makeWKcode(WorkVO wvo) throws Exception {
@@ -103,7 +98,7 @@ public class ShipController {
 		String code = "";
 		int num = 1001 + shService.wkCount(wvo);
 		
-		switch(wvo.getPostate()) {
+		switch(wvo.getWorksts()) {
 			case "대기": code = "ST"; break;
 			case "진행": code = "PR"; break;
 			case "완료": code = "CP"; break;
