@@ -1,7 +1,6 @@
 package com.cafein.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -24,12 +23,18 @@ public class ItemServiceImpl implements ItemService {
 	public List<ItemVO> itemList() throws Exception {
 		logger.debug("Service - itemList()");
 		return idao.getItemList();
+	}	
+	
+	@Override
+	public List<ItemVO> itemList(ItemVO vo) throws Exception {
+		logger.debug("Service - itemList(ItemVO vo)");
+		return idao.getItemList(vo);
 	}
 
 	@Override
-	public List<ItemVO> searchItemList(Map map) throws Exception {
-		logger.debug("Service - searchItemList(Map map)");
-		return idao.searchItemList(map);
+	public Integer itemCount(ItemVO vo) throws Exception {
+		logger.debug("Service - itemTotalCount(ItemVO vo)");
+		return idao.getItemCount(vo);
 	}
 
 	@Override
@@ -39,9 +44,9 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public int itemCount(ItemVO vo) throws Exception {
-		logger.debug("Service - itemCount(ItemVO vo)");
-		return idao.getItemCount(vo);
+	public int itemtypeCount(ItemVO vo) throws Exception {
+		logger.debug("Service - itemtypeCount(ItemVO vo)");
+		return idao.getItemTypeCount(vo);
 	}
 
 }
