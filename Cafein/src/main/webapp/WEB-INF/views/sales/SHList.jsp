@@ -99,7 +99,10 @@
 				</tbody>
 			</table>
 		</div>
-
+		</div>
+	</div>
+</div>
+</form>
 
 <!-- 출하 등록 모달 -->
 <div class="modal fade" id="exampleModal" tabindex="-1"
@@ -128,31 +131,27 @@
 					<br>
 					<div class="row">
 						<div class="col">
-							<b>작업지시코드</b><input id="client" class="form-control"
+							<b>작업지시코드</b><input id="workcode" class="form-control"
 								id="floatingInput" placeholder="작업지시코드">
 						</div>
 						<div class="col">
-							<b>납품처</b><input id="client" class="form-control"
+							<b>납품처</b><input id="clientname" class="form-control"
 								id="floatingInput" placeholder="납품처">
 						</div>
 						<div class="col">
-							<b>품명</b><input id="items" class="form-control"
+							<b>품명</b><input id="itemname" class="form-control"
 								id="floatingInput" placeholder="품명">
 						</div>
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>출하량</b><input type="number" class="form-control"
+						<b>출하량</b><input type="pocnt" class="form-control"
 							id="floatingInput" placeholder="숫자만 입력하세요">
 					</div>
 					<div class="row">
 						<div class="col">
-							<b>출하일자</b><input id="startdate" type="text" class="form-control"
-								id="floatingInput" placeholder="출하일자(클릭)">
-						</div>
-						<div class="col">
-							<b>완납예정일</b><input type="date" id="date" class="form-control"
-								id="floatingInput" placeholder="완납예정일">
+							<b>출하일자</b><input id="startdate" type="date" class="form-control"
+								id="floatingInput" placeholder="출하일자">
 						</div>
 					</div>
 					<br>
@@ -171,80 +170,104 @@
 </div>
 <!-- 출하 등록 모달-->
 
+<!-- 출하등록 - 작업지시 모달 -->
+<div class="modal fade" id="workcodeModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">작업지시목록</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-12">
+					<div class="bg-light rounded h-100 p-4">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">No.</th>
+									<th scope="col">작업지시코드</th>
+									<th scope="col">작업지시일자</th>
+									<th scope="col">수주코드</th>
+									<th scope="col">납품처</th>
+								</tr>
+							</thead>
+							<tbody>
+							<c:set var="counter" value="1" />
+								<c:forEach items="${wcList}" var="wc" varStatus="status">
+									<tr class="workcodeset">
+										<td>${counter }</td>
+										<td>${wc.workcode }</td>
+										<td>${wc.clientcode }</td>
+										<td>${wc.itemname }</td>
+										<td>${wc.shipcount }</td>
+										<td>${wc.shipdate }</td>
+										<td>${wc.membercode }</td>
+									</tr>
+									<c:set var="counter" value="${counter+1 }" />
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-</form>
 
-  <!-- 모달 js&jq -->
-   <script>
-   /*달력 이전날짜 비활성화*/
+
+<script type="text/javascript">
+
+	  // 작업지시불러오기
+	  $(document).ready(function() {
+	
+	  $('#workcode').click(function() {
+	      $('#workcodeModal').modal('show');
+	    });
+	  
+		// 선택한 행 불러오기
+	    $('.workcodeset').click(function() {
+	      // 선택한 행의 데이터를 가져오기
+	      var workcode = $(this).find('td:eq(1)').text(); // 작업지시코드
+	      var client = $(this).find('td:eq(4)').text(); // 납품처
+	      var items = ''; // 여기에 품명을 가져오는 코드 추가
+	      
+
+	      // 첫 번째 모달의 각 입력 필드에 데이터를 설정
+	      $('#workcode').val(workcode);
+	      $('#client').val(client);
+	      $('#items').val(items);
+	      // (다른 필드에 대한 값을 설정하는 코드를 추가하세요)
+
+	      // 'workcodeModal'을 닫기
+	      $('#workcodeModal').modal('hide');
+	    });
+
+	
+    
+    $('#todaypo').click(function(){
+        var today = new Date();
+        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        $('#todaypo').val(formattedDate);
+    });
+    
+    /*달력 이전||+5일 이후 날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
 	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
 	
-	//id="date"
-	document.getElementById("date").setAttribute("min", today);
+	var fiveDaysLater = new Date(now_utc + 5 * 24 * 60 * 60 * 1000 - timeOff).toISOString().split("T")[0];
 	
-	// class="date"인 모든 요소에 날짜 비활성화
-	document.querySelectorAll('.date').forEach(function(input) {
-	  input.setAttribute('min', today);
+	//id="date"
+	var dateInput = document.getElementById("date");
+	dateInput.setAttribute("min", today);
+	dateInput.setAttribute("max", fiveDaysLater);
+
 	});
-	   
-   
-    var exampleModal = document.getElementById('exampleModal')
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-      var button = event.relatedTarget
-      var recipient = button.getAttribute('data-bs-whatever')
-      var modalTitle = exampleModal.querySelector('.modal-title')
-      var modalBodyInput = exampleModal.querySelector('.modal-body input')
-    })
-    
-    $(document).ready(function() {
-    	// 납품처 모달
-	    $("#client").click(function() {
-	        $("#clientModal").modal('show');
-	   	});
-    	
-	    $(".clientset").click(function() {
-	        var columns = $(this).find('td');
-	        var selectedClientName = $(columns[1]).text(); // 납품처명
-	        var selectedClientCode = $(columns[2]).text(); // 납품처코드
-	        $('#client').val(selectedClientName);
-	        $('#clientModal').modal('hide');
-	    });
-	    
-	 	// 납품처 조회 모달
-	    $(".clientSearch").click(function() {
-	        $("#clientSM").modal('show');
-	   	});
-	 
-		// 품목 모달    	
-	    $("#items").click(function() {
-	        $("#itemModal").modal('show');
-	   	});
-	    
-	    $(".itemset").click(function() {
-	        var columns = $(this).find('td');
-	        var selectedItemName = $(columns[1]).text(); // 품명
-	        var selectedItemCode = $(columns[2]).text(); // 품목코드
-            $('#items').val(selectedItemName);
-	        $('#itemModal').modal('hide');
-	    });
-	    
-	 // 품목 조회 모달
-	    $(".itemSearch").click(function() {
-	        $("#itemSM").modal('show');
-	   	});
-	 
-	 $('#todaypo').click(function(){
-            var today = new Date();
-            // 날짜를 YYYY-MM-DD 형식으로 포맷팅
-            var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-            $('#todaypo').val(formattedDate);
-        });
-	 
-    });
-    </script>
+</script>
 
 
 <%@ include file="../include/footer.jsp"%>
