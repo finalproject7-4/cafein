@@ -34,7 +34,7 @@
 		<h6 class="mb-4">출하 관리</h6>
 
 		<div class="btn-group" role="group">
-			<form role="form">
+			<form role="form1">
 				<input type="hidden" name="state" value="대기">
 				<button type="button" class="btn btn-outline-secondary"
 					id="beforepro">대기</button>
@@ -43,7 +43,7 @@
 				<input type="hidden" name="state" value="생산중">
 				<button type="button" class="btn btn-outline-secondary" id="ingpro">진행</button>
 			</form>
-			<form role="form2">
+			<form role="form1">
 				<input type="hidden" name="state" value="완료">
 				<button type="button" class="btn btn-outline-secondary"
 					id="completpro">완료</button>
@@ -65,6 +65,7 @@
 						<th scope="col">출하량</th>
 						<th scope="col">출하상태</th>
 						<th scope="col">담당자</th>
+						<th scope="col">관리</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -81,6 +82,17 @@
 							<td>${sh.shipcount }</td>
 							<td>${sh.shipsts }</td>
 							<td>${sh.membercode }</td>
+							<td>
+                           <button type="button" class="btn btn-outline-dark" 
+                                   onclick="openModifyModal()">
+                                   수정
+                           </button>
+                           <!-- 버튼 삭제 -->
+                           <button type="button" class="btn btn-outline-dark" 
+                                   onclick="openDeleteModal()">
+                                   삭제
+                           </button>
+                           </td>
 						</tr>
 					</c:forEach>
 
