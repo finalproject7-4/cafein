@@ -14,8 +14,6 @@
 				</div>
 				
 				<form role="form" action="/sales/modifyPO" method="post">
-				<input type="hidden" name="clientid2" id="clienti2" value="1">
-				<input type="hidden" name="itemid2" id="itemid2" value="1">
 				
 				<div class="modal-body">
 				납품처/코드
@@ -139,8 +137,8 @@ $(document).ready(function() {
 	
 	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:first-child').text();
-	    console.log("itemid:", itemid);
-	    $("#itemidd").val(itemid);
+	    console.log("itemid2:", itemid2);
+	    $("#itemid2").val(itemid);
 	});
 	
 	// 클릭한 행의 정보를 가져와서 clientid에 입력
@@ -151,13 +149,12 @@ $(document).ready(function() {
 	 
 	// 품목 모달    	
     $("#itemid2").click(function() {
-        $("#itemModal").modal('show');
-   	});
+    	$("#itemModal").modal('show');
+    });
     
     $(".itemset").click(function() {
         var columns = $(this).find('td');
         var selectedItemName = $(columns[1]).text(); // 품명
-        var selectedItemCode = $(columns[2]).text(); // 품목코드
         $('#items').val(selectedItemName);
         $('#itemModal').modal('hide');
     });
