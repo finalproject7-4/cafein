@@ -1,7 +1,5 @@
 package com.cafein.controller;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -11,9 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.cafein.domain.ClientVO;
-import com.cafein.domain.ItemVO;
+import com.cafein.domain.Criteria;
 import com.cafein.domain.OrdersVO;
+import com.cafein.domain.PageVO;
 import com.cafein.service.ClientService;
 import com.cafein.service.ItemService;
 import com.cafein.service.OrdersService;
@@ -35,22 +33,26 @@ public class OrdersController {
 	
 	// http://localhost:8088/material/orders
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public String ordersGET(Model model) throws Exception {
-		logger.debug("/material/orders 호출 -> ordersGET() 호출");
-		// 연결된 뷰페이지로 이동
-		logger.debug("/views/material/orders.jsp 페이지로 이동");
+	public void ordersList(Model model, OrdersVO vo, Criteria cri) throws Exception {
+		logger.debug("orderList() 호출");
 		
-		// 서비스
-		logger.debug("(●'◡'●)" + oService.ordersList());
-		logger.debug("(●'◡'●)" + cService.clientList());
-//		logger.debug("(●'◡'●)" + iService.itemList());
-				
-		// 데이터를 연결된 뷰페이지로 전달 (Model 객체 필요)
+		// OrdersVO의 Criteria 설정
+		vo.setCri(cri);
+		
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+//		pageVO.setTotalCount(iService.itemCount(vo));
+//		logger.debug("총 개수: " + pageVO.getTotalCount());
+		
+		// 데이터를 연결된 뷰페이지로 전달
 		model.addAttribute("ordersList", oService.ordersList());
 		model.addAttribute("clientList", cService.clientList());
-//		model.addAttribute("itemList", iService.itemList());
+		model.addAttribute("itemList", iService.itemList());
+		model.addAttribute("pageVO", pageVO);
 		
-		return "/material/orders";
+		// 연결된 뷰페이지로 이동
+		logger.debug("/views/material/orders.jsp 페이지로 이동");
 	}
 	
 	

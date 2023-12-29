@@ -3,7 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp" %>
 
+<!-- 품목관리 페이지 시작 -->
 <div class="col-12">
+
 	<!-- 품목 조회 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<form name="search" action="items">
@@ -21,7 +23,7 @@
 	<!-- 품목 목록 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
-		<span style="margin-left: 91%;">
+		<span style="margin-left: 95%;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
 			<!-- <button type="button" class="btn btn-sm btn-dark m-1">수정</button> -->
 			<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
@@ -67,13 +69,14 @@
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
+    				
+        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
     				<li class="page-item">
     				  <c:if test="${pageVO.prev }">
       					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
         					<span aria-hidden="true">&laquo;</span>
       					</a>
         					
-        				<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
 						<script>
 							$(document).ready(function(){
 								$('.pageBlockPrev').click(function(e) {
@@ -94,16 +97,16 @@
 								});
 							});
 						</script>
-        				<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
     				  </c:if>
     				</li>
+        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
     		
+    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
 					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
     					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
     						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
     					</li>
     					
-    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
 					<script>
 						$(document).ready(function(){
 							$('.pageBlockNum').click(function(e) {
@@ -124,16 +127,16 @@
 							});
 						});
 					</script>
-					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
     				</c:forEach>
+					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
     		
+    				<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
     				<li class="page-item">
     				  <c:if test="${pageVO.next }">
       					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
         					<span aria-hidden="true">&raquo;</span>
       					</a>
       					
-    					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
 						<script>
 							$(document).ready(function(){
 								$('.pageBlockNext').click(function(e) {
@@ -154,9 +157,9 @@
 								});
 							});
 						</script>
-						<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->     					
     				</c:if>
-    			</li>
+    				</li>
+					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
 			  </ul>
 			</nav>
 			<!-- 페이지 블럭 생성 -->	
@@ -216,8 +219,8 @@
     </div>
     <!-- 공급처 모달 -->
     
-    <!-- 품목 등록 모달 -->
-</div>    
+</div>
+<!-- 품목관리 페이지 끝 -->
 
 <script>
 	var itemRegistModal = document.getElementById('itemRegistModal')

@@ -16,7 +16,7 @@ public class ItemVO {
 	private int itemprice;
 	private String available;
 	
-	//client 테이블
+	// client 테이블
 	private String clientname; // 거래처명
 	
 	// 검색용 변수
