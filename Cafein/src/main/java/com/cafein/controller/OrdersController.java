@@ -43,12 +43,12 @@ public class OrdersController {
 		// 서비스
 		logger.debug("(●'◡'●)" + oService.ordersList());
 		logger.debug("(●'◡'●)" + cService.clientList());
-		logger.debug("(●'◡'●)" + iService.itemList());
+//		logger.debug("(●'◡'●)" + iService.itemList());
 				
 		// 데이터를 연결된 뷰페이지로 전달 (Model 객체 필요)
 		model.addAttribute("ordersList", oService.ordersList());
 		model.addAttribute("clientList", cService.clientList());
-		model.addAttribute("itemList", iService.itemList());
+//		model.addAttribute("itemList", iService.itemList());
 		
 		return "/material/orders";
 	}
