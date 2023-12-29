@@ -95,6 +95,7 @@ public class SalesController {
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/modifyPO", method = RequestMethod.POST)
 	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
+			@RequestParam(value = "updatedate") String updatedate,
 			@RequestParam(value = "poid", defaultValue = "1") int poid,
 			@RequestParam(value = "itemid", defaultValue = "1") int itemid
 			) throws Exception {
@@ -103,6 +104,8 @@ public class SalesController {
 		
 		svo.setItemid(itemid);
 		svo.setPoid(poid);
+		svo.setUpdatedate(Date.valueOf(updatedate));
+
 
 		// 서비스 - 정보수정 동작
 		int result = sService.POModify(svo);
