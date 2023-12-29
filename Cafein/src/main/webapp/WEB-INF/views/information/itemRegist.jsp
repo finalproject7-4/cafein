@@ -12,7 +12,7 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form role="form" action="/information/itemRegist" method="post">
+				<form action="itemRegist" method="post">
 				<div class="modal-body">
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>품목유형</b></label>
@@ -51,7 +51,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" id="itemRegistBtn">등록</button>
+					<input type="submit" class="btn btn-primary" value="등록">
 				</div>
 				</form>
 			</div>

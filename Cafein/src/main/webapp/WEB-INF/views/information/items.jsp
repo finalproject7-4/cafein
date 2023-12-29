@@ -6,7 +6,7 @@
 <div class="col-12">
 	<!-- 품목 조회 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" action="itemSearchList" method="post">
+		<form name="search" action="items">
 		<select name="option">
 			<option value="">선택</option>
 			<option value="itemtype">품목유형</option>
@@ -20,7 +20,7 @@
 
 	<!-- 품목 목록 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<span class="mb-4">총 ${fn:length(itemList)} 건</span>
+		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 		<span style="margin-left: 91%;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
 			<!-- <button type="button" class="btn btn-sm btn-dark m-1">수정</button> -->
@@ -43,9 +43,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="itemList" items="${itemList }">
+					<c:forEach var="itemList" items="${itemList }" varStatus="status">
 						<tr style="text-align: center;">
-							<td>${itemList.itemid }</td>
+							<td>
+								<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
+							</td>
 							<td>${itemList.itemcode }</td>
 							<td>${itemList.itemtype }</td>
 							<td>${itemList.itemname }</td>
@@ -61,9 +63,108 @@
 					</c:forEach>	
 				</tbody>
 			</table>
+			
+			<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    				  <c:if test="${pageVO.prev }">
+      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+        					
+        				<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+						<script>
+							$(document).ready(function(){
+								$('.pageBlockPrev').click(function(e) {
+									e.preventDefault(); // 기본 이벤트 제거
+								
+					            	let prevPage = $(this).data('page');
+								
+									let option = "${param.option}";
+									let keyword = "${param.keyword}";
+
+			                		url = "/information/items?page=" + prevPage;
+			                
+			                		if (option && keyword) {
+			                    		url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+			                		}
+
+			                		location.href = url;
+								});
+							});
+						</script>
+        				<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+    				  </c:if>
+    				</li>
+    		
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
+    						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
+    					</li>
+    					
+    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+					<script>
+						$(document).ready(function(){
+							$('.pageBlockNum').click(function(e) {
+								e.preventDefault(); // 기본 이벤트 제거
+					
+			            		let pageValue = $(this).data('page');
+					
+								let option = "${param.option}";
+								let keyword = "${param.keyword}";
+
+	                			url = "/information/items?page=" + pageValue;
+                
+	                			if (option && keyword) {
+	                    			url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+	                			}
+
+	                			location.href = url;
+							});
+						});
+					</script>
+					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+    				</c:forEach>
+    		
+    				<li class="page-item">
+    				  <c:if test="${pageVO.next }">
+      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        					<span aria-hidden="true">&raquo;</span>
+      					</a>
+      					
+    					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
+						<script>
+							$(document).ready(function(){
+								$('.pageBlockNext').click(function(e) {
+									e.preventDefault(); // 기본 이벤트 제거
+				
+		            				let nextPage = $(this).data('page');
+				
+									let option = "${param.option}";
+									let keyword = "${param.keyword}";
+
+               					url = "/information/items?page=" + nextPage;
+            
+               					if (option && keyword) {
+                   					url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+               					}
+
+               					location.href = url;
+								});
+							});
+						</script>
+						<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->     					
+    				</c:if>
+    			</li>
+			  </ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->	
+			
 		</div>
 	</div>
-	<!-- 품목 목록 -->		
+	<!-- 품목 목록 -->
+	
 		
 	<!-- 품목 등록 모달 -->
 	<jsp:include page="itemRegist.jsp"/>

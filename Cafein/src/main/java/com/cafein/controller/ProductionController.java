@@ -52,7 +52,7 @@ public class ProductionController {
 			vo.setEndDate(Date.valueOf(endDate));
 			
 			model.addAttribute("produceList", pService.getProduceList(vo));
-			model.addAttribute("itemList", iService.itemList());
+//			model.addAttribute("itemList", iService.itemList());
 			logger.debug("생산지시 목록 출력!");
 
 		}
