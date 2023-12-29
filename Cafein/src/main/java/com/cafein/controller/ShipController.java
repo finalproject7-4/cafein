@@ -1,5 +1,7 @@
 package com.cafein.controller;
 
+import java.sql.Date;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -8,7 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.SalesVO;
+import com.cafein.domain.ShipVO;
 import com.cafein.service.ShipService;
 
 @Controller
@@ -28,6 +34,29 @@ public class ShipController {
 		model.addAttribute("AllSHList", shService.AllSHList());
 		logger.debug("출하 리스트 출력!");
 	}
+	
+	// 출하 등록 - POST
+	// http://localhost:8088/sales/SHList
+	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
+	public String regist(ShipVO svo, 
+							@RequestParam(value = "shipdate") String shipdate,
+							@RequestParam(value = "stockid", defaultValue = "1") int stockid,
+							RedirectAttributes rttr) throws Exception {
+		
+		logger.debug("regist() 호출 ");                                 
+		logger.debug(" svo : " + svo);                                               
+
+		svo.setShipdate(Date.valueOf(shipdate));
+		svo.setStockid(stockid);	                                         
+		
+		shService.registSH(svo);                                                      
+		logger.debug(" 출하 등록 완료! ");     
+         
+		rttr.addFlashAttribute("result", "CREATEOK");                                
+	                                                                                 
+		logger.debug("/sales/registSH 이동");                                          
+		return "redirect:/sales/SHList";                                             
+	}
 
 	// 작업지시 조회
 	// http://localhost:8088/sales/WKList
@@ -38,7 +67,7 @@ public class ShipController {
 		logger.debug("작업지시 리스트 출력!");
 	}
 
-	// 작업지시 조회
+	// 실적 조회
 	// http://localhost:8088/sales/PFList
 	@RequestMapping(value = "/PFList", method = RequestMethod.GET)
 	public void AllPFListGET(Model model) throws Exception {

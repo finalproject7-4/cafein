@@ -2,7 +2,6 @@ package com.cafein.domain;
 
 import java.sql.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 

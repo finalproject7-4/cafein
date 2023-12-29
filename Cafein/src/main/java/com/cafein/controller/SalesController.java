@@ -27,37 +27,7 @@ public class SalesController {
 
 	@Inject
 	private SalesService sService;
-	
-	//수주등록 -  GET
-//	// http://localhost:8088/sales/registPO
-//	@RequestMapping(value = "/registPO", method = RequestMethod.GET)
-//	public String registGET(Model model) throws Exception {
-//		logger.debug("/sales/registPO -> registGET() 호출 ");
-//		logger.debug("/sales/registPO.jsp 뷰페이지로 이동");
-//		
-//		model.addAttribute("cliList", sService.registCli());
-//		logger.debug("cliList",sService.registCli());
-//
-//		model.addAttribute("iList", sService.registItem());
-//		logger.debug("iList",sService.registItem());
-//		
-//		return "sales/registPO";
-//	}
-//	
-//	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
-//	public String registPOST(SalesVO svo, RedirectAttributes rttr) throws Exception {
-//		logger.debug("폼submit -> registPOST() 호출 ");
-//		logger.debug(" svo : " + svo);
-//
-//		sService.registPO(svo);
-//		logger.debug(" 글작성 완료! ");
-//		
-//		rttr.addFlashAttribute("result", "CREATEOK");
-//
-//		logger.debug("/sales/registPO 이동");
-//		return "redirect:/sales/POList";
-//	}
-	
+
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
@@ -69,11 +39,10 @@ public class SalesController {
 
 		model.addAttribute("POList", POList);
 		model.addAttribute("result", result);
-		
 		model.addAttribute("cliList", sService.registCli()); 
-		logger.debug("cliList",sService.registCli());        
-		        
 		model.addAttribute("iList", sService.registItem());  
+
+		logger.debug("cliList",sService.registCli());        
 		logger.debug("iList",sService.registItem());         
 		
 		return "/sales/POList";
@@ -83,27 +52,44 @@ public class SalesController {
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/registPO", method = RequestMethod.POST)
 	public String registPOST(SalesVO svo, 
-				@RequestParam(value = "ordersdate") String ordersdate,
-				@RequestParam(value = "ordersduedate") String ordersduedate,
-				@RequestParam(value = "clientid", defaultValue = "1") int clientid,
-				@RequestParam(value = "itemid", defaultValue = "1") int itemid,
-			
-			RedirectAttributes rttr) throws Exception {
+							@RequestParam(value = "ordersdate") String ordersdate,
+							@RequestParam(value = "ordersduedate") String ordersduedate,
+							@RequestParam(value = "clientid", defaultValue = "1") int clientid,
+							@RequestParam(value = "itemid", defaultValue = "1") int itemid,
+							RedirectAttributes rttr) throws Exception {
+		
 		logger.debug("폼submit -> registPOST() 호출 ");                                 
 		logger.debug(" svo : " + svo);                                               
 
 		svo.setOrdersdate(Date.valueOf(ordersdate));
 		svo.setOrdersduedate(Date.valueOf(ordersduedate));
 		svo.setClientid(clientid);	                                         
-		svo.setItemid(itemid);	                                         
+		svo.setItemid(itemid);
+		svo.setPocode(makePOcode(svo));
 		
 		sService.registPO(svo);                                                      
-		logger.debug(" 글작성 완료! ");                                                   
+		logger.debug(" 글작성 완료! ");     
          
 		rttr.addFlashAttribute("result", "CREATEOK");                                
 	                                                                                 
 		logger.debug("/sales/registPO 이동");                                          
 		return "redirect:/sales/POList";                                             
-	}                                                                                
+	}        
+	
+	// 품목코드 생성 메서드
+	public String makePOcode(SalesVO svo) throws Exception {
+		
+		String code = "";
+		int num = 1001 + sService.poCount(svo);
+		
+		switch(svo.getPostate()) {
+			case "대기": code = "AL"; break;
+			case "진행": code = "SK"; break;
+			case "완료": code = "FJ"; break;
+			case "취소": code = "GH"; break;
+		}
+		
+		return code + num;
+	}
 	
 }

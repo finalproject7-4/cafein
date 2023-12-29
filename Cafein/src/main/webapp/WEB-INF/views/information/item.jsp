@@ -21,19 +21,16 @@
 	<!-- 품목 목록 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(itemList)} 건</span>
-		<span style="margin-left: 81%;">
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">등록</button>
-			<button type="button" class="btn btn-sm btn-dark m-1">수정</button>
-			<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+		<span style="margin-left: 91%;">
+			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			<!-- <button type="button" class="btn btn-sm btn-dark m-1">수정</button> -->
+			<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
 		</span>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
 				<thead>
-					<tr>
-						<th scope="col">
-							<input type="checkbox" id="delete-list-all" name="delete-list" data-group="delete-list">
-						</th>
+					<tr style="text-align: center;">
 						<th scope="col">번호</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">품목유형</th>
@@ -42,14 +39,12 @@
 						<th scope="col">원산지</th>
 						<th scope="col">중량(g)</th>
 						<th scope="col">단가(원)</th>
+						<th scope="col">관리</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="itemList" items="${itemList }">
-						<tr>
-							<td>
-								<input type="checkbox" id="delete-list-all" name="delete-list" data-group="delete-list">
-							</td>
+						<tr style="text-align: center;">
 							<td>${itemList.itemid }</td>
 							<td>${itemList.itemcode }</td>
 							<td>${itemList.itemtype }</td>
@@ -58,6 +53,10 @@
 							<td>${itemList.origin }</td>
 							<td>${itemList.itemweight }</td>
 							<td>${itemList.itemprice }</td>
+							<td>
+								<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" onclick="modifyModal('${itemList}')">수정</button>
+								<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+							</td>
 						</tr>
 					</c:forEach>	
 				</tbody>
@@ -68,6 +67,9 @@
 		
 	<!-- 품목 등록 모달 -->
 	<jsp:include page="itemRegist.jsp"/>
+	
+	<!-- 품목 수정 모달 -->
+	<jsp:include page="itemModify.jsp"/>
 		
 	<!-- 공급처 모달 -->
     <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -90,12 +92,16 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                 <c:forEach var="itemList" items="${itemList }">
+                                 <c:set var="counter" value="1" />                                 
+                                 <c:forEach var="clientList" items="${clientList }" varStatus="status">
+                                  <c:if test="${clientList.categoryofclient eq '공급'}">
                                     <tr class="clientset">
-                                    	<td>${itemList.itemid }</td> 
-                                    	<td>${itemList.clientname }</td> 
-                                    	<td>${itemList.clientcode }</td>
+                                    	<td>${counter }</td> 
+                                    	<td>${clientList.clientname }</td> 
+                                    	<td>${clientList.clientcode }</td>
                                     </tr>
+                                   <c:set var="counter" value="${counter + 1}" />
+                                  </c:if>                                    
                                  </c:forEach>
                                  </tbody>
                         	</table>
@@ -113,39 +119,27 @@
 </div>    
 
 <script>
-	var exampleModal = document.getElementById('exampleModal')
-	exampleModal.addEventListener('show.bs.modal', function (event) {
+	var itemRegistModal = document.getElementById('itemRegistModal')
+	itemRegistModal.addEventListener('show.bs.modal', function (event) {
   		var button = event.relatedTarget
   		var recipient = button.getAttribute('data-bs-whatever')
-  		var modalTitle = exampleModal.querySelector('.modal-title')
- 	 	var modalBodyInput = exampleModal.querySelector('.modal-body input')
+  		var modalTitle = itemRegistModal.querySelector('.modal-title')
+ 	 	var modalBodyInput = itemRegistModal.querySelector('.modal-body input')
+	})
+
+	var itemModifyModal = document.getElementById('itemModifyModal')
+	itemModifyModal.addEventListener('show.bs.modal', function (event) {
+  		var button = event.relatedTarget
+  		var recipient = button.getAttribute('data-bs-whatever')
+  		var modalTitle = itemModifyModal.querySelector('.modal-title')
+ 	 	var modalBodyInput = itemModifyModal.querySelector('.modal-body input')
 	})
 	
-	// 체크박스 전체 선택
-	var selectAllCheckbox = document.getElementById("delete-list-all");
-	var checkboxes = document.querySelectorAll('[data-group="delete-list"]');
-	selectAllCheckbox.addEventListener("change", function () {
-    	checkboxes.forEach(function (checkbox) {
-        	checkbox.checked = selectAllCheckbox.checked;
-    	});
-	});
-	
-	checkboxes.forEach(function (checkbox) {
-    	checkbox.addEventListener("change", function () {
-        	if (!this.checked) {
-            	selectAllCheckbox.checked = false;
-        	} else {
-            	// 모든 체크박스가 선택되었는지 확인
-            	var allChecked = true;
-            	checkboxes.forEach(function (c) {
-                	if (!c.checked) {
-                    	allChecked = false;
-                	}
-            	});
-            	selectAllCheckbox.checked = allChecked;
-        	}
-    	});
-	});
+	function modifyModal(itemList) {
+		console.log(itemList);
+		// 모달 띄우기
+        $('#itemModifyModal').modal('show');
+    }	
 	
     // 공급처 모달
     $(document).ready(function() {

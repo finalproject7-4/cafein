@@ -32,23 +32,33 @@ public class SalesServiceImpl implements SalesService {
 	/*수주조회*/
 	@Override
 	public List<SalesVO> AllPOList() throws Exception{
-		logger.debug("AllPOList()");
+		logger.debug("S :AllPOList()");
 		return sdao.getPOList();
 	}
 
 	/*수주등록 - 납품처 */
 	@Override
 	public List<SalesVO> registCli() throws Exception {
-		logger.debug("registCli()");
+		logger.debug("S :registCli()");
 		return sdao.registCli();
 	}
 
 	/*수주등록 - 품목 */
 	@Override
 	public List<SalesVO> registItem() throws Exception {
-		logger.debug("registItem()");
+		logger.debug("S :registItem()");
 		return sdao.registItem();
 	}
+
+	/*수주코드 생성*/
+	@Override
+	public int poCount(SalesVO svo) throws Exception {
+		logger.debug("S : poCount(SalesVO svo)");
+		return sdao.getPOCount(svo);
+	}
+
+	
+	
 	
 	
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ProductionMapper.xml -->
+<mapper namespace="com.cafein.mapper.ProductionMapper">
+
+	<!-- 생산지시 목록 조회 -->
+	<select id="getProduceList" resultType="com.cafein.domain.ProduceVO">
+		select * from produce
+		<where>
+		
+		<if test="startDate != null and endDate != null">
+		  producedate between #{startDate} and #{endDate}
+		</if>
+		
+		<if test="itemname != null and !itemname.equals('')">
+		 and itemname like concat('%',#{itemname},'%')
+		</if>
+		
+		<if test="startDate != null and endDate != null and itemname != null and !itemname.equals('')">
+		and itemname like concat('%',#{itemname},'%') and producedate between #{startDate} and #{endDate}
+		</if>
+		
+		<if test="state != null">
+		and state like concat('%',#{state},'%')
+		</if>
+		
+		<if test="qualitycheck != null">
+		and qualitycheck like concat('%',"검사전",'%')
+		</if>
+		
+		order by produceid desc
+		</where>
+	
+	</select>
+	
+	
+
+	
+	
+</mapper>
