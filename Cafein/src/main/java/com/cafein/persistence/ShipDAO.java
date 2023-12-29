@@ -10,11 +10,20 @@ public interface ShipDAO {
 	// 출하 조회
 	public List<ShipVO> getSHList() throws Exception;
 	
+	// 출하 등록
+	public void registSH(ShipVO svo) throws Exception;
+	
 	// 작업 지시 조회
 	public List<WorkVO> getWKList() throws Exception;
 	
+	// 작업 지시 등록
+	public void registWK(WorkVO wvo) throws Exception;
+	
 	// 실적 조회
 	public List<WorkVO> getPFList() throws Exception;
+	
+	// 실적 등록
+	public void registPF(WorkVO wvo) throws Exception;
 
 	
 
