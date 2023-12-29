@@ -57,6 +57,14 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.getPOCount(svo);
 	}
 
+	//수주수정
+	@Override
+	public int POModify(SalesVO svo) throws Exception {
+		logger.debug("S : POModify(int poid)");
+		return sdao.updatePO(svo);
+	}
+
+	
 	
 	
 	

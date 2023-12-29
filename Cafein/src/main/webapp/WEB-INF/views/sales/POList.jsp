@@ -48,9 +48,9 @@
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
 			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap">등록</button>			
-			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap">수정</button>
-			<button type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap">삭제</button>
+			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap"	value="등록">		
+			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
+			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -94,6 +94,11 @@
 									<button type="button" class="btn btn-outline-dark" 
 									        onclick="openModifyModal('${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
+									</button>
+									<!-- 버튼 삭제 -->
+									<button type="button" class="btn btn-outline-dark" 
+									        onclick="openDeleteModal()">
+									        삭제
 									</button>
 									</td>
 								</tr>
@@ -203,46 +208,70 @@
 		</fieldset>
   <!-- 모달 js&jq -->
    <script>
-   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
-       // 가져온 값들을 모달에 설정
-       $("#clientid").val(clientname);
-       $("#itemid").val(itemname);
-       $("#floatingSelect").val(postate);
-       $("#pocnt").val(pocnt);
-       $("#todaypo").val(ordersdate);
-       $("#date").val(ordersduedate);
-       $("#membercode").val(membercode);
-
-       // 모달 열기
-       $("#modifyModal").modal('show');
-   }
-
-   // 모달이 열릴 때마다 호출되는 이벤트
-   $('#modifyModal').on('show.bs.modal', function (event) {
-       var modal = $(this);
-
-       // 모달이 열릴 때마다 해당 값들을 가져와서 모달에 설정
-       modal.find('#clientid').val(modal.find('#clientid').val());
-       modal.find('#itemid').val(modal.find('#itemid').val());
-       modal.find('#floatingSelect').val(modal.find('#floatingSelect').val());
-       modal.find('#pocnt').val(modal.find('#pocnt').val());
-       modal.find('#todaypo').val(modal.find('#todaypo').val());
-       modal.find('#date').val(modal.find('#date').val());
-       modal.find('#membercode').val(modal.find('#membercode').val());
-   });
-
-
    
+   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+	   console.log('Client Name:', clientname);
+       console.log('Item Name:', itemname);
+       console.log('Postate:', postate);
+       console.log('Pocnt:', pocnt);
+       console.log('Orders Due Date:', ordersduedate);
+       console.log('Member Code:', membercode); 
+	   
+	   // 가져온 값들을 모달에 설정
+	    $("#clientid2").val(clientname);
+	    $("#itemid2").val(itemname);
+	    $("#floatingSelect2").val(postate);
+	    $("#pocnt2").val(pocnt);
+	    $("#date2").val(ordersduedate);
+	    $("#membercode2").val(membercode);
+
+	    // 모달 열기
+	    $("#modifyModal").modal('show');
+	    
+	    // 수정된 값을 서버로 전송
+	    $("#modifyButton").click(function() {
+	        // 가져온 값들을 변수에 저장
+	        var modifiedClientName = $("#clientid2").val();
+	        var modifiedItemName = $("#itemid2").val();
+	        var modifiedPostate = $("#floatingSelect2").val();
+	        var modifiedPocnt = $("#pocnt2").val();
+	        var modifiedOrdersDate = $("#todaypo2").val();
+	        var modifiedOrdersDueDate = $("#date2").val();
+	        var modifiedMemberCode = $("#membercode2").val();
+
+	        // Ajax를 사용하여 서버로 수정된 값 전송
+	        $.ajax({
+	            type: "POST",
+	            url: "/sales/modifyPO",
+	            data: {
+	                clientname: modifiedClientName,
+	                itemname: modifiedItemName,
+	                postate: modifiedPostate,
+	                pocnt: modifiedPocnt,
+	                ordersdate: modifiedOrdersDate,
+	                ordersduedate: modifiedOrdersDueDate,
+	                membercode: modifiedMemberCode
+	            },
+	            success: function(response) {
+	                console.log("Modification success:", response);
+	                $("#modifyModal").modal('hide');
+	            },
+	            error: function(error) {
+	                console.error("Error during modification:", error);
+	            }
+	        });
+	    });
+	}
+
+   function openDeleteModal() {
+       $("#deleteModal").modal('show');
+   }
+		   
    /*달력 이전날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
 	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
 	
-	// class="date"인 모든 요소에 날짜 비활성화
-	document.querySelectorAll('.date').forEach(function(input) {
-	  input.setAttribute('min', today);
-	});
-   
 	var clientSM = document.getElementById('clientSM');
 	clientSM.addEventListener('show.bs.modal', function (event) {
 	  var button = event.relatedTarget;
@@ -253,14 +282,10 @@
 
     
     $(document).ready(function() {
-    	
-    	
-    	
 	 	// 납품처 조회 모달
 	    $(".clientSearch1, .clientSearch2").click(function() {
 		    $("#clientSM").modal('show');
 		});
-
 
 	 	// 품목 조회 모달
 	    $(".itemSearch1, .itemSearch2").click(function() {

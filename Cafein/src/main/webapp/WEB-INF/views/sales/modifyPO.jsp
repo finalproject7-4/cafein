@@ -13,20 +13,19 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form role="form" action="/sales/registPO" method="post">
-
-				<input type="hidden" name="clientid" id="clientidd">
-				<input type="hidden" name="itemid" id="itemidd">
-
+				<form role="form" action="/sales/modifyPO" method="post">
+				<input type="hidden" name="clientid2" id="clienti2" value="1">
+				<input type="hidden" name="itemid2" id="itemid2" value="1">
+				
 				<div class="modal-body">
 				납품처/코드
-				<input id="clientid" name="clientname" class="form-control mb-3" type="text"  >
+				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
 				
 				품목명/코드
-				<input id="itemid" name="itemname" class="form-control mb-3" type="text"  >
+				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
-						<select class="form-select" id="floatingSelect" name="postate">
+						<select class="form-select" id="floatingSelect2" name="postate">
 						    <optgroup label="수주상태">
 						        <option value="대기">대기</option>
 						        <option value="진행">진행</option>
@@ -36,72 +35,34 @@
 						</select>
 					</div>	
 					수량
-					<input id="pocnt" name="pocnt" class="form-control mb-3" type="number" value="">
+					<input autocomplete="off" id="pocnt2" name="pocnt" class="form-control mb-3" type="number" value="">
 					
 					<div class="row">
 					<div class="col">
-					수주일자
-					<input name="ordersdate" id="todaypo"  type="text" class="form-control" value="">
+					수정일자
+					<input name="updatedate" id="todaypo2"  type="text" class="form-control" value="" placeholder="수정일자(클릭)">
 					</div>
 					
 					<div class="col">
 					완납예정일
-					<input name="ordersduedate" type="date" id="date" class="form-control" value="">
+					<input name="ordersduedate" type="date" id="date2" class="form-control" value="">
 					</div>
 					</div>
 					<br>
 					
 					담당자
-					<input id="membercode" name="membercode" class="form-control mb-3" type="number" value="">
+					<input autocomplete="off" id="membercode2" name="membercode" class="form-control mb-3" type="number" value="">
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" id="itemRegistBtn">등록</button>
+					<button type="submit" class="btn btn-primary" id="ModifyBtn">저장</button>
 				</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	
-<!-- 수주등록 - 납품처 모달 -->
-<div class="modal fade" id="clientModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">납품처</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div class="col-12">
-					<div class="bg-light rounded h-100 p-4">
-						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">No.</th>
-									<th scope="col">납품처명</th>
-									<th scope="col">납품처코드</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach items="${cliList}" var="cli">
-									<tr class="clientset">
-										<td>${cli.clientid }</td>
-										<td>${cli.clientname }</td>
-										<td>${cli.clientcode }</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-					<div class="modal-footer"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+
 
 <!-- 수주등록 - 품목 모달 -->
 <div class="modal fade" id="itemModal" tabindex="-1"
@@ -125,12 +86,14 @@
 								</tr>
 							</thead>
 							<tbody>
+							<c:set var="counter" value="1" />
 								<c:forEach items="${iList}" var="item">
 									<tr class="itemset">
-										<td>${item.itemid }</td>
+										<td>${counter }</td>
 										<td>${item.itemname }</td>
 										<td>${item.itemcode }</td>
 									</tr>
+									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>
@@ -146,44 +109,48 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	$(".clientset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var clientid = $(this).find('td:first-child').text();
-	    console.log("clientid:", clientid);
-	    $("#clientidd").val(clientid);
-	});
+	$("#ModifyBtn").submit(function (event) {
+	    event.preventDefault(); // 기본 동작 중지
+	    // Ajax 코드 추가
+	$.ajax({
+        type: "POST",
+        url: "/sales/modifyPO",
+        data: {
+            clientname: modifiedClientName,
+            itemname: modifiedItemName,
+            postate: modifiedPostate,
+            pocnt: modifiedPocnt,
+            ordersdate: modifiedOrdersDate,
+            ordersduedate: modifiedOrdersDueDate,
+            membercode: modifiedMemberCode
+        },
+        success: function(response) {
+            console.log("Modification success:", response);
+            $("#modifyModal").modal('hide');
+
+            // 여기서 POList 갱신을 위한 작업 수행
+            // (서버로부터 업데이트된 POList를 가져와서 화면 갱신 등)
+        },
+        error: function(error) {
+            console.error("Error during modification:", error);
+        }
+    });
+   });
+	
 	$(".itemset").click(function() {
-	    console.log("클릭 이벤트 발생");
 	    var itemid = $(this).find('td:first-child').text();
 	    console.log("itemid:", itemid);
 	    $("#itemidd").val(itemid);
 	});
 	
 	// 클릭한 행의 정보를 가져와서 clientid에 입력
-   $(".clientset").click(function() {
-    var clientInfo = $(this).find('td:eq(1)').text(); //clientname
-    $("#clientid").val(clientInfo);
-	});
    $(".itemset").click(function() {
     var clientInfo = $(this).find('td:eq(1)').text(); //itemname
-    $("#itemid").val(clientInfo);
+    $("#itemid2").val(clientInfo);
 	});
 	 
-	//납품처 모달
-	$("#clientid").click(function() {
-	    $("#clientModal").modal('show');
-		});
-	
-	$(".clientset").click(function() {
-	    var columns = $(this).find('td');
-	    var selectedClientName = $(columns[1]).text(); // 납품처명
-	    var selectedClientCode = $(columns[2]).text(); // 납품처코드
-	    $('#client').val(selectedClientName);
-	    $('#clientModal').modal('hide');
-	});
-	
 	// 품목 모달    	
-    $("#itemid").click(function() {
+    $("#itemid2").click(function() {
         $("#itemModal").modal('show');
    	});
     
@@ -195,20 +162,26 @@ $(document).ready(function() {
         $('#itemModal').modal('hide');
     });
     
-    $('#todaypo').click(function(){
+    $('#todaypo2').click(function(){
         var today = new Date();
         // 날짜를 YYYY-MM-DD 형식으로 포맷팅
         var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-        $('#todaypo').val(formattedDate);
+        $('#todaypo2').val(formattedDate);
     });
-    
-    /*달력 이전날짜 비활성화*/
+	
+	/*달력 이전||+5일 이후 날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
 	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
 	
+	var fiveDaysLater = new Date(now_utc + 5 * 24 * 60 * 60 * 1000 - timeOff).toISOString().split("T")[0];
+	
 	//id="date"
-	document.getElementById("date").setAttribute("min", today);
-
+	var dateInput = document.getElementById("date2");
+	dateInput.setAttribute("min", today);
+	dateInput.setAttribute("max", fiveDaysLater);
+	
 	});
 </script>
+
+
