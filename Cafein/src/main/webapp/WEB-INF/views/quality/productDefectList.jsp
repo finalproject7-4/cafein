@@ -24,7 +24,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
 				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
-				<input type="submit" value="검색">
+				<input type="submit" value="검색" data-toggle="tooltip" title="품질 관리 번호 또는 제품명이 필요합니다!">
 			</form>
 			<br>						
 				<div class="table-responsive">
@@ -52,7 +52,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 										<td>${dlist.itemtype }</td>									
 									</c:if>
 									<c:if test="${!empty dlist.process }"> <!-- 생산인 경우 (process != null) -->
-										<td>${dlist.itemtype }-${dlist.process }</td>									
+										<td>${dlist.itemtype } - ${dlist.process }</td>									
 									</c:if>
 									<td>${dlist.itemcode }</td>
 									<td>${dlist.itemname }</td>
@@ -94,7 +94,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            var prevPage = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
 
    									var dataObject = {
    										"page" : prevPage	
@@ -103,8 +103,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!", prevPage);
@@ -138,7 +138,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            var pageNum = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
    									
    									var dataObject = {
    										"page" : pageNum	
@@ -147,8 +147,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!");
@@ -184,7 +184,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            var nextPage = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
    									
    									var dataObject = {
    										"page" : nextPage	
@@ -193,8 +193,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!", nextPage);

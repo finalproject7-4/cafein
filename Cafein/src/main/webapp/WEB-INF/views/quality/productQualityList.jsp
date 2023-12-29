@@ -7,6 +7,7 @@
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 "></script>
 <!-- SweetAlert 추가 -->
+
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>생산 / 반품 품질 관리</h2>
@@ -31,9 +32,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
-				<input type="date" name="startDate" required> ~
-				<input type="date" name="endDate" required>
-				<input type="submit" value="검색">
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
 			</form>	
 			<br>
 				<div class="table-responsive">
@@ -66,7 +67,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 										<td>${clist.itemtype }</td>
 									</c:if>
 									<c:if test="${!empty clist.process }">
-										<td>${clist.itemtype }-${clist.process }</td>
+										<td>${clist.itemtype } - ${clist.process }</td>
 									</c:if>			
 									<td>
 									<c:if test="${clist.returnid == 0}">
@@ -1276,31 +1277,30 @@ $(document).ready(function() {
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
 
-<!-- submit을 위한 confirm창 생성 -->
+<!-- 날짜 비교 -->
 <script>
-function showAlert(event) {
-    event.preventDefault();  // 폼의 기본 제출 동작을 중지
-    
-    return Swal.fire({
-        title: "재고 등록을 하시겠습니까??",
-        text: "등록 후 취소하실 수 없습니다.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "재고 등록",
-        cancelButtonText: "취소"
-    }).then(function(result) {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-            });
-            event.target.submit();  // 폼 제출
+$(document).ready(function(){
+    const checkDates = function() {
+        const startDateStr = document.getElementById("startDate").value;
+        const endDateStr = document.getElementById("endDate").value;
+
+        // 둘 다 유효한 날짜 문자열인지 확인
+        if (startDateStr && endDateStr) {
+            const startDate = new Date(startDateStr);
+            const endDate = new Date(endDateStr);
+
+            if (startDate > endDate) {
+                Swal.fire("종료일은 시작일과 같거나 이후여야 합니다.");
+                document.getElementById("endDate").value = "";
+            }   
         }
-    });
-    return false;  // 기본적으로 폼 제출을 거부
-}
+    };
+
+    // 페이지 로드 시 한 번 실행
+    checkDates();
+
+    // 날짜 입력 값에서 포커스가 빠져나갈 때 실행
+    $("#startDate, #endDate").on("blur", checkDates);
+});
 </script>
-<!-- submit을 위한 confirm창 생성 -->
+<!-- 날짜 비교 -->

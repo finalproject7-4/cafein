@@ -7,6 +7,7 @@
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 "></script>
 <!-- SweetAlert 추가 -->
+
 <script>
 $(document).ready(function() {
     // 첫 번째 페이지 가져오기

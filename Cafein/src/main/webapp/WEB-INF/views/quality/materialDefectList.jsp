@@ -22,7 +22,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
 				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
-				<input type="submit" value="검색">
+				<input type="submit" value="검색" data-toggle="tooltip" title="품질 관리 번호 또는 제품명이 필요합니다!">
 			</form>	
 			<br>			
 				<div class="table-responsive">

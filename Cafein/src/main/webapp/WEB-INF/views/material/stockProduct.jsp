@@ -30,8 +30,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 			</c:if>
-			<input type="text" name="searchText" placeholder="제품명을 입력하세요">
-			<input type="submit" value="검색">
+			<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+			<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
 		</form>
 	</div>
 </div>
@@ -118,7 +118,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            	let prevPage = $(this).data('page');
    									
    										let searchBtn = "${param.searchBtn}";
-   										let searchText = "${param.searchTxt}";
+   										let searchText = "${param.searchText}";
 
    				                		url = "/material/stockProduct?page=" + prevPage;
    				                
@@ -488,9 +488,17 @@ $(document).ready(function(){
     fetchProductStockToast();
 
     // 1분마다 호출
-    setInterval(fetchProductStockToast, 30000); // 60,000 밀리초 = 1분
+    setInterval(fetchProductStockToast, 60000); // 60,000 밀리초 = 1분
 });
 </script>
-<!-- 토스트창 ajax 호출 (30초 간격) -->
+<!-- 토스트창 ajax 호출 (60초 간격) -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->
 
 <%@ include file="../include/footer.jsp"%>

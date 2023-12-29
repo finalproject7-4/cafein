@@ -49,7 +49,6 @@ public class QualityController {
 		
 	}
 
-	// http://localhost:8088/quality/productQualityList
 	// 품질 관리 (생산 + 반품) 목록
 	@GetMapping(value = "/productQualityList")
 	public void productQualityListGET(Model model, HttpSession session, QualityVO vo, 
@@ -63,8 +62,9 @@ public class QualityController {
 		pageVO.setTotalCount(qService.qualityListSearchBtnCount(vo));
 		logger.debug(" 총 개수 : " + pageVO.getTotalCount());
 		
-		model.addAttribute("list", qService.qualityListSearchBtn(vo));
 		model.addAttribute("pageVO", pageVO);
+		
+		model.addAttribute("list", qService.qualityListSearchBtn(vo));
 	}
 	
 	// 품질 관리 (자재) 목록
@@ -79,12 +79,11 @@ public class QualityController {
 		pageVO.setTotalCount(qService.materialQualityListSearchBtnCount(vo));
 		logger.debug(" 총 개수 : " + pageVO.getTotalCount());
 		
-		model.addAttribute("list", qService.materialQualityListSearchBtn(vo));
 		model.addAttribute("pageVO", pageVO);
-
+		
+		model.addAttribute("list", qService.materialQualityListSearchBtn(vo));
 	}
 	
-	// http://localhost:8088/quality/productDefectList	
 	// 불량 현황 (생산 + 반품) 목록
 	@GetMapping(value = "/productDefectList")
 	public void productQualityDefectListGET(Model model, HttpSession session, 
@@ -157,7 +156,7 @@ public class QualityController {
 					vo.setQualitycheck("정상");
 					qService.productQualityCheck(vo);
 					
-					if(vo.getProcess() != null && !vo.getProcess().equals("생산 - 포장")) {
+					if(vo.getProcess() != null && !vo.getProcess().equals("생산 - 포장")) { // 포장이 아닌 경우 생산 상태 자동 업데이트
 						sService.registerStockY(vo);
 					}
 					

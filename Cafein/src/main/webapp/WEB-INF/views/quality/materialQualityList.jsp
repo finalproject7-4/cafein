@@ -7,6 +7,7 @@
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 "></script>
 <!-- SweetAlert 추가 -->
+
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>자재 품질 관리</h2>
@@ -29,9 +30,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
-				<input type="date" name="startDate" required> ~
-				<input type="date" name="endDate" required>
-				<input type="submit" value="검색">
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
 			</form>	
 			<br>		
 				<div class="table-responsive">
@@ -735,3 +736,31 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
+
+<!-- 날짜 비교 -->
+<script>
+$(document).ready(function(){
+    const checkDates = function() {
+        const startDateStr = document.getElementById("startDate").value;
+        const endDateStr = document.getElementById("endDate").value;
+
+        // 둘 다 유효한 날짜 문자열인지 확인
+        if (startDateStr && endDateStr) {
+            const startDate = new Date(startDateStr);
+            const endDate = new Date(endDateStr);
+
+            if (startDate > endDate) {
+                Swal.fire("종료일은 시작일과 같거나 이후여야 합니다.");
+                document.getElementById("endDate").value = "";
+            }   
+        }
+    };
+
+    // 페이지 로드 시 한 번 실행
+    checkDates();
+
+    // 날짜 입력 값에서 포커스가 빠져나갈 때 실행
+    $("#startDate, #endDate").on("blur", checkDates);
+});
+</script>
+<!-- 날짜 비교 -->
