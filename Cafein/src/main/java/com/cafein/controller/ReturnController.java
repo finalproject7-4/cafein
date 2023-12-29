@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.cafein.domain.ItemVO;
 import com.cafein.domain.ReturnVO;
 import com.cafein.service.ReturnService;
 
@@ -47,18 +46,22 @@ public class ReturnController {
 	}
 
 	
-	/*
-	 * @PostMapping(value = "/returnRegist") public String returnRegistPOST(returnVO
-	 * vo) {
-	 * 
-	 * logger.debug("returnRegistPOST() 호출"); logger.debug("returnVO : "+vo);
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * return "redirect:/quality/returns"; }
-	 */
+	
+	  @PostMapping(value = "/returnRegist") 
+	  public String returnRegistPOST(ReturnVO vo) throws Exception{
+	  
+		  logger.debug("returnRegistPOST() 호출"); 
+		  logger.debug("returnVO : "+vo);
+		  
+		  // 반품 코드 저장
+		  vo.setReturncode(generateReturnCode(vo));
+		  
+		 rService.returnRegist(vo); 
+		  
+		  
+		  return "redirect:/quality/returns"; 
+	  }
+		 
 	 
 
 	// 반품코드 생성 메서드

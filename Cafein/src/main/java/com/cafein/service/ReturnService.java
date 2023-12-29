@@ -15,7 +15,8 @@ public interface ReturnService {
 	//반품 유형별 총 개수 계산
 	public int returnCount(ReturnVO vo) throws Exception;
 
-
+	//반품 등록
+	public void returnRegist(ReturnVO vo) throws Exception; 
 
 
 

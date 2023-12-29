@@ -35,7 +35,6 @@
                 <input type="text" class="form-control" id="returncode" name="returncode" value="${returnVO.returncode }" placeholder="반품 코드">
             </div>
             
-            
             <div class="form-group" style="width: 200px; margin-right: 20px;">
                 <label for="reuturntype">품목</label>
                 <select name="returntype" class="form-control" id="returntype">
@@ -55,7 +54,7 @@
                     <input type="date" class="form-control" id="endDate" name="endDate" value="${not empty returnVO.endDate ? returnVO.endDate : ''}">
                 </div>
             </div>
-            </div>
+	</div>
             
            <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-outline-warning m-2">조회</button>
@@ -81,7 +80,7 @@
 					<div class="row">
 					<div class="col">
 						<label for="returntype" class="col-form-label"><b>반품유형</b></label>
-						<select class="form-select" id="floatingSelect" name="returntype"
+						<select class="form-select" id="returnTypeSelect" name="returntype"
 							aria-label="Floating label select example">
 							<optgroup label="반품유형">
 								<option value="원자재">원자재</option>
@@ -92,9 +91,9 @@
 					</div>	
 					<div class=col>
 						<label for="returnReason" class="col-form-label"><b>반품사유</b></label>
-						<select class="form-select" id="floatingSelect" name="returntype"
+						<select class="form-select" id="returnReasonSelect" name="returnReason"
 							aria-label="Floating label select example">
-							<optgroup label="반품유형">
+							<optgroup label="반품사유">
 								<option value="제품불량">제품불량</option>
 								<option value="주문오류">주문오류</option>
 							</optgroup>
@@ -108,12 +107,22 @@
 					</div><br> -->
 					<div class="row">
 						<div class="col">
-							<b>반품 코드</b><input id="returncode" name="returncode" class="form-control" id="floatingInput">
+							<b>수량</b><input id="returnquantity" name="returnquantity" class="form-control" id="floatingInput">
 						</div>
 						<div class="col">
-							<b>등록일</b><input id="submitdate" name="submitdate" class="form-control" id="floatingInput" readonly>
+						    <label for="submitdate" class="col-form-label">등록일</label> 
+                        	<input type="date" name="submitdate" class="date form-control" id="submitDateInput" readonly>
 						</div>
 					</div><br>
+					<div class="row">
+						<div class="col">
+							<b>반납날짜</b><input type="date" id="returndate" name="returndate" class="form-control" id="floatingInput">
+						</div>
+						<div class="col">
+							<b>교환날짜</b><input type="date" id="exchangedate" name="exchangedate" class="form-control" id="floatingInput">
+						</div>
+					</div><br>
+					
 				</div>
 					
 				<div class="modal-footer">
@@ -122,6 +131,12 @@
 					<button type="submit" class="btn btn-primary" id="returnRegistBtn">등록</button>
 				</div>
 				</form>
+				
+			<script>
+                // 오늘의 날짜를 submitDateInput에 자동으로 설정
+                document.getElementById('submitDateInput').valueAsDate = new Date();
+			</script>
+				
 			</div>
 		</div>
 	</div> 
