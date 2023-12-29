@@ -57,7 +57,7 @@
 	<!-- 수주수정 -->
 	 <update id="updatePO">
 	 	update purchaseorder set clientid=#{clientid}, itemid=#{itemid}, postate=#{postate}, pocnt=#{pocnt},
-	 	ordersdate=#{ordersdate}, ordersduedate=#{ordersduedate}, membercode=#{membercode}
+	 	ordersdate=#{ordersdate}, ordersduedate=#{ordersduedate}, updatedate=#{updatedate}, membercode=#{membercode}
 	 	where poid=#{poid}
 	 </update>
 </mapper>

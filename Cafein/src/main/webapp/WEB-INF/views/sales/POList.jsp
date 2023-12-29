@@ -206,14 +206,16 @@
 			  </div>
 		  </div>
 		</fieldset>
+		
   <!-- 모달 js&jq -->
    <script>
-   
+   /* 리스트 값 수정 모달로 값 전달 */
    function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
 	   console.log('Client Name:', clientname);
        console.log('Item Name:', itemname);
        console.log('Postate:', postate);
        console.log('Pocnt:', pocnt);
+       console.log('Orders Date:', ordersdate);
        console.log('Orders Due Date:', ordersduedate);
        console.log('Member Code:', membercode); 
 	   
@@ -222,6 +224,7 @@
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
 	    $("#pocnt2").val(pocnt);
+	    $("#todaypo2").val(ordersduedate);
 	    $("#date2").val(ordersduedate);
 	    $("#membercode2").val(membercode);
 
@@ -235,7 +238,7 @@
 	        var modifiedItemName = $("#itemid2").val();
 	        var modifiedPostate = $("#floatingSelect2").val();
 	        var modifiedPocnt = $("#pocnt2").val();
-	        var modifiedOrdersDate = $("#todaypo2").val();
+	        var modifiedUpdateDate = $("#todaypo2").val();
 	        var modifiedOrdersDueDate = $("#date2").val();
 	        var modifiedMemberCode = $("#membercode2").val();
 
@@ -248,7 +251,7 @@
 	                itemname: modifiedItemName,
 	                postate: modifiedPostate,
 	                pocnt: modifiedPocnt,
-	                ordersdate: modifiedOrdersDate,
+	                updatedate: modifiedUpdateDate,
 	                ordersduedate: modifiedOrdersDueDate,
 	                membercode: modifiedMemberCode
 	            },
@@ -280,7 +283,7 @@
 	  var modalBodyInput = clientSM.querySelector('.modal-body input');
 	});
 
-    
+    /******************************************************************/
     $(document).ready(function() {
 	 	// 납품처 조회 모달
 	    $(".clientSearch1, .clientSearch2").click(function() {

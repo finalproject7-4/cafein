@@ -110,34 +110,34 @@ $(document).ready(function() {
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
 	    // Ajax 코드 추가
-	$.ajax({
-        type: "POST",
-        url: "/sales/modifyPO",
-        data: {
-            clientname: modifiedClientName,
-            itemname: modifiedItemName,
-            postate: modifiedPostate,
-            pocnt: modifiedPocnt,
-            ordersdate: modifiedOrdersDate,
-            ordersduedate: modifiedOrdersDueDate,
-            membercode: modifiedMemberCode
-        },
-        success: function(response) {
-            console.log("Modification success:", response);
-            $("#modifyModal").modal('hide');
+	   $("form[role='form']").submit(function(event) {
+        event.preventDefault(); // 기본 동작 중지
 
-            // 여기서 POList 갱신을 위한 작업 수행
-            // (서버로부터 업데이트된 POList를 가져와서 화면 갱신 등)
-        },
-        error: function(error) {
-            console.error("Error during modification:", error);
-        }
+        // Ajax 코드 추가
+        $.ajax({
+            type: "POST",
+            url: "/sales/modifyPO",
+            data: {
+                // 여기에 폼 내의 데이터를 수집하여 전송할 데이터를 추가
+                clientname: $("#clientid2").val(),
+                itemname: $("#itemid2").val(),
+                postate: $("#floatingSelect2").val(),
+                pocnt: $("#pocnt2").val(),
+                // ... 나머지 필드들 추가
+            },
+            success: function(response) {
+                console.log("Modification success:", response);
+                $("#modifyModal").modal('hide');
+            },
+            error: function(error) {
+                console.error("Error during modification:", error);
+            }
+        });
     });
-   });
+});
 	
 	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:first-child').text();
-	    console.log("itemid2:", itemid2);
 	    $("#itemid2").val(itemid);
 	});
 	
