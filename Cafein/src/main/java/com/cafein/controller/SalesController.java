@@ -95,14 +95,12 @@ public class SalesController {
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/modifyPO", method = RequestMethod.POST)
 	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
-			@RequestParam(value = "clientid", defaultValue = "1") int clientid,
-			@RequestParam(value = "itemid", defaultValue = "1") int itemid,
-			@RequestParam(value = "poid", defaultValue = "1") int poid
+			@RequestParam(value = "poid", defaultValue = "1") int poid,
+			@RequestParam(value = "itemid", defaultValue = "1") int itemid
 			) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + svo);
 		
-		svo.setClientid(clientid);	                                         
 		svo.setItemid(itemid);
 		svo.setPoid(poid);
 

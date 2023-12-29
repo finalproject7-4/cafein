@@ -155,14 +155,12 @@ $(document).ready(function() {
 	});
 	
 	$(".clientset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var clientid = $(this).find('td:first-child').text();
+	    var clientid = $(this).find('td:eq(0)').text();
 	    console.log("clientid:", clientid);
 	    $("#clientidd").val(clientid);
 	});
 	$(".itemset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var itemid = $(this).find('td:first-child').text();
+	    var itemid = $(this).find('td:eq(0)').text();
 	    console.log("itemid:", itemid);
 	    $("#itemidd").val(itemid);
 	});

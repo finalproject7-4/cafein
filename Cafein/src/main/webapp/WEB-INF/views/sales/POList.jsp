@@ -48,7 +48,7 @@
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4">
 			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap"	value="등록">		
+			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap"	value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
 				<div class="table-responsive">
