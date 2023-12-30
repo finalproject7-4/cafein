@@ -9,7 +9,7 @@
 
 	<div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
-	<form method="post">
+	<form role="form" method="post">
 		수주일자 <input type="date" class="date" name="podate"> ~ <input type="date" class="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
 		납품처조회 <input class="clientSearch1" type="text" name="client" placeholder="납품처코드"> 
 				<input class="clientSearch2" type="text" name="worknumber" placeholder="납품처명"> <br>
@@ -46,6 +46,13 @@
 		</div>
 
 			<!-- 수주 리스트 테이블 조회 -->
+			<div>
+			<input type="hidden" id="poidInput">			
+			<c:forEach items="${POList}" var="po" varStatus="status" >
+				${po.poid}
+			</c:forEach>
+			</div>
+
 			<div class="bg-light rounded h-100 p-4">
 			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap"	value="등록">		
@@ -97,7 +104,7 @@
 									</button>
 									<!-- 버튼 삭제 -->
 									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openDeleteModal()">
+									        id="deleteBtn">
 									        삭제
 									</button>
 									</td>
@@ -111,7 +118,6 @@
 		</div>
 		<jsp:include page="registPO.jsp"/>
 		<jsp:include page="modifyPO.jsp"/>
-		<jsp:include page="deletePO.jsp"/>
 		
 		<!-- 납품처 조회 모달 -->
         <div class="modal fade" id="clientSM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -222,46 +228,8 @@
 	    // 모달 열기
 	    $("#modifyModal").modal('show');
 	    
-	    // 수정된 값을 서버로 전송
-	    $("#modifyButton").click(function() {
-	        // 가져온 값들을 변수에 저장
-	        var modifiedPOid = $("#poid2").val();
-	        var modifiedClientName = $("#clientid2").val();
-	        var modifiedItemName = $("#itemid2").val();
-	        var modifiedPostate = $("#floatingSelect2").val();
-	        var modifiedPocnt = $("#pocnt2").val();
-	        var modifiedUpdateDate = $("#todaypo2").val();
-	        var modifiedOrdersDueDate = $("#date2").val();
-	        var modifiedMemberCode = $("#membercode2").val();
 
-	        // Ajax를 사용하여 서버로 수정된 값 전송
-	        $.ajax({
-	            type: "POST",
-	            url: "/sales/modifyPO",
-	            data: {
-	                POID: modifiedPOid,
-	                clientname: modifiedClientName,
-	                itemname: modifiedItemName,
-	                postate: modifiedPostate,
-	                pocnt: modifiedPocnt,
-	                updatedate: modifiedUpdateDate,
-	                ordersduedate: modifiedOrdersDueDate,
-	                membercode: modifiedMemberCode
-	            },
-	            success: function(response) {
-	                console.log("Modification success:", response);
-	                $("#modifyModal").modal('hide');
-	            },
-	            error: function(error) {
-	                console.error("Error during modification:", error);
-	            }
-	        });
-	    });
 	}
-
-   function openDeleteModal() {
-       $("#deleteModal").modal('show');
-   }
 		   
    /*달력 이전날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
@@ -384,6 +352,43 @@
             });
         });
     });
-    </script>
+    
+    //수주삭제
+   //수주삭제
+$("#deleteBtn").click(function() {
+    Swal.fire({
+        title: '글을 삭제하시겠습니까?',
+        text: '삭제하시면 다시 복구시킬 수 없습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소'
+    }).then(function(result) {
+        if (result.value) {
+            var poid = $("#poidInput").val();
 
+            $.ajax({
+                type: 'POST',
+                url: '/sales/remove',  // 수정된 경로
+                data: {
+                    poid: poid
+                },
+                success: function(response) {
+                    alert('삭제 완료.');
+                    // 삭제 성공 후에 폼을 서버로 제출
+                    formObj.submit();
+                },
+                error: function(error) {
+                    console.error('Error during deletion:', error);
+                }
+            });
+        }
+    });
+});
+
+    
+
+</script>
 <%@ include file="../include/footer.jsp"%>

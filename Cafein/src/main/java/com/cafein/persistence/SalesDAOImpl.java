@@ -65,6 +65,14 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.selectOne(NAMESPACE + ".updatePO", svo);
 	}
 
+	//삭제
+	@Override
+	public void deletePO(int poid) throws Exception {
+		logger.debug("DAO : deletePO(int poid)");
+		sqlSession.delete(NAMESPACE + ".updatePO", poid);
+		
+	}
+
 	
 	
 

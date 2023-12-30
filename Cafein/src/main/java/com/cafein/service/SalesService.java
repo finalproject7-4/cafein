@@ -23,5 +23,7 @@ public interface SalesService {
 	//수주수정
 	public int POModify(SalesVO svo) throws Exception;
 		
+	//삭제
+	public void PORemove(int poid) throws Exception;
 		
 }

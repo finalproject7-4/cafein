@@ -64,6 +64,14 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.updatePO(svo);
 	}
 
+	//수주삭제
+	@Override
+	public void PORemove(int poid) throws Exception {
+		logger.debug("S : PODelete(int poid)");
+		sdao.deletePO(poid);
+		
+	}
+
 	
 	
 	

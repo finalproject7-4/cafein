@@ -23,5 +23,7 @@ public interface SalesDAO {
 	
 	//수주수정
 	public int updatePO(SalesVO svo) throws Exception;
-	
+
+	//삭제
+	public void deletePO(int poid) throws Exception;
 }

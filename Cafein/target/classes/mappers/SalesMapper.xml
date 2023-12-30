@@ -60,4 +60,9 @@
 	 	ordersdate=#{ordersdate}, ordersduedate=#{ordersduedate}, updatedate=#{updatedate}, membercode=#{membercode}
 	 	where poid=#{poid}
 	 </update>
+	 
+	 <!-- 삭제 -->
+	 <delete id="deletePO">
+	 	delete from purchaseorder where poid=#{poid}
+	 </delete>
 </mapper>

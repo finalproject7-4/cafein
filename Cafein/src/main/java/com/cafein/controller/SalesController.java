@@ -115,5 +115,14 @@ public class SalesController {
 		logger.debug("result", result);
 		return "redirect:/sales/POList";
 	}
+	// 수주 삭제 - POST
+	// http://localhost:8088/sales/POList
+//	@RequestMapping(value = "/remove" ,method = RequestMethod.POST)
+//	public String deletePOST(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
+//		logger.debug("deletePOST()");
+//		sService.PORemove(poid);
+//		svo.setPoid(poid);
+//		return "redirect:/sales/POList";
+//	}
 	
 }
