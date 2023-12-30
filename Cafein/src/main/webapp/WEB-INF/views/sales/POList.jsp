@@ -55,7 +55,7 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">수주번호</th>
+								<th scope="col">번호</th>
 								<th scope="col">수주상태</th>
 								<th scope="col">수주코드</th>
 								<th scope="col">납품처</th>
@@ -92,7 +92,7 @@
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+									        onclick="openModifyModal('${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.poid}')">
 									        수정
 									</button>
 									<!-- 버튼 삭제 -->
@@ -107,17 +107,6 @@
 						</tbody>
 					</table>
 				</div>
-<%-- 			<c:if test="${pageVO.prev }"> --%>
-<%-- 				<li><a href="/sales/POList?page=${pageVO.startPage - 1 }">«</a></li> --%>
-<%-- 			</c:if> --%>
-
-<%-- 			<c:forEach var="i" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1"> --%>
-<%-- 				<li ${pageVO.cri.page == i?  "class='active'":"" }><a href="/sales/POList?page=${i }"> ${i } </a></li> --%>
-<%-- 			</c:forEach> --%>
-
-<%-- 			<c:if test="${pageVO.next }"> --%>
-<%-- 				<li><a href="/sales/POList?page=${pageVO.endPage + 1 }">»</a></li> --%>
-<%-- 			</c:if> --%>
 		</div>
 		</div>
 		<jsp:include page="registPO.jsp"/>
@@ -210,7 +199,7 @@
   <!-- 모달 js&jq -->
    <script>
    /* 리스트 값 수정 모달로 값 전달 */
-   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, poid) {
 	   console.log('Client Name:', clientname);
        console.log('Item Name:', itemname);
        console.log('Postate:', postate);
@@ -218,8 +207,10 @@
        console.log('Orders Date:', ordersdate);
        console.log('Orders Due Date:', ordersduedate);
        console.log('Member Code:', membercode); 
+       console.log('POID:', poid); 
 	   
 	   // 가져온 값들을 모달에 설정
+	    $("#poid2").val(poid);
 	    $("#clientid2").val(clientname);
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
@@ -234,6 +225,7 @@
 	    // 수정된 값을 서버로 전송
 	    $("#modifyButton").click(function() {
 	        // 가져온 값들을 변수에 저장
+	        var modifiedPOid = $("#poid2").val();
 	        var modifiedClientName = $("#clientid2").val();
 	        var modifiedItemName = $("#itemid2").val();
 	        var modifiedPostate = $("#floatingSelect2").val();
@@ -247,6 +239,7 @@
 	            type: "POST",
 	            url: "/sales/modifyPO",
 	            data: {
+	                POID: modifiedPOid,
 	                clientname: modifiedClientName,
 	                itemname: modifiedItemName,
 	                postate: modifiedPostate,

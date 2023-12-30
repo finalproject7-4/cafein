@@ -14,6 +14,7 @@
 				</div>
 				
 				<form role="form" action="/sales/modifyPO" method="post">
+				<input type="hidden" name="poid2" value="poid">
 				
 				<div class="modal-body">
 				납품처/코드
@@ -107,34 +108,62 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	$("#ModifyBtn").submit(function (event) {
-	    event.preventDefault(); // 기본 동작 중지
-	    // Ajax 코드 추가
-	   $("form[role='form']").submit(function(event) {
-        event.preventDefault(); // 기본 동작 중지
+// 	$("#ModifyBtn").submit(function (event) {
+// 	    event.preventDefault(); // 기본 동작 중지
+// 	    var modifiedItemId = $("#itemid2").val(); // 수정된 부분
 
-        // Ajax 코드 추가
-        $.ajax({
-            type: "POST",
-            url: "/sales/modifyPO",
-            data: {
-                // 여기에 폼 내의 데이터를 수집하여 전송할 데이터를 추가
-                clientname: $("#clientid2").val(),
-                itemname: $("#itemid2").val(),
-                postate: $("#floatingSelect2").val(),
-                pocnt: $("#pocnt2").val(),
-                // ... 나머지 필드들 추가
-            },
-            success: function(response) {
-                console.log("Modification success:", response);
-                $("#modifyModal").modal('hide');
-            },
-            error: function(error) {
-                console.error("Error during modification:", error);
-            }
-        });
-    });
-});
+// 	    // Ajax 코드 추가
+// 	   $("form[role='form']").submit(function(event) {
+//         event.preventDefault(); // 기본 동작 중지
+
+//         // Ajax 코드 추가
+//         $.ajax({
+//             type: "POST",
+//             url: "/sales/modifyPO",
+//             data: {
+//                 // 여기에 폼 내의 데이터를 수집하여 전송할 데이터를 추가
+//                 poid: modifiedItemId, 
+//                 clientname: $("#clientid2").val(),
+//                 itemname: $("#itemid2").val(),
+//                 postate: $("#floatingSelect2").val(),
+//                 pocnt: $("#pocnt2").val(),
+                
+//             },
+//             success: function(response) {
+//                 console.log("Modification success:", response);
+//                 $("#modifyModal").modal('hide');
+//             },
+//             error: function(error) {
+//                 console.error("Error during modification:", error);
+//             }
+//         });
+//     });
+
+ $("#ModifyBtn").click(function() {
+        // FormData 객체를 생성하여 폼 데이터 수집
+	 var formData = new FormData($('form')[0]);
+
+     // 추가로 poid를 FormData에 추가
+     formData.append("poid", $("#poid2").val());
+
+     // Ajax를 사용하여 서버로 전송
+     $.ajax({
+         type: "POST",
+         url: "/sales/modifyPO",
+         data: formData,
+         contentType: false,
+         processData: false,
+         success: function(response) {
+             console.log("Modification success:", response);
+
+             $("#modifyModal").modal('hide');
+             // 필요한 경우 페이지 리로딩 또는 다른 작업 수행
+         },
+         error: function(error) {
+             console.error("Error during modification:", error);
+         }
+     });
+ });
 	
 	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:first-child').text();
