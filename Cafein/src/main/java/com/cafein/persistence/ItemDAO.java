@@ -20,5 +20,8 @@ public interface ItemDAO {
 	
 	// 품목 등록
 	public void insertItem(ItemVO vo) throws Exception;
+
+	// 품목 수정
+	public int updateItem(ItemVO vo) throws Exception;
 	
 }

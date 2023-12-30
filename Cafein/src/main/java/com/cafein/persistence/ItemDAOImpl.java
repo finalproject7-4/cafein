@@ -51,5 +51,11 @@ public class ItemDAOImpl implements ItemDAO {
 		return sqlSession.selectOne(NAMESPACE + ".getItemTypeCount", vo);
 	}
 
+	@Override
+	public int updateItem(ItemVO vo) throws Exception {
+		logger.debug("DAO - updateItem(ItemVO vo)");
+		return sqlSession.update(NAMESPACE + ".updateItem", vo);
+	}
+
 
 }

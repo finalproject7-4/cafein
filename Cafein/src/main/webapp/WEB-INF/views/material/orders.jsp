@@ -8,7 +8,7 @@
 
 	<!-- 발주 조회 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" action="orders" method="get">
+		<form name="search" action="orders">
 		<select name="option">
 			<option value="">선택</option>
 			<option value="clientname">거래처명</option>
@@ -16,10 +16,10 @@
 		</select>
 		<input type="text" name="search">
 		<span style="margin-left: 2.5%;">
-			발주일자 <input type="date" class="m-2" name="startDate"> ~ <input type="date" class="m-2" name="endDate">			
+			발주일자 <input type="date" class="m-2" name="orderStartDate"> ~ <input type="date" class="m-2" name="orderEndDate">			
 		</span>
 		<span style="margin-left: 2.5%;">
-			납기일자 <input type="date" class="m-2" name="startDate"> ~ <input type="date" class="m-2" name="endDate">			
+			납기일자 <input type="date" class="m-2" name="deliveryStartDate"> ~ <input type="date" class="m-2" name="deliveryEndDate">			
 		</span>
 		<span style="margin-left: 3.5%;">
 			<button type="button" class="btn btn-sm btn-dark m-2">조회</button>
@@ -32,9 +32,8 @@
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(ordersList)} 건</span>
 		
-		<c:forEach var="ordersList" items="${ordersList }">
 		<span style="margin-left: 95%;">
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap">등록</button>
+			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
 		</span>
 		
 		<div class="table-responsive">
@@ -45,9 +44,9 @@
 						<th scope="col">발주코드</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">품명</th>
-						<th scope="col">거래처명</th>
+						<th scope="col">거래처</th>
 						<th scope="col">수량</th>
-						<th scope="col">발주금액</th>
+						<th scope="col">발주금액(원)</th>
 						<th scope="col">발주일자</th>
 						<th scope="col">납기일자</th>
 						<th scope="col">담당자명</th>
@@ -55,38 +54,138 @@
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="ordersList" items="${ordersList }">
 					<tr style="text-align: center;">
 						<td>${ordersList.ordersid }</td>
 						<td>${ordersList.orderscode }</td>
 						<td>${ordersList.itemcode }</td>
 						<td>${ordersList.itemname }</td>
-						<td></td>
+						<td>${ordersList.clientname }</td>
 						<td>${ordersList.ordersquantity }</td>
-						<td></td>
+						<td>${ordersList.ordersprice }</td>
 						<td>
 							<fmt:formatDate value="${ordersList.ordersdate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
 						<td>
 							<fmt:formatDate value="${ordersList.deliverydate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
-						<td>${ordersList.membercode }</td> <!-- session 값 사용하여 저장 -->
+						<td>${ordersList.membername }</td> <!-- session 값 사용하여 저장 -->
 						<td>
-							<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#ordersModifyodifyModal" data-bs-whatever="@getbootstrap" onclick="ordersModifyModal('ordersList')">수정</button>
-							<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+							<button type="button" class="btn btn-sm btn-outline-dark m-1" data-bs-toggle="modal" data-bs-target="#ordersModifyodifyModal" data-bs-whatever="@getbootstrap" onclick="ordersModifyModal('ordersList')">수정</button>
+							<button type="button" class="btn btn-sm btn-outline-dark m-1">삭제</button>
 						</td>
 					</tr>
+					</c:forEach>	
 				</tbody>
 			</table>
+
+			<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				
+        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+    				<li class="page-item">
+    				  <c:if test="${pageVO.prev }">
+      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+        					
+						<script>
+// 							$(document).ready(function(){
+// 								$('.pageBlockPrev').click(function(e) {
+// 									e.preventDefault(); // 기본 이벤트 제거
+								
+// 					            	let prevPage = $(this).data('page');
+								
+// 									let option = "${param.option}";
+// 									let keyword = "${param.keyword}";
+
+// 			                		url = "/material/orders?page=" + prevPage;
+			                
+// 			                		if (option && keyword) {
+// 			                    		url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+// 			                		}
+
+// 			                		location.href = url;
+// 								});
+// 							});
+						</script>
+    				  </c:if>
+    				</li>
+        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+    		
+    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
+    						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
+    					</li>
+    					
+					<script>
+// 						$(document).ready(function(){
+// 							$('.pageBlockNum').click(function(e) {
+// 								e.preventDefault(); // 기본 이벤트 제거
+					
+// 			            		let pageValue = $(this).data('page');
+					
+// 								let option = "${param.option}";
+// 								let keyword = "${param.keyword}";
+
+// 	                			url = "/material/orders?page=" + pageValue;
+                
+// 	                			if (option && keyword) {
+// 	                    			url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+// 	                			}
+
+// 	                			location.href = url;
+// 							});
+// 						});
+					</script>
+    				</c:forEach>
+					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+    		
+    				<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
+    				<li class="page-item">
+    				  <c:if test="${pageVO.next }">
+      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        					<span aria-hidden="true">&raquo;</span>
+      					</a>
+      					
+						<script>
+// 							$(document).ready(function(){
+// 								$('.pageBlockNext').click(function(e) {
+// 									e.preventDefault(); // 기본 이벤트 제거
+				
+// 		            				let nextPage = $(this).data('page');
+				
+// 									let option = "${param.option}";
+// 									let keyword = "${param.keyword}";
+
+//                					url = "/material/orders?page=" + nextPage;
+            
+//                					if (option && keyword) {
+//                    					url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+//                					}
+
+//                					location.href = url;
+// 								});
+// 							});
+						</script>
+    				</c:if>
+    				</li>
+					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
+			  </ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->			
+			
 		</div>
-				</c:forEach>	
 	</div>
 	<!-- 발주 목록 -->
 	
 	<!-- 발주 등록 모달 -->
-	<jsp:include page="ordersRegist.jsp"/>
+	<jsp:include page="orderRegist.jsp"/>
 	
 	<!-- 발주 수정 모달 -->
-	<jsp:include page="ordersModify.jsp"/>
+	<jsp:include page="orderModify.jsp"/>
 	
 	<!-- 공급처 모달 -->
     <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -176,12 +275,12 @@
 	<!-- 품목 모달 -->
 	       	
 <script>
-	var registModal = document.getElementById('registModal')
-	registModal.addEventListener('show.bs.modal', function (event) {
+	var orderRegistModal = document.getElementById('orderRegistModal')
+	orderRegistModal.addEventListener('show.bs.modal', function (event) {
   		var button = event.relatedTarget
   		var recipient = button.getAttribute('data-bs-whatever')
-  		var modalTitle = exampleModal.querySelector('.modal-title')
- 	 	var modalBodyInput = exampleModal.querySelector('.modal-body input')
+  		var modalTitle = orderRegistModal.querySelector('.modal-title')
+ 	 	var modalBodyInput = orderRegistModal.querySelector('.modal-body input')
 	})
 	
 	var modifyModal = document.getElementById('modifyModal')
@@ -192,32 +291,6 @@
  	 	var modalBodyInput = modifyModal.querySelector('.modal-body input')
 	})
 	
-	// 체크박스 전체 선택
-	var selectAllCheckbox = document.getElementById("checkbox");
-	var checkboxes = document.querySelectorAll('[data-group="checkboxall"]');
-	selectAllCheckbox.addEventListener("change", function () {
-    	checkboxes.forEach(function (checkbox) {
-        	checkbox.checked = selectAllCheckbox.checked;
-    	});
-	});
-	
-	checkboxes.forEach(function (checkbox) {
-    	checkbox.addEventListener("change", function () {
-        	if (!this.checked) {
-            	selectAllCheckbox.checked = false;
-        	} else {
-            	// 모든 체크박스가 선택되었는지 확인
-            	var allChecked = true;
-            	checkboxes.forEach(function (c) {
-                	if (!c.checked) {
-                    	allChecked = false;
-                	}
-            	});
-            	selectAllCheckbox.checked = allChecked;
-        	}
-    	});
-	});
-	
 	function modifyModal(ordersList) {
         // 모달 띄우기
         $('#modifyModal').modal('show');
@@ -225,7 +298,7 @@
 	
     $(document).ready(function() {
 	    // 공급처 모달
-	    $("#clientcode").click(function() {
+	    $("#clientname").click(function() {
 	        $("#clientModal").modal('show');
 	   	});
     	
@@ -233,12 +306,12 @@
 	        var columns = $(this).find('td');
 	        var selectedClientName = $(columns[1]).text(); // 공급처명
 	        var selectedClientCode = $(columns[2]).text(); // 공급처코드
-	        $('#clientcode').val(selectedClientCode);
+	        $('#clientname').val(selectedClientName);
 	        $('#clientModal').modal('hide');
 	    });	
 
 		// 품목 모달
-    	$("#itemcode").click(function() {
+    	$("#itemname").click(function() {
         	$("#itemModal").modal('show');
    		});
     
@@ -246,7 +319,10 @@
         	var columns = $(this).find('td');
         	var selectedItemName = $(columns[1]).text(); // 품명
         	var selectedItemCode = $(columns[2]).text(); // 품목코드
+        	var selectedItemPrice = $(columns[3]).text(); // 품목가격
+        	$('#itemname').val(selectedItemName);
         	$('#itemcode').val(selectedItemCode);
+        	$('#itemprice').val(selectedItemPrice);
         	$('#itemModal').modal('hide');
     	});
     
