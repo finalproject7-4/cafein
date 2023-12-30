@@ -25,7 +25,7 @@
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 		<span style="margin-left: 95%;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
-			<!-- <button type="button" class="btn btn-sm btn-dark m-1">수정</button> -->
+			<input type="hidden" class="btn btn-sm btn-dark m-1"" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
 		</span>
 		
@@ -45,21 +45,23 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="itemList" items="${itemList }" varStatus="status">
+					<c:forEach var="il" items="${itemList }" varStatus="status">
 						<tr style="text-align: center;">
 							<td>
 								<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
 							</td>
-							<td>${itemList.itemcode }</td>
-							<td>${itemList.itemtype }</td>
-							<td>${itemList.itemname }</td>
-							<td>${itemList.clientname }</td>
-							<td>${itemList.origin }</td>
-							<td>${itemList.itemweight }</td>
-							<td>${itemList.itemprice }</td>
+							<td>${il.itemcode }</td>
+							<td>${il.itemtype }</td>
+							<td>${il.itemname }</td>
+							<td>${il.clientname }</td>
+							<td>${il.origin }</td>
+							<td>${il.itemweight }</td>
+							<td>${il.itemprice }</td>
 							<td>
-								<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" onclick="modifyModal('${itemList}')">수정</button>
-								<button type="button" class="btn btn-sm btn-dark m-1">삭제</button>
+								<button type="button" class="btn btn-sm btn-outline-dark m-1" 
+									onclick="itemModifyModal('${il.itemid }', '${il.itemcode }', '${il.itemtype }', '${il.itemname }', '${il.clientname }', '${il.origin }', '${il.itemweight }', '${il.itemprice }')">수정
+								</button>
+								<button type="button" class="btn btn-sm btn-outline-dark m-1">삭제</button>
 							</td>
 						</tr>
 					</c:forEach>	
@@ -230,17 +232,27 @@
   		var modalTitle = itemRegistModal.querySelector('.modal-title')
  	 	var modalBodyInput = itemRegistModal.querySelector('.modal-body input')
 	})
-
-	var itemModifyModal = document.getElementById('itemModifyModal')
-	itemModifyModal.addEventListener('show.bs.modal', function (event) {
-  		var button = event.relatedTarget
-  		var recipient = button.getAttribute('data-bs-whatever')
-  		var modalTitle = itemModifyModal.querySelector('.modal-title')
- 	 	var modalBodyInput = itemModifyModal.querySelector('.modal-body input')
-	})
 	
-	function modifyModal(itemList) {
-		console.log(itemList);
+	function itemModifyModal(itemid, itemcode, itemtype, itemname, clientname, origin, itemweight, itemprice) {
+		console.log('itemid:', itemid);
+		console.log('itemcode:', itemcode);
+		console.log('itemtype:', itemtype);
+		console.log('itemname:', itemname);
+		console.log('clientname:', clientname);
+		console.log('origin:', origin);
+		console.log('itemweight:', itemweight);
+		console.log('itemprice:', itemprice); 
+		   
+		// 가져온 값들을 모달에 설정
+		$("#itemid").val(itemid);
+		$("#itemcode2").val(itemcode);
+		$("#itemtype2").val(itemtype);
+		$("#itemname2").val(itemname);
+		$("#clientname2").val(clientname);
+		$("#origin2").val(origin);
+		$("#itemweight2").val(itemweight);
+		$("#itemprice2").val(itemprice);
+
 		// 모달 띄우기
         $('#itemModifyModal').modal('show');
     }	

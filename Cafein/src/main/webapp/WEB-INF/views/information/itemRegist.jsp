@@ -16,7 +16,7 @@
 				<div class="modal-body">
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>품목유형</b></label>
-						<select class="form-select" id="floatingSelect" name="itemtype"
+						<select class="form-select mb-3" id="floatingSelect" name="itemtype"
 							aria-label="Floating label select example">
 							<optgroup label="품목유형">
 								<option value="원자재">원자재</option>
@@ -27,23 +27,28 @@
 					</div>	
 					<div class="row">
 						<div class="col">
-							<b>품명</b><input id="itemname" name="itemname" class="form-control" id="floatingInput">
+							<label for="itemname" class="col-form-label"><b>품명</b></label>
+							<input id="itemname" name="itemname" class="form-control mb-3">
 						</div>
-					</div><br>
+					</div>
 					<div class="row">
 						<div class="col">
-							<b>공급처 코드</b><input id="clientcode" name="clientcode" class="form-control" id="floatingInput">
+							<label for="clientname" class="col-form-label"><b>공급처</b></label>
+							<input id="clientcode" name="clientcode" class="form-control mb-3">
 						</div>
 						<div class="col">
-							<b>원산지</b><input id="origin" name="origin" class="form-control" id="floatingInput">
+							<label for="origin" class="col-form-label"><b>원산지</b></label>
+							<input id="origin" name="origin" class="form-control mb-3">
 						</div>
-					</div><br>
+					</div>
 					<div class="row">
 						<div class="col">
-							<b>중량(g)</b><input id="itemweight" name="itemweight" class="form-control" id="floatingInput">
+							<label for="itemweight" class="col-form-label"><b>중량(g)</b></label>
+							<input id="itemweight" name="itemweight" class="form-control mb-3">
 						</div>
 						<div class="col">
-							<b>단가(원)</b><input id="itemprice" name="itemprice" class="form-control" id="floatingInput">
+							<label for="itemprice" class="col-form-label"><b>단가(원)</b></label>
+							<input id="itemprice" name="itemprice" class="form-control mb-3">
 						</div>
 					</div>
 				</div>

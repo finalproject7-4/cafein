@@ -49,4 +49,10 @@ public class ItemServiceImpl implements ItemService {
 		return idao.getItemTypeCount(vo);
 	}
 
+	@Override
+	public int itemModify(ItemVO vo) throws Exception {
+		logger.debug("Service - itemModify(ItemVO vo)");
+		return idao.updateItem(vo);
+	}
+
 }

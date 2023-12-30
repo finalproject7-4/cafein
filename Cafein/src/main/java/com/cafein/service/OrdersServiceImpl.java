@@ -20,9 +20,21 @@ public class OrdersServiceImpl implements OrdersService {
 	private OrdersDAO odao;
 	
 	@Override
-	public List<OrdersVO> ordersList() throws Exception {
-		logger.debug("Service - ordersList()");
-		return odao.getOrdersList();
+	public List<OrdersVO> ordersList(OrdersVO vo) throws Exception {
+		logger.debug("Service - ordersList(OrdersVO vo)");
+		return odao.getOrdersList(vo);
+	}
+
+	@Override
+	public Integer ordersCount(OrdersVO vo) throws Exception {
+		logger.debug("Service - ordersCount(OrdersVO vo)");
+		return odao.gerOrdersCount(vo);
+	}
+
+	@Override
+	public void orderRegist(OrdersVO vo) throws Exception {
+		logger.debug("Service - orderRegist(OrdersVO vo)");
+		odao.insertOrder(vo);
 	}
 
 }

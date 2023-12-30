@@ -59,6 +59,7 @@ public class ItemController {
 		// 생성한 품목코드 저장
 		vo.setItemcode(generateItemCode(vo));
 		
+		// 서비스
 		iService.itemRegist(vo);
 		
 		return "redirect:/information/items";
@@ -77,6 +78,17 @@ public class ItemController {
 		}
 		
 		return code + num;
+	}
+	
+	// 품목 수정 - POST
+	@RequestMapping(value = "/itemModify", method = RequestMethod.POST)
+	public String itemModify(ItemVO vo) throws Exception {
+		logger.debug("itemModify() 호출");
+		
+		// 서비스
+		iService.itemModify(vo);
+		
+		return "redirect:/information/items";
 	}
 	
 } // Controller 끝

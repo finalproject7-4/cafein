@@ -20,5 +20,8 @@ public interface ItemService {
 	
 	// 품목 등록
 	public void itemRegist(ItemVO vo) throws Exception;
+
+	// 품목 수정
+	public int itemModify(ItemVO vo) throws Exception;
 	
 }

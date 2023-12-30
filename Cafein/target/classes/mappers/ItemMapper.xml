@@ -29,7 +29,7 @@
 		limit #{cri.startPage}, #{cri.pageSize}
 	</select>
 	
-	<!-- 품목 목록 개수 -->
+	<!-- 품목 목록 총 개수 -->
 	<select id="getItemCount" resultType="integer">
 		select count(*) from item
 		<if test="option == 'itemtype'">
@@ -63,5 +63,13 @@
   		insert into item(itemcode,itemtype,itemname,clientcode,origin,itemweight,itemprice)
   		values(#{itemcode},#{itemtype},#{itemname},#{clientcode},#{origin},#{itemweight},#{itemprice})	
 	</insert>
+	
+	<!-- 품목 수정 -->
+	<update id="updateItem">
+		update item set itemname=#{itemname},itemweight=#{itemweight},itemprice=#{itemprice}
+		where itemid=#{itemid}
+	</update>
+	
+	<!-- 품목 수정 -->
 	
 </mapper>
