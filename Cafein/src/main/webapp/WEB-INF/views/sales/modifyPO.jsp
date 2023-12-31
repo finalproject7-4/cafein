@@ -13,15 +13,15 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form action="modifyPO" method="post">
+				<form action="modifyPO" method="post" role="form">
 				<input type="hidden" name="poid" id="poid">
 				<div class="modal-body">
 				납품처/코드
-				<input type="hidden" id="clientidd" name="clientid"> 
+<!-- 				<input type="hidden" id="clientidp" name="clientid">  -->
 				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
 				
 				품목명/코드
-				<input type="hidden" id="itemidd" name="itemid"> 
+<!-- 				<input type="hidden" id="itemidp" name="itemid">  -->
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
@@ -110,46 +110,46 @@
 $(document).ready(function() {
 	
 
-    // 수정된 값을 서버로 전송
-    $("#ModifyBtn").click(function() {
-        // 가져온 값들을 변수에 저장
-        var modifiedClientid = $("#clientidd").val();
-		var modifiedItemid = $("#itemidd").val();
+//     // 수정된 값을 서버로 전송
+//     $("#ModifyBtn").click(function() {
+//         // 가져온 값들을 변수에 저장
+//         var modifiedClientid = $("#clientidp").val();
+// 		var modifiedItemid = $("#itemidp").val();
 
-        var modifiedPOid = $("#poid").val();
-        var modifiedClientName = $("#clientid2").val();
-        var modifiedItemName = $("#itemid2").val();
-        var modifiedPostate = $("#floatingSelect2").val();
-        var modifiedPocnt = $("#pocnt2").val();
-        var modifiedUpdateDate = formatDate($("#todaypo2").val());
-        var modifiedOrdersDueDate = formatDate($("#date2").val());
-        var modifiedMemberCode = $("#membercode2").val();
+//         var modifiedPOid = $("#poid").val();
+//         var modifiedClientName = $("#clientid2").val();
+//         var modifiedItemName = $("#itemid2").val();
+//         var modifiedPostate = $("#floatingSelect2").val();
+//         var modifiedPocnt = $("#pocnt2").val();
+//         var modifiedUpdateDate = formatDate($("#todaypo2").val());
+//         var modifiedOrdersDueDate = formatDate($("#date2").val());
+//         var modifiedMemberCode = $("#membercode2").val();
     
-        // Ajax를 사용하여 서버로 수정된 값 전송
-        $.ajax({
-            type: "POST",
-            url: "/sales/modifyPO",
-            data: {
-            	clientid: modifiedClientid,
-            	itemid: modifiedItemid,
-            	poid: modifiedPOid,
-                clientname: modifiedClientName,
-                itemname: modifiedItemName,
-                postate: modifiedPostate,
-                pocnt: modifiedPocnt,
-                updatedate: modifiedUpdateDate,
-                ordersduedate: modifiedOrdersDueDate,
-                membercode: modifiedMemberCode
-            },
-            success: function(response) {
-                console.log("Modification success:", response);
-                $("#openModifyModal").modal('hide');
-            },
-            error: function(error) {
-                console.error("Error during modification:", error);
-            }
-        });
-    });
+//         // Ajax를 사용하여 서버로 수정된 값 전송
+//         $.ajax({
+//             type: "POST",
+//             url: "/sales/modifyPO",
+//             data: {
+//             	clientid: modifiedClientid,
+//             	itemid: modifiedItemid,
+//             	poid: modifiedPOid,
+//                 clientname: modifiedClientName,
+//                 itemname: modifiedItemName,
+//                 postate: modifiedPostate,
+//                 pocnt: modifiedPocnt,
+//                 updatedate: modifiedUpdateDate,
+//                 ordersduedate: modifiedOrdersDueDate,
+//                 membercode: modifiedMemberCode
+//             },
+//             success: function(response) {
+//                 console.log("Modification success:", response);
+//                 $("#openModifyModal").modal('hide');
+//             },
+//             error: function(error) {
+//                 console.error("Error during modification:", error);
+//             }
+//         });
+//     });
 	
 	
 	

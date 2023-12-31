@@ -48,7 +48,7 @@
 			<!-- 수주 리스트 테이블 조회 -->
 
 			<div class="bg-light rounded h-100 p-4">
-			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
+			<span class="mb-4">총 ${pageVO.totalCount}건</span>
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
@@ -70,16 +70,28 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:set var="counter" value="1" />
+<%-- 						<c:set var="counter" value="1" /> --%>
 							<c:forEach items="${POList}" var="po" varStatus="status">
-								<tr>
-									<td>${counter }</td>
+								<tr style="text-align: center;">
+							<td>
+								<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
+							</td>
 									<td>${po.postate }</td>
 									<td>${po.pocode }</td>
 									<td>${po.clientname}</td>
 									<td>${po.itemname}</td>
 									<td>${po.pocnt}</td> 
 									<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									
+									<c:choose>
+										<c:when test="${empty po.ordersdate}">
+											<td>수정일자 참조</td>
+										</c:when>
+										<c:otherwise>
+											<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+										</c:otherwise>
+									</c:choose>
+									
 									<c:choose>
 										<c:when test="${empty po.updatedate}">
 											<td>업데이트 날짜 없음</td>
@@ -93,7 +105,7 @@
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${po.clientid}', '${po.itemid}','${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+									        onclick="openModifyModal('${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
 									</button>
 									<!-- 버튼 삭제 -->
@@ -103,11 +115,111 @@
 									</button>
 									</td>
 								</tr>
-								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>
 						</tbody>
 					</table>
+				
+					<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				
+        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+    				<li class="page-item">
+    				  <c:if test="${pageVO.prev }">
+      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+        					
+						<script>
+							$(document).ready(function(){
+								$('.pageBlockPrev').click(function(e) {
+									e.preventDefault(); // 기본 이벤트 제거
+								
+					            	let prevPage = $(this).data('page');
+								
+									let option = "${param.option}";
+									let keyword = "${param.keyword}";
+
+			                		url = "/information/items?page=" + prevPage;
+			                
+			                		if (option && keyword) {
+			                    		url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+			                		}
+
+			                		location.href = url;
+								});
+							});
+						</script>
+    				  </c:if>
+    				</li>
+        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+    		
+    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
+    						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
+    					</li>
+    					
+					<script>
+						$(document).ready(function(){
+							$('.pageBlockNum').click(function(e) {
+								e.preventDefault(); // 기본 이벤트 제거
+					
+			            		let pageValue = $(this).data('page');
+					
+								let option = "${param.option}";
+								let keyword = "${param.keyword}";
+
+	                			url = "/information/items?page=" + pageValue;
+                
+	                			if (option && keyword) {
+	                    			url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+	                			}
+
+	                			location.href = url;
+							});
+						});
+					</script>
+    				</c:forEach>
+					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+    		
+    				<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
+    				<li class="page-item">
+    				  <c:if test="${pageVO.next }">
+      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        					<span aria-hidden="true">&raquo;</span>
+      					</a>
+      					
+						<script>
+							$(document).ready(function(){
+								$('.pageBlockNext').click(function(e) {
+									e.preventDefault(); // 기본 이벤트 제거
+				
+		            				let nextPage = $(this).data('page');
+				
+									let option = "${param.option}";
+									let keyword = "${param.keyword}";
+
+               					url = "/information/items?page=" + nextPage;
+            
+               					if (option && keyword) {
+                   					url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
+               					}
+
+               					location.href = url;
+								});
+							});
+						</script>
+    				</c:if>
+    				</li>
+					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
+			  </ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
+					
 				</div>
+				
+				
 		</div>
 		</div>
 		<!-- 품목 등록 모달 -->
@@ -198,24 +310,21 @@
 		  </div>
 		</fieldset>
 		
+		
   <!-- 모달 js&jq -->
    <script>
    /* 리스트 값 수정 모달로 값 전달 */
-   function openModifyModal(clientid, itemid, poid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
-       console.log('clientid:', clientid); 
-       console.log('itemid:', itemid); 
-       console.log('POID:', poid); 
-	   console.log('Client Name:', clientname);
-       console.log('Item Name:', itemname);
-       console.log('Postate:', postate);
-       console.log('Pocnt:', pocnt);
-       console.log('Orders Date:', ordersdate);
-       console.log('Orders Due Date:', ordersduedate);
-       console.log('Member Code:', membercode); 
+   function openModifyModal(poid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+       console.log('poid:', poid); 
+	   console.log('clientname:', clientname);
+       console.log('itemname:', itemname);
+       console.log('postate:', postate);
+       console.log('pocnt:', pocnt);
+       console.log('ordersdate:', ordersdate);
+       console.log('ordersduedate:', ordersduedate);
+       console.log('membercode:', membercode); 
 	   
 	   // 가져온 값들을 모달에 설정
-	   $("#clientidd").val(clientid);
-	   $("#itemidd").val(itemid);
 	   $("#poid").val(poid);
 	    $("#clientid2").val(clientname);
 	    $("#itemid2").val(itemname);

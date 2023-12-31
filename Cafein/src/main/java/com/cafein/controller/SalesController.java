@@ -93,12 +93,12 @@ public class SalesController {
 	
 	// 수주 수정 - POST
 	// http://localhost:8088/sales/POList
-	@RequestMapping(value = "/modifyPO", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
 			@RequestParam(value = "updatedate") String updatedate,
 			@RequestParam(value = "poid") int poid,
-			@RequestParam(value = "clientid") int clientid,
-			@RequestParam(value = "itemid") int itemid
+			@RequestParam(value = "clientid", defaultValue = "1") int clientid,
+			@RequestParam(value = "itemid", defaultValue = "1") int itemid
 			) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + svo);
@@ -115,6 +115,7 @@ public class SalesController {
 		logger.debug("result", result);
 		return "redirect:/sales/POList";
 	}
+	
 	// 수주 삭제 - POST
 	// http://localhost:8088/sales/POList
 //	@RequestMapping(value = "/remove" ,method = RequestMethod.POST)
