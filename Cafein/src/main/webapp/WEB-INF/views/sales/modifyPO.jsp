@@ -17,9 +17,11 @@
 				<input type="hidden" name="poid" id="poid">
 				<div class="modal-body">
 				납품처/코드
+				<input type="hidden" id="clientidd" name="clientid"> 
 				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
 				
 				품목명/코드
+				<input type="hidden" id="itemidd" name="itemid"> 
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
@@ -111,6 +113,9 @@ $(document).ready(function() {
     // 수정된 값을 서버로 전송
     $("#ModifyBtn").click(function() {
         // 가져온 값들을 변수에 저장
+        var modifiedClientid = $("#clientidd").val();
+		var modifiedItemid = $("#itemidd").val();
+
         var modifiedPOid = $("#poid").val();
         var modifiedClientName = $("#clientid2").val();
         var modifiedItemName = $("#itemid2").val();
@@ -125,6 +130,8 @@ $(document).ready(function() {
             type: "POST",
             url: "/sales/modifyPO",
             data: {
+            	clientid: modifiedClientid,
+            	itemid: modifiedItemid,
             	poid: modifiedPOid,
                 clientname: modifiedClientName,
                 itemname: modifiedItemName,
@@ -136,7 +143,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 console.log("Modification success:", response);
-                $("#modifyModal").modal('hide');
+                $("#openModifyModal").modal('hide');
             },
             error: function(error) {
                 console.error("Error during modification:", error);
@@ -144,15 +151,12 @@ $(document).ready(function() {
         });
     });
 	
-	$(".itemset").click(function() {
+	
+	
+// 	// 클릭한 행의 정보를 가져와서 itemid에 입력
+   $(".itemset").click(function() {
 	    var itemid = $(this).find('td:first-child').text();
 	    $("#itemid2").val(itemid);
-	});
-	
-	// 클릭한 행의 정보를 가져와서 clientid에 입력
-   $(".itemset").click(function() {
-    var clientInfo = $(this).find('td:eq(1)').text(); //itemname
-    $("#itemid2").val(clientInfo);
 	});
 	 
 	// 품목 모달    	
@@ -160,12 +164,12 @@ $(document).ready(function() {
     	$("#itemModal").modal('show');
     });
     
-    $(".itemset").click(function() {
-        var columns = $(this).find('td');
-        var selectedItemName = $(columns[1]).text(); // 품명
-        $('#items').val(selectedItemName);
-        $('#itemModal').modal('hide');
-    });
+//     $(".itemset").click(function() {
+//         var columns = $(this).find('td');
+//         var selectedItemName = $(columns[1]).text(); // 품명
+//         $('#items').val(selectedItemName);
+//         $('#itemModal').modal('hide');
+//     });
     
     $('#todaypo2').click(function(){
         var today = new Date();

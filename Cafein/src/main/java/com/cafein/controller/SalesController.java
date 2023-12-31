@@ -97,8 +97,8 @@ public class SalesController {
 	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
 			@RequestParam(value = "updatedate") String updatedate,
 			@RequestParam(value = "poid") int poid,
-			@RequestParam(value = "itemid") int itemid,
-			@RequestParam(value = "clientid") int clientid
+			@RequestParam(value = "clientid") int clientid,
+			@RequestParam(value = "itemid") int itemid
 			) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + svo);

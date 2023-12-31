@@ -11,11 +11,11 @@
 	<div class="bg-light rounded h-100 p-4">
 	<form role="form" method="post">
 		수주일자 <input type="date" class="date" name="podate"> ~ <input type="date" class="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
-		납품처조회 <input class="clientSearch1" type="text" name="client" placeholder="납품처코드"> 
-				<input class="clientSearch2" type="text" name="worknumber" placeholder="납품처명"> <br>
+		납품처조회 <input class="clientSearch1" type="text" name="clientid" placeholder="납품처코드"> 
+				<input class="clientSearch2" type="text" name="clientid" placeholder="납품처명"> <br>
 		납품예정일 <input type="date" class="date" name="ordersduedate"> ~ <input type="date" class="date" name="podate">
-		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch1" type="text" name="itemname" placeholder="품목코드"> 
-			<input class="itemSearch2" type="text" name="worknumber" placeholder="품명"> 
+		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch1" type="text" name="itemid" placeholder="품목코드"> 
+			<input class="itemSearch2" type="text" name="itemid" placeholder="품명"> 
 		<button id="searchbtn" type="button" class="btn btn-dark m-2">조회</button>
 		<br>
 	</form>
@@ -93,7 +93,7 @@
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+									        onclick="openModifyModal('${po.clientid}', '${po.itemid}','${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
 									</button>
 									<!-- 버튼 삭제 -->
@@ -201,7 +201,9 @@
   <!-- 모달 js&jq -->
    <script>
    /* 리스트 값 수정 모달로 값 전달 */
-   function openModifyModal(poid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+   function openModifyModal(clientid, itemid, poid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+       console.log('clientid:', clientid); 
+       console.log('itemid:', itemid); 
        console.log('POID:', poid); 
 	   console.log('Client Name:', clientname);
        console.log('Item Name:', itemname);
@@ -212,6 +214,8 @@
        console.log('Member Code:', membercode); 
 	   
 	   // 가져온 값들을 모달에 설정
+	   $("#clientidd").val(clientid);
+	   $("#itemidd").val(itemid);
 	   $("#poid").val(poid);
 	    $("#clientid2").val(clientname);
 	    $("#itemid2").val(itemname);
