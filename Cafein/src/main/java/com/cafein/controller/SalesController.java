@@ -30,14 +30,13 @@ public class SalesController {
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
-	public String AllPOListGET(Model model, @ModelAttribute("result") String result) throws Exception{
+	public String AllPOListGET(Model model) throws Exception{
 		logger.debug("AllPOListGET() 실행");
 		
 		List<SalesVO> POList = sService.AllPOList();
 		logger.debug(" @@@ " + POList);
 
 		model.addAttribute("POList", POList);
-		model.addAttribute("result", result);
 		model.addAttribute("cliList", sService.registCli()); 
 		model.addAttribute("iList", sService.registItem());  
 

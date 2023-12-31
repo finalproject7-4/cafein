@@ -55,19 +55,11 @@
 	</select>
 
 	<!-- 수주수정 -->
-	<update id="updatePO">
-    UPDATE purchaseorder
-    SET
-        clientid = #{clientid},
-        itemid = #{itemid},
-        postate = #{postate},
-        pocnt = #{pocnt},
-        ordersdate = #{ordersdate, jdbcType=DATE},
-        ordersduedate = #{ordersduedate, jdbcType=DATE},
-        updatedate = #{updatedate, jdbcType=DATE},
-        membercode = #{membercode}
-    WHERE poid = #{poid}
-</update>
+	 <update id="updatePO">
+	 	update purchaseorder set clientid=#{clientid}, itemid=#{itemid}, postate=#{postate}, pocnt=#{pocnt},
+	 	ordersdate=#{ordersdate}, ordersduedate=#{ordersduedate}, updatedate=#{updatedate}, membercode=#{membercode}
+	 	where poid=#{poid}
+	 </update>
 	 
 	 <!-- 삭제 -->
 	 <delete id="deletePO">

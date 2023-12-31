@@ -48,7 +48,7 @@
 			<!-- 수주 리스트 테이블 조회 -->
 
 			<div class="bg-light rounded h-100 p-4">
-			<span class="mb-4">총 ${pageVO.totalCount}건</span>
+			<span class="mb-4">총 건</span>
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
@@ -70,12 +70,10 @@
 							</tr>
 						</thead>
 						<tbody>
-<%-- 						<c:set var="counter" value="1" /> --%>
+						<c:set var="counter" value="1" />
 							<c:forEach items="${POList}" var="po" varStatus="status">
-								<tr style="text-align: center;">
-							<td>
-								<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
-							</td>
+						<tr>
+									<td>${counter }</td>
 									<td>${po.postate }</td>
 									<td>${po.pocode }</td>
 									<td>${po.clientname}</td>
@@ -115,10 +113,10 @@
 									</button>
 									</td>
 								</tr>
+								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>
 						</tbody>
 					</table>
-				
 					<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
@@ -140,7 +138,7 @@
 									let option = "${param.option}";
 									let keyword = "${param.keyword}";
 
-			                		url = "/information/items?page=" + prevPage;
+			                		url = "/sales/POList?page=" + prevPage;
 			                
 			                		if (option && keyword) {
 			                    		url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
@@ -170,7 +168,7 @@
 								let option = "${param.option}";
 								let keyword = "${param.keyword}";
 
-	                			url = "/information/items?page=" + pageValue;
+	                			url = "/sales/POList?page=" + pageValue;
                 
 	                			if (option && keyword) {
 	                    			url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
@@ -200,7 +198,7 @@
 									let option = "${param.option}";
 									let keyword = "${param.keyword}";
 
-               					url = "/information/items?page=" + nextPage;
+               					url = "/slaes/POList?page=" + nextPage;
             
                					if (option && keyword) {
                    					url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
@@ -215,7 +213,7 @@
 					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
 			  </ul>
 			</nav>
-			<!-- 페이지 블럭 생성 -->
+			<!-- 페이지 블럭 생성 -->	
 					
 				</div>
 				
