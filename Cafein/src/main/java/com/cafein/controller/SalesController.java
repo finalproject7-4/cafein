@@ -96,9 +96,9 @@ public class SalesController {
 	@RequestMapping(value = "/modifyPO", method = RequestMethod.POST)
 	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
 			@RequestParam(value = "updatedate") String updatedate,
-			@RequestParam(value = "poid", defaultValue = "1") int poid,
-			@RequestParam(value = "itemid", defaultValue = "1") int itemid,
-			@RequestParam(value = "clientid", defaultValue = "1") int clientid
+			@RequestParam(value = "poid") int poid,
+			@RequestParam(value = "itemid") int itemid,
+			@RequestParam(value = "clientid") int clientid
 			) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + svo);

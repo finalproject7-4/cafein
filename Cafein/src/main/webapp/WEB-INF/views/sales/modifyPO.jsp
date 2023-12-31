@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- 수주 수정 모달창 -->
-	<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="openModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 			
@@ -13,10 +13,8 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form role="form" action="/sales/modifyPO" method="post">
-				
-				<input type="hidden" name="poid" value="${po.poid}">
-				
+				<form action="modifyPO" method="post">
+				<input type="hidden" name="poid" id="poid">
 				<div class="modal-body">
 				납품처/코드
 				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
@@ -113,7 +111,7 @@ $(document).ready(function() {
     // 수정된 값을 서버로 전송
     $("#ModifyBtn").click(function() {
         // 가져온 값들을 변수에 저장
-        var modifiedPOid = $("#poid ").val();
+        var modifiedPOid = $("#poid").val();
         var modifiedClientName = $("#clientid2").val();
         var modifiedItemName = $("#itemid2").val();
         var modifiedPostate = $("#floatingSelect2").val();
@@ -127,7 +125,7 @@ $(document).ready(function() {
             type: "POST",
             url: "/sales/modifyPO",
             data: {
-                POID: modifiedPOid,
+            	poid: modifiedPOid,
                 clientname: modifiedClientName,
                 itemname: modifiedItemName,
                 postate: modifiedPostate,

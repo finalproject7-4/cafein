@@ -46,16 +46,10 @@
 		</div>
 
 			<!-- 수주 리스트 테이블 조회 -->
-			<div>
-			<input type="hidden" id="poidInput">			
-			<c:forEach items="${POList}" var="po" varStatus="status" >
-				${po.poid}
-			</c:forEach>
-			</div>
 
 			<div class="bg-light rounded h-100 p-4">
 			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
-			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap"	value="등록">		
+			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
 				<div class="table-responsive">
@@ -99,7 +93,7 @@
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.poid}')">
+									        onclick="openModifyModal('${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
 									</button>
 									<!-- 버튼 삭제 -->
@@ -116,7 +110,9 @@
 				</div>
 		</div>
 		</div>
+		<!-- 품목 등록 모달 -->
 		<jsp:include page="registPO.jsp"/>
+		<!-- 품목 수정 모달 -->
 		<jsp:include page="modifyPO.jsp"/>
 		
 		<!-- 납품처 조회 모달 -->
@@ -205,7 +201,8 @@
   <!-- 모달 js&jq -->
    <script>
    /* 리스트 값 수정 모달로 값 전달 */
-   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, poid) {
+   function openModifyModal(poid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+       console.log('POID:', poid); 
 	   console.log('Client Name:', clientname);
        console.log('Item Name:', itemname);
        console.log('Postate:', postate);
@@ -213,10 +210,9 @@
        console.log('Orders Date:', ordersdate);
        console.log('Orders Due Date:', ordersduedate);
        console.log('Member Code:', membercode); 
-       console.log('POID:', poid); 
 	   
 	   // 가져온 값들을 모달에 설정
-	    $("#poid2").val(poid);
+	   $("#poid").val(poid);
 	    $("#clientid2").val(clientname);
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
@@ -226,7 +222,7 @@
 	    $("#membercode2").val(membercode);
 
 	    // 모달 열기
-	    $("#modifyModal").modal('show');
+	    $("#openModifyModal").modal('show');
 	    
 
 	}
@@ -353,8 +349,7 @@
         });
     });
     
-    //수주삭제
-   //수주삭제
+//수주삭제
 $("#deleteBtn").click(function() {
     Swal.fire({
         title: '글을 삭제하시겠습니까?',
