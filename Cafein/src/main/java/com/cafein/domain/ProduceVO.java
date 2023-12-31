@@ -30,11 +30,12 @@ public class ProduceVO {
 	private Date endDate;
 	private String searchText;
 	private String searchBtn;
+	private String bigSearchBtn;
 
 	// Criteria 객체
 	private Criteria cri;
-	private int startPage;
-	private int pageSize;
+
+
 	
 	
 	

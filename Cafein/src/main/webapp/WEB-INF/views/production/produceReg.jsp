@@ -14,7 +14,7 @@
 						<form action="produceReg" method="post">
 						<div class="row">
 							<div class="col">
-								<label for="produce" class="col-form-label">공정과정</label> 
+								<label for="process" class="col-form-label">공정과정</label> 
 								<select class="form-select" id="processSelect"
 									aria-label="Floating label select example" name="process" onchange="chageLangSelect()">
 									<optgroup label="공정과정">
@@ -31,7 +31,7 @@
 						</div>
 							<div class="row">
 							<div class="col">
-								<label for="produce" class="col-form-label">생산라인</label> 
+								<label for="produceline" class="col-form-label">생산라인</label> 
 								<select class="form-select" id="producelineSelect"
 									aria-label="Floating label select example" name="produceline">
 									<optgroup label="생산라인">
@@ -45,7 +45,7 @@
 								</select>
 							</div>
 							<div class="col">
-								<label for="produce" class="col-form-label">생산타임</label> 
+								<label for="producetime" class="col-form-label">생산타임</label> 
 								<select class="form-select" id="producetimeSelect"
 									aria-label="Floating label select example" name="producetime">
 									<optgroup label="생산타임">
@@ -61,30 +61,30 @@
 					<div class="row">
 							<div class="col">
 								<label for="itemname" class="col-form-label">제품명</label> 
-								<input id="itemcode" name="itemname" class="form-control" readonly>
+								<input id="itemnamePro" name="itemname" class="form-control" readonly>
 							</div>
 							<div class="col">
 								<label for="amount" class="col-form-label">생산량</label>
-								<input type="number" id="amount" class="form-control" min="20000" max="60000" step="10000" placeholder="생산량(g)">
+								<input type="number"  name="amount" id="amount" class="form-control" min="20000" max="60000" step="10000" placeholder="생산량(g)">
 							</div>
 							</div>
 							<div class="row">
 							<div class="col">
 								<label for="itemname1" class="col-form-label">원재료1</label>
-								<input name="itemname1" type="text" class="form-control" id="itemname1" readonly>
+								<input name="itemname1" type="text" class="form-control" id="itemnameOri1" readonly>
 							</div>
 							<div class="col">
 								<label for="itemname2" class="col-form-label">원재료2</label>
-								<input type="text" name="itemname2" class="form-control" id="itemname2" readonly>
+								<input type="text" name="itemname2" class="form-control" id="itemnameOri2" readonly>
 							</div>
 							<div class="col">
 								<label for="itemname3" class="col-form-label">원재료3</label>
-								<input type="text" name="itemname3" class="form-control" id="itemname3" readonly>
+								<input type="text" name="itemname3" class="form-control" id="itemnameOri3" readonly>
 							</div>
 							</div>
 							<div class="row">
 							<div class="col">
-								<label for="itemname3" class="col-form-label">비율</label>
+								<label for="rate" class="col-form-label">비율</label>
 								<input type="text" name="rate" class="form-control" id="rate" readonly>
 							</div>						
 							<div class="col" id="temperh" style="display: none;">
@@ -94,6 +94,10 @@
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode">
+							</div>
+							<div class="col" style="display:none;">
+								<label for="itemid" class="col-form-label">아이템ID</label>
+								<input name="itemid" class="form-control" id="itemidPro">
 							</div>
 							</div>
 					<div class="modal-footer">

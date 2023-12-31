@@ -26,23 +26,24 @@ public class ProductionDAOImpl implements ProductionDAO {
 	private SqlSession sqlSession;
 	
 	private static final String NAMESPACE = "com.cafein.mapper.ProductionMapper";
+
 	
-	// 생산지시 목록조회 메서드
+	// AJAX 생산지시 목록조회 메서드
 	@Override
-	public List<ProduceVO> getProduceList(ProduceVO vo) throws Exception{
+	public List<ProduceVO> getProduceListAJAX(ProduceVO vo) throws Exception{
 		logger.debug("DAO - 생산지시 목록 조회 getProduceList() 실행!");
 		logger.debug("produceList : "+ vo.getStartDate());
 		logger.debug("DAO - vo end : "+ vo.getEndDate());
-	
-		return sqlSession.selectList(NAMESPACE+".getProduceList", vo);
+		
+		return sqlSession.selectList(NAMESPACE+".getProduceListAJAX", vo);
 	}
 	
-
+	
 	// 생산지시 글 개수 확인
 	@Override
-	public int getProdueCount() throws Exception {
+	public Integer AJAXcountProduceList(ProduceVO vo) throws Exception {
 		logger.debug("DAO - 작업지시 수량 몇개? ");
-		return sqlSession.selectOne(NAMESPACE+".countProduceList");
+		return sqlSession.selectOne(NAMESPACE+".AJAXcountProduceList", vo);
 	}
 
 	// BOM 목록 조회 메서드
@@ -88,9 +89,18 @@ public class ProductionDAOImpl implements ProductionDAO {
 		
 		return sqlSession.selectList(NAMESPACE+".getItemList");
 	}
-	
-	
 
+	// 생산 상태 업데이트
+	@Override
+	public void updateProduceState(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 생산 상태 변경 updateProduceState() 실행!");
+		
+		sqlSession.update(NAMESPACE+".updateProduceState", vo);
+		
+	}
+	
+	
+	
 	
 	
 	

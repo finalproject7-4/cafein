@@ -22,20 +22,19 @@ public class ProductionServiceImpl implements ProductionService{
 	@Inject
 	private ProductionDAO pdao;
 	
-
-	// 생산 목록 조회
+	
+	// AJAX생산 목록 조회
 	@Override
-	public List<ProduceVO> getProduceList(ProduceVO vo) throws Exception{
+	public List<ProduceVO> getProduceListAJAX(ProduceVO vo) throws Exception{
 		logger.debug("Service - 생산지시 목록 조회 getProduceList() 실행");
-		return pdao.getProduceList(vo);
+		return pdao.getProduceListAJAX(vo);
 	}
 	
-	
-	// 생산지시 목록 글 개수 확인
+	// AJAX 생산지시 목록 글 개수 확인
 	@Override
-	public int getProdueCount() throws Exception {
+	public Integer AJAXcountProduceList(ProduceVO vo) throws Exception {
 		logger.debug("Service - 생산지시 수량은 몇개요???");
-		return pdao.getProdueCount();
+		return pdao.AJAXcountProduceList(vo);
 	}
 
 	// BOM 목록 조회
@@ -81,7 +80,16 @@ public class ProductionServiceImpl implements ProductionService{
 		return pdao.getItemList();
 	}
 
+	// 생산 상태 업데이트
+	@Override
+	public void updateProduceState(ProduceVO vo) throws Exception {
+		logger.debug("Service - 생산 상태 업데이트 updateProduceState() 실행");
+		
+		pdao.updateProduceState(vo);
+	}
 
+
+	
 
 	
 	
