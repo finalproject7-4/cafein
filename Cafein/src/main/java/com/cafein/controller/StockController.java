@@ -265,4 +265,5 @@ public class StockController {
 	public void materialStockToast(Model model) throws Exception{
 		model.addAttribute("materialToast", sService.materialStockToast());
 	}
+	
 }

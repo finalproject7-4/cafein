@@ -21,11 +21,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
   			<label class="form-check-label" for="productRadio">완제품</label>
 		</div>
 		<br>
-		<div class="buttonarea" style="margin-bottom: 10px;">
+		<div class="buttonarea2" style="margin-bottom: 10px;">
 			<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
 			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
 			<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
 		</div>
+		<div class="buttonarea4" style="margin-bottom: 10px">
 		<form action="/material/stockProduct" method="GET">
 			<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -33,6 +34,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
 			<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
 		</form>
+		</div>
+		<input type="button" class="btn btn-sm btn-success" value="엑셀 파일 저장" onclick="location.href='/productStockPrint';">
 	</div>
 </div>
 <!-- 재고 조회 -->

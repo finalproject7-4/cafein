@@ -57,4 +57,7 @@ public interface StockService {
 	// roastedBean 테이블 조회
 	public QualityVO roastedBeanInfo(String lotnumber) throws Exception;
 	
+	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
+	public List<QualityVO> stockListExcel() throws Exception;
+	
 }

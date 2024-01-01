@@ -25,6 +25,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<input type="button" class="btn btn-sm btn-secondary" value="부자재" id="submaterial">
 		<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
 	</div>
+	<div class="buttonarea3" style="margin-bottom: 10px;">
 	<form action="/material/stock" method="GET">
 		<c:if test="${!empty param.searchBtn }">
 			<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -32,6 +33,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
 		<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
 	</form>
+	</div>
+	<input type="button" class="btn btn-sm btn-success" value="엑셀 파일 저장">
 	</div>
 </div>
 <!-- 재고 조회 -->

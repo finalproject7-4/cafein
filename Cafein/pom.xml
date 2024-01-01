@@ -174,6 +174,19 @@
 			<version>1.16</version>
 		</dependency>
 		
+		<!-- 엑셀파일 다운로드 위한 라이브러리 -->
+		<dependency>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi</artifactId>
+    		<version>4.1.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+    		<version>4.1.2</version>
+		</dependency>
+
+		<!-- RestController를 위한 JSON 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
     		<groupId>com.fasterxml.jackson.core</groupId>

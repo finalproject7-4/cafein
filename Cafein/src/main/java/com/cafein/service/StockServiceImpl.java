@@ -133,6 +133,13 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		return sdao.selectRoastedBean(lotnumber);
 	}
+
+	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
+	@Override
+	public List<QualityVO> stockListExcel() throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectStockListExcel();
+	}
 	
 	
 

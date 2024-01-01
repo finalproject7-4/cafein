@@ -28,6 +28,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="button" class="btn btn-sm btn-success" value="전체" id="all">
 			</div>
 			
+			<div class="buttonarea3" style="margin-bottom: 10px;">
 			<form action="/quality/productQualityList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -35,7 +36,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
 				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
-			</form>	
+			</form>
+			</div>
+			
+			<input type="button" class="btn btn-sm btn-success" value="엑셀 파일 저장" style="margin-bottom: 10px;">	
 			<br>
 				<div class="table-responsive">
 					<table class="table">
