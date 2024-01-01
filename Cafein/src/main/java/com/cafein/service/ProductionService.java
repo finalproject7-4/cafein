@@ -2,6 +2,8 @@ package com.cafein.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.cafein.domain.BomVO;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
@@ -9,12 +11,14 @@ import com.cafein.domain.ProduceVO;
 
 public interface ProductionService {
 	
-	// 생산지시목록 조회
-	public List<ProduceVO> getProduceList(ProduceVO vo) throws Exception;
-
+	// AJAX생산지시목록 조회
+	public List<ProduceVO> getProduceListAJAX(ProduceVO vo) throws Exception;
 	
-	// 생산지시 글 개수 확인
-	public int getProdueCount() throws Exception;
+	// 엑셀파일 다운로드용 생산지시 목록 조회
+	public List<ProduceVO> getExcelDownProduceList(ProduceVO vo) throws Exception;
+	
+	// AJAX 생산지시 글 개수 확인
+	public Integer AJAXcountProduceList(ProduceVO vo) throws Exception;
 	
 	// BOM 목록 조회
 	public List<BomVO> getBomList() throws Exception;
@@ -26,10 +30,17 @@ public interface ProductionService {
 	public void regBom(BomVO vo) throws Exception;
 	
 	// BOM 등록되지 않은 품목 조회
-		public List<ItemVO> getNewItem() throws Exception;
+	public List<ItemVO> getNewItem() throws Exception;
 	
 	// 품목 아이템 목록 조회
 	public List<ItemVO> getItemList() throws Exception;
+	
+	// 생산 상태 업데이트
+	public void updateProduceState(ProduceVO vo) throws Exception;
+	
+	
+	// 생산지시 엑셀파일 다운로드
+	public void excelPrint(ProduceVO vo, HttpServletResponse response) throws Exception;
 	
 
 }

@@ -20,4 +20,5 @@ public class BomVO {
 	
 	// 필요할 수도 있어서 DB에는 없지만 추가 정의
 	private String itemname;
+	private int itemid;
 }
