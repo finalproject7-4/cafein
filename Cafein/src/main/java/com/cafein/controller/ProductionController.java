@@ -1,8 +1,8 @@
 package com.cafein.controller;
 
-import java.sql.Date;
-
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.BomVO;
@@ -49,29 +49,12 @@ public class ProductionController {
 		//http://localhost:8088/production/produceList3
 		@RequestMapping(value="/produceList3", method=RequestMethod.GET)
 		public void produceListAJAX(Model model,
-				HttpSession session, Criteria cri, ProduceVO vo,
-				@RequestParam(value="startDate", defaultValue = "1999-01-01") String startDate,
-				@RequestParam(value= "endDate", defaultValue = "2033-12-31") String endDate,
-				@RequestParam(value="produceline", defaultValue = "0") String produceline,
-				@RequestParam(value="process", defaultValue = "*") String process,
-				@RequestParam(value="itemname", defaultValue ="*") String itemname
+				HttpSession session, Criteria cri, ProduceVO vo
 				) throws Exception {
 
 			logger.debug("컨트롤러 - AJAX produceList3() 호출");
 			
-			vo.setStartDate(Date.valueOf(startDate));
-			vo.setEndDate(Date.valueOf(endDate));
-			
-			if(!itemname.equals("*")) {
-				vo.setItemname(itemname);
-			}
-			if(!produceline.equals("0")) {
-				int produceNo = Integer.parseInt(produceline);
-				vo.setProduceline(produceNo);
-			}
-			if(!process.equals("*")) {
-				vo.setProcess(process);
-			}
+		
 
 			// 페이징 처리
 			vo.setCri(cri);
@@ -132,8 +115,11 @@ public class ProductionController {
 			logger.debug("생산 상태 업데이트! 업데이트할 값은? "+vo.getState());
 			logger.debug("@@@@ 생산 id 는? "+vo.getProduceid());
 			
-		
-			pService.updateProduceState(vo);
+			pService.updateProduceState(vo); 
+			if(vo.getProcess()=="포장" && vo.getState()=="완료") {
+			
+			}
+			
 		}
 		
 
@@ -146,6 +132,16 @@ public class ProductionController {
 			
 			pService.updateProduceState(vo);
 			return "redirect:/production/produceList";
+		}
+		
+		
+		// 생산지시리스트 엑셀파일로 출력
+		@RequestMapping(value="/excelPrint", method = RequestMethod.POST)
+		public void excelPrint(@ModelAttribute ProduceVO vo,
+								HttpServletResponse response,
+								HttpServletRequest request) throws Exception{
+			logger.debug("엑셀파일 다운로드 시작!!!");
+			pService.excelPrint(vo, response);
 		}
 
 }

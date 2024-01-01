@@ -39,6 +39,17 @@ public class ProductionDAOImpl implements ProductionDAO {
 	}
 	
 	
+	// 엑셀 출력용 생산지시 목록 조회
+	@Override
+	public List<ProduceVO> getExcelDownProduceList(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 엑셀 출력용 리스트 출력");
+		return sqlSession.selectList(NAMESPACE+".getExcelDownProduceList", vo);
+	}
+
+
+
+
+
 	// 생산지시 글 개수 확인
 	@Override
 	public Integer AJAXcountProduceList(ProduceVO vo) throws Exception {

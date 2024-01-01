@@ -103,6 +103,9 @@
     </div>
 	<!-- BOM 등록시 사용하는 제품명 조회 모달 끝 -->
 
+<!-- 포장완료시 사용하는 모달-->
+<jsp:include page="packageReg.jsp" />
+<!-- 포장완료시 사용하는 모달-->
 
 <!-- 생산지시 목록 테이블 -->
 <div class="col-12" style="margin-top:20px;">
@@ -113,9 +116,8 @@
 <!-- 생산 상태에 따른 페이지 출력 (버튼) 시작 -->
 <div class="buttonarea1" style="margin-bottom: 10px;">
 				<input type="button" class="btn btn-sm btn-primary" value="전체" id="allList">
-				<input type="button" class="btn btn-sm btn-primary" value="대기" id="proWait">
+				<input type="button" class="btn btn-sm btn-success" value="대기" id="proWait">
 				<input type="button" class="btn btn-sm btn-danger" value="생산중" id="proIng">
-				<input type="button" class="btn btn-sm btn-success" value="완료" id="proComplet">
 				<input type="button" class="btn btn-sm btn-warning" value="검사대기" id="qccWait">
 			
 				<span style="float: right;">
@@ -135,11 +137,6 @@ $(document).ready(function() {
     // 생산중 버튼 클릭
     $("#proIng").click(function() {
         fetchData("생산중");
-    });
-    
-    // 완료 버튼 클릭
-    $("#proComplet").click(function() {
-        fetchData("완료");
     });
     
     // 검사대기 버튼 클릭
@@ -222,8 +219,11 @@ function fetchData(searchBtnValue) {
 	<input id="ingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
 	</c:if>
 	<!-- 상태변경 버튼은 '생산중'인 경우 표시해서 클릭시 '완료'로 변경 -->
-	<c:if test="${plist.state == '생산중' }">
+	<c:if test="${plist.state == '생산중' && plist.process !='포장'}">
 	<input id="completBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="완료">
+	</c:if>
+	<c:if test="${plist.state == '생산중'&& plist.process =='포장' }">
+	<input id="packageBtn" type="button" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료">
 	</c:if>
 </td>
 <td>
@@ -239,6 +239,12 @@ function fetchData(searchBtnValue) {
 <!-- 생산지시 테이블 내용 끝 -->
 </div>
 
+<!-- 엑셀파일 다운로드 -->
+<div style="float: right">
+	<form action="/production/excelPrint" method="post">
+		<input class="btn btn-sm btn-primary" type="submit" value="리스트출력">
+	</form>
+</div>
 
 <!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
@@ -442,7 +448,7 @@ function fetchData(searchBtnValue) {
 
 		$('#itemModal1').modal('hide');
 	});
- 
+
 		  
 	$(document).ready(function() {
 		// 생산 상태 변경 버튼 클릭 이벤트 처리

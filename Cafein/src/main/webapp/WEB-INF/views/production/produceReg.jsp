@@ -16,7 +16,7 @@
 							<div class="col">
 								<label for="process" class="col-form-label">공정과정</label> 
 								<select class="form-select" id="processSelect"
-									aria-label="Floating label select example" name="process" onchange="chageLangSelect()">
+									aria-label="Floating label select example" name="process" onchange="chageLangSelect()" required="required">
 									<optgroup label="공정과정">
 										<option value="블렌딩">블렌딩</option>
 										<option value="로스팅">로스팅</option>
@@ -26,14 +26,14 @@
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedate" class="date form-control" id="producedate">
+								<input type="date" name="producedate" class="date form-control" id="producedate" required="required">
 							</div>
 						</div>
 							<div class="row">
 							<div class="col">
 								<label for="produceline" class="col-form-label">생산라인</label> 
 								<select class="form-select" id="producelineSelect"
-									aria-label="Floating label select example" name="produceline">
+									aria-label="Floating label select example" name="produceline" required="required">
 									<optgroup label="생산라인">
 										<option value="1">1라인</option>
 										<option value="2">2라인</option>
@@ -47,7 +47,7 @@
 							<div class="col">
 								<label for="producetime" class="col-form-label">생산타임</label> 
 								<select class="form-select" id="producetimeSelect"
-									aria-label="Floating label select example" name="producetime">
+									aria-label="Floating label select example" name="producetime" required="required">
 									<optgroup label="생산타임">
 										<option value="1">1타임</option>
 										<option value="2">2타임</option>
@@ -61,11 +61,11 @@
 					<div class="row">
 							<div class="col">
 								<label for="itemname" class="col-form-label">제품명</label> 
-								<input id="itemnamePro" name="itemname" class="form-control" readonly>
+								<input id="itemnamePro" name="itemname" class="form-control" readonly placeholder="클릭하세요.">
 							</div>
 							<div class="col">
 								<label for="amount" class="col-form-label">생산량</label>
-								<input type="number"  name="amount" id="amount" class="form-control" min="20000" max="60000" step="10000" placeholder="생산량(g)">
+								<input type="number" required="required"  name="amount" id="amount" class="form-control" min="20000" max="60000" step="10000" placeholder="생산량(g)">
 							</div>
 							</div>
 							<div class="row">

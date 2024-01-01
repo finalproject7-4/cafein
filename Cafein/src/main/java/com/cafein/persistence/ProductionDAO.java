@@ -11,6 +11,9 @@ public interface ProductionDAO {
 
 	// 생산지시 목록 조회 (AJAX)
 	public List<ProduceVO> getProduceListAJAX(ProduceVO vo) throws Exception;
+	
+	// 엑셀파일 다운로드용 생산지시 조회
+	public List<ProduceVO> getExcelDownProduceList(ProduceVO vo) throws Exception;
 
 
 	// AJAX 생산목록 글 개수 확인

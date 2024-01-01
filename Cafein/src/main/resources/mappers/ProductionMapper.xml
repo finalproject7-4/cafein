@@ -21,12 +21,8 @@
 			AND process like concat('%',#{process},'%')
 		</if>
 		
-		<if test="produceline != null and !produceline.equals(0)">
-			AND produceline = #{produceline}
-		</if>
-		
 		<if test="itemname != null and !itemname.equals('')">
-			AND itemname like concat('%',#{itemname},'%')
+			AND itemname = #{itemname}
 		</if>
 			
 		<if test="searchBtn != null and searchBtn !='검사전'">
@@ -41,6 +37,10 @@
 		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
 	</select>
 	
+	<!-- 엑셀파일 다운로드용 생산지시 리스트 조회 -->
+	<select id="getExcelDownProduceList" resultType="com.cafein.domain.ProduceVO">
+		select * from produce order by produceid desc
+	</select>
 
 	
 	<!-- AJAX 생산지시 전체글 개수 조회 -->
@@ -106,6 +106,10 @@
 		update produce set state = #{state} where produceid = #{produceid}
 	</update>
 	
+	<!-- 포장완료된 제품 roastedbean 테이블에 추가. -->
+	<!-- <insert id="">
+		insert into roastedbean 
+	</insert> -->
 	
 	
 </mapper>
