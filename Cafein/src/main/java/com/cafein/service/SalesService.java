@@ -20,6 +20,8 @@ public interface SalesService {
 	//수주코드 생성
 	public int poCount(SalesVO svo) throws Exception;
 		
+	//수주수정
+	public int POModify(SalesVO svo) throws Exception;
 		
 		
 }

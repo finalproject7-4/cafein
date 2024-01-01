@@ -44,7 +44,23 @@ public class ShipVO {
 	private int itemweight;
 	private int itemprice;
 	private String available;
+	
+	// work 테이블
+	private int workid;
+//	private String membercode;
+	private Date workdate1;
+	private Date workdate2;
+	private String worksts;
+	private int workcount;
+	private Date workupdate;
 	private String workcode;
+
+//	private String pocode;
+	private int receiptid;
+
+//	private String clientcode;
+	private int recordcount;
+	private String returncode;
 	
 //	@Override
 //	public String toString() {

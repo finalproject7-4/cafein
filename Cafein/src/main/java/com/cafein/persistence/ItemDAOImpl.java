@@ -1,7 +1,6 @@
 package com.cafein.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -21,17 +20,23 @@ public class ItemDAOImpl implements ItemDAO {
 	private SqlSession sqlSession;
 	
 	private static final String NAMESPACE="com.cafein.mapper.ItemMapper";
-	
+
 	@Override
 	public List<ItemVO> getItemList() throws Exception {
 		logger.debug("DAO - getItemList()");
 		return sqlSession.selectList(NAMESPACE + ".itemList");
+	}	
+	
+	@Override
+	public List<ItemVO> getItemList(ItemVO vo) throws Exception {
+		logger.debug("DAO - getItemList(ItemVO vo)");
+		return sqlSession.selectList(NAMESPACE + ".itemListPage", vo);
 	}
 
 	@Override
-	public List<ItemVO> searchItemList(Map map) throws Exception {
-		logger.debug("DAO - searchItemList(Map map)");
-		return sqlSession.selectList(NAMESPACE + ".searchItemList", map);
+	public Integer getItemCount(ItemVO vo) throws Exception {
+		logger.debug("DAO - getItemCount(ItemVO vo)");
+		return sqlSession.selectOne(NAMESPACE + ".getItemCount", vo);
 	}
 
 	@Override
@@ -41,9 +46,16 @@ public class ItemDAOImpl implements ItemDAO {
 	}
 
 	@Override
-	public int getItemCount(ItemVO vo) throws Exception {
+	public int getItemTypeCount(ItemVO vo) throws Exception {
 		logger.debug("DAO - getItemCount(ItemVO vo)");
-		return sqlSession.selectOne(NAMESPACE + ".getItemCount", vo);
+		return sqlSession.selectOne(NAMESPACE + ".getItemTypeCount", vo);
 	}
+
+	@Override
+	public int updateItem(ItemVO vo) throws Exception {
+		logger.debug("DAO - updateItem(ItemVO vo)");
+		return sqlSession.update(NAMESPACE + ".updateItem", vo);
+	}
+
 
 }
