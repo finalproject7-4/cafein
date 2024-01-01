@@ -72,6 +72,13 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : getWorkCount(WorkVO wvo)");
 		return sqlSession.selectOne(NAMESPACE + ".getWKCount", wvo);
 	}
+	
+	// 작업 지시 수정
+	@Override
+	public int updateWK(WorkVO wvo) throws Exception {
+		logger.debug("DAO : WKModify(WorkVO wvo)");
+		return sqlSession.selectOne(NAMESPACE + ".updateWK", wvo);
+	}
 
 	// 실적 조회
 	@Override

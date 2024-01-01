@@ -76,6 +76,13 @@
 		</where>
 	</select>
 	
+	<!-- 작업 지시 수정 -->
+	<update id="updateWK">
+	 	update work set clientname=#{clientname}, itemname=#{itemname}, worksts=#{worksts}, membercode=#{membercode},
+	 	workcount=#{workcount}, workdate1=#{workdate1}, workupdate=#{workupdate}
+	 	where workid=#{workid}
+	 </update>
+	
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->

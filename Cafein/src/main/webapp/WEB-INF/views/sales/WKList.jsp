@@ -52,9 +52,7 @@
 			<span id="buttonset1"><button type="button"
 					class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규
-					등록</button>
-				<button type="button" class="btn btn-dark m-2">수정</button>
-				<button type="button" class="btn btn-dark m-2">삭제</button></span>
+					등록</button></span>
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table">
@@ -70,6 +68,7 @@
 								<th scope="col">지시수량</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
+								<th scope="col">관리</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -88,6 +87,18 @@
 									<td><fmt:formatDate value="${wk.workdate2 }"
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.membercode }</td>
+									<td>
+									<!-- 버튼 수정 -->
+									<button type="button" class="btn btn-outline-dark" 
+									        onclick="openModifyModal('${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.workcount}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									        수정
+									</button>
+									<!-- 버튼 삭제 -->
+									<button type="button" class="btn btn-outline-dark" 
+									        onclick="openDeleteModal()">
+									        삭제
+									</button>
+									</td>
 								</tr>
 							</c:forEach>
 

@@ -107,6 +107,19 @@ public class ShipController {
 		
 		return code + num;
 	}
+	
+	// 작업지시 수정 - POST
+	// http://localhost:8088/sales/WKList
+	@RequestMapping(value = "/modifyWK", method = RequestMethod.POST)
+	public String modifyPOST(WorkVO wvo) throws Exception {
+		logger.debug(" /modify form -> modifyPOST()");
+		logger.debug(" 수정할 정보 " + wvo);
+
+		// 서비스 - 정보수정 동작
+		int result = shService.WKModify(wvo);
+		logger.debug("result", result);
+		return "redirect:/sales/POList";
+	}
 
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
