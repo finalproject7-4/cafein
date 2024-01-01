@@ -127,7 +127,7 @@
 					// 선택한 행의 데이터를 가져오기
 					var pocode = $(this).find('td:eq(1)').text(); // 수주코드
 					var clientcode = $(this).find('td:eq(2)').text(); // 거래처
-					var itemscode = $(this).find('td:eq(3)').text(); // 품명
+					var itemcode = $(this).find('td:eq(3)').text(); // 품명
 
 					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
 					$('#pocode').val(pocode);
