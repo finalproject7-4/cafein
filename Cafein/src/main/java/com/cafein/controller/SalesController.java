@@ -31,10 +31,13 @@ public class SalesController {
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
 	public String AllPOListGET(Model model) throws Exception{
-		logger.debug("AllPOListGET() 실행");
+		logger.info("AllPOListGET() 실행");
 		
 		List<SalesVO> POList = sService.AllPOList();
+		logger.debug("POList size: " + POList.size());
+
 		logger.debug(" @@@ " + POList);
+
 
 		model.addAttribute("POList", POList);
 		model.addAttribute("cliList", sService.registCli()); 

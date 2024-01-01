@@ -4,9 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
+${POList}
 <h1>수주관리</h1>
 <fieldset>
-
 	<div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
 	<form role="form" method="post">
@@ -43,10 +43,14 @@
 				<button type="button" class="btn btn-outline-dark"
 					id="complete">완료</button>
 			</form>
+			<form role="form5">
+				<input type="hidden" name="state" value="취소">
+				<button type="button" class="btn btn-outline-dark"
+					id="cancel">취소</button>
+			</form>
 		</div>
 
 			<!-- 수주 리스트 테이블 조회 -->
-
 			<div class="bg-light rounded h-100 p-4">
 			<span class="mb-4">총 건</span>
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
@@ -69,152 +73,52 @@
 								<th scope="col">관리</th>
 							</tr>
 						</thead>
-						<tbody>
+					<tbody>
 						<c:set var="counter" value="1" />
-							<c:forEach items="${POList}" var="po" varStatus="status">
-						<tr>
-									<td>${counter }</td>
-									<td>${po.postate }</td>
-									<td>${po.pocode }</td>
-									<td>${po.clientname}</td>
-									<td>${po.itemname}</td>
-									<td>${po.pocnt}</td> 
-									<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-									
-									<c:choose>
-										<c:when test="${empty po.ordersdate}">
-											<td>수정일자 참조</td>
-										</c:when>
-										<c:otherwise>
-											<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-										</c:otherwise>
-									</c:choose>
-									
-									<c:choose>
-										<c:when test="${empty po.updatedate}">
-											<td>업데이트 날짜 없음</td>
-										</c:when>
-										<c:otherwise>
-											<td><fmt:formatDate value="${po.updatedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-										</c:otherwise>
-									</c:choose>
-									<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-									<td>${po.membercode}</td>
-									<td>
-									<!-- 버튼 수정 -->
-									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
-									        수정
-									</button>
-									<!-- 버튼 삭제 -->
-									<button type="button" class="btn btn-outline-dark" 
-									        id="deleteBtn">
-									        삭제
-									</button>
-									</td>
-								</tr>
-								<c:set var="counter" value="${counter+1 }" />
-							</c:forEach>
-						</tbody>
-					</table>
-					<!-- 페이지 블럭 생성 -->
-			<nav aria-label="Page navigation example">
-  				<ul class="pagination justify-content-center">
-    				
-        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
-    				<li class="page-item">
-    				  <c:if test="${pageVO.prev }">
-      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
-        					<span aria-hidden="true">&laquo;</span>
-      					</a>
-        					
-						<script>
-							$(document).ready(function(){
-								$('.pageBlockPrev').click(function(e) {
-									e.preventDefault(); // 기본 이벤트 제거
-								
-					            	let prevPage = $(this).data('page');
-								
-									let option = "${param.option}";
-									let keyword = "${param.keyword}";
+						<c:choose>
+							<c:when test="${empty POList}">
+								<p>No data available.</p>
+							</c:when>
+							<c:otherwise>
+								<c:forEach items="${POList}" var="po" varStatus="status">
+									<tr>
+										<td><c:out value="${po.counter}" /></td>
+										<td><c:out value="${po.postate}" /></td>
+										<td><c:out value="${po.pocode}" /></td>
+										<td>${po.clientname}</td>
+										<td>${po.itemname}</td>
+										<td>${po.pocnt}</td>
+										<td><fmt:formatDate value="${po.ordersdate}"
+												dateStyle="short" pattern="yyyy-MM-dd" /></td>
 
-			                		url = "/sales/POList?page=" + prevPage;
-			                
-			                		if (option && keyword) {
-			                    		url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
-			                		}
+										<c:choose>
+											<c:when test="${empty po.updatedate}">
+												<td>업데이트 날짜 없음</td>
+											</c:when>
+											<c:otherwise>
+												<td><fmt:formatDate value="${po.updatedate}"
+														dateStyle="short" pattern="yyyy-MM-dd" /></td>
+											</c:otherwise>
+										</c:choose>
+										<td><fmt:formatDate value="${po.ordersduedate}"
+												dateStyle="short" pattern="yyyy-MM-dd" /></td>
+										<td>${po.membercode}</td>
+										<td>
+											<!-- 버튼 수정 -->
+											<button type="button" class="btn btn-outline-dark"
+												onclick="openModifyModal('${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+												수정</button> <!-- 버튼 삭제 -->
+											<button type="button" class="btn btn-outline-dark"
+												id="deleteBtn">삭제</button>
+										</td>
+									</tr>
+									<c:set var="counter" value="${counter+1 }" />
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
 
-			                		location.href = url;
-								});
-							});
-						</script>
-    				  </c:if>
-    				</li>
-        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
-    		
-    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
-					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
-    					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
-    						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
-    					</li>
-    					
-					<script>
-						$(document).ready(function(){
-							$('.pageBlockNum').click(function(e) {
-								e.preventDefault(); // 기본 이벤트 제거
-					
-			            		let pageValue = $(this).data('page');
-					
-								let option = "${param.option}";
-								let keyword = "${param.keyword}";
-
-	                			url = "/sales/POList?page=" + pageValue;
-                
-	                			if (option && keyword) {
-	                    			url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
-	                			}
-
-	                			location.href = url;
-							});
-						});
-					</script>
-    				</c:forEach>
-					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
-    		
-    				<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
-    				<li class="page-item">
-    				  <c:if test="${pageVO.next }">
-      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
-        					<span aria-hidden="true">&raquo;</span>
-      					</a>
-      					
-						<script>
-							$(document).ready(function(){
-								$('.pageBlockNext').click(function(e) {
-									e.preventDefault(); // 기본 이벤트 제거
-				
-		            				let nextPage = $(this).data('page');
-				
-									let option = "${param.option}";
-									let keyword = "${param.keyword}";
-
-               					url = "/slaes/POList?page=" + nextPage;
-            
-               					if (option && keyword) {
-                   					url += "&option=" + encodeURIComponent(option) + "&keyword=" + encodeURIComponent(keyword);
-               					}
-
-               					location.href = url;
-								});
-							});
-						</script>
-    				</c:if>
-    				</li>
-					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
-			  </ul>
-			</nav>
-			<!-- 페이지 블럭 생성 -->	
-					
 				</div>
 				
 				
@@ -461,38 +365,38 @@
     });
     
 //수주삭제
-$("#deleteBtn").click(function() {
-    Swal.fire({
-        title: '글을 삭제하시겠습니까?',
-        text: '삭제하시면 다시 복구시킬 수 없습니다.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '삭제',
-        cancelButtonText: '취소'
-    }).then(function(result) {
-        if (result.value) {
-            var poid = $("#poidInput").val();
+// $("#deleteBtn").click(function() {
+//     Swal.fire({
+//         title: '글을 삭제하시겠습니까?',
+//         text: '삭제하시면 다시 복구시킬 수 없습니다.',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: '#3085d6',
+//         cancelButtonColor: '#d33',
+//         confirmButtonText: '삭제',
+//         cancelButtonText: '취소'
+//     }).then(function(result) {
+//         if (result.value) {
+//             var poid = $("#poidInput").val();
 
-            $.ajax({
-                type: 'POST',
-                url: '/sales/remove',  // 수정된 경로
-                data: {
-                    poid: poid
-                },
-                success: function(response) {
-                    alert('삭제 완료.');
-                    // 삭제 성공 후에 폼을 서버로 제출
-                    formObj.submit();
-                },
-                error: function(error) {
-                    console.error('Error during deletion:', error);
-                }
-            });
-        }
-    });
-});
+//             $.ajax({
+//                 type: 'POST',
+//                 url: '/sales/remove',  // 수정된 경로
+//                 data: {
+//                     poid: poid
+//                 },
+//                 success: function(response) {
+//                     alert('삭제 완료.');
+//                     // 삭제 성공 후에 폼을 서버로 제출
+//                     formObj.submit();
+//                 },
+//                 error: function(error) {
+//                     console.error('Error during deletion:', error);
+//                 }
+//             });
+//         }
+//     });
+// });
 
     
 

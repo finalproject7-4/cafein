@@ -111,45 +111,45 @@ $(document).ready(function() {
 	
 
 //     // 수정된 값을 서버로 전송
-//     $("#ModifyBtn").click(function() {
-//         // 가져온 값들을 변수에 저장
-//         var modifiedClientid = $("#clientidp").val();
-// 		var modifiedItemid = $("#itemidp").val();
+    $("#ModifyBtn").click(function() {
+        // 가져온 값들을 변수에 저장
+        var modifiedClientid = $("#clientidp").val();
+		var modifiedItemid = $("#itemidp").val();
 
-//         var modifiedPOid = $("#poid").val();
-//         var modifiedClientName = $("#clientid2").val();
-//         var modifiedItemName = $("#itemid2").val();
-//         var modifiedPostate = $("#floatingSelect2").val();
-//         var modifiedPocnt = $("#pocnt2").val();
-//         var modifiedUpdateDate = formatDate($("#todaypo2").val());
-//         var modifiedOrdersDueDate = formatDate($("#date2").val());
-//         var modifiedMemberCode = $("#membercode2").val();
+        var modifiedPOid = $("#poid").val();
+        var modifiedClientName = $("#clientid2").val();
+        var modifiedItemName = $("#itemid2").val();
+        var modifiedPostate = $("#floatingSelect2").val();
+        var modifiedPocnt = $("#pocnt2").val();
+        var modifiedUpdateDate = formatDate($("#todaypo2").val());
+        var modifiedOrdersDueDate = formatDate($("#date2").val());
+        var modifiedMemberCode = $("#membercode2").val();
     
-//         // Ajax를 사용하여 서버로 수정된 값 전송
-//         $.ajax({
-//             type: "POST",
-//             url: "/sales/modifyPO",
-//             data: {
-//             	clientid: modifiedClientid,
-//             	itemid: modifiedItemid,
-//             	poid: modifiedPOid,
-//                 clientname: modifiedClientName,
-//                 itemname: modifiedItemName,
-//                 postate: modifiedPostate,
-//                 pocnt: modifiedPocnt,
-//                 updatedate: modifiedUpdateDate,
-//                 ordersduedate: modifiedOrdersDueDate,
-//                 membercode: modifiedMemberCode
-//             },
-//             success: function(response) {
-//                 console.log("Modification success:", response);
-//                 $("#openModifyModal").modal('hide');
-//             },
-//             error: function(error) {
-//                 console.error("Error during modification:", error);
-//             }
-//         });
-//     });
+        // Ajax를 사용하여 서버로 수정된 값 전송
+        $.ajax({
+            type: "POST",
+            url: "/sales/modifyPO",
+            data: {
+            	clientid: modifiedClientid,
+            	itemid: modifiedItemid,
+            	poid: modifiedPOid,
+                clientname: modifiedClientName,
+                itemname: modifiedItemName,
+                postate: modifiedPostate,
+                pocnt: modifiedPocnt,
+                updatedate: modifiedUpdateDate,
+                ordersduedate: modifiedOrdersDueDate,
+                membercode: modifiedMemberCode
+            },
+            success: function(response) {
+                console.log("Modification success:", response);
+                $("#openModifyModal").modal('hide');
+            },
+            error: function(error) {
+                console.error("Error during modification:", error);
+            }
+        });
+    });
 	
 	
 	

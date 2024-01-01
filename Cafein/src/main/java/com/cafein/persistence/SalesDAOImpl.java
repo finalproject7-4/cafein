@@ -62,7 +62,7 @@ public class SalesDAOImpl implements SalesDAO {
 	@Override
 	public int updatePO(SalesVO svo) throws Exception {
 		logger.debug("DAO : POModify(SalesVO svo)");
-		return sqlSession.selectOne(NAMESPACE + ".updatePO", svo);
+		return sqlSession.update(NAMESPACE + ".updatePO", svo);
 	}
 
 	//삭제

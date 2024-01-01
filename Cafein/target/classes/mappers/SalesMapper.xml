@@ -20,7 +20,7 @@
 		FROM purchaseorder po
 		JOIN item ON po.itemid = item.itemid
 		JOIN client cli ON po.clientid = cli.clientid
-		ORDER BY ordersdate desc, poid desc;
+		ORDER BY ordersdate desc, poid desc
 		</select>
 
 	<!-- 수주등록-납품처 -->
