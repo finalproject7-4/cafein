@@ -11,7 +11,7 @@
 	<div class="bg-light rounded h-100 p-4">
 	<form name="dateSearch" action="/sales/POList" method="get">
 		납품처조회 	<input type="text" name="itemname" placeholder="납품처명을 입력하세요"><br>
-		수주일자 <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+		수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
 		<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
 		<br>
 	</form>
