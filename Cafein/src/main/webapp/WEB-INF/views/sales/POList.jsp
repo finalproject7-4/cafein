@@ -4,20 +4,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
-
 <h1>수주관리</h1>
 <fieldset>
+
 	<div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
-	<form name="dateSearch" action="/sales/POList" method="get">
-		납품처조회 	<input type="text" name="itemname" placeholder="납품처명을 입력하세요"><br>
-		수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
-		<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
+	<form method="post">
+		수주일자 <input type="date" class="date" name="podate"> ~ <input type="date" class="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
+		납품처조회 <input class="clientSearch1" type="text" name="client" placeholder="납품처코드"> 
+				<input class="clientSearch2" type="text" name="worknumber" placeholder="납품처명"> <br>
+		납품예정일 <input type="date" class="date" name="ordersduedate"> ~ <input type="date" class="date" name="podate">
+		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch1" type="text" name="itemname" placeholder="품목코드"> 
+			<input class="itemSearch2" type="text" name="worknumber" placeholder="품명"> 
+		<button id="searchbtn" type="button" class="btn btn-dark m-2">조회</button>
 		<br>
 	</form>
 	</div>
 	</div><br>
-	
 	
 		<div class="col-12">
 			<div class="btn-group" role="group">
@@ -33,33 +36,26 @@
 			</form>
 			<form role="form3">
 				<input type="hidden" name="state" value="진행">
-				<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
+				<button type="button" class="btn btn-outline-dark" id="ingpro">진행</button>
 			</form>
 			<form role="form4">
 				<input type="hidden" name="state" value="완료">
 				<button type="button" class="btn btn-outline-dark"
 					id="complete">완료</button>
 			</form>
-			<form role="form5">
-				<input type="hidden" name="state" value="취소">
-				<button type="button" class="btn btn-outline-dark"
-					id="cancel">취소</button>
-			</form>
 		</div>
 
 			<!-- 수주 리스트 테이블 조회 -->
-			<div class="bg-light rounded h-100 p-4" id="ListID">
-			<span class="mb-4">총 ${fn:length(POList)}건</span>
-			<input type="hidden" name="poid" class="poidDel">
-			
-			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
+			<div class="bg-light rounded h-100 p-4">
+			<span class="mb-4">총 ${fn:length(AllPOList)}건</span>
+			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" data-bs-whatever="@getbootstrap"	value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-				
+			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">번호</th>
+								<th scope="col">수주번호</th>
 								<th scope="col">수주상태</th>
 								<th scope="col">수주코드</th>
 								<th scope="col">납품처</th>
@@ -70,73 +66,63 @@
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
-								<th scope="col">납품서발행</th>
 							</tr>
 						</thead>
-					<tbody>
+						<tbody>
 						<c:set var="counter" value="1" />
-						<c:choose>
-							<c:when test="${empty POList}">
-								<p>No data available.</p>
-							</c:when>
-							<c:otherwise>
-							<c:set var="counter" value="1" />
-								<c:forEach items="${POList}" var="po" varStatus="status">
-									<tr>
-										<td>${counter }</td>
-										<td>${po.postate }</td>
-										<td>${po.pocode }</td>
-										<td>${po.clientname}</td>
-										<td>${po.itemname}</td>
-										<td>${po.pocnt}</td>
-										<c:choose>
-											<c:when test="${empty po.ordersdate}">
-												<td>수정일자 참조</td>
-											</c:when>
-											<c:otherwise>
-												<td><fmt:formatDate value="${po.ordersdate}"
-														dateStyle="short" pattern="yyyy-MM-dd" /></td>
-											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${empty po.updatedate}">
-												<td>업데이트 날짜 없음</td>
-											</c:when>
-											<c:otherwise>
-												<td><fmt:formatDate value="${po.updatedate}"
-														dateStyle="short" pattern="yyyy-MM-dd" /></td>
-											</c:otherwise>
-										</c:choose>
-										<td><fmt:formatDate value="${po.ordersduedate}"
-												dateStyle="short" pattern="yyyy-MM-dd" /></td>
-										<td>${po.membercode}</td>
-										<td>
-											<!-- 버튼 수정 -->
-											<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+							<c:forEach items="${POList}" var="po" varStatus="status">
+								<tr>
+									<td>${counter }</td>
+									<td>${po.postate }</td>
+									<td>${po.pocode }</td>
+									<td>${po.clientname}</td>
+									<td>${po.itemname}</td>
+									<td>${po.pocnt}</td> 
+									<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									<c:choose>
+										<c:when test="${empty po.updatedate}">
+											<td>업데이트 날짜 없음</td>
+										</c:when>
+										<c:otherwise>
+											<td><fmt:formatDate value="${po.updatedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+										</c:otherwise>
+									</c:choose>
+									<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									<td>${po.membercode}</td>
+									<td>
+									<!-- 버튼 수정 -->
+									<button type="button" class="btn btn-outline-dark" 
+									        onclick="openModifyModal('${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
-											</button>
-										</td>
-										<td>
-											<button type="button" class="btn btn-outline-dark" 
-											        onclick="location.href='/sales/receipt';">
-											        불러오기
-											</button>
-											</td>
-									</tr>
-									<c:set var="counter" value="${counter+1 }" />
-								</c:forEach>
-							</c:otherwise>
-						</c:choose>
-					</tbody>
-				</table>
+									</button>
+									<!-- 버튼 삭제 -->
+									<button type="button" class="btn btn-outline-dark" 
+									        onclick="openDeleteModal()">
+									        삭제
+									</button>
+									</td>
+								</tr>
+								<c:set var="counter" value="${counter+1 }" />
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
+<%-- 			<c:if test="${pageVO.prev }"> --%>
+<%-- 				<li><a href="/sales/POList?page=${pageVO.startPage - 1 }">«</a></li> --%>
+<%-- 			</c:if> --%>
+
+<%-- 			<c:forEach var="i" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1"> --%>
+<%-- 				<li ${pageVO.cri.page == i?  "class='active'":"" }><a href="/sales/POList?page=${i }"> ${i } </a></li> --%>
+<%-- 			</c:forEach> --%>
+
+<%-- 			<c:if test="${pageVO.next }"> --%>
+<%-- 				<li><a href="/sales/POList?page=${pageVO.endPage + 1 }">»</a></li> --%>
+<%-- 			</c:if> --%>
 		</div>
 		</div>
-		<!-- 품목 등록 모달 -->
 		<jsp:include page="registPO.jsp"/>
-		<!-- 품목 수정 모달 -->
 		<jsp:include page="modifyPO.jsp"/>
+		<jsp:include page="deletePO.jsp"/>
 		
 		<!-- 납품처 조회 모달 -->
         <div class="modal fade" id="clientSM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -221,27 +207,19 @@
 		  </div>
 		</fieldset>
 		
-		
   <!-- 모달 js&jq -->
    <script>
-   
    /* 리스트 값 수정 모달로 값 전달 */
-   function openModifyModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
-       console.log('poid:', poid); 
-       console.log('clientid:', clientid); 
-       console.log('itemid:', itemid); 
-	   console.log('clientname:', clientname);
-       console.log('itemname:', itemname);
-       console.log('postate:', postate);
-       console.log('pocnt:', pocnt);
-       console.log('ordersdate:', ordersdate);
-       console.log('ordersduedate:', ordersduedate);
-       console.log('membercode:', membercode); 
+   function openModifyModal(clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+	   console.log('Client Name:', clientname);
+       console.log('Item Name:', itemname);
+       console.log('Postate:', postate);
+       console.log('Pocnt:', pocnt);
+       console.log('Orders Date:', ordersdate);
+       console.log('Orders Due Date:', ordersduedate);
+       console.log('Member Code:', membercode); 
 	   
 	   // 가져온 값들을 모달에 설정
-	   $("#poid3").val(poid);
-	   $("#clientid3").val(clientid);
-	   $("#itemid3").val(itemid);
 	    $("#clientid2").val(clientname);
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
@@ -251,10 +229,46 @@
 	    $("#membercode2").val(membercode);
 
 	    // 모달 열기
-	    $("#openModifyModal").modal('show');
+	    $("#modifyModal").modal('show');
 	    
+	    // 수정된 값을 서버로 전송
+	    $("#modifyButton").click(function() {
+	        // 가져온 값들을 변수에 저장
+	        var modifiedClientName = $("#clientid2").val();
+	        var modifiedItemName = $("#itemid2").val();
+	        var modifiedPostate = $("#floatingSelect2").val();
+	        var modifiedPocnt = $("#pocnt2").val();
+	        var modifiedUpdateDate = $("#todaypo2").val();
+	        var modifiedOrdersDueDate = $("#date2").val();
+	        var modifiedMemberCode = $("#membercode2").val();
 
+	        // Ajax를 사용하여 서버로 수정된 값 전송
+	        $.ajax({
+	            type: "POST",
+	            url: "/sales/modifyPO",
+	            data: {
+	                clientname: modifiedClientName,
+	                itemname: modifiedItemName,
+	                postate: modifiedPostate,
+	                pocnt: modifiedPocnt,
+	                updatedate: modifiedUpdateDate,
+	                ordersduedate: modifiedOrdersDueDate,
+	                membercode: modifiedMemberCode
+	            },
+	            success: function(response) {
+	                console.log("Modification success:", response);
+	                $("#modifyModal").modal('hide');
+	            },
+	            error: function(error) {
+	                console.error("Error during modification:", error);
+	            }
+	        });
+	    });
 	}
+
+   function openDeleteModal() {
+       $("#deleteModal").modal('show');
+   }
 		   
    /*달력 이전날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
@@ -376,64 +390,7 @@
                 }
             });
         });
-        
-    
-        $("#allpo").click(function() {
-            // 모든 수주 항목 숨김
-            $(".table tbody tr").show();
-            // 번호 업데이트
-            updateRowNumbers();
-        });
-
-        $("#stop").click(function() {
-            // 모든 수주 항목 숨김
-            $(".table tbody tr").hide();
-            // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('대기'))").show();
-            // 번호 업데이트
-            updateRowNumbers();
-        });
-
-        $("#ing").click(function() {
-            // 모든 수주 항목 숨김
-            $(".table tbody tr").hide();
-            // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('진행'))").show();
-            // 번호 업데이트
-            updateRowNumbers();
-        });
-
-        $("#complete").click(function() {
-            // 모든 수주 항목 숨김
-            $(".table tbody tr").hide();
-            // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('완료'))").show();
-            // 번호 업데이트
-            updateRowNumbers();
-        });
-
-        $("#cancel").click(function() {
-            // 모든 수주 항목 숨김
-            $(".table tbody tr").hide();
-            // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('취소'))").show();
-            // 번호 업데이트
-            updateRowNumbers();
-        });
-
-        // 함수를 정의하는 부분
-        function updateRowNumbers() {
-            var counter = 1;
-            $(".table tbody tr:visible").each(function() {
-                $(this).find('td:first').text(counter);
-                counter++;
-            });
-        }
-
-
-
     });
-</script>
-
+    </script>
 
 <%@ include file="../include/footer.jsp"%>
