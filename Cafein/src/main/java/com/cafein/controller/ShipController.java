@@ -117,7 +117,7 @@ public class ShipController {
 		// 서비스 - 정보수정 동작
 		int result = shService.WKModify(wvo);
 		logger.debug("result", result);
-		return "redirect:/sales/POList";
+		return "redirect:/sales/WKList";
 	}
 
 	// 실적 조회
