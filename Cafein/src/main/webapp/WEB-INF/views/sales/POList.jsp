@@ -4,22 +4,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
+
 <h1>수주관리</h1>
 <fieldset>
 	<div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
-	<form role="form" method="post">
-		수주일자 <input type="date" class="date" name="keyword"> ~ <input type="date" class="date" name="keyword">&nbsp;&nbsp;&nbsp;&nbsp;
-		납품처조회 <input class="clientSearch1" type="text" name="keyword" placeholder="납품처코드"> 
-				<input class="clientSearch2" type="text" name="keyword" placeholder="납품처명"> <br>
-		납품예정일 <input type="date" class="date" name="keyword"> ~ <input type="date" class="date" name="podate">
-		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch1" type="text" name="keyword" placeholder="품목코드"> 
-			<input class="itemSearch2" type="text" name="keyword" placeholder="품명"> 
-		<button id="searchbtn" type="button" class="btn btn-dark m-2">조회</button>
+	<form name="dateSearch" action="/sales/POList" method="get">
+		납품처조회 	<input type="text" name="itemname" placeholder="납품처명을 입력하세요"><br>
+		수주일자 <input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
+		<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
 		<br>
 	</form>
 	</div>
 	</div><br>
+	
 	
 		<div class="col-12">
 			<div class="btn-group" role="group">

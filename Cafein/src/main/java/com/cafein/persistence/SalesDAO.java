@@ -33,6 +33,9 @@ public interface SalesDAO {
 	//납품서
 	public List<SalesVO> getReceiptList() throws Exception;
 	
+	//엑셀
+	public List<SalesVO> getPOPrint() throws Exception;
+
 	
 	
 	

@@ -71,7 +71,8 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : POModify(SalesVO svo)");
 		return sqlSession.update(NAMESPACE + ".updatePO", svo);
 	}
-
+	
+	
 	
 
 	
@@ -81,6 +82,13 @@ public class SalesDAOImpl implements SalesDAO {
 	public List<SalesVO> getReceiptList() throws Exception {
 		logger.debug("DAO : getReceiptList()");
 		return sqlSession.selectList(NAMESPACE+".getReceiptList");
+	}
+
+	//엑셀
+	@Override
+	public List<SalesVO> getPOPrint() throws Exception {
+		logger.debug("DAO : getPOPrint()");
+		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
 	
 	

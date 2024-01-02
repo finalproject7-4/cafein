@@ -20,6 +20,9 @@
 		FROM purchaseorder po
 		JOIN item ON po.itemid = item.itemid
 		JOIN client cli ON po.clientid = cli.clientid
+		WHERE
+	    cli.clientname LIKE CONCAT('%', #{keyword}, '%') OR
+	    item.itemname LIKE CONCAT('%', #{keyword}, '%')
 		ORDER BY ordersdate desc, poid desc
 	</select>
 	

@@ -82,6 +82,13 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.getReceiptList();
 	}
 
+	//엑셀
+	@Override
+	public List<SalesVO> POPrint() throws Exception {
+		logger.debug("S :POPrint()");
+		return sdao.getPOPrint();
+	}
+
 	
 	
 	

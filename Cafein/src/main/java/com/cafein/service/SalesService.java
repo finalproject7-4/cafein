@@ -30,4 +30,8 @@ public interface SalesService {
 	//납품서
 	public List<SalesVO> receiptList() throws Exception;
 	
+	//엑셀
+	public List<SalesVO> POPrint() throws Exception;
+
+	
 }
