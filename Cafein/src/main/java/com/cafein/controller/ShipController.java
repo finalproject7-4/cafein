@@ -1,6 +1,9 @@
 package com.cafein.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
 
@@ -91,20 +94,19 @@ public class ShipController {
 		return "redirect:/sales/WKList";                                             
 	}
 
-	
 	// 작업 지시 코드 생성 메서드
 	public String makeWKcode(WorkVO wvo) throws Exception {
-		
-		String code = "";
-		int num = 1001 + shService.wkCount(wvo);
-		
-		switch(wvo.getWorksts()) {
-			case "대기": code = "ST"; break;
-			case "진행": code = "PR"; break;
-			case "완료": code = "CP"; break;
-		}
-		
-		return code + num;
+	    // DB에서 전체 작업 수 조회
+	    int count = shService.wkCount(wvo);
+
+	    // 작업 코드 형식 설정
+	    String codePrefix = "WK";
+	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyMMdd");
+	    String datePart = LocalDate.now().format(dateFormat);
+	    String countPart = String.format("%04d", count + 1); // 4자리 숫자로 포맷팅
+
+	    // 최종 코드 생성
+	    return codePrefix + datePart + countPart;
 	}
 	
 	// 작업지시 수정 - POST

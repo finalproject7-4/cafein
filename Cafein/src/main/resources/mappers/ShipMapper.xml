@@ -61,21 +61,11 @@
 	
 	<!-- 작업지시 코드 생성 -->
 	<select id="getWKCount" resultType="int" parameterType="com.cafein.domain.WorkVO">
-		select count(*) from work
-		<where>
-		  <choose>
-			<when test="worksts == '대기'">
-				and workcode like '%ST%';
-			</when>
-			<when test="worksts == '진행'">
-				and workcode like '%PR%';
-			</when>
-			<when test="worksts == '완료'">
-				and workcode like '%CP%';
-			</when>
-		  </choose>
-		</where>
-	</select>
+    select count(*) from work
+	<where>
+    and workcode like 'WK%';
+	</where>
+</select>
 	
 	<!-- 작업 지시 수정 -->
 	<update id="updateWK">
