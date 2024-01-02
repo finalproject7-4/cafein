@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.cafein.domain.ClientVO;
+import com.cafein.domain.ItemVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.TestVO;
 import com.cafein.persistence.SalesDAO;
@@ -35,6 +36,14 @@ public class SalesServiceImpl implements SalesService {
 		logger.debug("S :AllPOList()");
 		return sdao.getPOList();
 	}
+	
+	//페이징
+	@Override
+	public List<SalesVO> POList(SalesVO svo) throws Exception {
+		logger.debug("Service - POList(SalesVO svo)");
+		return sdao.getPOList(svo);
+	}
+	
 
 	/*수주등록 - 납품처 */
 	@Override
@@ -63,13 +72,14 @@ public class SalesServiceImpl implements SalesService {
 		logger.debug("S : POModify(int poid)");
 		return sdao.updatePO(svo);
 	}
+	
 
-	//수주삭제
+	
+	//납품서
 	@Override
-	public void PORemove(int poid) throws Exception {
-		logger.debug("S : PODelete(int poid)");
-		sdao.deletePO(poid);
-		
+	public List<SalesVO> receiptList() throws Exception {
+		logger.debug("S :receiptList()");
+		return sdao.getReceiptList();
 	}
 
 	

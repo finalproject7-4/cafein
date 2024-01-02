@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.service.SalesService;
 
@@ -30,16 +32,20 @@ public class SalesController {
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
-	public String AllPOListGET(Model model) throws Exception{
-		logger.info("AllPOListGET() 실행");
+	public String AllPOListGET(Model model,SalesVO svo,  Criteria cri) throws Exception{
+		logger.debug("AllPOListGET() 실행");
 		
-		List<SalesVO> POList = sService.AllPOList();
-		logger.debug("POList size: " + POList.size());
+		// SalesVO의 Criteria 설정
+		svo.setCri(cri);
+		
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(sService.poCount(svo));
+		logger.debug("총 개수: " + pageVO.getTotalCount());
 
-		logger.debug(" @@@ " + POList);
-
-
-		model.addAttribute("POList", POList);
+		model.addAttribute("POList", sService.POList(svo));
+		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("cliList", sService.registCli()); 
 		model.addAttribute("iList", sService.registItem());  
 
@@ -48,6 +54,19 @@ public class SalesController {
 		
 		return "/sales/POList";
 	}
+	
+	//납품서
+	// http://localhost:8088/sales/receipt
+	@RequestMapping(value = "/receipt", method = RequestMethod.GET)
+    public String showReceiptPage(Model model) throws Exception{
+		logger.debug("showReceiptPage() 실행 ");
+		
+		List<SalesVO> receiptList = sService.receiptList();
+		logger.debug(" @@@ " + receiptList);
+		model.addAttribute("receiptList", receiptList);
+
+        return "/sales/receipt";
+    }
 		
 	// 수주등록 - POST
 	// http://localhost:8088/sales/POList
@@ -55,8 +74,8 @@ public class SalesController {
 	public String registPOST(SalesVO svo, 
 							@RequestParam(value = "ordersdate") String ordersdate,
 							@RequestParam(value = "ordersduedate") String ordersduedate,
-							@RequestParam(value = "clientid", defaultValue = "1") int clientid,
-							@RequestParam(value = "itemid", defaultValue = "1") int itemid,
+							@RequestParam(value = "clientid") int clientid,
+							@RequestParam(value = "itemid") int itemid,
 							RedirectAttributes rttr) throws Exception {
 		
 		logger.debug("폼submit -> registPOST() 호출 ");                                 
@@ -99,8 +118,8 @@ public class SalesController {
 	public String modifyPOST(SalesVO svo, RedirectAttributes rttr,
 			@RequestParam(value = "updatedate") String updatedate,
 			@RequestParam(value = "poid") int poid,
-			@RequestParam(value = "clientid", defaultValue = "1") int clientid,
-			@RequestParam(value = "itemid", defaultValue = "1") int itemid
+			@RequestParam(value = "clientid") int clientid,
+			@RequestParam(value = "itemid") int itemid
 			) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + svo);
@@ -118,14 +137,11 @@ public class SalesController {
 		return "redirect:/sales/POList";
 	}
 	
-	// 수주 삭제 - POST
-	// http://localhost:8088/sales/POList
-//	@RequestMapping(value = "/remove" ,method = RequestMethod.POST)
-//	public String deletePOST(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
-//		logger.debug("deletePOST()");
-//		sService.PORemove(poid);
-//		svo.setPoid(poid);
-//		return "redirect:/sales/POList";
-//	}
+
+	
+	
+	
+	
+	
 	
 }

@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
-${POList}
 <h1>수주관리</h1>
 <fieldset>
 	<div class="col-12">
@@ -36,7 +35,7 @@ ${POList}
 			</form>
 			<form role="form3">
 				<input type="hidden" name="state" value="진행">
-				<button type="button" class="btn btn-outline-dark" id="ingpro">진행</button>
+				<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
 			</form>
 			<form role="form4">
 				<input type="hidden" name="state" value="완료">
@@ -51,11 +50,13 @@ ${POList}
 		</div>
 
 			<!-- 수주 리스트 테이블 조회 -->
-			<div class="bg-light rounded h-100 p-4">
-			<span class="mb-4">총 건</span>
+			<div class="bg-light rounded h-100 p-4" id="ListID">
+			<span class="mb-4">총 ${fn:length(POList)}건</span>
+			<input type="hidden" name="poid" class="poidDel">
+			
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@getbootstrap" value="삭제">
+				
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -71,6 +72,7 @@ ${POList}
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
+								<th scope="col">납품서발행</th>
 							</tr>
 						</thead>
 					<tbody>
@@ -80,17 +82,25 @@ ${POList}
 								<p>No data available.</p>
 							</c:when>
 							<c:otherwise>
+							<c:set var="counter" value="1" />
 								<c:forEach items="${POList}" var="po" varStatus="status">
 									<tr>
-										<td><c:out value="${po.counter}" /></td>
-										<td><c:out value="${po.postate}" /></td>
-										<td><c:out value="${po.pocode}" /></td>
+										<td>${counter }</td>
+										<td>${po.postate }</td>
+										<td>${po.pocode }</td>
 										<td>${po.clientname}</td>
 										<td>${po.itemname}</td>
 										<td>${po.pocnt}</td>
-										<td><fmt:formatDate value="${po.ordersdate}"
-												dateStyle="short" pattern="yyyy-MM-dd" /></td>
-
+<%-- 										<fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td> --%>
+										<c:choose>
+											<c:when test="${empty po.ordersdate}">
+												<td>수정일자 참조</td>
+											</c:when>
+											<c:otherwise>
+												<td><fmt:formatDate value="${po.ordersdate}"
+														dateStyle="short" pattern="yyyy-MM-dd" /></td>
+											</c:otherwise>
+										</c:choose>
 										<c:choose>
 											<c:when test="${empty po.updatedate}">
 												<td>업데이트 날짜 없음</td>
@@ -105,12 +115,17 @@ ${POList}
 										<td>${po.membercode}</td>
 										<td>
 											<!-- 버튼 수정 -->
-											<button type="button" class="btn btn-outline-dark"
-												onclick="openModifyModal('${po.poid}', '${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
-												수정</button> <!-- 버튼 삭제 -->
-											<button type="button" class="btn btn-outline-dark"
-												id="deleteBtn">삭제</button>
+											<button type="button" class="btn btn-outline-dark" 
+									        onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+									        수정
+											</button>
 										</td>
+										<td>
+											<button type="button" class="btn btn-outline-dark" 
+											        onclick="location.href='/sales/receipt';">
+											        불러오기
+											</button>
+											</td>
 									</tr>
 									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
@@ -118,10 +133,7 @@ ${POList}
 						</c:choose>
 					</tbody>
 				</table>
-
 				</div>
-				
-				
 		</div>
 		</div>
 		<!-- 품목 등록 모달 -->
@@ -215,9 +227,12 @@ ${POList}
 		
   <!-- 모달 js&jq -->
    <script>
+   
    /* 리스트 값 수정 모달로 값 전달 */
-   function openModifyModal(poid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
+   function openModifyModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode) {
        console.log('poid:', poid); 
+       console.log('clientid:', clientid); 
+       console.log('itemid:', itemid); 
 	   console.log('clientname:', clientname);
        console.log('itemname:', itemname);
        console.log('postate:', postate);
@@ -227,7 +242,9 @@ ${POList}
        console.log('membercode:', membercode); 
 	   
 	   // 가져온 값들을 모달에 설정
-	   $("#poid").val(poid);
+	   $("#poid3").val(poid);
+	   $("#clientid3").val(clientid);
+	   $("#itemid3").val(itemid);
 	    $("#clientid2").val(clientname);
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
@@ -362,43 +379,64 @@ ${POList}
                 }
             });
         });
+        
+    
+        $("#allpo").click(function() {
+            // 모든 수주 항목 숨김
+            $(".table tbody tr").show();
+            // 번호 업데이트
+            updateRowNumbers();
+        });
+
+        $("#stop").click(function() {
+            // 모든 수주 항목 숨김
+            $(".table tbody tr").hide();
+            // 대기 상태인 수주만 보이도록 필터링
+            $(".table tbody tr:has(td:nth-child(2):contains('대기'))").show();
+            // 번호 업데이트
+            updateRowNumbers();
+        });
+
+        $("#ing").click(function() {
+            // 모든 수주 항목 숨김
+            $(".table tbody tr").hide();
+            // 대기 상태인 수주만 보이도록 필터링
+            $(".table tbody tr:has(td:nth-child(2):contains('진행'))").show();
+            // 번호 업데이트
+            updateRowNumbers();
+        });
+
+        $("#complete").click(function() {
+            // 모든 수주 항목 숨김
+            $(".table tbody tr").hide();
+            // 대기 상태인 수주만 보이도록 필터링
+            $(".table tbody tr:has(td:nth-child(2):contains('완료'))").show();
+            // 번호 업데이트
+            updateRowNumbers();
+        });
+
+        $("#cancel").click(function() {
+            // 모든 수주 항목 숨김
+            $(".table tbody tr").hide();
+            // 대기 상태인 수주만 보이도록 필터링
+            $(".table tbody tr:has(td:nth-child(2):contains('취소'))").show();
+            // 번호 업데이트
+            updateRowNumbers();
+        });
+
+        // 함수를 정의하는 부분
+        function updateRowNumbers() {
+            var counter = 1;
+            $(".table tbody tr:visible").each(function() {
+                $(this).find('td:first').text(counter);
+                counter++;
+            });
+        }
+
+
+
     });
-    
-//수주삭제
-// $("#deleteBtn").click(function() {
-//     Swal.fire({
-//         title: '글을 삭제하시겠습니까?',
-//         text: '삭제하시면 다시 복구시킬 수 없습니다.',
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonColor: '#3085d6',
-//         cancelButtonColor: '#d33',
-//         confirmButtonText: '삭제',
-//         cancelButtonText: '취소'
-//     }).then(function(result) {
-//         if (result.value) {
-//             var poid = $("#poidInput").val();
-
-//             $.ajax({
-//                 type: 'POST',
-//                 url: '/sales/remove',  // 수정된 경로
-//                 data: {
-//                     poid: poid
-//                 },
-//                 success: function(response) {
-//                     alert('삭제 완료.');
-//                     // 삭제 성공 후에 폼을 서버로 제출
-//                     formObj.submit();
-//                 },
-//                 error: function(error) {
-//                     console.error('Error during deletion:', error);
-//                 }
-//             });
-//         }
-//     });
-// });
-
-    
-
 </script>
+
+
 <%@ include file="../include/footer.jsp"%>

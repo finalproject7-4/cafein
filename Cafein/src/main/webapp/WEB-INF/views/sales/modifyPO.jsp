@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 수주 수정 모달창 -->
+	<!-- 수주 수정 모달창 -->
 	<div class="modal fade" id="openModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -13,18 +13,19 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form action="modifyPO" method="post" role="form">
-				<input type="hidden" name="poid" id="poid">
+				<form role="form" action="/sales/modifyPO" method="post">
+				<input type="hidden" name="poid" id="poid3">
+				<input type="hidden" name="clientid" id="clientid3">
+				<input type="hidden" name="itemid" id="itemid3">
+				
 				<div class="modal-body">
 				납품처/코드
-<!-- 				<input type="hidden" id="clientidp" name="clientid">  -->
 				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
 				
 				품목명/코드
-<!-- 				<input type="hidden" id="itemidp" name="itemid">  -->
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
-						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
+						<label for="postate" class="col-form-label"><b>수주상태</b></label>
 						<select class="form-select" id="floatingSelect2" name="postate">
 						    <optgroup label="수주상태">
 						        <option value="대기">대기</option>
@@ -109,67 +110,58 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
+	$("#ModifyBtn").submit(function (event) {
+	    event.preventDefault(); // 기본 동작 중지
+	    // Ajax 코드 추가
+	$.ajax({
+        type: "POST",
+        url: "/sales/modifyPO",
+        data: {
+            clientname: modifiedClientName,
+            itemname: modifiedItemName,
+            postate: modifiedPostate,
+            pocnt: modifiedPocnt,
+            ordersdate: modifiedOrdersDate,
+            ordersduedate: modifiedOrdersDueDate,
+            membercode: modifiedMemberCode
+        },
+        success: function(response) {
+            console.log("Modification success:", response);
+            $("#modifyModal").modal('hide');
 
-//     // 수정된 값을 서버로 전송
-    $("#ModifyBtn").click(function() {
-        // 가져온 값들을 변수에 저장
-        var modifiedClientid = $("#clientidp").val();
-		var modifiedItemid = $("#itemidp").val();
-
-        var modifiedPOid = $("#poid").val();
-        var modifiedClientName = $("#clientid2").val();
-        var modifiedItemName = $("#itemid2").val();
-        var modifiedPostate = $("#floatingSelect2").val();
-        var modifiedPocnt = $("#pocnt2").val();
-        var modifiedUpdateDate = formatDate($("#todaypo2").val());
-        var modifiedOrdersDueDate = formatDate($("#date2").val());
-        var modifiedMemberCode = $("#membercode2").val();
-    
-        // Ajax를 사용하여 서버로 수정된 값 전송
-        $.ajax({
-            type: "POST",
-            url: "/sales/modifyPO",
-            data: {
-            	clientid: modifiedClientid,
-            	itemid: modifiedItemid,
-            	poid: modifiedPOid,
-                clientname: modifiedClientName,
-                itemname: modifiedItemName,
-                postate: modifiedPostate,
-                pocnt: modifiedPocnt,
-                updatedate: modifiedUpdateDate,
-                ordersduedate: modifiedOrdersDueDate,
-                membercode: modifiedMemberCode
-            },
-            success: function(response) {
-                console.log("Modification success:", response);
-                $("#openModifyModal").modal('hide');
-            },
-            error: function(error) {
-                console.error("Error during modification:", error);
-            }
-        });
+            // 여기서 POList 갱신을 위한 작업 수행
+            // (서버로부터 업데이트된 POList를 가져와서 화면 갱신 등)
+        },
+        error: function(error) {
+            console.error("Error during modification:", error);
+        }
     });
+   });
 	
-	
-	
-// 	// 클릭한 행의 정보를 가져와서 itemid에 입력
-   $(".itemset").click(function() {
+	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:first-child').text();
-	    $("#itemid2").val(itemid);
+	    console.log("itemid:", itemid);
+	    $("#itemidd").val(itemid);
+	});
+	
+	// 클릭한 행의 정보를 가져와서 clientid에 입력
+   $(".itemset").click(function() {
+    var clientInfo = $(this).find('td:eq(1)').text(); //itemname
+    $("#itemid2").val(clientInfo);
 	});
 	 
 	// 품목 모달    	
     $("#itemid2").click(function() {
-    	$("#itemModal").modal('show');
-    });
+        $("#itemModal").modal('show');
+   	});
     
-//     $(".itemset").click(function() {
-//         var columns = $(this).find('td');
-//         var selectedItemName = $(columns[1]).text(); // 품명
-//         $('#items').val(selectedItemName);
-//         $('#itemModal').modal('hide');
-//     });
+    $(".itemset").click(function() {
+        var columns = $(this).find('td');
+        var selectedItemName = $(columns[1]).text(); // 품명
+        var selectedItemCode = $(columns[2]).text(); // 품목코드
+        $('#items').val(selectedItemName);
+        $('#itemModal').modal('hide');
+    });
     
     $('#todaypo2').click(function(){
         var today = new Date();
