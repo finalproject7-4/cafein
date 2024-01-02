@@ -102,10 +102,22 @@ public class ShipController {
 			case "대기": code = "ST"; break;
 			case "진행": code = "PR"; break;
 			case "완료": code = "CP"; break;
-			case "취소": code = "CC"; break;
 		}
 		
 		return code + num;
+	}
+	
+	// 작업지시 수정 - POST
+	// http://localhost:8088/sales/WKList
+	@RequestMapping(value = "/modifyWK", method = RequestMethod.POST)
+	public String modifyPOST(WorkVO wvo) throws Exception {
+		logger.debug(" /modify form -> modifyPOST()");
+		logger.debug(" 수정할 정보 " + wvo);
+
+		// 서비스 - 정보수정 동작
+		int result = shService.WKModify(wvo);
+		logger.debug("result", result);
+		return "redirect:/sales/WKList";
 	}
 
 	// 실적 조회
