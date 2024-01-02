@@ -32,8 +32,11 @@
 		FROM purchaseorder po
 		JOIN item ON po.itemid = item.itemid
 		JOIN client cli ON po.clientid = cli.clientid
-		<if test="option == 'postate'">
-			where postate like concat('%', #{keyword}, '%')
+		<if test="option == 'clientcode'">
+			where clientcode like concat('%', #{keyword}, '%')
+		</if>
+		<if test="option == 'itemcode'">
+			where itemcode like concat('%', #{keyword}, '%')
 		</if>
 		ORDER BY ordersdate desc, poid desc
 		limit #{cri.startPage}, #{cri.pageSize}

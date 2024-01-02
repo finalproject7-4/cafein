@@ -9,12 +9,12 @@
 	<div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
 	<form role="form" method="post">
-		수주일자 <input type="date" class="date" name="podate"> ~ <input type="date" class="date" name="podate">&nbsp;&nbsp;&nbsp;&nbsp;
-		납품처조회 <input class="clientSearch1" type="text" name="clientid" placeholder="납품처코드"> 
-				<input class="clientSearch2" type="text" name="clientid" placeholder="납품처명"> <br>
-		납품예정일 <input type="date" class="date" name="ordersduedate"> ~ <input type="date" class="date" name="podate">
-		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch1" type="text" name="itemid" placeholder="품목코드"> 
-			<input class="itemSearch2" type="text" name="itemid" placeholder="품명"> 
+		수주일자 <input type="date" class="date" name="keyword"> ~ <input type="date" class="date" name="keyword">&nbsp;&nbsp;&nbsp;&nbsp;
+		납품처조회 <input class="clientSearch1" type="text" name="keyword" placeholder="납품처코드"> 
+				<input class="clientSearch2" type="text" name="keyword" placeholder="납품처명"> <br>
+		납품예정일 <input type="date" class="date" name="keyword"> ~ <input type="date" class="date" name="podate">
+		품목조회&nbsp;&nbsp;&nbsp;&nbsp; <input class="itemSearch1" type="text" name="keyword" placeholder="품목코드"> 
+			<input class="itemSearch2" type="text" name="keyword" placeholder="품명"> 
 		<button id="searchbtn" type="button" class="btn btn-dark m-2">조회</button>
 		<br>
 	</form>
@@ -91,7 +91,6 @@
 										<td>${po.clientname}</td>
 										<td>${po.itemname}</td>
 										<td>${po.pocnt}</td>
-<%-- 										<fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td> --%>
 										<c:choose>
 											<c:when test="${empty po.ordersdate}">
 												<td>수정일자 참조</td>
