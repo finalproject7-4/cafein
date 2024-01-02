@@ -91,6 +91,10 @@
 								<label for="temper" class="col-form-label">온도</label>
 								<input type="text" name="temper" class="form-control" id="temper" readonly>
 							</div>
+							<div class="col" id="packageam" style="display: none;">
+								<label for="packagevol" class="col-form-label">포장용량</label>
+								<input type="number" name="packagevol" class="form-control" id="packagevol" value="500" min="500" max="1000" step="500">
+							</div>
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode">
@@ -111,6 +115,141 @@
 		</div>
 <!-- 생산지시 모달창 끝-->
 
+<!-- 생산지시 수정(블렌딩-> 로스팅) 모달창 시작-->
+<div class="modal fade" id="updateModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">로스팅 등록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form action="processUpdateRoasting" method="post">
+						<div class="row">
+							<div class="col">
+								<label for="produceid" class="col-form-label">생산ID</label> 
+								<input type="text" name="produceid" class="date form-control" id="produceidUpdate" readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="process" class="col-form-label">공정과정</label> 
+								<input type="text" value="로스팅" name="process" class="date form-control" id="processUpdate" readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="producedateUp" class="col-form-label">생산일자</label> 
+								<input type="date" name="producedateUp" class="date form-control" id="producedateUpdate" readonly="readonly">
+							</div>
+						</div>
+							<div class="row">
+							<div class="col">
+								<label for="produceline" class="col-form-label">생산라인</label> 
+								<input type="text" name="produceline" class="date form-control" id="producelineUpdate" readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="producetime" class="col-form-label">생산타임</label> 
+								<input type="text" name="producetime" class="date form-control" id="producetimeUpdate" readonly="readonly">
+							</div>
+							</div>
+					<div class="row">
+							<div class="col">
+								<label for="itemname" class="col-form-label">제품명</label> 
+								<input type="text" id="itemnameUpdate" name="itemname" class="form-control" readonly="readonly">
+							</div>
+							<div class="col" style="display: none;">
+								<label for="itemid" class="col-form-label">제품ID</label> 
+								<input type="text" id="itemidUpdate" name="itemid" class="form-control" >
+							</div>					
+							<div class="col" id="tempeup">
+								<label for="temper" class="col-form-label">온도</label>
+								<input type="text" name="temper" class="form-control" <%-- value="${tlist.temper }" --%>>
+							</div>
+							<div class="col" id="packagevolrh" style="display: none;">
+								<label for="temppackagevoler" class="col-form-label">포장량</label>
+								<input type="number" value="0" name="packagevol" class="form-control">
+							</div>
+					</div>
+					<div class="row">
+							<div class="col">
+								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
+								<input name="membercode" class="form-control" id="membercode1">
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<input type="submit" class="btn btn-primary" value="등록">
+					</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- 생산지시 수정(블렌딩-> 로스팅) 모달창 끝-->
+
+
+<!-- 생산지시 수정(로스팅-> 포장) 모달창 시작-->
+<div class="modal fade" id="updateModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">포장 등록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form action="processUpdatePackage" method="post">
+						<div class="row">
+							<div class="col">
+								<label for="produceid" class="col-form-label">생산ID</label> 
+								<input type="text" name="produceid" class="date form-control" id="produceidUpdate2" readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="process" class="col-form-label">공정과정</label> 
+								<input type="text" value="포장" name="process" class="date form-control" id="processUpdate2" readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="producedateUp" class="col-form-label">생산일자</label> 
+								<input type="date" name="producedateUp" class="date form-control" id="producedateUpdate2" readonly="readonly">
+							</div>
+						</div>
+							<div class="row">
+							<div class="col">
+								<label for="produceline" class="col-form-label">생산라인</label> 
+								<input type="text" name="produceline" class="date form-control" id="producelineUpdate2" readonly="readonly">
+							</div>
+							<div class="col">
+								<label for="producetime" class="col-form-label">생산타임</label> 
+								<input type="text" name="producetime" class="date form-control" id="producetimeUpdate2" readonly="readonly">
+							</div>
+							</div>
+					<div class="row">
+							<div class="col">
+								<label for="itemname" class="col-form-label">제품명</label> 
+								<input type="text" id="itemnameUpdate2" name="itemname" class="form-control" readonly="readonly">
+							</div>
+							<div class="col" style="display: none;">
+								<label for="itemid" class="col-form-label">제품ID</label> 
+								<input type="text" id="itemidUpdate2" name="itemid" class="form-control" >
+							</div>					
+							<div class="col" id="packagevolup">
+								<label for="packagevol" class="col-form-label">1팩당 포장량</label>
+								<input type="number" min="500" max="1000" step="500" name=packagevol class="form-control">
+							</div>
+					</div>
+					<div class="row">
+							<div class="col">
+								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
+								<input name="membercode" class="form-control" id="membercode2">
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<input type="submit" class="btn btn-primary" value="등록">
+					</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- 생산지시 수정(로스팅-> 포장) 모달창 끝-->
+
 
 
 <script type="text/javascript">
@@ -120,11 +259,14 @@ $("#processSelect").change(function(){
 var test = $("#processSelect option:selected").val();
 if(test=='블렌딩'){
 $('#temperh').hide();
+$('#packageam').hide();
 }
 else if(test=='로스팅'){
 $('#temperh').show();
+$('#packageam').hide();
 }
 else if(test=='포장'){
+$('#packageam').show();
 $('#temperh').hide();
 }
 

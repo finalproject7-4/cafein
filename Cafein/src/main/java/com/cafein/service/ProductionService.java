@@ -8,6 +8,7 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.RoastedbeanVO;
 
 public interface ProductionService {
 	
@@ -38,9 +39,20 @@ public interface ProductionService {
 	// 생산 상태 업데이트
 	public void updateProduceState(ProduceVO vo) throws Exception;
 	
+	// 생산 공정과정 업데이트 (블렌딩 -> 로스팅)
+	public void updateProduceProcessRoasting(ProduceVO vo) throws Exception;
+	
+	// 생산 공정과정 업데이트 (로스팅 -> 포장)
+	public void updateProduceProcess(ProduceVO vo) throws Exception;
 	
 	// 생산지시 엑셀파일 다운로드
 	public void excelPrint(ProduceVO vo, HttpServletResponse response) throws Exception;
+	
+	// 포장공정 완료된 제품 roastedbean 테이블에 추가
+	public void insertRoastedbean(RoastedbeanVO vo) throws Exception;
+	
+	// 로스팅 업데이트 제품 온도 조회
+	public int getRoastingTemper(ProduceVO vo) throws Exception;
 	
 
 }

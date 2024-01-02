@@ -39,7 +39,31 @@
 	
 	<!-- 엑셀파일 다운로드용 생산지시 리스트 조회 -->
 	<select id="getExcelDownProduceList" resultType="com.cafein.domain.ProduceVO">
-		select * from produce order by produceid desc
+		select * from produce 
+		<where>
+		
+		<if test="startDate != null and endDate != null">
+		 	producedate between #{startDate} and #{endDate}
+		</if>
+		
+		<if test="process != null and !process.equals('')">
+			AND process like concat('%',#{process},'%')
+		</if>
+		
+		<if test="itemname != null and !itemname.equals('')">
+			AND itemname = #{itemname}
+		</if>
+			
+		<if test="searchBtn != null and searchBtn !='검사전'">
+			AND state = #{searchBtn}
+		</if>
+
+		<if test="searchBtn != null and searchBtn=='검사전'">
+			AND qualitycheck = #{searchBtn}
+		</if>	
+		
+		</where>
+		order by produceid desc
 	</select>
 
 	
@@ -81,8 +105,8 @@
 	
 	<!-- 생산지시 등록 -->
 	<insert id="insertProducePlan">
-		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode) 
-		values(#{producedate}, #{produceline}, #{producetime}, #{itemid}, #{itemname}, #{process}, #{temper}, #{itemname1}, #{itemname2}, #{itemname3}, #{amount}, #{membercode})
+		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode, packagevol) 
+		values(#{producedate}, #{produceline}, #{producetime}, #{itemid}, #{itemname}, #{process}, #{temper}, #{itemname1}, #{itemname2}, #{itemname3}, #{amount}, #{membercode}, #{packagevol} )
 	</insert>
 	
 	<!-- BOM 등록 -->
@@ -106,10 +130,40 @@
 		update produce set state = #{state} where produceid = #{produceid}
 	</update>
 	
+	
+	<!-- 생산지시 공정과정 업데이트 (블렌딩 -> 로스팅) -->
+	<update id="updateProcessRoasting">
+		update produce set process = #{process}, temper=#{temper} , qualitycheck='검사전', state='대기' where produceid = #{produceid}
+	</update>
+	
+	<!-- 생산지시 공정과정 업데이트 (로스팅 -> 포장) -->
+	<update id="updateProcess">
+		update produce set process = #{process}, packagevol=#{packagevol}, qualitycheck='검사전', state='대기' where produceid = #{produceid}
+	</update>
+	
+	
 	<!-- 포장완료된 제품 roastedbean 테이블에 추가. -->
-	<!-- <insert id="">
-		insert into roastedbean 
-	</insert> -->
+	<insert id="insertRoastedbean">
+		insert into roastedbean(produceid, itemname, itemid, weight, lotnumber, roasteddate note)
+		values(#{produceid}, #{itemname}, #{itemid}, #{weight}, #{lotnumber}, #{roasteddate}, #{note})
+	</insert>
+	
+	<!-- 생산지시리스트 아이템 id의 로스팅 온도값 찾기 -->
+	<select id="getRoastingTemper" resultType="int">
+		SELECT bom.temper FROM bom b
+		JOIN produce p ON b.itemid = p.itemid
+		where p.itemid = #{p.itemid}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>
