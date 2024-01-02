@@ -9,42 +9,55 @@
 <fieldset>
 	<div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
-	<form name="dateSearch" action="/sales/POList" method="get">
-		납품처조회 	<input type="text" name="itemname" placeholder="납품처명을 입력하세요"><br>
-		수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
-		<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
-		<br>
-	</form>
-	</div>
-	</div><br>
+<form name="dateSearch" action="/sales/POList" method="get" onsubmit="return filterRows()">
+    납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요"><br>
+    수주일자 <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+    <button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
+    <br>
+</form>
+</div>
+</div><br>
+
+<script>
+function filterRows() {
+    // 입력된 키워드 가져오기
+    var keyword = document.querySelector('.clientSearch').value.toLowerCase();
+
+    // 테이블의 모든 행 가져오기
+    var rows = document.querySelectorAll('.table tbody tr');
+
+    // 각 행에 대해 키워드 포함 여부 확인
+    rows.forEach(function(row) {
+        var clientName = row.querySelector('td:nth-child(4)').innerText.toLowerCase(); // 납품처가 위치한 열에 따라 인덱스를 조절
+        if (clientName.includes(keyword)) {
+            row.style.display = ''; // 키워드가 포함된 경우 행을 표시
+        } else {
+            row.style.display = 'none'; // 키워드가 포함되지 않은 경우 행을 숨김
+        }
+    });
+
+    // 폼이 실제로 제출되지 않도록 false 반환
+    return false;
+}
+</script>
 	
-	
+		<!-- 수주 상태에 따라 필터링하는 버튼 -->
 		<div class="col-12">
 			<div class="btn-group" role="group">
-			<form role="form1">
 				<input type="hidden" name="state" value="전체">
 				<button type="button" class="btn btn-outline-dark"
 					id="allpo">전체</button>
-			</form>
-			<form role="form2">
 				<input type="hidden" name="state" value="대기">
 				<button type="button" class="btn btn-outline-dark"
 					id="stop">대기</button>
-			</form>
-			<form role="form3">
 				<input type="hidden" name="state" value="진행">
 				<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
-			</form>
-			<form role="form4">
 				<input type="hidden" name="state" value="완료">
 				<button type="button" class="btn btn-outline-dark"
 					id="complete">완료</button>
-			</form>
-			<form role="form5">
 				<input type="hidden" name="state" value="취소">
 				<button type="button" class="btn btn-outline-dark"
 					id="cancel">취소</button>
-			</form>
 		</div>
 
 			<!-- 수주 리스트 테이블 조회 -->
