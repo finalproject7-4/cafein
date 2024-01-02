@@ -77,7 +77,7 @@ public class ShipDAOImpl implements ShipDAO {
 	@Override
 	public int updateWK(WorkVO wvo) throws Exception {
 		logger.debug("DAO : WKModify(WorkVO wvo)");
-		return sqlSession.selectOne(NAMESPACE + ".updateWK", wvo);
+		return sqlSession.update(NAMESPACE + ".updateWK", wvo);
 	}
 
 	// 실적 조회

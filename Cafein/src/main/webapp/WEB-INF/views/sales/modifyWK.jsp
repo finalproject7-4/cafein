@@ -14,6 +14,7 @@
 				</div>
 				
 				<form role="form" action="/sales/modifyWK" method="post">
+				<input type="hidden" id="workid2" name="workid">
 			
 			<div class="modal-body">
 			

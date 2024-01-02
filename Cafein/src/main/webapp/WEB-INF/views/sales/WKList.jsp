@@ -17,9 +17,9 @@
 
 			<!-- 달력 -->
 
-			작업 지시 기간 : <input type="text" class="m-2" id="datepicker1"
-				name="startDate"> ~ <input type="text" class="m-2"
-				id="datepicker2" name="endDate">
+			작업 지시 기간 : <input type="date" class="m-2" id="workstartdate"
+				name="startDate"> ~ <input type="date" class="m-2"
+				id="shipdate" name="endDate">
 			<!-- 달력 -->
 			<!-- Date: <input type="text" id="datepicker3" name="startDate">
 ~  <input type="text" id="datepicker4" name="endDate"> -->
@@ -31,24 +31,30 @@
 	<!-- 작업지시 조회 -->
 	<div class="col-12" style="margin-top: 20px;">
 		<div class="bg-light rounded h-100 p-4">
-			<h6 class="mb-4">작업 지시 관리</h6>
+			<h6 class="mb-4">작업 지시 관리  <span class="mb-4">[총 ${fn:length(AllWKList)}건]</span> </h6>
 
+		<div class="col-12">
 			<div class="btn-group" role="group">
-				<form role="form">
-					<input type="hidden" name="state" value="대기">
-					<button type="button" class="btn btn-outline-secondary"
-						id="beforepro">대기</button>
-				</form>
-				<form role="form1">
-					<input type="hidden" name="state" value="생산중">
-					<button type="button" class="btn btn-outline-secondary" id="ingpro">진행</button>
-				</form>
-				<form role="form2">
-					<input type="hidden" name="state" value="완료">
-					<button type="button" class="btn btn-outline-secondary"
-						id="completpro">완료</button>
-				</form>
-			</div>
+			<form role="form1">
+				<input type="hidden" name="state" value="전체">
+				<button type="button" class="btn btn-outline-dark"
+					id="allpo">전체</button>
+			</form>
+			<form role="form2">
+				<input type="hidden" name="state" value="대기">
+				<button type="button" class="btn btn-outline-dark"
+					id="stop">접수</button>
+			</form>
+			<form role="form3">
+				<input type="hidden" name="state" value="진행">
+				<button type="button" class="btn btn-outline-dark" id="ingpro">진행</button>
+			</form>
+			<form role="form4">
+				<input type="hidden" name="state" value="완료">
+				<button type="button" class="btn btn-outline-dark"
+					id="complete">완료</button>
+			</form>
+		</div>
 			<span id="buttonset1"><button type="button"
 					class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
@@ -94,7 +100,7 @@
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark"
-    										onclick="openModifyModal('${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+    										onclick="openModifyModal('${wk.workid}','${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
     										수정
 									</button>
 									</td>
@@ -114,7 +120,7 @@
 
 <script>
 	   
-	   function openModifyModal(pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
+	   function openModifyModal(workid, pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
 		   console.log('Pocode:', pocode);
 		   console.log('Client Name:', clientname);
 	       console.log('Item Name:', itemname);
@@ -125,6 +131,7 @@
 	       console.log('Member Code:', membercode); 
 		   
 		   // 가져온 값들을 모달에 설정
+		   $("#workid2").val(workid);
 		    $("#pocode2").val(pocode);
 		    $("#clientcode2").val(clientname);
 		    $("#itemcode2").val(itemname);
@@ -140,6 +147,7 @@
 		    // 수정된 값을 서버로 전송
 		    $("#modifyButton").click(function() {
 		        // 가져온 값들을 변수에 저장
+		        var modifiedWorkid = $("#workid2").val();
 		        var modifiedPocode = $("#pocode2").val();
 		        var modifiedClientName = $("#clientcode2").val();
 		        var modifiedItemName = $("#itemcode2").val();
@@ -154,6 +162,7 @@
 		            type: "POST",
 		            url: "/sales/modifyWK",
 		            data: {
+		            	 workid: modifiedWorkid,
 		            	 pocode: modifiedPocode,
 		            	 clientname: modifiedClientName,
 		                 itemname: modifiedItemName,
