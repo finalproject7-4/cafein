@@ -102,7 +102,6 @@ public class ShipController {
 			case "대기": code = "ST"; break;
 			case "진행": code = "PR"; break;
 			case "완료": code = "CP"; break;
-			case "취소": code = "CC"; break;
 		}
 		
 		return code + num;

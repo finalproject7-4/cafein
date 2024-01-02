@@ -66,6 +66,7 @@
 								<th scope="col">제품명</th>
 								<th scope="col">지시상태</th>
 								<th scope="col">지시수량</th>
+								<th scope="col">수정일자</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
@@ -83,20 +84,17 @@
 									<td>${wk.produceline }</td>
 									<td>${wk.itemname }</td>
 									<td>${wk.worksts }</td>
-									<td>${wk.workcount }</td>
+									<td>${wk.pocnt }</td>
+									<td><fmt:formatDate value="${wk.workupdate }"
+											pattern="yyyy-MM-dd" /></td>
 									<td><fmt:formatDate value="${wk.workdate2 }"
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.membercode }</td>
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.workcount}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									        onclick="openModifyModal('${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
 									        수정
-									</button>
-									<!-- 버튼 삭제 -->
-									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openDeleteModal()">
-									        삭제
 									</button>
 									</td>
 								</tr>

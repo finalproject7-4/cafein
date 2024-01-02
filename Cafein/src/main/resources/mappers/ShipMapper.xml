@@ -33,18 +33,24 @@
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
 		SELECT wk.workid, wk.workdate1, wk.workcode,
-		wk.pocode, wk.itemname, wk.produceid, pr.produceline,
-		wk.worksts, wk.workcount, wk.workdate2,
-		wk.membercode
-		FROM work wk
-		JOIN purchaseorder po ON wk.pocode = po.pocode
-		left JOIN produce pr ON wk.produceid = pr.produceid;
+       wk.pocode, wk.itemname, MAX(wk.produceid) AS produceid,
+       MAX(pr.produceline) AS produceline,
+       wk.worksts, wk.pocnt, wk.workdate2,
+       wk.membercode
+		FROM c7d2307t4_2.work wk
+		JOIN c7d2307t4_2.purchaseorder po ON wk.pocode = po.pocode
+		LEFT JOIN c7d2307t4_2.produce pr ON wk.produceid = pr.produceid
+		GROUP BY wk.workid, wk.workdate1, wk.workcode,
+         wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workdate2,
+         wk.membercode
+		ORDER BY workdate1 DESC, workid DESC;
+
 	</select>
 	
 	<!-- 작업 지시 등록 -->
 	<insert id="registWK" parameterType="com.cafein.domain.WorkVO">
-		INSERT INTO work (workdate1, workcode, pocode, clientname, itemname, worksts, workcount, membercode)
-		VALUES ( #{workdate1}, #{workcode}, #{pocode}, #{clientname}, #{itemname}, #{worksts}, #{workcount}, #{membercode} )
+		INSERT INTO work (workdate1, workcode, pocode, clientname, itemname, worksts, membercode, pocnt)
+		VALUES ( #{workdate1}, #{workcode}, #{pocode}, #{clientname}, #{itemname}, #{worksts}, #{membercode}, #{pocnt} )
 	</insert>
 	
 	<!-- 작업지시 등록 수주 코드 -->
@@ -69,9 +75,6 @@
 			<when test="worksts == '완료'">
 				and workcode like '%CP%';
 			</when>
-			<otherwise>
-				and workcode like '%CC%';
-			</otherwise>
 		  </choose>
 		</where>
 	</select>
@@ -79,7 +82,7 @@
 	<!-- 작업 지시 수정 -->
 	<update id="updateWK">
 	 	update work set clientname=#{clientname}, itemname=#{itemname}, worksts=#{worksts}, membercode=#{membercode},
-	 	workcount=#{workcount}, workdate1=#{workdate1}, workupdate=#{workupdate}
+	 	pocnt=#{pocnt}, workdate1=#{workdate1}, workupdate=#{workupdate}
 	 	where workid=#{workid}
 	 </update>
 	

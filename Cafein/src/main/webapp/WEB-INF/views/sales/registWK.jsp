@@ -25,7 +25,6 @@
 								<option value="대기">대기</option>
 								<option value="진행">진행</option>
 								<option value="완료">완료</option>
-								<option value="취소">취소</option>
 							</optgroup>
 						</select>
 					</div>
@@ -43,7 +42,7 @@
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>지시량</b><input type="number" class="form-control" id="workcount" placeholder="숫자만 입력하세요">
+						<b>지시량</b><input type="number" id="workcount" name="pocnt" class="form-control" placeholder="숫자만 입력하세요">
 					</div>
 					<div class="row">
 						<div class="col">
@@ -128,11 +127,13 @@
 					var pocode = $(this).find('td:eq(1)').text(); // 수주코드
 					var clientcode = $(this).find('td:eq(2)').text(); // 거래처
 					var itemcode = $(this).find('td:eq(3)').text(); // 품명
+					var workcount = $(this).find('td:eq(4)').text();
 
 					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
 					$('#pocode').val(pocode);
 					$('#clientcode').val(clientcode);
 					$('#itemcode').val(itemcode);
+					$('#workcount').val(workcount);
 
 					$('#pocodeModal').modal('hide');
 				});
