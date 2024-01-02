@@ -32,16 +32,14 @@
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
 		<!-- select * from ship -->
-		SELECT wk.workid, wk.workdate1, wk.workcode,
-       wk.pocode, wk.itemname, MAX(wk.produceid) AS produceid,
-       MAX(pr.produceline) AS produceline,
-       wk.worksts, wk.pocnt, wk.workdate2,
+		SELECT wk.workid, wk.workdate1, wk.workcode, wk.clientname,
+       wk.pocode, wk.itemname,
+       wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
        wk.membercode
 		FROM c7d2307t4_2.work wk
 		JOIN c7d2307t4_2.purchaseorder po ON wk.pocode = po.pocode
-		LEFT JOIN c7d2307t4_2.produce pr ON wk.produceid = pr.produceid
 		GROUP BY wk.workid, wk.workdate1, wk.workcode,
-         wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workdate2,
+         wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
          wk.membercode
 		ORDER BY workdate1 DESC, workid DESC;
 

@@ -63,7 +63,7 @@
 								<th scope="col">작업지시일</th>
 								<th scope="col">작업지시코드</th>
 								<th scope="col">수주코드</th>
-								<th scope="col">라인명</th>
+								<th scope="col">납품처</th>
 								<th scope="col">제품명</th>
 								<th scope="col">지시상태</th>
 								<th scope="col">지시수량</th>
@@ -82,7 +82,7 @@
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.workcode }</td>
 									<td>${wk.pocode }</td>
-									<td>${wk.produceline }</td>
+									<td>${wk.clientname}</td>
 									<td>${wk.itemname }</td>
 									<td>${wk.worksts }</td>
 									<td>${wk.pocnt }</td>
@@ -94,8 +94,8 @@
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark"
-									        onclick="openModifyModal('${wk.pocode}, ${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
-									        수정
+    										onclick="openModifyModal('${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+    										수정
 									</button>
 									</td>
 								</tr>
@@ -115,7 +115,7 @@
 <script>
 	   
 	   function openModifyModal(pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
-		   console.log('Pocode:', Pocode);
+		   console.log('Pocode:', pocode);
 		   console.log('Client Name:', clientname);
 	       console.log('Item Name:', itemname);
 	       console.log('Worksts:', worksts);
@@ -125,9 +125,9 @@
 	       console.log('Member Code:', membercode); 
 		   
 		   // 가져온 값들을 모달에 설정
-		    $("#pocode2").val(pocode2);
-		    $("#clientid2").val(clientname);
-		    $("#itemid2").val(itemname);
+		    $("#pocode2").val(pocode);
+		    $("#clientcode2").val(clientname);
+		    $("#itemcode2").val(itemname);
 		    $("#worksts2").val(worksts);
 		    $("#pocnt2").val(pocnt);
 		    $("#workdate11").val(workdate1);
@@ -141,8 +141,8 @@
 		    $("#modifyButton").click(function() {
 		        // 가져온 값들을 변수에 저장
 		        var modifiedPocode = $("#pocode2").val();
-		        var modifiedClientName = $("#clientid2").val();
-		        var modifiedItemName = $("#itemid2").val();
+		        var modifiedClientName = $("#clientcode2").val();
+		        var modifiedItemName = $("#itemcode2").val();
 		        var modifiedWorksts = $("#worksts2").val();
 		        var modifiedPocnt = $("#pocnt2").val();
 		        var modifiedWorkdate1 = $("#workdate11").val();
@@ -154,7 +154,7 @@
 		            type: "POST",
 		            url: "/sales/modifyWK",
 		            data: {
-		            	pocode: modifiedPocode,
+		            	 pocode: modifiedPocode,
 		            	 clientname: modifiedClientName,
 		                 itemname: modifiedItemName,
 		                 worksts: modifiedWorksts,
@@ -173,6 +173,21 @@
 		        });
 		    });
 		}
+	   
+	    $('#workdate11').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#workdate11').val(formattedDate);
+	    });
+	    
+	    $('#workupdate2').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#workupdate2').val(formattedDate);
+	    });
+	    
 	   </script>
 
 

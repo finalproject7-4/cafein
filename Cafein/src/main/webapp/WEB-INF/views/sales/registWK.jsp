@@ -138,15 +138,6 @@
 					$('#pocodeModal').modal('hide');
 				});
 
-				$('#todaypo').click(
-						function() {
-							var today = new Date();
-							// 날짜를 YYYY-MM-DD 형식으로 포맷팅
-							var formattedDate = today.getFullYear() + '-'
-									+ ('0' + (today.getMonth() + 1)).slice(-2)
-									+ '-' + ('0' + today.getDate()).slice(-2);
-							$('#todaypo').val(formattedDate);
-						});
 
 			    $('#workdate1').click(function(){
 			        var today = new Date();

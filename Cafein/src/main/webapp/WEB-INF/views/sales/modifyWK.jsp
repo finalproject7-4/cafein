@@ -31,18 +31,18 @@
 					<br>
 					<div class="row">
 						<div class="col">
-							<b>수주코드</b><input id="pocode" name="pocode2" class="form-control" placeholder="클릭하세요" readonly="readonly">
+							<b>수주코드</b><input id="pocode2" name="pocode" class="form-control" readonly="readonly">
 						</div>
 						<div class="col">
-							<b>납품처</b><input id="clientcode" name="clientname2" class="form-control" placeholder="납품처" readonly="readonly">
+							<b>납품처</b><input id="clientcode2" name="clientname" class="form-control" placeholder="납품처" readonly="readonly">
 						</div>
 						<div class="col">
-							<b>품명</b><input id="itemcode" name="itemname2" class="form-control" placeholder="품명" readonly="readonly">
+							<b>품명</b><input id="itemcode2" name="itemname" class="form-control" placeholder="품명" readonly="readonly">
 						</div>
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>지시량</b><input type="number" id="pocnt2" name="pocnt" class="form-control" placeholder="숫자만 입력하세요" readonly="readonly">
+						<b>지시량</b><input type="number" id="pocnt2" name="pocnt" class="form-control" readonly="readonly">
 					</div>
 					<div class="row">
 						<div class="col">
