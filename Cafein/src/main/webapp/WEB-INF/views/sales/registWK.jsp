@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- 작업지시 등록 모달 -->
-<div class="modal fade" id="exampleModal" tabindex="-1"
+<div class="modal fade" id="registModal" tabindex="-1"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -25,7 +25,6 @@
 								<option value="대기">대기</option>
 								<option value="진행">진행</option>
 								<option value="완료">완료</option>
-								<option value="취소">취소</option>
 							</optgroup>
 						</select>
 					</div>
@@ -43,7 +42,7 @@
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>지시량</b><input type="number" class="form-control" id="workcount" placeholder="숫자만 입력하세요">
+						<b>지시량</b><input type="number" id="workcount" name="pocnt" class="form-control" placeholder="숫자만 입력하세요">
 					</div>
 					<div class="row">
 						<div class="col">
@@ -127,25 +126,18 @@
 					// 선택한 행의 데이터를 가져오기
 					var pocode = $(this).find('td:eq(1)').text(); // 수주코드
 					var clientcode = $(this).find('td:eq(2)').text(); // 거래처
-					var itemscode = $(this).find('td:eq(3)').text(); // 품명
+					var itemcode = $(this).find('td:eq(3)').text(); // 품명
+					var workcount = $(this).find('td:eq(4)').text();
 
 					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
 					$('#pocode').val(pocode);
 					$('#clientcode').val(clientcode);
 					$('#itemcode').val(itemcode);
+					$('#workcount').val(workcount);
 
 					$('#pocodeModal').modal('hide');
 				});
 
-				$('#todaypo').click(
-						function() {
-							var today = new Date();
-							// 날짜를 YYYY-MM-DD 형식으로 포맷팅
-							var formattedDate = today.getFullYear() + '-'
-									+ ('0' + (today.getMonth() + 1)).slice(-2)
-									+ '-' + ('0' + today.getDate()).slice(-2);
-							$('#todaypo').val(formattedDate);
-						});
 
 			    $('#workdate1').click(function(){
 			        var today = new Date();

@@ -51,10 +51,9 @@
 			</div>
 			<span id="buttonset1"><button type="button"
 					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규
-					등록</button>
-				<button type="button" class="btn btn-dark m-2">수정</button>
-				<button type="button" class="btn btn-dark m-2">삭제</button></span>
+					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
+					등록</button></span>
+					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table">
@@ -64,12 +63,14 @@
 								<th scope="col">작업지시일</th>
 								<th scope="col">작업지시코드</th>
 								<th scope="col">수주코드</th>
-								<th scope="col">라인명</th>
+								<th scope="col">납품처</th>
 								<th scope="col">제품명</th>
 								<th scope="col">지시상태</th>
 								<th scope="col">지시수량</th>
+								<th scope="col">수정일자</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
+								<th scope="col">관리</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -81,13 +82,22 @@
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.workcode }</td>
 									<td>${wk.pocode }</td>
-									<td>${wk.produceline }</td>
+									<td>${wk.clientname}</td>
 									<td>${wk.itemname }</td>
 									<td>${wk.worksts }</td>
-									<td>${wk.workcount }</td>
+									<td>${wk.pocnt }</td>
+									<td><fmt:formatDate value="${wk.workupdate }"
+											pattern="yyyy-MM-dd" /></td>
 									<td><fmt:formatDate value="${wk.workdate2 }"
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.membercode }</td>
+									<td>
+									<!-- 버튼 수정 -->
+									<button type="button" class="btn btn-outline-dark"
+    										onclick="openModifyModal('${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+    										수정
+									</button>
+									</td>
 								</tr>
 							</c:forEach>
 
@@ -99,11 +109,86 @@
 		</div>
 		
 		<jsp:include page="registWK.jsp"/>
+		<jsp:include page="modifyWK.jsp"/>
 </form>
 
+<script>
+	   
+	   function openModifyModal(pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
+		   console.log('Pocode:', pocode);
+		   console.log('Client Name:', clientname);
+	       console.log('Item Name:', itemname);
+	       console.log('Worksts:', worksts);
+	       console.log('Pocnt:', pocnt);
+	       console.log('Work date1:', workdate1);
+	       console.log('Work Update:', workupdate);
+	       console.log('Member Code:', membercode); 
+		   
+		   // 가져온 값들을 모달에 설정
+		    $("#pocode2").val(pocode);
+		    $("#clientcode2").val(clientname);
+		    $("#itemcode2").val(itemname);
+		    $("#worksts2").val(worksts);
+		    $("#pocnt2").val(pocnt);
+		    $("#workdate11").val(workdate1);
+		    $("#workupdate2").val(workupdate);
+		    $("#membercode2").val(membercode);
 
+		    // 모달 열기
+		    $("#modifyModal").modal('show');
+		    
+		    // 수정된 값을 서버로 전송
+		    $("#modifyButton").click(function() {
+		        // 가져온 값들을 변수에 저장
+		        var modifiedPocode = $("#pocode2").val();
+		        var modifiedClientName = $("#clientcode2").val();
+		        var modifiedItemName = $("#itemcode2").val();
+		        var modifiedWorksts = $("#worksts2").val();
+		        var modifiedPocnt = $("#pocnt2").val();
+		        var modifiedWorkdate1 = $("#workdate11").val();
+		        var modifiedWorkupdate = $("#workupdate2").val();
+		        var modifiedMemberCode = $("#membercode2").val();
 
-
+		        // Ajax를 사용하여 서버로 수정된 값 전송
+		        $.ajax({
+		            type: "POST",
+		            url: "/sales/modifyWK",
+		            data: {
+		            	 pocode: modifiedPocode,
+		            	 clientname: modifiedClientName,
+		                 itemname: modifiedItemName,
+		                 worksts: modifiedWorksts,
+		                 pocnt: modifiedPocnt,
+		                 workdate1: modifiedworkDate1,
+		                 workupdate: modifiedWorkupDate,
+		                 membercode: modifiedMemberCode
+		            },
+		            success: function(response) {
+		                console.log("Modification success:", response);
+		                $("#modifyModal").modal('hide');
+		            },
+		            error: function(error) {
+		                console.error("Error during modification:", error);
+		            }
+		        });
+		    });
+		}
+	   
+	    $('#workdate11').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#workdate11').val(formattedDate);
+	    });
+	    
+	    $('#workupdate2').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#workupdate2').val(formattedDate);
+	    });
+	    
+	   </script>
 
 
 <%@ include file="../include/footer.jsp"%>
