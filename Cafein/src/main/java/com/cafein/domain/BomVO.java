@@ -17,6 +17,7 @@ public class BomVO {
 	private String rate;
 	private int roastedtime;
 	private String membercode;
+	private int itemid;
 	
 	// 필요할 수도 있어서 DB에는 없지만 추가 정의
 	private String itemname;

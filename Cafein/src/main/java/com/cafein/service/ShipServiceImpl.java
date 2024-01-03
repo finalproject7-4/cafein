@@ -70,6 +70,13 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : wkCount(WorkVO wvo)");
 		return shdao.getWKCount(wvo);
 	}
+	
+	// 작업 지시 수정
+	@Override
+	public int WKModify(WorkVO wvo) throws Exception {
+		logger.debug("S : WKModify(int workid)");
+		return shdao.updateWK(wvo);
+	}
 
 	// 실적 조회
 	@Override

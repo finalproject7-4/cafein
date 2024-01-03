@@ -6,7 +6,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">레시피 등록</h5>
+						<h5 class="modal-title" id="exampleModalLabel1">레시피 등록</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -14,27 +14,27 @@
 						<div class="row">
 							<div class="col">
 								<label for="itemcode" class="col-form-label">제품코드</label> 
-								<input id="itemcode1" name="itemcode" class="form-control" readonly>
+								<input id="itemcodeBom" name="itemcode" class="form-control" readonly>
 							</div>
 							<div class="col">
-								<label for="itemname1" class="col-form-label">제품명</label> 
-								<input id="itemname12" name="itemname" class="form-control" readonly>
+								<label for="itemname" class="col-form-label">제품명</label> 
+								<input id="itemnameBom" name="itemname" class="form-control" readonly>
 							</div>
 						</div>
 							<div class="row">
 							<div class="col">
-								<label for="produce" class="col-form-label">생산온도</label> 
-								<input type="number" name="temper" class="form-control" id="temper" min="150" max="250">
+								<label for="temper" class="col-form-label">생산온도</label> 
+								<input type="number" name="temper" class="form-control" id="temper" min="150" max="250" step="10">
 							</div>
 							<div class="col">
-								<label for="produce" class="col-form-label">로스팅시간(분)</label> 
+								<label for="roastedtime" class="col-form-label">로스팅시간(분)</label> 
 								<input type="number" name="roastedtime" class="form-control" id="roastedtime" min="15" max="30">
 							</div>
 							</div>
 							<div class="row">
 							<div class="col">
-								<label for="itemnameOri1" class="col-form-label">원재료1</label> 
-								<select id="itemnameSel" name="itemname1" class="form-select">
+								<label for="itemname1" class="col-form-label">원재료1</label> 
+								<select id="itemnameSel1" name="itemname1" class="form-select">
 								<option value="">선택</option>
 								<c:forEach var="iList" items="${itemList }">
 									<c:if test="${iList.itemtype=='원자재' }">
@@ -44,8 +44,8 @@
 								</select> 
 							</div>
 							<div class="col">
-								<label for="itemnameOri2" class="col-form-label">원재료2</label>
-								<select id="itemnameSel" name="itemname2" class="form-select">
+								<label for="itemname2" class="col-form-label">원재료2</label>
+								<select id="itemnameSel2" name="itemname2" class="form-select">
 								<option value="">선택</option>
 								<c:forEach var="iList" items="${itemList }">
 									<c:if test="${iList.itemtype=='원자재' }">
@@ -55,8 +55,8 @@
 								</select> 
 							</div>
 							<div class="col">
-								<label for="itemnameOri3" class="col-form-label">원재료3</label>
-								<select id="itemnameSel" name="itemname3" class="form-select">
+								<label for="itemname3" class="col-form-label">원재료3</label>
+								<select id="itemnameSel3" name="itemname3" class="form-select">
 								<option value="">선택</option>
 								<c:forEach var="iList" items="${itemList }">
 									<c:if test="${iList.itemtype=='원자재' }">
@@ -68,7 +68,7 @@
 							</div>
 							<div class="row">
 							<div class="col">
-								<label for="itemname3" class="col-form-label">비율</label>
+								<label for="rate" class="col-form-label">비율</label>
 								<input type="text" name="rate" class="form-control" id="rate">
 							</div>
 							<div class="col">

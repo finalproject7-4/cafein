@@ -29,6 +29,9 @@ public interface ShipDAO {
 	// 작업 지시 코드 생성
 	public int getWKCount(WorkVO wvo) throws Exception;
 	
+	// 작업 지시 수정
+	public int updateWK(WorkVO wvo) throws Exception;
+	
 	// 실적 조회
 	public List<WorkVO> getPFList() throws Exception;
 	

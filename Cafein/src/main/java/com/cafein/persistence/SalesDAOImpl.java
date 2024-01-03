@@ -37,6 +37,13 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
 
+	//페이징
+	@Override
+	public List<SalesVO> getPOList(SalesVO svo) throws Exception {
+		logger.debug("DAO : getPOList(SalesVO svo)");
+		return sqlSession.selectList(NAMESPACE+".POListPage",svo);
+	}
+
 	// 수주 등록-납품처
 	@Override
 	public List<SalesVO> registCli() throws Exception {
@@ -62,9 +69,27 @@ public class SalesDAOImpl implements SalesDAO {
 	@Override
 	public int updatePO(SalesVO svo) throws Exception {
 		logger.debug("DAO : POModify(SalesVO svo)");
-		return sqlSession.selectOne(NAMESPACE + ".updatePO", svo);
+		return sqlSession.update(NAMESPACE + ".updatePO", svo);
+	}
+	
+	
+	
+
+	
+	
+	//납품서
+	@Override
+	public List<SalesVO> getReceiptList() throws Exception {
+		logger.debug("DAO : getReceiptList()");
+		return sqlSession.selectList(NAMESPACE+".getReceiptList");
 	}
 
+	//엑셀
+	@Override
+	public List<SalesVO> getPOPrint() throws Exception {
+		logger.debug("DAO : getPOPrint()");
+		return sqlSession.selectList(NAMESPACE+".getPOList");
+	}
 	
 	
 

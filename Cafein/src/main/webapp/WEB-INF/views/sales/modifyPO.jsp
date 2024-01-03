@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- 수주 수정 모달창 -->
-	<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- 수주 수정 모달창 -->
+	<div class="modal fade" id="openModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 			
@@ -14,6 +14,9 @@
 				</div>
 				
 				<form role="form" action="/sales/modifyPO" method="post">
+				<input type="hidden" name="poid" id="poid3">
+				<input type="hidden" name="clientid" id="clientid3">
+				<input type="hidden" name="itemid" id="itemid3">
 				
 				<div class="modal-body">
 				납품처/코드
@@ -22,7 +25,7 @@
 				품목명/코드
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
-						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
+						<label for="postate" class="col-form-label"><b>수주상태</b></label>
 						<select class="form-select" id="floatingSelect2" name="postate">
 						    <optgroup label="수주상태">
 						        <option value="대기">대기</option>
@@ -110,35 +113,35 @@ $(document).ready(function() {
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
 	    // Ajax 코드 추가
-	   $("form[role='form']").submit(function(event) {
-        event.preventDefault(); // 기본 동작 중지
+	$.ajax({
+        type: "POST",
+        url: "/sales/modifyPO",
+        data: {
+            clientname: modifiedClientName,
+            itemname: modifiedItemName,
+            postate: modifiedPostate,
+            pocnt: modifiedPocnt,
+            ordersdate: modifiedOrdersDate,
+            ordersduedate: modifiedOrdersDueDate,
+            membercode: modifiedMemberCode
+        },
+        success: function(response) {
+            console.log("Modification success:", response);
+            $("#modifyModal").modal('hide');
 
-        // Ajax 코드 추가
-        $.ajax({
-            type: "POST",
-            url: "/sales/modifyPO",
-            data: {
-                // 여기에 폼 내의 데이터를 수집하여 전송할 데이터를 추가
-                clientname: $("#clientid2").val(),
-                itemname: $("#itemid2").val(),
-                postate: $("#floatingSelect2").val(),
-                pocnt: $("#pocnt2").val(),
-                // ... 나머지 필드들 추가
-            },
-            success: function(response) {
-                console.log("Modification success:", response);
-                $("#modifyModal").modal('hide');
-            },
-            error: function(error) {
-                console.error("Error during modification:", error);
-            }
-        });
+            // 여기서 POList 갱신을 위한 작업 수행
+            // (서버로부터 업데이트된 POList를 가져와서 화면 갱신 등)
+        },
+        error: function(error) {
+            console.error("Error during modification:", error);
+        }
     });
-});
+   });
 	
 	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:first-child').text();
-	    $("#itemid2").val(itemid);
+	    console.log("itemid:", itemid);
+	    $("#itemidd").val(itemid);
 	});
 	
 	// 클릭한 행의 정보를 가져와서 clientid에 입력
@@ -149,12 +152,13 @@ $(document).ready(function() {
 	 
 	// 품목 모달    	
     $("#itemid2").click(function() {
-    	$("#itemModal").modal('show');
-    });
+        $("#itemModal").modal('show');
+   	});
     
     $(".itemset").click(function() {
         var columns = $(this).find('td');
         var selectedItemName = $(columns[1]).text(); // 품명
+        var selectedItemCode = $(columns[2]).text(); // 품목코드
         $('#items').val(selectedItemName);
         $('#itemModal').modal('hide');
     });
