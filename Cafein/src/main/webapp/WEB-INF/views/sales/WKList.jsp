@@ -51,10 +51,9 @@
 			</div>
 			<span id="buttonset1"><button type="button"
 					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">신규
-					등록</button>
-				<button type="button" class="btn btn-dark m-2">수정</button>
-				<button type="button" class="btn btn-dark m-2">삭제</button></span>
+					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
+					등록</button></span>
+					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table">
@@ -64,12 +63,14 @@
 								<th scope="col">작업지시일</th>
 								<th scope="col">작업지시코드</th>
 								<th scope="col">수주코드</th>
-								<th scope="col">라인명</th>
+								<th scope="col">납품처</th>
 								<th scope="col">제품명</th>
 								<th scope="col">지시상태</th>
 								<th scope="col">지시수량</th>
+								<th scope="col">수정일자</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
+								<th scope="col">관리</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -81,157 +82,113 @@
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.workcode }</td>
 									<td>${wk.pocode }</td>
-									<td>${wk.produceline }</td>
+									<td>${wk.clientname}</td>
 									<td>${wk.itemname }</td>
 									<td>${wk.worksts }</td>
-									<td>${wk.workcount }</td>
+									<td>${wk.pocnt }</td>
+									<td><fmt:formatDate value="${wk.workupdate }"
+											pattern="yyyy-MM-dd" /></td>
 									<td><fmt:formatDate value="${wk.workdate2 }"
 											pattern="yyyy-MM-dd" /></td>
 									<td>${wk.membercode }</td>
+									<td>
+									<!-- 버튼 수정 -->
+									<button type="button" class="btn btn-outline-dark"
+    										onclick="openModifyModal('${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+    										수정
+									</button>
+									</td>
 								</tr>
 							</c:forEach>
 
 						</tbody>
 					</table>
 				</div>
-
-				<!-- 작업지시 등록 모달 -->
-				<div class="modal fade" id="exampleModal" tabindex="-1"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">작업지시등록</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<form>
-									<div class="mb-3">
-										<label for="recipient-name" class="col-form-label"><b>수주번호</b></label>
-									</div>
-									<br>
-									<div class="row">
-										<div class="col">
-											<b>납품처</b><input id="client" class="form-control"
-												id="floatingInput" placeholder="납품처">
-										</div>
-										<div class="col">
-											<b>제품코드</b><input id="itemcode" class="form-control"
-												id="floatingInput" placeholder="제품코드">
-										</div>
-									</div>
-									<br>
-									<div class="mb-3">
-										<b>지시량</b><input type="number" class="form-control"
-											id="floatingInput" placeholder="숫자만 입력하세요">
-									</div>
-									<div class="row">
-										<div class="col">
-											<b>지시일자</b><input id="startdate" type="text"
-												class="form-control" id="floatingInput"
-												placeholder="지시일자(클릭)">
-										</div>
-										<div class="col">
-											<b>라인명</b><input id="client" class="form-control"
-												id="floatingInput" placeholder="납품처">
-										</div>
-										<div class="col">
-											<b>완납예정일</b><input type="date" id="date" class="form-control"
-												id="floatingInput" placeholder="완납예정일">
-										</div>
-									</div>
-									<br>
-									<div class="mb-3">
-										<b>담당자</b><input class="form-control" id="floatingInput">
-									</div>
-								</form>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">취소</button>
-								<button type="submit" class="btn btn-primary">저장</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 출하 등록 모달-->
+			</div>
 			</div>
 		</div>
+		
+		<jsp:include page="registWK.jsp"/>
+		<jsp:include page="modifyWK.jsp"/>
 </form>
 
-<!-- 모달 js&jq -->
 <script>
-	/*달력 이전날짜 비활성화*/
-	var now_utc = Date.now(); // 현재 날짜를 밀리초로
-	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
-	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+	   
+	   function openModifyModal(pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
+		   console.log('Pocode:', pocode);
+		   console.log('Client Name:', clientname);
+	       console.log('Item Name:', itemname);
+	       console.log('Worksts:', worksts);
+	       console.log('Pocnt:', pocnt);
+	       console.log('Work date1:', workdate1);
+	       console.log('Work Update:', workupdate);
+	       console.log('Member Code:', membercode); 
+		   
+		   // 가져온 값들을 모달에 설정
+		    $("#pocode2").val(pocode);
+		    $("#clientcode2").val(clientname);
+		    $("#itemcode2").val(itemname);
+		    $("#worksts2").val(worksts);
+		    $("#pocnt2").val(pocnt);
+		    $("#workdate11").val(workdate1);
+		    $("#workupdate2").val(workupdate);
+		    $("#membercode2").val(membercode);
 
-	//id="date"
-	document.getElementById("date").setAttribute("min", today);
+		    // 모달 열기
+		    $("#modifyModal").modal('show');
+		    
+		    // 수정된 값을 서버로 전송
+		    $("#modifyButton").click(function() {
+		        // 가져온 값들을 변수에 저장
+		        var modifiedPocode = $("#pocode2").val();
+		        var modifiedClientName = $("#clientcode2").val();
+		        var modifiedItemName = $("#itemcode2").val();
+		        var modifiedWorksts = $("#worksts2").val();
+		        var modifiedPocnt = $("#pocnt2").val();
+		        var modifiedWorkdate1 = $("#workdate11").val();
+		        var modifiedWorkupdate = $("#workupdate2").val();
+		        var modifiedMemberCode = $("#membercode2").val();
 
-	// class="date"인 모든 요소에 날짜 비활성화
-	document.querySelectorAll('.date').forEach(function(input) {
-		input.setAttribute('min', today);
-	});
+		        // Ajax를 사용하여 서버로 수정된 값 전송
+		        $.ajax({
+		            type: "POST",
+		            url: "/sales/modifyWK",
+		            data: {
+		            	 pocode: modifiedPocode,
+		            	 clientname: modifiedClientName,
+		                 itemname: modifiedItemName,
+		                 worksts: modifiedWorksts,
+		                 pocnt: modifiedPocnt,
+		                 workdate1: modifiedworkDate1,
+		                 workupdate: modifiedWorkupDate,
+		                 membercode: modifiedMemberCode
+		            },
+		            success: function(response) {
+		                console.log("Modification success:", response);
+		                $("#modifyModal").modal('hide');
+		            },
+		            error: function(error) {
+		                console.error("Error during modification:", error);
+		            }
+		        });
+		    });
+		}
+	   
+	    $('#workdate11').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#workdate11').val(formattedDate);
+	    });
+	    
+	    $('#workupdate2').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#workupdate2').val(formattedDate);
+	    });
+	    
+	   </script>
 
-	var exampleModal = document.getElementById('exampleModal')
-	exampleModal.addEventListener('show.bs.modal', function(event) {
-		var button = event.relatedTarget
-		var recipient = button.getAttribute('data-bs-whatever')
-		var modalTitle = exampleModal.querySelector('.modal-title')
-		var modalBodyInput = exampleModal.querySelector('.modal-body input')
-	})
-
-	$(document).ready(
-			function() {
-				// 납품처 모달
-				$("#client").click(function() {
-					$("#clientModal").modal('show');
-				});
-
-				$(".clientset").click(function() {
-					var columns = $(this).find('td');
-					var selectedClientName = $(columns[1]).text(); // 납품처명
-					var selectedClientCode = $(columns[2]).text(); // 납품처코드
-					$('#client').val(selectedClientName);
-					$('#clientModal').modal('hide');
-				});
-
-				// 납품처 조회 모달
-				$(".clientSearch").click(function() {
-					$("#clientSM").modal('show');
-				});
-
-				// 품목 모달    	
-				$("#items").click(function() {
-					$("#itemModal").modal('show');
-				});
-
-				$(".itemset").click(function() {
-					var columns = $(this).find('td');
-					var selectedItemName = $(columns[1]).text(); // 품명
-					var selectedItemCode = $(columns[2]).text(); // 품목코드
-					$('#items').val(selectedItemName);
-					$('#itemModal').modal('hide');
-				});
-
-				// 품목 조회 모달
-				$(".itemSearch").click(function() {
-					$("#itemSM").modal('show');
-				});
-
-				$('#todaypo').click(
-						function() {
-							var today = new Date();
-							// 날짜를 YYYY-MM-DD 형식으로 포맷팅
-							var formattedDate = today.getFullYear() + '-'
-									+ ('0' + (today.getMonth() + 1)).slice(-2)
-									+ '-' + ('0' + today.getDate()).slice(-2);
-							$('#todaypo').val(formattedDate);
-						});
-
-			});
-</script>
 
 <%@ include file="../include/footer.jsp"%>

@@ -8,8 +8,8 @@
 
 	<!-- 수주 등록 -->
 	<insert id="registPO" parameterType="com.cafein.domain.SalesVO">
-		INSERT INTO purchaseorder (postate, pocode, pocnt, ordersdate, ordersduedate, clientid, itemid, membercode)
-		VALUES ( #{postate}, #{pocode}, #{pocnt}, #{ordersdate}, #{ordersduedate}, #{clientid}, #{itemid}, #{membercode} )
+		INSERT INTO purchaseorder (postate, pocode, pocnt, ordersdate, updatedate, ordersduedate, clientid, itemid, membercode)
+		VALUES ( #{postate}, #{pocode}, #{pocnt}, #{ordersdate},#{updatedate}, #{ordersduedate}, #{clientid}, #{itemid}, #{membercode} )
 	</insert>
 
 	<!-- 수주 조회 -->
@@ -54,5 +54,10 @@
 		</where>
 	</select>
 
-
+	<!-- 수주수정 -->
+	 <update id="updatePO">
+	 	update purchaseorder set clientid=#{clientid}, itemid=#{itemid}, postate=#{postate}, pocnt=#{pocnt},
+	 	ordersdate=#{ordersdate}, ordersduedate=#{ordersduedate}, updatedate=#{updatedate}, membercode=#{membercode}
+	 	where poid=#{poid}
+	 </update>
 </mapper>

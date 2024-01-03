@@ -24,7 +24,11 @@
 		</if>
 		
 		<if test="qualitycheck != null">
+<<<<<<< HEAD
 			AND qualitycheck like concat('%','#{qualitycheck}','%')
+=======
+			AND qualitycheck like concat('%',#{qualitycheck},'%')
+>>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
 		</if>
 				
 		<if test="produceline != null and !produceline.equals(0)">
@@ -32,6 +36,7 @@
 		</if>
 		
 		<if test="process != null and !process.equals('')">
+<<<<<<< HEAD
 			AND process like concat('%','${process}','%')
 		</if>
 		
@@ -53,14 +58,55 @@
 <!-- 	</select> -->
 	
 
+=======
+			AND process like concat('%',#{process},'%')
+		</if>
+		
+		</where>
+		order by produceid desc limit #{startPage}, #{pageSize}
+	</select>
+	
+	
+	<!-- 생산지시 전체글 개수 조회 -->
+	<select id="countProduceList" resultType="int">
+		select count(*) from produce
+	</select>
+	
+	<!-- BOM  목록 조회 -->
+	<select id="getBomList" resultType="com.cafein.domain.BomVO">
+		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, j.itemname as itemname from bom b join item j on b.itemcode = j.itemcode
+ 	</select>
+	
+>>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
 	<!-- 생산지시 등록 -->
 	<insert id="insertProducePlan">
 		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode) 
 		values(#{producedate}, #{produceline}, #{producetime}, #{itemid}, #{itemname}, #{process}, #{temper}, #{itemname1}, #{itemname2}, #{itemname3}, #{amount}, #{membercode})
 	</insert>
 	
+<<<<<<< HEAD
 	
 
+=======
+	<!-- BOM 등록 -->
+	<insert id="insertBom">
+		insert into bom (itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, membercode) 
+		values(#{itemcode}, #{itemname1}, #{itemname2}, #{itemname3}, #{temper}, #{rate}, #{roastedtime}, #{membercode})
+	</insert>
+	
+	<!-- BOM 등록되지 않은 품목 조회 -->
+	<select id="getNewItem" resultType="com.cafein.domain.ItemVO">
+		select * from item i left join bom b on i.itemcode = b.itemcode where i.itemtype = '완제품'
+	</select>
+	
+	<!-- 품목 목록 조회 -->
+	<select id="getItemList" resultType="com.cafein.domain.ItemVO">
+		select* from item
+	</select>
+	
+	
+	
+>>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
 	
 	
 </mapper>

@@ -9,3 +9,7 @@
      overflow-y: auto;
      scroll-behavior: smooth;
 }
+
+#itemModal {
+     z-index: 9999;
+  }

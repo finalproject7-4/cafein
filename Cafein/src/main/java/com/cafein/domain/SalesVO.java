@@ -47,5 +47,198 @@ public class SalesVO {
 				+ updatedate + ", ordersduedate=" + ordersduedate + ", membercode=" + membercode + "]";
 	}
 
+	public int getPoid() {
+		return poid;
+	}
+
+	public void setPoid(int poid) {
+		this.poid = poid;
+	}
+
+	public String getPostate() {
+		return postate;
+	}
+
+	public void setPostate(String postate) {
+		this.postate = postate;
+	}
+
+	public String getPocode() {
+		return pocode;
+	}
+
+	public void setPocode(String pocode) {
+		this.pocode = pocode;
+	}
+
+	public int getClientid() {
+		return clientid;
+	}
+
+	public void setClientid(int clientid) {
+		this.clientid = clientid;
+	}
+
+	public int getItemid() {
+		return itemid;
+	}
+
+	public void setItemid(int itemid) {
+		this.itemid = itemid;
+	}
+
+	public int getPocnt() {
+		return pocnt;
+	}
+
+	public void setPocnt(int pocnt) {
+		this.pocnt = pocnt;
+	}
+
+	public Date getOrdersdate() {
+		return ordersdate;
+	}
+
+	public void setOrdersdate(Date ordersdate) {
+		this.ordersdate = ordersdate;
+	}
+
+	public Date getUpdatedate() {
+		return updatedate;
+	}
+
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
+	}
+
+	public Date getOrdersduedate() {
+		return ordersduedate;
+	}
+
+	public void setOrdersduedate(Date ordersduedate) {
+		this.ordersduedate = ordersduedate;
+	}
+
+	public String getMembercode() {
+		return membercode;
+	}
+
+	public void setMembercode(String membercode) {
+		this.membercode = membercode;
+	}
+
+	public String getClientcode() {
+		return clientcode;
+	}
+
+	public void setClientcode(String clientcode) {
+		this.clientcode = clientcode;
+	}
+
+	public String getClientname() {
+		return clientname;
+	}
+
+	public void setClientname(String clientname) {
+		this.clientname = clientname;
+	}
+
+	public String getCategoryofclient() {
+		return categoryofclient;
+	}
+
+	public void setCategoryofclient(String categoryofclient) {
+		this.categoryofclient = categoryofclient;
+	}
+
+	public String getBusinessnumber() {
+		return businessnumber;
+	}
+
+	public void setBusinessnumber(String businessnumber) {
+		this.businessnumber = businessnumber;
+	}
+
+	public String getRepresentative() {
+		return representative;
+	}
+
+	public void setRepresentative(String representative) {
+		this.representative = representative;
+	}
+
+	public String getClientaddress() {
+		return clientaddress;
+	}
+
+	public void setClientaddress(String clientaddress) {
+		this.clientaddress = clientaddress;
+	}
+
+	public String getClientphone() {
+		return clientphone;
+	}
+
+	public void setClientphone(String clientphone) {
+		this.clientphone = clientphone;
+	}
+
+	public String getClientfax() {
+		return clientfax;
+	}
+
+	public void setClientfax(String clientfax) {
+		this.clientfax = clientfax;
+	}
+
+	public String getItemcode() {
+		return itemcode;
+	}
+
+	public void setItemcode(String itemcode) {
+		this.itemcode = itemcode;
+	}
+
+	public String getItemname() {
+		return itemname;
+	}
+
+	public void setItemname(String itemname) {
+		this.itemname = itemname;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+
+	public int getItemweight() {
+		return itemweight;
+	}
+
+	public void setItemweight(int itemweight) {
+		this.itemweight = itemweight;
+	}
+
+	public int getItemprice() {
+		return itemprice;
+	}
+
+	public void setItemprice(int itemprice) {
+		this.itemprice = itemprice;
+	}
+
+	public String getLotnumber() {
+		return lotnumber;
+	}
+
+	public void setLotnumber(String lotnumber) {
+		this.lotnumber = lotnumber;
+	}
+
+	
 
 }

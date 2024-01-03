@@ -85,12 +85,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${cliList}" var="cli">
+							<c:set var="counter" value="1" />
+								<c:forEach items="${cliList}" var="cli" varStatus="status">
 									<tr class="clientset">
-										<td>${cli.clientid }</td>
+										<td>${counter }</td>
 										<td>${cli.clientname }</td>
 										<td>${cli.clientcode }</td>
 									</tr>
+									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>
@@ -124,12 +126,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${iList}" var="item">
+							<c:set var="counter" value="1" />
+								<c:forEach items="${iList}" var="item" varStatus="status">
 									<tr class="itemset">
-										<td>${item.itemid }</td>
+										<td>${counter }</td>
 										<td>${item.itemname }</td>
 										<td>${item.itemcode }</td>
 									</tr>
+									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>
@@ -151,14 +155,12 @@ $(document).ready(function() {
 	});
 	
 	$(".clientset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var clientid = $(this).find('td:first-child').text();
+	    var clientid = $(this).find('td:eq(0)').text();
 	    console.log("clientid:", clientid);
 	    $("#clientidd").val(clientid);
 	});
 	$(".itemset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var itemid = $(this).find('td:first-child').text();
+	    var itemid = $(this).find('td:eq(0)').text();
 	    console.log("itemid:", itemid);
 	    $("#itemidd").val(itemid);
 	});
@@ -206,13 +208,17 @@ $(document).ready(function() {
         $('#todaypo').val(formattedDate);
     });
     
-    /*달력 이전날짜 비활성화*/
+    /*달력 이전||+5일 이후 날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
 	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
 	
+	var fiveDaysLater = new Date(now_utc + 5 * 24 * 60 * 60 * 1000 - timeOff).toISOString().split("T")[0];
+	
 	//id="date"
-	document.getElementById("date").setAttribute("min", today);
+	var dateInput = document.getElementById("date");
+	dateInput.setAttribute("min", today);
+	dateInput.setAttribute("max", fiveDaysLater);
 
 	});
 </script>
