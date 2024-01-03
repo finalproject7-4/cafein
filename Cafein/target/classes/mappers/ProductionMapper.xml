@@ -59,7 +59,7 @@
 		AND qualitycheck = #{searchBtn}
 		</if>
 		
-<<<<<<< HEAD
+
 		<if test="state != null">
 			AND state like concat('%',#{state},'%')
 		</if>
@@ -68,8 +68,7 @@
 			AND qualitycheck like concat('%','#{qualitycheck}','%')
 		</if>
 				
-=======
->>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
+
 		<if test="produceline != null and !produceline.equals(0)">
 			AND produceline = #{produceline}
 		</if>
@@ -85,15 +84,14 @@
 	</select>
 	
 
-<<<<<<< HEAD
+
 	<!-- BOM  목록 조회
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
 		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, j.itemname as itemname from bom b join item j on b.itemcode = j.itemcode
 	</select>
 	 -->
 
-=======
->>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
+
 	<!-- BOM  목록 조회 -->
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
 		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, i.itemname as itemname, i.itemid as itemid from bom b join item i on b.itemcode = i.itemcode
