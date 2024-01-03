@@ -23,5 +23,8 @@ public interface ItemService {
 
 	// 품목 수정
 	public int itemModify(ItemVO vo) throws Exception;
+
+	// 품목 삭제 (비활성화)
+	public void itemDelete(ItemVO vo) throws Exception;
 	
 }

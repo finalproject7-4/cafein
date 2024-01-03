@@ -23,5 +23,8 @@ public interface ItemDAO {
 
 	// 품목 수정
 	public int updateItem(ItemVO vo) throws Exception;
+
+	// 품목 삭제 (비활성화)
+	public void deleteItem(ItemVO vo) throws Exception;
 	
 }

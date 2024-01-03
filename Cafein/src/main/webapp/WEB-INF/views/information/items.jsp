@@ -6,7 +6,7 @@
 <!-- 품목관리 페이지 시작 -->
 <div class="col-12">
 
-	<!-- 품목 조회 -->
+	<!-- 품목 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<form name="search" action="items">
 		<select name="option">
@@ -18,26 +18,25 @@
 			<input type="submit" class="btn btn-sm btn-dark m-2" value="조회">
 		</form>
 	</div>
-	<!-- 품목 조회 -->
+	<!-- 품목 조회 끝 -->
 
-	<!-- 품목 목록 -->
+	<!-- 품목 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 		<span style="margin-left: 95%;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
-			<input type="hidden" class="btn btn-sm btn-dark m-1"" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<!-- <button type="button" class="btn btn-sm btn-dark m-1">삭제</button> -->
+			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 		</span>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
 				<thead>
 					<tr style="text-align: center;">
+						<th scope="col" style="display: none;"></th>
 						<th scope="col">번호</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">품목유형</th>
 						<th scope="col">품명</th>
-						<th scope="col">거래처명</th>
 						<th scope="col">원산지</th>
 						<th scope="col">중량(g)</th>
 						<th scope="col">단가(원)</th>
@@ -47,13 +46,13 @@
 				<tbody>
 					<c:forEach var="il" items="${itemList }" varStatus="status">
 						<tr style="text-align: center;">
+							<td style="display: none;">${il.itemid }</td>
 							<td>
 								<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
 							</td>
 							<td>${il.itemcode }</td>
 							<td>${il.itemtype }</td>
 							<td>${il.itemname }</td>
-							<td>${il.clientname }</td>
 							<td>${il.origin }</td>
 							<td>${il.itemweight }</td>
 							<td>${il.itemprice }</td>
@@ -61,7 +60,7 @@
 								<button type="button" class="btn btn-sm btn-outline-dark m-1" 
 									onclick="itemModifyModal('${il.itemid }', '${il.itemcode }', '${il.itemtype }', '${il.itemname }', '${il.clientname }', '${il.origin }', '${il.itemweight }', '${il.itemprice }')">수정
 								</button>
-								<button type="button" class="btn btn-sm btn-outline-dark m-1">삭제</button>
+								<input type="button" class="btn btn-sm btn-outline-dark m-1" value="삭제" id="deleteBtn">
 							</td>
 						</tr>
 					</c:forEach>	
@@ -168,7 +167,7 @@
 			
 		</div>
 	</div>
-	<!-- 품목 목록 -->
+	<!-- 품목 목록 끝 -->
 	
 		
 	<!-- 품목 등록 모달 -->
@@ -271,7 +270,35 @@
 	        $('#clientModal').modal('hide');
 	    });
 
-    });	 
+    });
+    
+    $("td").on("click", "#deleteBtn", function() {
+        if(confirm("삭제하시겠습니까?")) {
+        	
+        	var itemid = $(this).closest("tr").find("td:first").text(); // 품목id
+        	console.log(itemid);
+
+        	// AJAX 요청 수행
+        	$.ajax({
+           		url : "/information/itemDelete",
+           		type : "POST",
+           		data : {
+        	   		itemid : itemid
+           		},
+          		success : function(response) {
+              		// 성공적으로 처리된 경우 수행할 코드
+              		console.log("삭제 성공");
+              		location.reload();
+           		},
+           		error : function(error) {
+              		// 요청 실패 시 수행할 코드
+              		console.error("삭제 실패:", error);
+           		}
+			});
+        	
+        } 
+        
+     });
 
 </script>
 

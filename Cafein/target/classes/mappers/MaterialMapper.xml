@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- MaterialMapper.xml -->
+<mapper namespace="com.cafein.mapper.MaterialMapper">
+	
+	<!-- 발주 목록 -->
+	<select id="ordersList" resultType="OrdersVO">
+		select od.ordersid, od.orderscode, od.membercode, od.ordersdate, od.deliverydate,
+	   		   od.ordersquantity, od.ordersquantity*it.itemprice orderprice, od.orderstate,
+			   it.itemcode, it.itemname, it.itemprice, cli.clientname, mem.membername
+		from orders od
+		join item it 
+		on od.itemcode = it.itemcode
+		left outer join member mem
+		on od.membercode = mem.membercode		
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<where>
+			<if test="option == 'clientname'">
+				and clientname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="orderStartDate != '' and orderStartDate != null and orderEndDate != '' and orderEndDate != null">
+		 		and date(ordersdate) between #{orderStartDate} and #{orderEndDate}
+			</if>		
+			<if test="deliveryStartDate != '' and deliveryStartDate != null and deliveryEndDate != '' and deliveryEndDate != null">
+			 	and date(deliverydate) between #{deliveryStartDate} and #{deliveryEndDate}
+			</if>
+		</where>		
+		order by od.ordersid desc		
+		limit #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+	<!-- 발주 목록 (모달) -->
+	<select id="getOrdersList" resultType="OrdersVO">
+		select od.ordersid, od.orderscode, it.itemid, it.itemname, od.ordersquantity
+		from orders od
+		join item it 
+		on od.itemcode = it.itemcode
+		where not exists (select orderscode from receive rc where rc.orderscode = od.orderscode) 
+		AND od.orderstate = '완료'	
+	</select>
+	
+	<!-- 발주 목록 총 개수 -->
+	<select id="getOrdersCount" resultType="integer">
+		select count(*) 
+		from orders od
+		join item it 
+		on od.itemcode = it.itemcode
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<where>
+			<if test="option == 'clientname'">
+				and clientname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="orderStartDate != '' and orderStartDate != null and orderEndDate != '' and orderEndDate != null">
+		 		and date(ordersdate) between #{orderStartDate} and #{orderEndDate}
+			</if>
+			<if test="deliveryStartDate != '' and deliveryStartDate != null and deliveryEndDate != '' and deliveryEndDate != null">
+		 		and date(deliverydate) between #{deliveryStartDate} and #{deliveryEndDate}
+			</if>
+		</where>			
+	</select>
+
+	<!-- 발주 등록 -->
+	<insert id="insertOrder">
+  		insert into orders (orderscode,membercode,itemcode,ordersquantity,orderstate,ordersdate,deliverydate)
+  		values (#{orderscode},#{membercode},#{itemcode},#{ordersquantity},#{orderstate},#{ordersdate},#{deliverydate})	
+	</insert>	
+	
+	<!-- 발주코드 개수 계산 -->
+	<select id="getOrderscodeCount" resultType="integer">
+		select count(*) from orders 
+		where orderscode like concat('%', #{datePart}, '%')
+	</select>
+	
+	<!-- 발주 수정 -->
+	<update id="updateOrder">
+		update orders set orderstate=#{orderstate},deliverydate=#{deliverydate},ordersquantity=#{ordersquantity}
+		where ordersid=#{ordersid}
+	</update>
+	
+	<!-- 발주 삭제 -->
+	<delete id="deleteOrder">
+		delete from orders
+		where ordersid=#{ordersid}
+	</delete>
+	
+	<!-- 입고 목록 -->
+	<select id="getReceiveList" resultType="ReceiveVO">
+		select rc.receiveid, rc.receivecode, rc.orderscode, rc.receivequantity, rc.receivedate,
+	   		   rc.itemid, rc.storagecode, rc.lotnumber, rc.membercode, rc.receivestate,
+	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername
+		from receive rc
+		join item it 
+		on rc.itemid = it.itemid
+		left outer join member mem
+		on rc.membercode = mem.membercode
+		left outer join orders od
+		on rc.orderscode = od.orderscode
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<where>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="receiveStartDate != '' and receiveStartDate != null and receiveEndDate != '' and receiveEndDate != null">
+		 		and date(receivedate) between #{receiveStartDate} and #{receiveEndDate}
+			</if>		
+		</where>		
+		order by rc.receiveid desc		
+		limit #{cri.startPage}, #{cri.pageSize}	
+	</select>
+	
+	<!-- 입고 목록 총 개수 -->
+	<select id="getReceiveCount" resultType="integer">
+		select count(*) 
+		from receive rc
+		join item it 
+		on rc.itemid = it.itemid
+		left outer join member mem
+		on rc.membercode = mem.membercode
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<where>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="receiveStartDate != '' and receiveStartDate != null and receiveEndDate != '' and receiveEndDate != null">
+		 		and date(receivedate) between #{receiveStartDate} and #{receiveEndDate}
+			</if>		
+		</where>		
+	</select>
+	
+	<!-- 창고 목록 (모달) -->
+	<select id="getStorageList" resultType="ReceiveVO">
+		select sto.storageid, sto.storagename, sto.storagecode
+		from storage sto
+	</select>
+	
+	<!-- 입고코드 개수 계산 -->
+	<select id="getReceivecodeCount" resultType="integer">
+		select count(*) from receive
+		where receivecode like concat('%', #{datePart}, '%')
+	</select>
+	
+	<!-- 입고 등록 -->
+	<insert id="insertReceive">
+  		insert into receive (receivecode,orderscode,membercode,itemid,storagecode,lotnumber,receivestate,receivedate,receivequantity)
+  		values (#{receivecode},#{orderscode},#{membercode},#{itemid},#{storagecode},#{lotnumber},#{receivestate},#{receivedate},#{receivequantity})	
+	</insert>
+	
+	<!-- 입고 수정 -->
+	<update id="updateReceive">
+		update receive set receivestate=#{receivestate},receivedate=#{receivedate},receivequantity=#{receivequantity}
+		where receiveid=#{receiveid}	
+	</update>
+	
+	<!-- 입고 삭제 -->
+	<delete id="deleteReceive">
+		delete from receive
+		where receiveid=#{receiveid}
+	</delete>
+	
+	<!-- 출고 목록 -->
+	<select id="getReleasesList" resultType="ReleasesVO">
+		select rl.releaseid, rl.releasecode, rl.stockid, 
+			   rl.releasestate, rl.releasedate, rl.releasequantity, 
+			   sto.stockquantity, it.itemname, mem.membername
+		from releases rl
+		join stock sto 
+		on rl.stockid = sto.stockid
+		left outer join item it
+		on sto.itemid = it.itemid
+		left outer join member mem
+		on rl.membercode = mem.membercode
+		<where>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="releaseStartDate != '' and releaseStartDate != null and releaseEndDate != '' and releaseEndDate != null">
+		 		and date(releasedate) between #{releaseStartDate} and #{releaseEndDate}
+			</if>		
+		</where>		
+		order by rl.releaseid desc		
+		limit #{cri.startPage}, #{cri.pageSize}			
+	</select>
+	
+	<!-- 출고 목록 총 개수 -->
+	<select id="getReleasesCount" resultType="integer">
+		select count(*) 
+		from releases rl
+		join stock sto 
+		on rl.stockid = sto.stockid
+		left outer join item it
+		on sto.itemid = it.itemid
+		left outer join member mem
+		on rl.membercode = mem.membercode
+		<where>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="releaseStartDate != '' and releaseStartDate != null and releaseEndDate != '' and releaseEndDate != null">
+		 		and date(releasedate) between #{releaseStartDate} and #{releaseEndDate}
+			</if>		
+		</where>	
+	</select>
+	
+</mapper>

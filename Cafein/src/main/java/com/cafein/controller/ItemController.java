@@ -32,6 +32,7 @@ public class ItemController {
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
 	public void itemList(Model model, ItemVO vo, Criteria cri) throws Exception {
 		logger.debug("itemList() 호출");
+		logger.debug("ItemVO: " + vo);
 		
 		// ItemVO의 Criteria 설정
 		vo.setCri(cri);
@@ -87,6 +88,17 @@ public class ItemController {
 		
 		// 서비스
 		iService.itemModify(vo);
+		
+		return "redirect:/information/items";
+	}
+	
+	// 품목 삭제 (비활성화) - POST
+	@RequestMapping(value = "/itemDelete", method = RequestMethod.POST)
+	public String itemDelete(ItemVO vo) throws Exception {
+		logger.debug("itemDelete() 호출");
+		
+		// 서비스
+		iService.itemDelete(vo);
 		
 		return "redirect:/information/items";
 	}
