@@ -144,9 +144,16 @@ public class StockDAOImpl implements StockDAO {
 
 	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
 	@Override
-	public List<QualityVO> selectStockListExcel() throws Exception {
+	public List<QualityVO> selectStockListExcel(QualityVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(NAMESPACE + ".selectStockListExcel");
+		return sqlSession.selectList(NAMESPACE + ".selectStockListExcel", vo);
+	}
+
+	// 재고 엑셀용 출력 목록 조회 (자재)
+	@Override
+	public List<QualityVO> selectMaterialStockListExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialStockListExcel", vo);
 	}
 	
 	

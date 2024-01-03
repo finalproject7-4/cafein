@@ -146,7 +146,19 @@ public class QualityDAOImpl implements QualityDAO {
 		sqlSession.update(NAMESPACE + ".updateRegisterDefect", vo);	
 	}
 
+	// 품질 관리 엑셀용 출력 목록 조회 (생산 + 반품)
+	@Override
+	public List<QualityVO> selectQualityListSearchBtnExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectQualityListSearchBtnExcel", vo);
+	}
 
+	// 품질 관리 엑셀용 출력 목록 조회 (자재)
+	@Override
+	public List<QualityVO> selectMaterialQualityListSearchBtnExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialQualityListSearchBtnExcel", vo);
+	}
 
 	
 	

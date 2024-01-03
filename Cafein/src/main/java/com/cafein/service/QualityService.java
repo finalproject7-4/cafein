@@ -62,5 +62,11 @@ public interface QualityService {
 	
 	// 반품 등록 여부 업데이트
 	public void registerDefectY(QualityVO vo) throws Exception;
+	
+	// 품질 관리 엑셀용 출력 목록 조회 (생산 + 반품)
+	public List<QualityVO> qualityListSearchBtnExcel(QualityVO vo) throws Exception;
+	
+	// 품질 관리 엑셀용 출력 목록 조회 (자재)
+	public List<QualityVO> materialQualityListSearchBtnExcel(QualityVO vo) throws Exception;
 
 }

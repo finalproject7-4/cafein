@@ -13,7 +13,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			
 			<div class="buttonarea2" style="margin-bottom: 10px;">
 				<input type="button" class="btn btn-sm btn-primary" value="블렌딩" id="blending2nd">
-				<input type="button" class="btn btn-sm btn-danger" value="냉각" id="cooling2nd">
+				<input type="button" class="btn btn-sm btn-danger" value="로스팅" id="cooling2nd">
 				<input type="button" class="btn btn-sm btn-warning" value="포장" id="packaging2nd">
 				<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return2nd">
 				<input type="button" class="btn btn-sm btn-success" value="전체" id="all2nd">
@@ -28,8 +28,15 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="submit" value="검색" data-toggle="tooltip" title="품질 관리 번호 또는 제품명이 필요합니다!">
 			</form>
 			</div>
-			
-			<input type="button" class="btn btn-sm btn-success" value="엑셀 파일 저장" style="margin-bottom: 10px;">
+			<form action="/productDefectPrint" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+					<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+				</c:if>
+				<c:if test="${!empty param.searchText }">
+					<input type="hidden" name="searchText" value="${param.searchText }">
+				</c:if>
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+			</form>
 			<br>						
 				<div class="table-responsive">
 					<table class="table">
@@ -52,11 +59,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<th>${dlist.defectid }</th>
 									<td>${dlist.qualityid }</td>
 									<!-- 상품 구분 출력 -->
-									<c:if test="${empty dlist.process }"> <!-- 반품인 경우 (process == null) -->
+									<c:if test="${empty dlist.produceprocess }"> <!-- 반품인 경우 (produceprocess == null) -->
 										<td>${dlist.itemtype }</td>									
 									</c:if>
-									<c:if test="${!empty dlist.process }"> <!-- 생산인 경우 (process != null) -->
-										<td>${dlist.itemtype } - ${dlist.process }</td>									
+									<c:if test="${!empty dlist.produceprocess }"> <!-- 생산인 경우 (produceprocess != null) -->
+										<td>${dlist.itemtype } - ${dlist.produceprocess }</td>									
 									</c:if>
 									<td>${dlist.itemcode }</td>
 									<td>${dlist.itemname }</td>
@@ -65,10 +72,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<c:if test="${!empty dlist.itemtype && dlist.itemtype.equals('반품')}">
 										<b style="color: red;">${dlist.defectquantity }</b>(개)
 									</c:if>
-									<c:if test="${!empty dlist.process && dlist.process.equals('포장')}">
+									<c:if test="${!empty dlist.produceprocess && dlist.produceprocess.equals('포장')}">
 										<b style="color: red;">${dlist.defectquantity }</b>(개)
 									</c:if>
-									<c:if test="${!empty dlist.process && !dlist.process.equals('포장') }">
+									<c:if test="${!empty dlist.produceprocess && !dlist.produceprocess.equals('포장') }">
 										<b style="color: red;">${dlist.defectquantity }</b>(g)
 									</c:if>
 									</td>
@@ -235,9 +242,9 @@ $(document).ready(function() {
         fetchData2("블렌딩");
     });
 
-    // 냉각 버튼 클릭
+    // 로스팅 버튼 클릭
     $("#cooling2nd").click(function() {
-        fetchData2("냉각");
+        fetchData2("로스팅");
     });
 
     // 포장 버튼 클릭
@@ -319,3 +326,11 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->

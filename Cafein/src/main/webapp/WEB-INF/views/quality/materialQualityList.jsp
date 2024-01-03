@@ -26,7 +26,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
 			</div>
 			
-			<form action="/quality/materialQualityList" method="GET">
+			<div class="buttonarea3" style="margin-bottom: 10px;">
+			<form action="/quality/materialQualityList" method="GET" style="margin-bottom: 10px;">
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
@@ -34,6 +35,19 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="date" id="endDate" name="endDate" required>
 				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
 			</form>	
+			</div>
+				<form action="/materialQualityPrint" method="GET">
+					<c:if test="${!empty param.searchBtn }">
+						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+					</c:if>
+					<c:if test="${!empty param.startDate }">
+						<input type="hidden" value="${param.startDate }" name="startDate">
+					</c:if>
+					<c:if test="${!empty param.endDate }">
+						<input type="hidden" value="${param.endDate }" name="endDate">
+					</c:if>
+					<input type="submit" value="엑셀 파일 저장" class="btn btn-sm btn-success">
+				</form>
 			<br>		
 				<div class="table-responsive">
 					<table class="table">
@@ -764,3 +778,11 @@ $(document).ready(function(){
 });
 </script>
 <!-- 날짜 비교 -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->

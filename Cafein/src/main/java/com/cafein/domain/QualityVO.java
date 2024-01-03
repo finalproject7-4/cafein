@@ -13,6 +13,7 @@ public class QualityVO {
 	private String auditcode;
 	private String itemtype;
 	private int produceid;
+	private String produceprocess;
 	private int returnid;
 	private int itemid;
 	private String auditbycode;

@@ -17,6 +17,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial2nd">
 			</div>
 			
+			<div class="buttonarea4" style="margin-bottom: 10px;">
 			<form action="/quality/materialDefectList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -24,6 +25,16 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
 				<input type="submit" value="검색" data-toggle="tooltip" title="품질 관리 번호 또는 제품명이 필요합니다!">
 			</form>	
+			</div>
+			<form action="/materialDefectPrint" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+					<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+				</c:if>
+				<c:if test="${!empty param.searchText }">
+					<input type="hidden" name="searchText" value="${param.searchText }">
+				</c:if>
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+			</form>
 			<br>			
 				<div class="table-responsive">
 					<table class="table">
@@ -258,3 +269,11 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->

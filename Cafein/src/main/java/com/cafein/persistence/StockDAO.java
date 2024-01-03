@@ -58,5 +58,8 @@ public interface StockDAO {
 	public QualityVO selectRoastedBean(String lotnumber) throws Exception;
 	
 	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
-	public List<QualityVO> selectStockListExcel() throws Exception;
+	public List<QualityVO> selectStockListExcel(QualityVO vo) throws Exception;
+	
+	// 재고 엑셀용 출력 목록 조회 (반품)
+	public List<QualityVO> selectMaterialStockListExcel(QualityVO vo) throws Exception;
 }

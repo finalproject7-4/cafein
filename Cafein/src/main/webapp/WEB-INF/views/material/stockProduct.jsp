@@ -35,7 +35,15 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
 		</form>
 		</div>
-		<input type="button" class="btn btn-sm btn-success" value="엑셀 파일 저장" onclick="location.href='/productStockPrint';">
+			<form action="/productStockPrint" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+					<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+				</c:if>
+				<c:if test="${!empty param.searchText }">
+					<input type="hidden" name="searchText" value="${param.searchText }">
+				</c:if>
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+			</form>
 	</div>
 </div>
 <!-- 재고 조회 -->

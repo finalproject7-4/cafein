@@ -160,13 +160,13 @@ public class QualityController {
 			
 			if(result != 0) {
 				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
-					vo.setQualitycheck("정상");
-					qService.productQualityCheck(vo);
-					
-					if(vo.getProcess() != null && !vo.getProcess().equals("생산 - 포장")) { // 포장이 아닌 경우 생산 상태 자동 업데이트
-						sService.registerStockY(vo);
-					}
-					
+						vo.setQualitycheck("정상");
+						qService.productQualityCheck(vo);
+						
+						if(vo.getProduceprocess() != null && !vo.getProduceprocess().equals("생산 - 포장")) {
+							sService.registerStockY(vo);
+						}
+						
 				}else { // 생산 검수 - 불량
 					vo.setQualitycheck("불량");
 					qService.productQualityCheck(vo);
