@@ -160,6 +160,20 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.selectList(NAMESPACE + ".selectMaterialQualityListSearchBtnExcel", vo);
 	}
 
+	// 불량 현황 엑셀용 출력 목록 조회 (생산 + 반품)
+	@Override
+	public List<QualityVO> selectDefectsListSearchBtnExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectDefectsListSearchBtnExcel", vo);
+	}
+
+	// 불량 현황 엑셀용 출력 목록 조회 (자재)
+	@Override
+	public List<QualityVO> selectMaterialDefectsListSearchBtnExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialDefectsListSearchBtnExcel", vo);
+	}
+
 	
 	
 	

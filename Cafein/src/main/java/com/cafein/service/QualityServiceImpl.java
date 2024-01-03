@@ -166,6 +166,20 @@ public class QualityServiceImpl implements QualityService {
 		// TODO Auto-generated method stub
 		return qdao.selectMaterialQualityListSearchBtnExcel(vo);
 	}
+
+	// 불량 현황 엑셀용 출력 목록 조회 (생산 + 반품)
+	@Override
+	public List<QualityVO> defectsListSearchBtnExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectDefectsListSearchBtnExcel(vo);
+	}
+
+	// 불량 현황 엑셀용 출력 목록 조회 (자재)
+	@Override
+	public List<QualityVO> materialDefectsListSearchBtnExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.selectMaterialDefectsListSearchBtnExcel(vo);
+	}
 	
 
 	
