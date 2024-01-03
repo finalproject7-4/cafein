@@ -30,19 +30,19 @@ public class ItemController {
 	// http://localhost:8088/information/items
 	// 품목 목록 - GET
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
-<<<<<<< HEAD
+
 	public String itemListAll(Model model) throws Exception {
 		logger.debug("itemListAll() 호출");
 
-=======
+
 	public void itemList(Model model, ItemVO vo, Criteria cri) throws Exception {
 		logger.debug("itemList() 호출");
->>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
+
 		
 		// ItemVO의 Criteria 설정
 		vo.setCri(cri);
 		
-<<<<<<< HEAD
+
 
 
 		// 서비스
@@ -51,7 +51,7 @@ public class ItemController {
 						
 		// 데이터를 연결된 뷰페이지로 전달 (Model 객체 필요)
 		model.addAttribute("itemList", iService.itemList());
-=======
+
 		// 페이징 처리
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
@@ -60,14 +60,13 @@ public class ItemController {
 		
 		// 데이터를 연결된 뷰페이지로 전달
 		model.addAttribute("itemList", iService.itemList(vo));
->>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
+
 		model.addAttribute("clientList", cService.clientList());
 		model.addAttribute("pageVO", pageVO);
 				
-<<<<<<< HEAD
 
-=======
->>>>>>> 2d82d6eef1c196c4afa04e8057d68231bd4488f0
+
+
 		// 연결된 뷰페이지로 이동
 		logger.debug("/views/information/items.jsp 페이지로 이동");
 	}
