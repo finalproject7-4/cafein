@@ -1,6 +1,9 @@
 package com.cafein.persistence;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -50,6 +53,15 @@ public class ShipDAOImpl implements ShipDAO {
 	public List<WorkVO> getWKList() throws Exception {
 		logger.debug("작업 지시 조회 성공");
 		return sqlSession.selectList(NAMESPACE+".getWKList");
+	}
+	
+	// 작업 지시 검색
+	@Override
+	public List<WorkVO> searchWKList(String keyword) throws Exception {
+	    Map<String, Object> parameterMap = new HashMap<>();
+	    parameterMap.put("keyword", keyword);
+
+	    return sqlSession.selectList(NAMESPACE + ".searchWKList", parameterMap);
 	}
 
 	// 작업 지시 등록

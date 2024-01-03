@@ -11,8 +11,7 @@
 		<div class="bg-light rounded h-100 p-4">
 			<h6 class="mb-4">작업지시 조회</h6>
 
-			작업 지시 코드: <input type="text" name="poname" class="m-2"> 수주
-			코드: <input type="text" name="poname" class="m-2">
+			검색: <input type="text" id="clientname" class="m-2" onkeyup="searchWork()">
 
 
 			<!-- 달력 -->
@@ -62,7 +61,7 @@
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
-					<table class="table">
+					<table class="table" id="workTable">
 						<thead>
 							<tr>
 								<th scope="col">No.</th>
@@ -119,16 +118,108 @@
 </form>
 
 <script>
+
+function searchWork() {
+    var searchKeyword = $('#searchInput').val();
+
+    // AJAX 요청 수행
+    $.ajax({
+        type: 'POST',
+        url: '/production/WKList',
+        data: { keyword: searchKeyword,
+//         		workid: ${wk.workid},
+//        	 		pocode: pocode,
+       		 	clientname: clientname
+//             	itemname: itemname,
+//             	worksts: worksts,
+//             	pocnt: pocnt,
+//             	workdate1: workdate1,
+//             	workdate2: workdate2,
+//             	workupdate: workupdate,
+//            		membercode: membercode
+       },
+        success: function (response) {
+        	console.log('서버 응답:', response);
+            updateTable(response);
+        },
+        error: function (error) {
+            console.error('검색 중 오류 발생:', error);
+        }
+    });
+}
+
+function updateTable(searchResults) {
+	console.log('전달된 데이터:', searchResults);
+    var tableBody = $('#workTable tbody');
+     tableBody.empty(); // 기존 데이터 비우기
+	console.log('반복문 실행 중');
+    $.each(searchResults, function(index, wk) {
+        // 테이블에 새로운 행 추가
+        var newRow = '<tr>' +
+            '<td>' + (wk.workid || '') + '</td>' +
+            '<td>' + (formatDate(wk.workdate1) || '') + '</td>' +
+            '<td>' + (wk.pocode || '') + '</td>' +
+            '<td>' + (wk.clientname || '') + '</td>' +
+            '<td>' + (wk.itemname || '') + '</td>' +
+            '<td>' + (wk.worksts|| '') + '</td>' +
+            '<td>' + (wk.pocnt|| '') + '</td>' +
+            '<td>' + (formatDate(wk.workdate2) || '') + '</td>' +
+            '<td>' + (formatDate(wk.workupdate) || '') + '</td>' +
+            '<td>' + (wk.membercode || '') + '</td>' +
+            '<td>' +
+            '<button type="button" class="btn btn-outline-dark" onclick="openModifyModal(\'' +
+            (wk.workid || '') + '\',\'' + (wk.pocode || '') + '\',\'' + (wk.clientname || '') + '\',\'' +
+            (wk.itemname || '') + '\',\'' + (wk.worksts || '') + '\',\'' + (wk.pocnt || '') + '\',\'' +
+            (formatDate(wk.workdate1) || '') + '\',\'' + (formatDate(wk.workupdate) || '') + '\',\'' +
+            (wk.membercode || '') + '\')">수정</button>' +
+            '</td>' +
+            '</tr>';
+
+        tableBody.append(newRow);
+        console.log(newRow);
+    });
+}
+
+// 수정된 값을 서버로 전송
+$("#modifyButton").click(function() {
+    // 가져온 값들을 변수에 저장
+    var modifiedWorkid = $("#workid2").val();
+    var modifiedPocode = $("#pocode2").val();
+    var modifiedClientName = $("#clientcode2").val();
+    var modifiedItemName = $("#itemcode2").val();
+    var modifiedWorksts = $("#worksts2").val();
+    var modifiedPocnt = $("#pocnt2").val();
+    var modifiedWorkdate1 = $("#workdate11").val();
+    var modifiedWorkupdate = $("#workupdate2").val();
+    var modifiedMemberCode = $("#membercode2").val();
+
+    // Ajax를 사용하여 서버로 수정된 값 전송
+    $.ajax({
+        type: "POST",
+        url: "/production/modifyWK",
+        data: {
+        	 workid: modifiedWorkid,
+        	 pocode: modifiedPocode,
+        	 clientname: modifiedClientName,
+             itemname: modifiedItemName,
+             worksts: modifiedWorksts,
+             pocnt: modifiedPocnt,
+             workdate1: modifiedworkDate1,
+             workupdate: modifiedWorkupDate,
+             membercode: modifiedMemberCode
+        },
+        success: function(response) {
+            console.log("Modification success:", response);
+            $("#modifyModal").modal('hide');
+        },
+        error: function(error) {
+            console.error("Error during modification:", error);
+        }
+    });
+});
 	   
 	   function openModifyModal(workid, pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
-		   console.log('Pocode:', pocode);
-		   console.log('Client Name:', clientname);
-	       console.log('Item Name:', itemname);
-	       console.log('Worksts:', worksts);
-	       console.log('Pocnt:', pocnt);
-	       console.log('Work date1:', workdate1);
-	       console.log('Work Update:', workupdate);
-	       console.log('Member Code:', membercode); 
+
 		   
 		   // 가져온 값들을 모달에 설정
 		   $("#workid2").val(workid);
@@ -144,43 +235,6 @@
 		    // 모달 열기
 		    $("#modifyModal").modal('show');
 		    
-		    // 수정된 값을 서버로 전송
-		    $("#modifyButton").click(function() {
-		        // 가져온 값들을 변수에 저장
-		        var modifiedWorkid = $("#workid2").val();
-		        var modifiedPocode = $("#pocode2").val();
-		        var modifiedClientName = $("#clientcode2").val();
-		        var modifiedItemName = $("#itemcode2").val();
-		        var modifiedWorksts = $("#worksts2").val();
-		        var modifiedPocnt = $("#pocnt2").val();
-		        var modifiedWorkdate1 = $("#workdate11").val();
-		        var modifiedWorkupdate = $("#workupdate2").val();
-		        var modifiedMemberCode = $("#membercode2").val();
-
-		        // Ajax를 사용하여 서버로 수정된 값 전송
-		        $.ajax({
-		            type: "POST",
-		            url: "/sales/modifyWK",
-		            data: {
-		            	 workid: modifiedWorkid,
-		            	 pocode: modifiedPocode,
-		            	 clientname: modifiedClientName,
-		                 itemname: modifiedItemName,
-		                 worksts: modifiedWorksts,
-		                 pocnt: modifiedPocnt,
-		                 workdate1: modifiedworkDate1,
-		                 workupdate: modifiedWorkupDate,
-		                 membercode: modifiedMemberCode
-		            },
-		            success: function(response) {
-		                console.log("Modification success:", response);
-		                $("#modifyModal").modal('hide');
-		            },
-		            error: function(error) {
-		                console.error("Error during modification:", error);
-		            }
-		        });
-		    });
 		}
 	   
 	    $('#workdate11').click(function(){
@@ -198,6 +252,7 @@
 	    });
 	    
 	   </script>
+	   
 
 
 <%@ include file="../include/footer.jsp"%>

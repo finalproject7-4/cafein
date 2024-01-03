@@ -38,6 +38,16 @@ public class WorkController {
 		logger.debug("작업지시 리스트 출력!");
 	}
 	
+	// 작업지시 검색
+	// http://localhost:8088/production/WKList
+	@RequestMapping(value = "/WKList", method = RequestMethod.POST)
+	public void searchWKListGET(@RequestParam String keyword) throws Exception {
+	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
+
+	    shService.searchWKList(keyword); 
+	    logger.debug("작업지시 검색 결과 출력!");
+	}
+	
 	// 작업지시 등록 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
@@ -53,8 +63,8 @@ public class WorkController {
 		logger.debug(" 작업지시 등록 완료! ");     
                                        
 	                                                                                 
-		logger.debug("/sales/registWK 이동");                                          
-		return "redirect:/sales/WKList";                                             
+		logger.debug("/production/registWK 이동");                                          
+		return "redirect:/production/WKList";                                             
 	}
 
 	// 작업 지시 코드 생성 메서드
@@ -82,7 +92,7 @@ public class WorkController {
 		// 서비스 - 정보수정 동작
 		int result = shService.WKModify(wvo);
 		logger.debug("result", result);
-		return "redirect:/sales/WKList";
+		return "redirect:/production/WKList";
 	}
 	
 }

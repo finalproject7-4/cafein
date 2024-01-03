@@ -20,6 +20,9 @@ public interface ShipDAO {
 	// 작업 지시 조회
 	public List<WorkVO> getWKList() throws Exception;
 	
+	// 작업 지시 검색
+    public List<WorkVO> searchWKList(String keyword) throws Exception;
+	
 	// 작업 지시 등록
 	public void registWK(WorkVO wvo) throws Exception;
 	

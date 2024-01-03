@@ -1,6 +1,8 @@
 package com.cafein.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -50,6 +52,13 @@ public class ShipServiceImpl implements ShipService {
 		return shdao.getWKList();
 	}
 	
+	// 작업 지시 검색
+	@Override
+	public List<WorkVO> searchWKList(String keyword) throws Exception {
+		    logger.debug("searchWKList()");
+		    return shdao.searchWKList(keyword);
+		}
+
 	// 작업 지시 등록
 	@Override
 	public void registWK(WorkVO wvo) throws Exception {
