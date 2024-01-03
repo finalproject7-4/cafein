@@ -73,8 +73,6 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.updatePO(svo);
 	}
 	
-
-	
 	//납품서
 	@Override
 	public List<SalesVO> receiptList() throws Exception {
@@ -87,6 +85,13 @@ public class SalesServiceImpl implements SalesService {
 	public List<SalesVO> POPrint() throws Exception {
 		logger.debug("S :POPrint()");
 		return sdao.getPOPrint();
+	}
+
+	//수주상태 취소
+	@Override
+	public int updatePOstate(SalesVO svo) throws Exception {
+		logger.debug("S :updatePOstate(svo)");
+		return sdao.updatePOstate(svo);
 	}
 
 	

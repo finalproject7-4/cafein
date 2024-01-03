@@ -72,11 +72,6 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.update(NAMESPACE + ".updatePO", svo);
 	}
 	
-	
-	
-
-	
-	
 	//납품서
 	@Override
 	public List<SalesVO> getReceiptList() throws Exception {
@@ -90,9 +85,15 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : getPOPrint()");
 		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
-	
-	
 
+	//수주상태취소
+	@Override
+	public int updatePOstate(SalesVO svo) throws Exception {
+		logger.debug("DAO : updatePOstate(svo)");
+		return sqlSession.update(NAMESPACE+".cancelPOState",svo);
+	}
+	
+	
 	
 	
 

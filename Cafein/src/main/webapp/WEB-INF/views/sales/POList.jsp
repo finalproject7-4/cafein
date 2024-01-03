@@ -157,17 +157,15 @@
 		                var poid = $(button).closest('tr').find('.poid').text();
 
 		                var postData = {
-		                    poid: poid,
-		                    postate: '취소' // 변경하려는 상태
+		                    poid: poid
 		                };
 
 		                $.ajax({
 		                    type: 'POST',
-		                    url: '/sales/modifyPO', // 실제 업데이트를 수행할 엔드포인트로 변경해야 합니다.
+		                    url: '/sales/cancelUpdate', // 실제 업데이트를 수행할 엔드포인트로 변경해야 합니다.
 		                    data: postData,
 		                    success: function(response) {
-		                        // 서버에서 업데이트 처리가 성공한 경우
-		                        // 서버에서 수주 리스트를 다시 불러오는 등의 업데이트 로직 수행
+		                    	console.log('Ajax success:', response);
 		                        updateUIOnCancellation();
 		                    },
 		                    error: function(error) {

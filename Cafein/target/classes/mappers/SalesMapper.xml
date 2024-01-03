@@ -96,7 +96,11 @@
 	 	where poid=#{poid}
 	 </update>
 	 
-	 
+	 <!-- 수주상태 취소 -->
+	 <update id="cancelPOState">
+	 	update purchaseorder set postate='취소' 
+	 	where poid=#{poid}
+	 </update>
 	 
 	 
 </mapper>
