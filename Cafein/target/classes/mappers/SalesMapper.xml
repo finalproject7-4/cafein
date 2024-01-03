@@ -43,11 +43,6 @@
 		limit #{cri.startPage}, #{cri.pageSize}
 	</select>
 	
-	
-	
-	
-	
-	
 	<!-- 납품서 조회 -->
 	<select id="getReceiptList" resultType="com.cafein.domain.SalesVO">
 	SELECT re.receiptid, cli.clientname, cli.businessnumber, cli.representative, cli.clientaddress, cli.clientphone, cli.clientfax, 
@@ -62,7 +57,6 @@
 	</select>
 	
 	
-	
 	<!-- 수주등록-납품처 -->
 	<select id="cliList" resultType="com.cafein.domain.SalesVO">
 		select * from client
@@ -71,6 +65,7 @@
 	<!-- 수주등록-품목 -->
 	<select id="iList" resultType="com.cafein.domain.SalesVO">
 		select * from item
+		where itemcode like '%P%'
 	</select>
 
 	<!-- 수주코드 생성 -->

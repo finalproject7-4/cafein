@@ -38,6 +38,8 @@
 					id="cancel">취소</button>
 		</div>
 
+
+
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4" id="ListID">
 			<span class="mb-4">총 ${fn:length(POList)}건</span>
@@ -61,6 +63,7 @@
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
+								<th scope="col">납품</th>
 								<th scope="col">납품서발행</th>
 							</tr>
 						</thead>
@@ -102,10 +105,16 @@
 												dateStyle="short" pattern="yyyy-MM-dd" /></td>
 										<td>${po.membercode}</td>
 										<td>
-											<!-- 버튼 수정 -->
 											<button type="button" class="btn btn-outline-dark" 
 									        onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
+											</button>
+											<button type="button" class="btn btn-outline-dark" onclick="confirmCancellation()">
+											취소</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-outline-dark"> 
+									        납품
 											</button>
 										</td>
 										<td>
@@ -124,6 +133,54 @@
 				</div>
 		</div>
 		</div>
+		
+		<!-- 취소 동작(수주상태 취소로 변경) -->
+		<script>
+		  function confirmCancellation(button) {
+		        // 확인 모달 띄우기
+		        Swal.fire({
+		            title: '정말로 그렇게 하시겠습니까?',
+		            text: '다시 되돌릴 수 없습니다. 신중하세요.',
+		            icon: 'warning',
+		            showCancelButton: true,
+		            confirmButtonColor: '#3085d6',
+		            cancelButtonColor: '#d33',
+		            confirmButtonText: '승인',
+		            cancelButtonText: '취소',
+		            reverseButtons: true,
+		        }).then(function(result) {
+		            if (result.isConfirmed) {
+		                // 승인 버튼이 눌렸을 때의 처리
+		                Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
+
+		                // 클릭된 버튼의 부모 행을 찾아서 해당 행에서 poid 값을 가져옴
+		                var poid = $(button).closest('tr').find('.poid').text();
+
+		                var postData = {
+		                    poid: poid,
+		                    postate: '취소' // 변경하려는 상태
+		                };
+
+		                $.ajax({
+		                    type: 'POST',
+		                    url: '/sales/modifyPO', // 실제 업데이트를 수행할 엔드포인트로 변경해야 합니다.
+		                    data: postData,
+		                    success: function(response) {
+		                        // 서버에서 업데이트 처리가 성공한 경우
+		                        // 서버에서 수주 리스트를 다시 불러오는 등의 업데이트 로직 수행
+		                        updateUIOnCancellation();
+		                    },
+		                    error: function(error) {
+		                        console.error('Error during cancellation:', error);
+		                        Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
+		                    }
+		                });
+		            }
+		        });
+		    }
+</script>
+		
+		
 		<!-- 품목 등록 모달 -->
 		<jsp:include page="registPO.jsp"/>
 		<!-- 품목 수정 모달 -->
