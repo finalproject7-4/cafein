@@ -28,6 +28,9 @@ public interface ShipService {
 	// 작업 지시 코드 생성
 	public int wkCount(WorkVO wvo) throws Exception;
 	
+	// 작업 지시 수정
+	public int WKModify(WorkVO svo) throws Exception;
+	
 	// 실적 조회
 	public List<WorkVO> AllPFList() throws Exception;
 	
