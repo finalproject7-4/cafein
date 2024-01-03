@@ -47,6 +47,9 @@ public interface ProductionDAO {
 	// 포장완료 제품 roastedbean 테이블에 추가
 	public void insertRoastedbean(RoastedbeanVO vo) throws Exception;
 	
+	// 대기중인 블렌딩 공정과정 삭제
+	public void deleteProducePlan(ProduceVO vo) throws Exception;
+	
 	// 로스팅 온도값 조회
 	public int getRoastingTemper(ProduceVO vo) throws Exception;
 	

@@ -93,7 +93,8 @@ $(document).ready(function() {
             success: function(response) {
                 console.log('포장 공정 완료!');
                 alert("포장 공정 완료");
-                getList();
+                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+				getList(currentPage);
                 $('#packageModal').modal('hide');
             },
             error: function(error) {

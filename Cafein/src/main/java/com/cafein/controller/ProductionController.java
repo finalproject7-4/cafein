@@ -227,6 +227,16 @@ public class ProductionController {
 		return "redirect:/production/produceList";
 	}
 	
+	// 생산지시 삭제(블렌딩, 대기중, 검사전 일때만)
+	@RequestMapping(value = "/deletePlan", method = RequestMethod.POST)
+	public String deleteProducePlan(ProduceVO vo) throws Exception{
+		logger.debug("블렌딩 작업 지시 삭제!");
+		
+		pService.deleteProducePlan(vo);
+		
+		return "redirect: /production/produceList";
+	}
+	
 	
 	
 	// 완제품 관리 리스트 Lot 리스트 출력 입장 컨트롤러
@@ -238,24 +248,29 @@ public class ProductionController {
 		
 
 	}
+
 	
-	
-	@RequestMapping(value="roastedDetail", method =RequestMethod.GET )
+	@RequestMapping(value="/roastedDetail", method =RequestMethod.GET )
 	public void roastedBeanDetail(Model model, RoastedbeanVO vo, Criteria cri, HttpSession session) throws Exception{
 		
 		logger.debug("로스팅 제품 목록 조회!");
+		logger.debug("cri : "+cri);
+		logger.debug("RoastedbeanVO : "+vo);
+			
 		
-		// 페이징 처리
+				// 페이징 처리
 				vo.setCri(cri);
 				PageVO pageVO = new PageVO();
 				pageVO.setCri(cri);
 				pageVO.setTotalCount(pService.countRoastedbean(vo));
-
 				session.setAttribute("viewcntCheck", true);
-
 				model.addAttribute("pageVO", pageVO);
+				
 		
-		model.addAttribute("roastedList", pService.getRoastedList(vo));
+				// 로스팅 완제품 목록 전달
+				model.addAttribute("roastedList", pService.getRoastedList(vo));
+				
+				
 	}
 
 }

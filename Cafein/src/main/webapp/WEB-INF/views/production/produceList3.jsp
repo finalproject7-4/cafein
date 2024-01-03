@@ -237,7 +237,7 @@ function fetchData(searchBtnValue) {
 <td>
 	<!-- 삭제 버튼은 생산공정이 블렌딩이고, 상태가 대기중일 때만 표시 -->
 	<c:if test="${plist.state == '대기' && plist.process=='블렌딩' && plist.qualitycheck == '검사전'}">
-	<input type="submit" class="btn btn-sm btn-dark m-1" value="삭제">
+	<input type="submit" id="deletProduceBtn" class="btn btn-sm btn-dark m-1" value="삭제">
 	</c:if>
 	<c:if test="${plist.state == '완료' && plist.process=='블렌딩' && plist.qualitycheck == '정상'}">
 	<input type="button" id="roastingBtn" class="btn btn-sm btn-dark m-1" name="process" value="수정">
@@ -483,7 +483,8 @@ function fetchData(searchBtnValue) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					alert('변경완료!');
-					getList();
+					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
 					
 
 				},
@@ -494,7 +495,36 @@ function fetchData(searchBtnValue) {
 				}
 			});
 		});
+		
+		// 공정 삭제 버튼 클릭시 이벤트
+		$("td").on("click", "#deletProduceBtn", function() {
+			if(confirm("삭제하시겠습니까?")){
+			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 
+			// AJAX 요청 수행
+			$.ajax({
+				url : "/production/deletePlan",
+				type : "POST",
+				data : {
+					produceid : produceId
+				},
+				success : function(response) {
+					// 성공적으로 처리된 경우 수행할 코드
+					console.log("상태 업데이트 성공!");
+					alert('삭제완료!');
+					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
+					
+
+				},
+				error : function(error) {
+					// 요청 실패 시 수행할 코드
+					alert('못한다. 못간다.');
+					console.error("상태 업데이트 실패:", error);
+				}
+			});
+		}
+		});
 		
 	// 생산 공정 수정(블렌딩->로스팅) 변경 버튼 클릭 이벤트 처리
 
@@ -515,7 +545,8 @@ function fetchData(searchBtnValue) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					alert('변경완료!');
-					getList();
+					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
 					
 
 				},

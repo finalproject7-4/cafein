@@ -51,6 +51,9 @@ public interface ProductionService {
 	// 포장공정 완료된 제품 roastedbean 테이블에 추가
 	public void insertRoastedbean(RoastedbeanVO vo) throws Exception;
 	
+	// 대기중인 블렌딩 공정 지시 삭제
+	public void deleteProducePlan(ProduceVO vo) throws Exception;
+	
 	// 로스팅 업데이트 제품 온도 조회
 	public int getRoastingTemper(ProduceVO vo) throws Exception;
 	

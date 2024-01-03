@@ -203,7 +203,8 @@
 	            success: function(response) {
 	                console.log('포장공정 등록 성공!');
 	                alert("포장공정 등록 완료");
-	                getList();
+	                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
 	                $('#exampleModal').modal('hide');
 	            },
 	            error: function(error) {
@@ -228,7 +229,8 @@
 	            success: function(response) {
 	                console.log('생산지시 등록 성공!');
 	                alert("등록 완료");
-	                getList();
+	                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
 	                $('#updateModal2').modal('hide');
 	            },
 	            error: function(error) {

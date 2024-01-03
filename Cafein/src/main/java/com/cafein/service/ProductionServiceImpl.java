@@ -246,6 +246,16 @@ public class ProductionServiceImpl implements ProductionService{
 		pdao.updateProduceProcess(vo);
 		
 	}
+	
+	
+	// 대기중인 블렌딩 작업 삭제
+	@Override
+	public void deleteProducePlan(ProduceVO vo) throws Exception {
+		logger.debug("Service - 블렌딩 작업 삭제!");
+		
+		pdao.deleteProducePlan(vo);
+		
+	}
 
 	// 로스팅 제품 온도 체크
 	@Override
