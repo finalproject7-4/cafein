@@ -8,6 +8,11 @@
 <!-- SweetAlert 추가 -->
 <script>
 $(document).ready(function() {
+	getList();
+   
+});
+
+function getList(){
     // 첫 번째 페이지 가져오기
     $.ajax({
         url: "/production/produceList3",
@@ -21,9 +26,8 @@ $(document).ready(function() {
             console.error("Error fetching quality list:", error);
         }
     });
+}
 
-   
-});
 </script>
 
 <!-- 검색 폼 -->
@@ -105,7 +109,7 @@ $(document).ready(function() {
 
 <script type="text/javascript">
 
-	/* 생산지시 모달창 */
+	/* 생산지시 모달창 시작 */
 	
 	var exampleModal = document.getElementById('exampleModal')
 	exampleModal.addEventListener('show.bs.modal', function (event) {
@@ -114,7 +118,60 @@ $(document).ready(function() {
 	  var modalTitle = exampleModal.querySelector('.modal-title')
 	  var modalBodyInput = exampleModal.querySelector('.modal-body input')
 	});
-	/* 생산지시 모달창 */
+	/* 생산지시 모달창 끝 */
+	
+	
+	
+	/* 생산지시 수정(블렌딩 -> 로스팅) 모달창 시작*/
+	
+	var exampleModal = document.getElementById('updateModal1')
+	exampleModal.addEventListener('show.bs.modal', function (event) {
+	  var button = event.relatedTarget
+	  var recipient = button.getAttribute('data-bs-whatever')
+	  var modalTitle = exampleModal.querySelector('.modal-title')
+	  var modalBodyInput = exampleModal.querySelector('.modal-body input')
+	});
+	
+	// 생산지시 수정(블렌딩 -> 로스팅)  클릭시 실행될 함수
+	function openUpdateModal1(produceid, producedate, producetime, produceline, itemname, itemid, packagevol) {
+    // 모달 내부의 입력 필드에 데이터 설정
+    document.getElementById('produceidUpdate').value = produceid;
+    document.getElementById('producedateUpdate').value = producedate;
+    document.getElementById('producetimeUpdate').value = producetime;
+    document.getElementById('producelineUpdate').value = produceline;
+    document.getElementById('itemnameUpdate').value = itemname;
+    document.getElementById('itemidUpdate').value = itemid;
+
+    // 모달 열기
+    $('#updateModal1').modal('show');
+}
+	/* 생산지시 수정(블렌딩 -> 로스팅) 모달창 끝 */
+	
+	
+	/* 생산지시 수정(로스팅 -> 포장) 모달창 시작*/
+	
+	var exampleModal = document.getElementById('updateModal2')
+	exampleModal.addEventListener('show.bs.modal', function (event) {
+	  var button = event.relatedTarget
+	  var recipient = button.getAttribute('data-bs-whatever')
+	  var modalTitle = exampleModal.querySelector('.modal-title')
+	  var modalBodyInput = exampleModal.querySelector('.modal-body input')
+	});
+	
+	// 생산지시 수정(로스팅 -> 포장)  클릭시 실행될 함수
+	function openUpdateModal2(produceid, producedate, producetime, produceline, itemname, itemid, packagevol) {
+    // 모달 내부의 입력 필드에 데이터 설정
+    document.getElementById('produceidUpdate2').value = produceid;
+    document.getElementById('producedateUpdate2').value = producedate;
+    document.getElementById('producetimeUpdate2').value = producetime;
+    document.getElementById('producelineUpdate2').value = produceline;
+    document.getElementById('itemnameUpdate2').value = itemname;
+    document.getElementById('itemidUpdate2').value = itemid;
+
+    // 모달 열기
+    $('#updateModal2').modal('show');
+}
+	/* 생산지시 수정(로스팅 -> 포장) 모달창 끝 */
 	
 	
 	
@@ -131,15 +188,31 @@ $(document).ready(function() {
 	
 	/* 포장완료 등록 모달창 */
 	
-	var exampleModal = document.getElementById('packageModal')
-	exampleModal.addEventListener('show.bs.modal', function (event) {
+	 var exampleModal = document.getElementById('packageModal')
+	  exampleModal.addEventListener('show.bs.modal', function (event) {
 	  var button = event.relatedTarget
 	  var recipient = button.getAttribute('data-bs-whatever')
 	  var modalTitle = exampleModal.querySelector('.modal-title')
 	  var modalBodyInput = exampleModal.querySelector('.modal-body input')
 	});
-	/* 포장완료 등록 모달창 */
 	
+	// 포장완료 등록 모달창 
+	
+	// 포장완료 클릭시 실행될 함수
+ 	function openPackageModal(produceid, producedate, producetime, produceline, itemname, itemid, packagevol, amount) {
+    // 모달 내부의 입력 필드에 데이터 설정
+    document.getElementById('produceidPack').value = produceid;
+    document.getElementById('producedatePack').value = producedate;
+    document.getElementById('producetimePack').value = producetime;
+    document.getElementById('producelinePack').value = produceline;
+    document.getElementById('itemnamePack').value = itemname;
+    document.getElementById('itemidPack').value = itemid;
+    document.getElementById('packagevolPack').value = packagevol;
+    document.getElementById('amountPack').value = amount;
+
+    // 모달 열기
+    $('#packageModal').modal('show'); 
+} 
 	
     
 

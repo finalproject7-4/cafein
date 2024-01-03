@@ -197,8 +197,12 @@ function fetchData(searchBtnValue) {
 <th scope="col">공정과정</th>
 <th scope="col">품질검수</th>
 <th scope="col">상태</th>
+<th scope="col" style="display: none;">생산타임</th>
+<th scope="col" style="display: none;">아이템ID</th>
+<th scope="col" style="display: none;">포장지시량</th>
+<th scope="col" style="display: none;">생산량</th>
 <th scope="col">상태변경</th>
-<th scope="col">삭제</th>
+<th scope="col">공정관리</th>
 </tr>
 </thead>
 <tbody>
@@ -213,6 +217,10 @@ function fetchData(searchBtnValue) {
 <td>${plist.process }</td>
 <td>${plist.qualitycheck }</td>
 <td>${plist.state }</td>
+<td style="display: none;">${plist.producetime }</td>
+<td style="display: none;">${plist.itemid }</td>
+<td style="display: none;">${plist.packagevol }</td>
+<td style="display: none;">${plist.amount }</td>
 <td>
 	<!-- 상태변경 버튼은 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
 	<c:if test="${plist.state == '대기'}">
@@ -223,14 +231,20 @@ function fetchData(searchBtnValue) {
 	<input id="completBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="완료">
 	</c:if>
 	<c:if test="${plist.state == '생산중'&& plist.process =='포장' }">
-	<input id="packageBtn" type="button" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료">
+	<input id="packageBtn" type="button" onclick="openPackageModal('${plist.produceid}', '${plist.producedate}', '${plist.producetime }', '${plist.produceline}',  '${plist.itemname }', '${plist.itemid }', '${plist.packagevol }', '${plist.amount }')" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료"> 
 	</c:if>
 </td>
 <td>
 	<!-- 삭제 버튼은 생산공정이 블렌딩이고, 상태가 대기중일 때만 표시 -->
-	<c:if test="${plist.state == '대기' && plist.process=='블렌딩'}">
+	<c:if test="${plist.state == '대기' && plist.process=='블렌딩' && plist.qualitycheck == '검사전'}">
 	<input type="submit" class="btn btn-sm btn-dark m-1" value="삭제">
 	</c:if>
+	<c:if test="${plist.state == '완료' && plist.process=='블렌딩' && plist.qualitycheck == '정상'}">
+	<input type="button" id="roastingBtn" class="btn btn-sm btn-dark m-1" name="process" value="수정">
+	</c:if>
+	<c:if test="${plist.state == '완료' &&  plist.process =='로스팅' && plist.qualitycheck == '정상' }">
+	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
+		</c:if>
 </td>
 </tr>
 </c:forEach>
@@ -450,9 +464,10 @@ function fetchData(searchBtnValue) {
 	});
 
 		  
+	// 생산 상태 변경 버튼 클릭 이벤트 처리
 	$(document).ready(function() {
-		// 생산 상태 변경 버튼 클릭 이벤트 처리
-		$("body").on("click", "#ingBtn, #completBtn", function() {
+		$("td").on("click", "#ingBtn, #completBtn", function() {
+			
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
 
@@ -468,6 +483,8 @@ function fetchData(searchBtnValue) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					alert('변경완료!');
+					getList();
+					
 
 				},
 				error : function(error) {
@@ -478,7 +495,40 @@ function fetchData(searchBtnValue) {
 			});
 		});
 
-	});
+		
+	// 생산 공정 수정(블렌딩->로스팅) 변경 버튼 클릭 이벤트 처리
+
+			$("td").on("click", "#roastingBtn", function() {
+			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
+			 var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
+			
+			// AJAX 요청 수행
+			$.ajax({
+				url : "/production/processUpdateRoasting",
+				type : "POST",
+				data : {
+					produceid : produceId,
+					itemid : itemID,
+					process : "로스팅"
+				},
+				success : function(response) {
+					// 성공적으로 처리된 경우 수행할 코드
+					console.log("상태 업데이트 성공!");
+					alert('변경완료!');
+					getList();
+					
+
+				},
+				error : function(error) {
+					// 요청 실패 시 수행할 코드
+					alert('못한다. 못간다.');
+					console.error("상태 업데이트 실패:", error);
+				}
+			});
+		});
+		
+	}); 
+
 </script>
 
 

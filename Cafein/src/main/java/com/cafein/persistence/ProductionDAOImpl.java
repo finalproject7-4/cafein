@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.cafein.domain.BomVO;
-import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.RoastedbeanVO;
 
 @Repository
 
@@ -45,9 +45,6 @@ public class ProductionDAOImpl implements ProductionDAO {
 		logger.debug("DAO - 엑셀 출력용 리스트 출력");
 		return sqlSession.selectList(NAMESPACE+".getExcelDownProduceList", vo);
 	}
-
-
-
 
 
 	// 생산지시 글 개수 확인
@@ -109,6 +106,66 @@ public class ProductionDAOImpl implements ProductionDAO {
 		sqlSession.update(NAMESPACE+".updateProduceState", vo);
 		
 	}
+	
+	
+	// 생산 공정과정 업데이트(블렌딩 -> 로스팅)
+	@Override
+	public void updateProduceProcessRoasting(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 생산 공정 과정 로스팅! 변경 updateProduceProcess() 실행!");
+		
+		sqlSession.update(NAMESPACE+".updateProcessRoasting", vo);
+		
+	}
+
+
+	// 생산 공정과정 업데이트 (로스팅 -> 포장)
+	@Override
+	public void updateProduceProcess(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 생산 공정 과정 포장! 변경 updateProduceProcess() 실행!");
+		
+		sqlSession.update(NAMESPACE+".updateProcess", vo);
+		
+	}
+
+
+	// 포장공정 완료된 제품 roastedbean 목록에 추가
+	@Override
+	public void insertRoastedbean(RoastedbeanVO vo) throws Exception {
+		logger.debug("DAO - 로스팅제품 업데이트 실행!");
+		
+		sqlSession.update(NAMESPACE+".insertRoastedbean", vo);
+	}
+
+	// 로스팅 온도값 조회
+	@Override
+	public int getRoastingTemper(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 로스팅제품 온도 체크 실행!");
+		
+		return sqlSession.selectOne(NAMESPACE+".getRoastingTemper", vo);
+	}
+
+
+	// 로스팅 제품 조회
+	@Override
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception {
+		logger.debug("DAO - 로스팅 완료 제품 목록 조회!");
+		
+		return sqlSession.selectList(NAMESPACE+".getRoastedbeanList", vo);
+	}
+
+
+	// 로스팅 목록 글개수 조회
+	@Override
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception {
+		logger.debug("DAO - 로스팅 리스트 개수 조회!");
+		
+		return sqlSession.selectOne(NAMESPACE+".countRoastedbean", vo);
+	}
+
+	
+	
+	
+	
 	
 	
 	

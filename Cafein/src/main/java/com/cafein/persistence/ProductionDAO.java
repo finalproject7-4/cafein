@@ -6,6 +6,7 @@ import java.util.List;
 import com.cafein.domain.BomVO;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.RoastedbeanVO;
 
 public interface ProductionDAO {
 
@@ -37,4 +38,28 @@ public interface ProductionDAO {
 	// 생산 상태 업데이트
 	public void updateProduceState(ProduceVO vo) throws Exception;
 	
+	// 생산지시 공정 상태 수정 (블렌딩 -> 로스팅)
+	public void updateProduceProcessRoasting(ProduceVO vo) throws Exception;
+	
+	// 생산지시 공정 상태 수정 (로스팅 -> 포장)
+	public void updateProduceProcess(ProduceVO vo) throws Exception;
+	
+	// 포장완료 제품 roastedbean 테이블에 추가
+	public void insertRoastedbean(RoastedbeanVO vo) throws Exception;
+	
+	// 로스팅 온도값 조회
+	public int getRoastingTemper(ProduceVO vo) throws Exception;
+	
+	// 로스팅 제품 조회
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception;
+	
+	// 로스팅 목록 글 개수 조회
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception;
+	
 }
+
+
+
+
+
+
