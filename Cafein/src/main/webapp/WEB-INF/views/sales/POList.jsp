@@ -19,74 +19,6 @@
 </div>
 </div><br>
 
-<!-- 수정된 스크립트 -->
-<!-- 수정된 스크립트 -->
-<script>
-// 사용자가 입력한 조건으로 테이블 행 필터링 및 업데이트를 수행하는 함수
-function filterRows(event) {
-    // 기본 폼 제출 동작 방지
-    event.preventDefault();
-
-    // 입력된 키워드 가져오기
-    var keyword = $('.clientSearch').val().toLowerCase();
-
-    // 시작일자와 종료일자 가져오기
-    var startDate = $('#startDate').val() ? new Date($('#startDate').val()) : null;
-    var endDate = $('#endDate').val() ? new Date($('#endDate').val()) : null;
-
-    // 테이블의 모든 행 가져오기
-    var rows = $('.table tbody tr');
-
-    // 각 행에 대해 키워드 및 날짜 포함 여부 확인
-    rows.each(function () {
-        var clientName = $(this).find('td:nth-child(4)').text().toLowerCase();
-        var orderDateStr = $(this).find('td:nth-child(7)').text(); // 7번째 열은 수주일자
-        var orderDate = orderDateStr ? new Date(orderDateStr) : null;
-
-        var keywordMatch = keyword === '' || clientName.includes(keyword);
-        var dateMatch = (startDate === null || (orderDate !== null && orderDate >= startDate && orderDate <= endDate));
-
-        if (keywordMatch && dateMatch) {
-            $(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
-        } else {
-            $(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
-        }
-
-        // 콘솔에 출력 (디버깅용)
-        console.log('Client Name:', clientName, 'Order Date:', orderDate, 'Keyword Match:', keywordMatch, 'Date Match:', dateMatch);
-    });
-
-    // 번호 업데이트
-    updateRowNumbers();
-
-    // 폼이 실제로 제출되지 않도록 false 반환
-    return false;
-}
-
-// 테이블에 표시되는 행의 번호를 업데이트하는 함수
-function updateRowNumbers() {
-    // 표시된 행만 선택하여 번호 업데이트
-    var visibleRows = $('.table tbody tr:visible');
-    visibleRows.each(function (index) {
-        // 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-        $(this).find('td:first').text(index + 1);
-    });
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		<!-- 수주 상태에 따라 필터링하는 버튼 -->
 		<div class="col-12">
 			<div class="btn-group" role="group">
@@ -488,10 +420,85 @@ function updateRowNumbers() {
                 counter++;
             });
         }
+        function updateTotalCount() {
+            var totalCount = $(".table tbody tr:visible").length;
+            $(".mb-4").text("총 " + totalCount + "건");
+        }
+
+        // 필터링할 때마다 호출하여 업데이트
+        function updateRowNumbers() {
+            var counter = 1;
+            $(".table tbody tr:visible").each(function() {
+                $(this).find('td:first').text(counter);
+                counter++;
+            });
+
+            // 총 건수 업데이트 호출
+            updateTotalCount();
+        }
+
 
 
 
     });
+</script>
+
+<!-- 검색 -->
+<script>
+function filterRows(event) {
+    // 기본 폼 제출 동작 방지
+    event.preventDefault();
+
+    // 입력된 키워드 가져오기
+    var keyword = $('.clientSearch').val().toLowerCase();
+
+    // 시작일자와 종료일자 가져오기
+    var startDate = $('#startDate').val() ? new Date($('#startDate').val()) : null;
+    var endDate = $('#endDate').val() ? new Date($('#endDate').val()) : null;
+
+    // 테이블의 모든 행 가져오기
+    var rows = $('.table tbody tr');
+
+    // 각 행에 대해 키워드 및 날짜 포함 여부 확인
+    rows.each(function () {
+        var clientName = $(this).find('td:nth-child(4)').text().toLowerCase();
+        var orderDateStr = $(this).find('td:nth-child(7)').text(); // 7번째 열은 수주일자
+        var orderDate = orderDateStr ? new Date(orderDateStr) : null;
+
+        var keywordMatch = keyword === '' || clientName.includes(keyword);
+        var dateMatch = (startDate === null || (orderDate !== null && orderDate >= startDate && orderDate <= endDate));
+
+        if (keywordMatch && dateMatch) {
+            $(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
+        } else {
+            $(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
+        }
+        console.log('Client Name:', clientName, 'Order Date:', orderDate, 'Keyword Match:', keywordMatch, 'Date Match:', dateMatch);
+    });
+
+    // 번호 업뎃
+    updateRowNumbers();
+    // 총 건수 업뎃
+    updateTotalCount();
+    // 폼이 실제로 제출되지 않도록 false 반환
+    return false;
+}
+
+// 테이블에 표시되는 행의 번호를 업데이트하는 함수
+function updateRowNumbers() {
+    // 표시된 행만 선택하여 번호 업데이트
+    var visibleRows = $('.table tbody tr:visible');
+    visibleRows.each(function (index) {
+        // 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
+        $(this).find('td:first').text(index + 1);
+    });
+}
+// 총 건수 업데이트 함수
+function updateTotalCount() {
+    var totalCount = $('.table tbody tr:visible').length;
+    $('.mb-4').text('총 ' + totalCount + '건');
+}
+
 </script>
 
 
