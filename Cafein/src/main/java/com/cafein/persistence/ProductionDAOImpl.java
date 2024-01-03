@@ -145,6 +145,25 @@ public class ProductionDAOImpl implements ProductionDAO {
 	}
 
 
+	// 로스팅 제품 조회
+	@Override
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception {
+		logger.debug("DAO - 로스팅 완료 제품 목록 조회!");
+		
+		return sqlSession.selectList(NAMESPACE+".getRoastedbeanList", vo);
+	}
+
+
+	// 로스팅 목록 글개수 조회
+	@Override
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception {
+		logger.debug("DAO - 로스팅 리스트 개수 조회!");
+		
+		return sqlSession.selectOne(NAMESPACE+".countRoastedbean", vo);
+	}
+
+	
+	
 	
 	
 	

@@ -54,5 +54,13 @@ public interface ProductionService {
 	// 로스팅 업데이트 제품 온도 조회
 	public int getRoastingTemper(ProduceVO vo) throws Exception;
 	
+	// 로스팅 완료 제품 목록 조회
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception;
+	
+	// 로스팅 목록 개수 조회
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception;
+	
+	
+	
 
 }

@@ -188,17 +188,18 @@ $(document).ready(function() {
 	
 	/* 포장완료 등록 모달창 */
 	
-	var exampleModal = document.getElementById('packageModal')
-	exampleModal.addEventListener('show.bs.modal', function (event) {
+	 var exampleModal = document.getElementById('packageModal')
+	  exampleModal.addEventListener('show.bs.modal', function (event) {
 	  var button = event.relatedTarget
 	  var recipient = button.getAttribute('data-bs-whatever')
 	  var modalTitle = exampleModal.querySelector('.modal-title')
 	  var modalBodyInput = exampleModal.querySelector('.modal-body input')
 	});
-	/* 포장완료 등록 모달창 */
+	
+	// 포장완료 등록 모달창 
 	
 	// 포장완료 클릭시 실행될 함수
-	function openPackageModal(produceid, producedate, producetime, produceline, itemname, itemid, packagevol) {
+ 	function openPackageModal(produceid, producedate, producetime, produceline, itemname, itemid, packagevol, amount) {
     // 모달 내부의 입력 필드에 데이터 설정
     document.getElementById('produceidPack').value = produceid;
     document.getElementById('producedatePack').value = producedate;
@@ -207,10 +208,11 @@ $(document).ready(function() {
     document.getElementById('itemnamePack').value = itemname;
     document.getElementById('itemidPack').value = itemid;
     document.getElementById('packagevolPack').value = packagevol;
+    document.getElementById('amountPack').value = amount;
 
     // 모달 열기
-    $('#packageModal').modal('show');
-}
+    $('#packageModal').modal('show'); 
+} 
 	
     
 

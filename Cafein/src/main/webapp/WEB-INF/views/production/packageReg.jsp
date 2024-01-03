@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- BOM등록 모달창 시작-->
+<!-- 포장 완료 등록 모달창 시작-->
 <div class="modal fade" id="packageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -32,11 +32,15 @@
 								<label for="weight" class="col-form-label">포장량</label> 
 								<input id="packagevolPack" name="weight" class="form-control">
 							</div>
+							<div class="col" style="display: none;">
+								<label for="amount" class="col-form-label" >총 생산량</label> 
+								<input id="amountPack" name="amount" class="form-control">
+							</div>
 						</div>
 							<div class="row">
 							<div class="col">
-								<label for="producedate" class="col-form-label">생산일</label> 
-								<input type="text" name="producedate" class="form-control" id="producedatePack" min="150" max="250" step="10" readonly="readonly">
+								<label for="roasteddate" class="col-form-label">생산일</label> 
+								<input type="text" name="roasteddate" class="form-control" id="producedatePack" min="150" max="250" step="10" readonly="readonly">
 							</div>
 							<div class="col">
 								<label for="produceline" class="col-form-label">생산라인</label> 
@@ -68,4 +72,38 @@
 				</div>
 			</div>
 		</div>
-<!-- BOM등록 모달창 끝-->
+<!-- 포장 완료 등록 모달창 끝-->
+
+
+
+
+<script type="text/javascript">
+
+//포장지시 등록 AJAX 처리
+$(document).ready(function() {
+     $('#packageModal form').submit(function(e) {
+        e.preventDefault(); // 기본 제출 동작 방지
+
+        var formData = $(this).serialize(); // 폼 데이터 직렬화
+
+        $.ajax({
+            url: '/production/updateRoastedbeanList',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                console.log('포장 공정 완료!');
+                alert("포장 공정 완료");
+                getList();
+                $('#packageModal').modal('hide');
+            },
+            error: function(error) {
+                console.error('포장완료 등록 실패:', error);
+                alert("이미 완료된 작업입니다.")
+            }
+        });
+    }); 
+    
+});	
+
+
+</script>

@@ -254,6 +254,26 @@ public class ProductionServiceImpl implements ProductionService{
 		return pdao.getRoastingTemper(vo);
 	}
 
+	// 로스팅 제품 목록 조회
+	@Override
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception {
+		logger.debug("Service - 로스팅 완료 제품 목록 조회");
+		
+		return pdao.getRoastedList(vo);
+	}
+
+	// 로스팅 목록 글 개수 조회
+	@Override
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception {
+		logger.debug("Service - 로스팅 완료 제품 목록 조회");
+		
+		return pdao.countRoastedbean(vo);
+	}
+	
+	
+
+	
+	
 	
 	
 	

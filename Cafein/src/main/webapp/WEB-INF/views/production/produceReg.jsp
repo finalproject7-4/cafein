@@ -15,14 +15,7 @@
 						<div class="row">
 							<div class="col">
 								<label for="process" class="col-form-label">공정과정</label> 
-								<select class="form-select" id="processSelect"
-									aria-label="Floating label select example" name="process" onchange="chageLangSelect()" required="required">
-									<optgroup label="공정과정">
-										<option value="블렌딩">블렌딩</option>
-										<option value="로스팅">로스팅</option>
-										<option value="포장">포장</option>
-									</optgroup>
-								</select>
+								<input type="text" value="블렌딩" name="process" class="date form-control" id="process" readonly="readonly">
 							</div>
 							<div class="col">
 								<label for="producedate" class="col-form-label">생산일자</label> 
@@ -115,75 +108,6 @@
 		</div>
 <!-- 생산지시 모달창 끝-->
 
-<!-- 생산지시 수정(블렌딩-> 로스팅) 모달창 시작-->
-<div class="modal fade" id="updateModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">로스팅 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form action="processUpdateRoasting" method="post">
-						<div class="row">
-							<div class="col">
-								<label for="produceid" class="col-form-label">생산ID</label> 
-								<input type="text" name="produceid" class="date form-control" id="produceidUpdate" readonly="readonly">
-							</div>
-							<div class="col">
-								<label for="process" class="col-form-label">공정과정</label> 
-								<input type="text" value="로스팅" name="process" class="date form-control" id="processUpdate" readonly="readonly">
-							</div>
-							<div class="col">
-								<label for="producedateUp" class="col-form-label">생산일자</label> 
-								<input type="date" name="producedateUp" class="date form-control" id="producedateUpdate" readonly="readonly">
-							</div>
-						</div>
-							<div class="row">
-							<div class="col">
-								<label for="produceline" class="col-form-label">생산라인</label> 
-								<input type="text" name="produceline" class="date form-control" id="producelineUpdate" readonly="readonly">
-							</div>
-							<div class="col">
-								<label for="producetime" class="col-form-label">생산타임</label> 
-								<input type="text" name="producetime" class="date form-control" id="producetimeUpdate" readonly="readonly">
-							</div>
-							</div>
-					<div class="row">
-							<div class="col">
-								<label for="itemname" class="col-form-label">제품명</label> 
-								<input type="text" id="itemnameUpdate" name="itemname" class="form-control" readonly="readonly">
-							</div>
-							<div class="col" style="display: none;">
-								<label for="itemid" class="col-form-label">제품ID</label> 
-								<input type="text" id="itemidUpdate" name="itemid" class="form-control" >
-							</div>					
-							<div class="col" id="tempeup">
-								<label for="temper" class="col-form-label">온도</label>
-								<input type="text" name="temper" class="form-control" <%-- value="${tlist.temper }" --%>>
-							</div>
-							<div class="col" id="packagevolrh" style="display: none;">
-								<label for="temppackagevoler" class="col-form-label">포장량</label>
-								<input type="number" value="0" name="packagevol" class="form-control">
-							</div>
-					</div>
-					<div class="row">
-							<div class="col">
-								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
-								<input name="membercode" class="form-control" id="membercode1">
-							</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<input type="submit" class="btn btn-primary" value="등록">
-					</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-<!-- 생산지시 수정(블렌딩-> 로스팅) 모달창 끝-->
-
 
 <!-- 생산지시 수정(로스팅-> 포장) 모달창 시작-->
 <div class="modal fade" id="updateModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -254,23 +178,6 @@
 
 <script type="text/javascript">
 
-/* 공정과정 선택에 따라 출력 */
-$("#processSelect").change(function(){
-var test = $("#processSelect option:selected").val();
-if(test=='블렌딩'){
-$('#temperh').hide();
-$('#packageam').hide();
-}
-else if(test=='로스팅'){
-$('#temperh').show();
-$('#packageam').hide();
-}
-else if(test=='포장'){
-$('#packageam').show();
-$('#temperh').hide();
-}
-
-});
 
 /*모달창 달력 이전날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
@@ -281,6 +188,58 @@ $('#temperh').hide();
 	document.querySelectorAll('.date').forEach(function(input) {
 		input.setAttribute('min', today);
 	});
+	
+	$(document).ready(function() {
+	// 생산지시 등록 AJAX 처리
+	    $('#exampleModal form').submit(function(e) {
+	        e.preventDefault(); // 기본 제출 동작 방지
+
+	        var formData = $(this).serialize(); // 폼 데이터 직렬화
+
+	        $.ajax({
+	            url: '/production/produceReg',
+	            type: 'POST',
+	            data: formData,
+	            success: function(response) {
+	                console.log('포장공정 등록 성공!');
+	                alert("포장공정 등록 완료");
+	                getList();
+	                $('#exampleModal').modal('hide');
+	            },
+	            error: function(error) {
+	                console.error('포장공정 등록 실패:', error);
+	                alert("이미 포장이 완료되었습니다.")
+	                 $('#exampleModal form')[0].reset(); // 폼에 입력한 것 초기화. 사용자 실수 줄이기 위해서.
+	            }
+	        });
+	    });
+	    
+	    
+	    // 포장공정 등록 AJAX
+	    $('#updateModal2 form').submit(function(e) {
+	        e.preventDefault(); // 기본 제출 동작 방지
+
+	        var formData = $(this).serialize(); // 폼 데이터 직렬화
+
+	        $.ajax({
+	            url: '/production/processUpdatePackage',
+	            type: 'POST',
+	            data: formData,
+	            success: function(response) {
+	                console.log('생산지시 등록 성공!');
+	                alert("등록 완료");
+	                getList();
+	                $('#updateModal2').modal('hide');
+	            },
+	            error: function(error) {
+	                console.error('생산지시 등록 실패:', error);
+	                alert("이미 작업 지시가 등록된 시간대입니다.")
+	                 $('#updateModal2 form')[0].reset(); // 폼에 입력한 것 초기화. 사용자 실수 줄이기 위해서.
+	            }
+	        });
+	    });
+	});	
+
 
 
 </script>

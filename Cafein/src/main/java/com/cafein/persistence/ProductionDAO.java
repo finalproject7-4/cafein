@@ -50,4 +50,16 @@ public interface ProductionDAO {
 	// 로스팅 온도값 조회
 	public int getRoastingTemper(ProduceVO vo) throws Exception;
 	
+	// 로스팅 제품 조회
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception;
+	
+	// 로스팅 목록 글 개수 조회
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception;
+	
 }
+
+
+
+
+
+

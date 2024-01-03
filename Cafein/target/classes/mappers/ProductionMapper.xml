@@ -144,20 +144,39 @@
 	
 	<!-- 포장완료된 제품 roastedbean 테이블에 추가. -->
 	<insert id="insertRoastedbean">
-		insert into roastedbean(produceid, itemname, itemid, weight, lotnumber, roasteddate note)
+		insert into roastedbean(produceid, itemname, itemid, weight, lotnumber, roasteddate, note)
 		values(#{produceid}, #{itemname}, #{itemid}, #{weight}, #{lotnumber}, #{roasteddate}, #{note})
 	</insert>
 	
-	<!-- 생산지시리스트 아이템 id의 로스팅 온도값 찾기 -->
+	<!-- 생산지시리스트 아이템 id의 로스팅 온도값 찾기 로스팅공정으로 수정시 입력할 값-->
 	<select id="getRoastingTemper" resultType="int">
-		SELECT bom.temper FROM bom b
+		SELECT b.temper as temper FROM bom b
 		JOIN produce p ON b.itemid = p.itemid
-		where p.itemid = #{p.itemid}
+		where p.itemid = #{itemid} and produceid = #{produceid}
 	</select>
 	
+	<!-- 로스팅 완제품 리스트 출력 -->
+	<select id="getRoastedbeanList" resultType="com.cafein.domain.RoastedbeanVO">
+		select * from roastedbean 
+		<where>
+		
+			<if test="searchDate != null">
+				roasteddate = #{searchDate}
+			</if>
+			
+			<if test="lotnumber != null and !lotnumber.equals('')">
+				AND lotnumber like concat ('%',#{lotnumber},'%')		
+			</if>
+			
+		</where>
+		order by productid desc limit #{cri.startPage}, #{cri.pageSize}
+	</select>
 	
-	
-	
+	<!-- 로스팅 목록 개수 전체글 개수 조회 -->
+	<select id="countRoastedbean" resultType="Integer">
+		select count(*) from roastedbean
+
+	</select>
 	
 	
 	
