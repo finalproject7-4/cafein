@@ -47,8 +47,9 @@
 			
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-				
+			<input type="hidden" name="poid" class="poidCancle">				
 				<div class="table-responsive">
+				<form class="cancelUpdate">
 					<table class="table">
 						<thead>
 							<tr>
@@ -109,8 +110,7 @@
 									        onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
 											</button>
-											<button type="button" class="btn btn-outline-dark" onclick="confirmCancellation()">
-											취소</button>
+											<input value="취소" type="submit" class="btn btn-outline-dark" data-poid="${po.poid}">
 										</td>
 										<td>
 											<button type="button" class="btn btn-outline-dark"> 
@@ -130,53 +130,37 @@
 						</c:choose>
 					</tbody>
 				</table>
+				</form>
 				</div>
 		</div>
 		</div>
 		
 		<!-- 취소 동작(수주상태 취소로 변경) -->
 		<script>
-		  function confirmCancellation(button) {
-		        // 확인 모달 띄우기
-		        Swal.fire({
-		            title: '정말로 그렇게 하시겠습니까?',
-		            text: '다시 되돌릴 수 없습니다. 신중하세요.',
-		            icon: 'warning',
-		            showCancelButton: true,
-		            confirmButtonColor: '#3085d6',
-		            cancelButtonColor: '#d33',
-		            confirmButtonText: '승인',
-		            cancelButtonText: '취소',
-		            reverseButtons: true,
-		        }).then(function(result) {
-		            if (result.isConfirmed) {
-		                // 승인 버튼이 눌렸을 때의 처리
-		                Swal.fire('승인이 완료되었습니다.', '화끈하시네요~!', 'success');
+		$("form.cancelUpdate").submit(function (event) {
+		    event.preventDefault();
+		    
+		    // 이 부분에서 data-poid 값을 읽어와서 전송 데이터에 추가
+		    var poid = $(this).find('input[name="poid"]').data('poid');
 
-		                // 클릭된 버튼의 부모 행을 찾아서 해당 행에서 poid 값을 가져옴
-		                var poid = $(button).closest('tr').find('.poid').text();
+		    $.ajax({
+		        type: 'POST',
+		        url: '/sales/cancelUpdate',
+		        data: { poid: poid },
+		        success: function (response) {
+		            console.log('Ajax success:', response);
+		            updateUIOnCancellation();
+		        },
+		        error: function (error) {
+		            console.error('Error during cancellation:', error);
+		            Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
+		        }
+		    });
+		});
 
-		                var postData = {
-		                    poid: poid
-		                };
 
-		                $.ajax({
-		                    type: 'POST',
-		                    url: '/sales/cancelUpdate', // 실제 업데이트를 수행할 엔드포인트로 변경해야 합니다.
-		                    data: postData,
-		                    success: function(response) {
-		                    	console.log('Ajax success:', response);
-		                        updateUIOnCancellation();
-		                    },
-		                    error: function(error) {
-		                        console.error('Error during cancellation:', error);
-		                        Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
-		                    }
-		                });
-		            }
-		        });
-		    }
 </script>
+
 		
 		
 		<!-- 품목 등록 모달 -->

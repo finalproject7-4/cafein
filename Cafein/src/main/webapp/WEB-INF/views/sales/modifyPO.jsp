@@ -112,7 +112,6 @@ $(document).ready(function() {
 	
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
-	    // Ajax 코드 추가
 	$.ajax({
         type: "POST",
         url: "/sales/modifyPO",
