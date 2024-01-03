@@ -11,7 +11,7 @@
 	<div class="bg-light rounded h-100 p-4">
 <form name="dateSearch" action="/sales/POList" method="get" onsubmit="return filterRows(event)">
     납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요"><br>
-    수주일자 <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+    수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
     <button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
     <br>
 </form>
@@ -20,7 +20,9 @@
 </div><br>
 
 <!-- 수정된 스크립트 -->
+<!-- 수정된 스크립트 -->
 <script>
+// 사용자가 입력한 조건으로 테이블 행 필터링 및 업데이트를 수행하는 함수
 function filterRows(event) {
     // 기본 폼 제출 동작 방지
     event.preventDefault();
@@ -28,17 +30,30 @@ function filterRows(event) {
     // 입력된 키워드 가져오기
     var keyword = $('.clientSearch').val().toLowerCase();
 
+    // 시작일자와 종료일자 가져오기
+    var startDate = $('#startDate').val() ? new Date($('#startDate').val()) : null;
+    var endDate = $('#endDate').val() ? new Date($('#endDate').val()) : null;
+
     // 테이블의 모든 행 가져오기
     var rows = $('.table tbody tr');
 
-    // 각 행에 대해 키워드 포함 여부 확인
+    // 각 행에 대해 키워드 및 날짜 포함 여부 확인
     rows.each(function () {
         var clientName = $(this).find('td:nth-child(4)').text().toLowerCase();
-        if (clientName.includes(keyword)) {
-            $(this).show(); // 키워드가 포함된 경우 행을 표시
+        var orderDateStr = $(this).find('td:nth-child(7)').text(); // 7번째 열은 수주일자
+        var orderDate = orderDateStr ? new Date(orderDateStr) : null;
+
+        var keywordMatch = keyword === '' || clientName.includes(keyword);
+        var dateMatch = (startDate === null || (orderDate !== null && orderDate >= startDate && orderDate <= endDate));
+
+        if (keywordMatch && dateMatch) {
+            $(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
         } else {
-            $(this).hide(); // 키워드가 포함되지 않은 경우 행을 숨김
+            $(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
         }
+
+        // 콘솔에 출력 (디버깅용)
+        console.log('Client Name:', clientName, 'Order Date:', orderDate, 'Keyword Match:', keywordMatch, 'Date Match:', dateMatch);
     });
 
     // 번호 업데이트
@@ -48,15 +63,29 @@ function filterRows(event) {
     return false;
 }
 
-// 함수를 정의하는 부분
+// 테이블에 표시되는 행의 번호를 업데이트하는 함수
 function updateRowNumbers() {
-    var counter = 1;
-    $(".table tbody tr:visible").each(function () {
-        $(this).find('td:first').text(counter);
-        counter++;
+    // 표시된 행만 선택하여 번호 업데이트
+    var visibleRows = $('.table tbody tr:visible');
+    visibleRows.each(function (index) {
+        // 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
+        $(this).find('td:first').text(index + 1);
     });
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<!-- 수주 상태에 따라 필터링하는 버튼 -->
 		<div class="col-12">
