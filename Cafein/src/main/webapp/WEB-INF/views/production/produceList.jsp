@@ -28,6 +28,40 @@ function getList(){
     });
 }
 
+// 현재 활성화 페이지 가져오기
+function getCurrentPageNumber() {
+	var currentPage = 1; // 기본적으로 1페이지로 설정
+
+	 // 현재 활성화된 페이지 번호를 찾기 위한 로직
+	  $(".page-item").each(function() {
+		  if ($(this).hasClass("active")) {
+ 		   currentPage = $(this).find(".page-link").data("page"); // 활성화된 페이지 번호 가져오기
+ 		   return false; // 반복문 종료
+		  }
+	});
+
+	return currentPage;
+	 }
+
+function getList(pageNumber) {
+	$.ajax({
+		 url: "/production/produceList3",
+		 type: "GET",
+		 data: {
+  		  page: pageNumber // 현재 페이지 번호 전달
+   		 // 나머지 필요한 데이터도 전달 가능
+		 },
+		 dataType: "html",
+		 success: function(data) {
+  		  $("#produceListAll").html(data);
+		 },
+		error: function(error) {
+			alert("못한다");
+    		console.error("Error fetching quality list:", error);
+		}
+	});
+}
+
 </script>
 
 <!-- 검색 폼 -->
@@ -70,9 +104,9 @@ $(document).ready(function() {
 
         // 폼 데이터 수집
         let formData = {
+            itemname: $("select[name='itemname']").val(),
             startDate: $("input[name='startDate']").val(),
-            endDate: $("input[name='endDate']").val(),
-            itemname: $("select[name='itemname']").val()
+            endDate: $("input[name='endDate']").val()
         };
 
 

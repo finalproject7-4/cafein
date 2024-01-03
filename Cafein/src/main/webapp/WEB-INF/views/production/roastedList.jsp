@@ -20,6 +20,7 @@ function getList(){
         dataType: "html",
         success: function(data) {
             // 성공적으로 데이터를 받아왔을 때 처리할 코드
+            alert("@@@");
             $("#roastedBeanList").html(data);
         },
         error: function(error) {
@@ -35,15 +36,13 @@ function getList(){
 <div class="bg-light rounded h-100 p-4">
 <h6 class="mb-4">생산Lot조회</h6>
 
-<!-- 기타 조회 -->
-
-
+<!-- LOT 조회 -->
 <div >
 <form name="searchForm" action="" method="get">
-	<input type="text" name="lotnumber" placeholder="lot번호 검색">
+	<input type="text" id="lotnumber" name="lotnumber" placeholder="lot번호 검색">
 
 <!-- 조회 달력 -->
-<input type="date" id="startDate" name="searchDate">
+<input type="date" id="searchDate" name="searchDate">
 <!-- 조회 달력 -->
 <button type="submit" class="btn btn-dark m-2" id="datesubmitbtn">조회</button>
 <button type="reset" class="btn btn-dark m-2" id="dateresetbtn">취소</button>
@@ -65,19 +64,21 @@ $(document).ready(function() {
 
         // 폼 데이터 수집
         let formData = {
-            searchDate: $("input[name='searchDate']").val(),
-            lotnumber: $("input[name='lotnumber']").val()
+            lotnumber: $("input[name='lotnumber']").val(),
+            searchDate: $("input[name='searchDate']").val()
         };
 
 
         // AJAX 요청 수행
         $.ajax({
-            url: "/production/roastedDtail",
+            url: "/production/roastedDetail",
             type: "GET",
             data: formData,
             success: function(data) {
                 // 성공적으로 데이터를 받아왔을 때 처리할 코드
                 $("#roastedBeanList").html(data); // 결과를 화면에 표시
+                alert("성공했지롱");
+                alert($("input[name='lotnumber']").val());
             },
             error: function(error) {
             	alert("못간다 ");
@@ -89,6 +90,40 @@ $(document).ready(function() {
     });
   
 });
+
+//현재 활성화 페이지 가져오기
+function getCurrentPageNumber() {
+	var currentPage = 1; // 기본적으로 1페이지로 설정
+
+	 // 현재 활성화된 페이지 번호를 찾기 위한 로직
+	  $(".page-item").each(function() {
+		  if ($(this).hasClass("active")) {
+ 		   currentPage = $(this).find(".page-link").data("page"); // 활성화된 페이지 번호 가져오기
+ 		   return false; // 반복문 종료
+		  }
+	});
+
+	return currentPage;
+	 }
+
+function getList(pageNumber) {
+	$.ajax({
+		 url: "/production/roastedDetail",
+		 type: "GET",
+		 data: {
+  		  page: pageNumber // 현재 페이지 번호 전달
+   		 // 나머지 필요한 데이터도 전달 가능
+		 },
+		 dataType: "html",
+		 success: function(data) {
+  		  $("#roastedBeanList").html(data);
+		 },
+		error: function(error) {
+			alert("못한다");
+    		console.error("Error fetching quality list:", error);
+		}
+	});
+}
 
 </script>
 

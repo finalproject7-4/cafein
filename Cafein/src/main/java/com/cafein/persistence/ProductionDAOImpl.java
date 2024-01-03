@@ -135,6 +135,17 @@ public class ProductionDAOImpl implements ProductionDAO {
 		
 		sqlSession.update(NAMESPACE+".insertRoastedbean", vo);
 	}
+	
+	
+	// 대기중인 블렌딩 공정 작업지시 삭제
+	@Override
+	public void deleteProducePlan(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 블렌딩 작업 삭제!");
+		
+		sqlSession.delete(NAMESPACE+".deleteProducePlan", vo);
+		
+	}
+
 
 	// 로스팅 온도값 조회
 	@Override
