@@ -31,10 +31,12 @@ public class ItemController {
 	// 품목 목록 - GET
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
 
-	public String itemListAll(Model model) throws Exception {
-		logger.debug("itemListAll() 호출");
-
-
+	/*
+	 * public String itemListAll(Model model) throws Exception {
+	 * logger.debug("itemListAll() 호출");
+	 * 
+	 * }
+	 */
 	public void itemList(Model model, ItemVO vo, Criteria cri) throws Exception {
 		logger.debug("itemList() 호출");
 
