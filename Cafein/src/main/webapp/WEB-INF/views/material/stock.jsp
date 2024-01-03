@@ -74,7 +74,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemtype }</td>
 									<td>${slist.itemcode }</td>
 									<td>${slist.itemname }</td>
-									<td>${slist.lotnumber }</td>
+									<td>
+									<a href="" class="receive" data-lotnumber="${slist.lotnumber }">${slist.lotnumber }</a></td>
 									<td>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개
@@ -515,6 +516,114 @@ $(document).ready(function() {
 });
 </script>
 <!-- 창고 이동 (부자재) 모달창 데이터 -->
+
+<!-- 자재 입고 정보 확인 모달창 -->
+<div class="modal fade" id="receiveInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">자재 정보 확인</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      	<div class="row">
+ 			<div class="col">
+           		<label for="inforeceiveid" class="col-form-label">입고번호:</label>
+            	<input type="text" class="form-control" id="inforeceiveid" name="receiveid" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="inforeceivecode" class="col-form-label">입고코드:</label>
+            	<input type="text" class="form-control" id="inforeceivecode" name="receivecode" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="infomembercode" class="col-form-label">작업자:</label>
+            	<input type="text" class="form-control" id="infomembercode" name="membercode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="infoitemcode" class="col-form-label">품목코드:</label>
+            	<input type="text" class="form-control" id="infoitemcode" name="itemcode" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="infostoragecode" class="col-form-label">창고코드:</label>
+            	<input type="text" class="form-control" id="infostoragecode" name="storagecode" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="infolotnumber" class="col-form-label">LOT번호:</label>
+				<input type="text" class="form-control" id="infolotnumber" name="lotnumber" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="inforeceivedate" class="col-form-label">입고일:</label>
+            	<input type="text" class="form-control" id="inforeceivedate" name="receivedate" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="inforeceivequantity" class="col-form-label">입고량:</label>
+				<input type="text" class="form-control" id="inforeceivequantity" name="receivequantity" value="" readonly>
+  			</div>
+		</div>		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 자재 입고 정보 확인 모달창 -->
+
+<!-- 자재 입고 정보 확인 모달창 데이터 -->
+<script>
+$(document).ready(function($) {
+    $(".receive").click(function(event) {
+        event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+
+        // 클릭된 a 태그의 data-lotnumber 값 가져오기
+        var lotnumber = $(this).data("lotnumber");
+
+        // AJAX 요청
+        $.ajax({
+            url: "/receiveInfo",
+            type: "GET",
+            data: { lotnumber: lotnumber },  // 파라미터 전송
+            dataType: "JSON",
+            success: function(data) {
+            	console.log(data);
+            	$("#inforeceiveid").val(data.receiveid);
+            	$("#inforeceivecode").val(data.receivecode);
+            	$("#infomembercode").val(data.membercode);
+            	$("#infoitemcode").val(data.itemcode);
+            	$("#infostoragecode").val(data.storagecode);
+            	$("#infolotnumber").val(data.lotnumber);
+            	
+            	var receivedate = new Date(data.receivedate);
+            	var formattedDate = receivedate.getFullYear() + "-" + 
+                String(receivedate.getMonth() + 1).padStart(2, '0') + "-" + 
+                String(receivedate.getDate()).padStart(2, '0') + " " + 
+                String(receivedate.getHours()).padStart(2, '0') + ":" + 
+                String(receivedate.getMinutes()).padStart(2, '0') + ":" + 
+                String(receivedate.getSeconds()).padStart(2, '0');
+            	
+            	$("#inforeceivedate").val(formattedDate);
+            	$("#inforeceivequantity").val(data.receivequantity);
+            	
+            	 $("#receiveInfo").modal("show");
+            	
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 자재 입고 정보 확인 모달창 데이터 -->
 
 <!-- 라디오 버튼 이동 -->
 <script>

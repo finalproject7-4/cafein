@@ -241,13 +241,6 @@
  		LIMIT 0, 1
 	</select>
 	
-	<!-- roastedBean 테이블 조회 -->
-	<select id="selectRoastedBean" resultType="QualityVO">
-		SELECT productid, produceid, itemname, itemid, weight, quantity, itemprice, roasteddate, lotnumber, note 
-		FROM roastedbean
-		WHERE lotnumber = #{lotnumber}
-	</select>
-	
 	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->
  	<select id="selectStockListExcel" resultType="QualityVO">
  		SELECT stockid, s.qualityid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
@@ -313,5 +306,21 @@
  		</where>
  		ORDER BY stockid DESC
  	</select>
+ 	
+ 	<!-- roastedBean 테이블 조회 -->
+	<select id="selectRoastedBean" resultType="QualityVO">
+		SELECT productid, produceid, itemname, itemid, weight, quantity, itemprice, roasteddate, lotnumber, note 
+		FROM roastedbean
+		WHERE lotnumber = #{lotnumber}
+	</select>
+ 	<!-- roastedBean 테이블 조회 -->
+ 	
+ 	<!-- receive 테이블 조회 -->
+ 	<select id="selectReceiveInfo" resultType="QualityVO">
+ 		SELECT receiveid, receivecode, membercode, itemcode, storagecode, lotnumber, receivedate, receivequantity
+ 		FROM receive
+ 		WHERE lotnumber = #{lotnumber}
+ 	</select>
+ 	<!-- receive 테이블 조회 -->
  
  </mapper>

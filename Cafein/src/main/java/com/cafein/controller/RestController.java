@@ -196,14 +196,6 @@ public class RestController {
         workbook.close();
 	}
 	
-	
-	// roastedBean AJAX 정보 호출용
-	@GetMapping(value = "roastedBeanInfo")
-	public QualityVO roastedBeanInfoGET(@ModelAttribute("lotnumber") String lotnumber) throws Exception {
-		logger.debug(" roastedBeanInfo() 호출 ");
-		return sService.roastedBeanInfo(lotnumber);
-	}
-	
 	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
 	@GetMapping("/productStockPrint")
 	public void productStockPrintGET(HttpServletResponse response, QualityVO vo) throws Exception {
@@ -476,5 +468,19 @@ public class RestController {
 	        
 	        out.close();
 	        workbook.close();
+		}
+		
+		// roastedBean AJAX 정보 호출용
+		@GetMapping(value = "/roastedBeanInfo")
+		public QualityVO roastedBeanInfoGET(@ModelAttribute("lotnumber") String lotnumber) throws Exception {
+			logger.debug(" roastedBeanInfo() 호출 ");
+			return sService.roastedBeanInfo(lotnumber);
+		}
+		
+		// receive AJAX 정보 호출용
+		@GetMapping(value = "/receiveInfo")
+		public QualityVO receiveInfoGET(@ModelAttribute("lotnumber") String lotnumber) throws Exception {
+			logger.debug(" receiveInfo() 호출 ");
+			return sService.receiveInfo(lotnumber);
 		}
 }

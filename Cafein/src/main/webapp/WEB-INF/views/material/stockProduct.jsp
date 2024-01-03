@@ -431,7 +431,7 @@ $(document).ready(function() {
 <!-- 완제품 정보 확인 모달창 (생산) -->
 <div class="modal fade" id="roastedBeanInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-  <form action="/material/updateStockStorage" method="POST">
+  <form>
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel2">제품 정보 확인</h1>
