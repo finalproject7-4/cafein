@@ -40,15 +40,18 @@
 					
 					<div class="row">
 					<div class="col">
-					수정일자
-					<input name="updatedate" id="todaypo2"  type="text" class="form-control" value="" placeholder="수정일자(클릭)">
+					수주일자
+					<input name="ordersdate" id="ordersdate2"  type="text"  class="form-control"  readonly>
 					</div>
 					
 					<div class="col">
+					수정일자
+					<input name="updatedate" id="todaypo2"  type="text" class="form-control" value="" placeholder="수정일자(클릭)">
+					</div>
+					</div><br>
+					
 					완납예정일
 					<input name="ordersduedate" type="date" id="date2" class="form-control" value="">
-					</div>
-					</div>
 					<br>
 					
 					담당자
@@ -112,7 +115,6 @@ $(document).ready(function() {
 	
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
-	    // Ajax 코드 추가
 	$.ajax({
         type: "POST",
         url: "/sales/modifyPO",

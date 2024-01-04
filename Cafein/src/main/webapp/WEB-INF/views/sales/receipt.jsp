@@ -5,7 +5,7 @@
 <%@ include file="../include/header.jsp"%>
 
 
-<h2>납품서</h2>
+<h2>납품서 미리보기</h2>
 
 SELECT re.receiptid, cli.clientname, cli.businessnumber, cli.representative, cli.clientaddress, cli.clientphone, cli.clientfax, 
 	ship.lotnumber, item.itemname, item.origin, item.itemweight, item.itemprice,
@@ -16,7 +16,7 @@ SELECT re.receiptid, cli.clientname, cli.businessnumber, cli.representative, cli
 	JOIN item ON re.itemid = item.itemid
 	JOIN roastedbean rb ON re.productid = rb.productid
 	JOIN purchaseorder po ON re.poid = po.poid
-	
+	<br>
 	번호   
 	수주상태
 	수주코드 

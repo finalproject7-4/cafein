@@ -1,23 +1,15 @@
 package com.cafein.controller;
 
-import java.io.OutputStream;
 import java.sql.Date;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,10 +32,9 @@ public class SalesController {
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
-	public String AllPOListGET(Model model,SalesVO svo,  Criteria cri
+	public String AllPOListGET(Model model, HttpSession session, SalesVO svo,Criteria cri
 			) throws Exception{
 		logger.debug("AllPOListGET() 실행");
-		
 
 		// SalesVO의 Criteria 설정
 		svo.setCri(cri);
@@ -54,14 +45,12 @@ public class SalesController {
 		pageVO.setTotalCount(sService.poCount(svo));
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 
+		model.addAttribute("countPO",sService.countPO(svo));
 		model.addAttribute("POList", sService.POList(svo));
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("cliList", sService.registCli()); 
 		model.addAttribute("iList", sService.registItem());  
-
 		
-		logger.debug("cliList",sService.registCli());        
-		logger.debug("iList",sService.registItem());         
 		
 		return "/sales/POList";
 	}
@@ -109,7 +98,6 @@ public class SalesController {
 	
 	// 품목코드 생성 메서드
 	public String makePOcode(SalesVO svo) throws Exception {
-		
 		String code = "";
 		int num = 1001 + sService.poCount(svo);
 		
@@ -119,7 +107,6 @@ public class SalesController {
 			case "완료": code = "FJ"; break;
 			case "취소": code = "GH"; break;
 		}
-		
 		return code + num;
 	}
 	
@@ -148,78 +135,42 @@ public class SalesController {
 		return "redirect:/sales/POList";
 	}
 	
-	//목록 엑셀
-	@GetMapping("/SalesPrint")
-    public void POPrint(HttpServletResponse response) throws Exception {
-        // 1. 테이블 데이터를 가져옵니다.
-        List<SalesVO> list = sService.POPrint();
-        logger.debug(" list : " + list);
+	//수주상태 취소 변경
+	// http://localhost:8088/sales/POList
+	@RequestMapping(value = "/cancelUpdate", method = RequestMethod.POST)
+	public String cancelUpdate(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
+	    try {
+	        logger.debug("/sales/cancelUpdate() 호출!");
+	        svo.setPoid(poid);
 
-        // 2. 엑셀 데이터로 변환합니다.
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("sheet");
-        // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
-	    Row headerRow = sheet.createRow(0);
-	    String[] headers = {"수주번호", "수주상태", "수주코드", "납품처명","납품처코드", "품명", "품목코드", "수량", "수주일자", "납품일자", "담당자"};
-	    for (int i = 0; i < headers.length; i++) {
-	        Cell cell = headerRow.createCell(i);
-	        cell.setCellValue(headers[i]);
+	        logger.debug("수주상태 변경" + svo.getPostate());
+	        logger.debug("@@@@ 수주id " + svo.getPoid());
+	        sService.updatePOstate(svo);
+	        logger.debug("수주상태 업데이트 성공!");
+	    } catch (Exception e) {
+	        logger.error("수주상태 업데이트 중 오류 발생:", e);
 	    }
-	    // 첫 번째 행에 열의 헤더 추가
-        int rowNum = 1;
-        for (SalesVO vo2 : list) {
-            Row row = sheet.createRow(rowNum++);
-
-            int colNum = 0;
-            row.createCell(colNum++).setCellValue(vo2.getPoid());
-            row.createCell(colNum++).setCellValue(vo2.getPostate());
-            row.createCell(colNum++).setCellValue(vo2.getPocode());
-            row.createCell(colNum++).setCellValue(vo2.getClientname());
-            row.createCell(colNum++).setCellValue(vo2.getClientcode());
-            row.createCell(colNum++).setCellValue(vo2.getItemname());
-            row.createCell(colNum++).setCellValue(vo2.getItemcode());
-            row.createCell(colNum++).setCellValue(vo2.getPocnt());
-            row.createCell(colNum++).setCellValue(vo2.getOrdersdate());
-            row.createCell(colNum++).setCellValue(vo2.getOrdersduedate());
-            row.createCell(colNum++).setCellValue(vo2.getMembercode());
-            
-            DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환입니다. 형식을 정하지 않으면 날짜가 제대로 표기되지 않습니다.
-			CellStyle dateCellStyle = workbook.createCellStyle();
-			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+		return "redirect:/sales/POList";                                             
+	}
+	//수주상태 진행 변경
+	// http://localhost:8088/sales/POList
+	@RequestMapping(value = "/ingUpdate", method = RequestMethod.POST)
+	public String ingUpdate(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
+		try {
+			logger.debug("/sales/ingUpdate() 호출!");
+			svo.setPoid(poid);
 			
-			Cell registrationDateCell = row.createCell(colNum++);
-			registrationDateCell.setCellValue(vo2.getOrdersdate()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
-			registrationDateCell.setCellStyle(dateCellStyle);
-			
-			// 셀 크기 조정
-			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+			logger.debug("수주상태 변경" + svo.getPostate());
+			logger.debug("@@@@ 수주id " + svo.getPoid());
+			sService.ingUpdate(svo);
+			logger.debug("수주상태 업데이트 성공!");
+		} catch (Exception e) {
+			logger.error("수주상태 업데이트 중 오류 발생:", e);
+		}
+		return "redirect:/sales/POList";                                             
+	}
 
-			Cell updateDateCell = row.createCell(colNum++);
-			updateDateCell.setCellValue(vo2.getUpdatedate()); // 위와 동일
-			updateDateCell.setCellStyle(dateCellStyle);
-			
-			// 셀 크기 조정
-			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
-			
-//			row.createCell(colNum++).setCellValue(vo2.getUpdatehistory());
-        }
 
-        // 3. 엑셀 파일을 저장합니다.
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-
-        OutputStream out = response.getOutputStream();
-        workbook.write(out);
-        out.flush();
-
-        out.close();
-        workbook.close();
-    } 
-
-	
-	
-	
-	
 	
 	
 }

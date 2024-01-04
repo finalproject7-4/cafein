@@ -3,28 +3,74 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-	<!-- ReturnsMapper.xml -->
-	<mapper namespace="com.cafein.mapper.ReturnsMapper"> 
- 
+	<!-- ReturnMapper.xml -->
+	<mapper namespace="com.cafein.mapper.ReturnMapper"> 
+ 	
+ 	<!-- 반품 목록 -->
 	<select id="searchReturns" resultType="com.cafein.domain.ReturnVO">
 		 SELECT * FROM returns
 	</select>
- 
- 	<select id="searchReturnsByCondition" parameterType="com.cafein.domain.ReturnVO" resultType="com.cafein.domain.ReturnVO">
+ 	
+ 	<!-- 반품 검색 -->
+ 	<select id="searchReturnsByCondition" resultType="com.cafein.domain.ReturnVO">
         SELECT * FROM returns
-        WHERE
-        returncode = #{returncode}
-        AND returntype = #{returntype}
-        AND returndate = #{returndate}
-    </select>
+		<where>
+			<if test="returncode != ''">
+				returncode LIKE CONCAT('%', #{returncode}, '%')
+			</if>
+			<if test="returntype != '전체'">
+				AND returntype = #{returntype}
+			</if>
+			<if test="startDate != ''">
+				AND returndate &gt;= #{startDate}
+			</if>
+			<if test="endDate != ''">
+				AND #{endDate} &gt;= returndate
+			</if>
+
+		</where>
+	</select>
  
- 
- 
- 
- 
- 
- 
- 
+ 	<!-- 반품 유형별 개수 -->
+ 	<select id="getReturnCount" resultType="int" parameterType="com.cafein.domain.ReturnVO" >
+		select count(*) from returns
+		<where>
+			<choose>
+				<when test="returntype == '원자재'">
+					and returncode like '%MOT%'
+				</when>
+				<when test="returntype == '부자재'">
+					and returncode like '%SAT%'
+				</when>
+				<otherwise>
+					and returncode like '%PRO%'
+				</otherwise>
+			</choose>
+		</where>
+	</select> 	
+ 	
+	<!-- 반품 등록 -->
+	<insert id="insertReturn" >
+		insert into returns(returncode,itemname,submitdate,returndate,exchangedate,returnquantity,returnstatus,reprocessmethod,returntype,returnReason) 
+		values(#{returncode},#{itemname},#{submitdate},#{returndate},#{exchangedate},#{returnquantity},#{returnstatus},#{reprocessmethod},#{returntype},#{returnReason}) 	
+	</insert>
+ 	
+ 	<!-- 완제품 목록 -->
+ 	<select id="prList" resultType="com.cafein.domain.ProduceVO">
+ 		SELECT distinct itemname FROM produce
+ 	</select>
+ 	
+ 	<!-- 원자재,부자재 목록 -->
+ 	<select id="itList" resultType="com.cafein.domain.ItemVO">
+ 		SELECT * FROM item
+ 	</select>
+ 	
+ 	
+ 	<!-- 반품 수정 -->
+ 	<update id="updateReturn">
+ 		update returns set itemname=#{itemname},returnquantity=#{returnquantity},submitdate=#{submitdate},returndate=#{returndate},exchangedate=#{exchangedate} 
+ 		where returnid=#{returnid}
+ 	</update>
  
  
 </mapper>
