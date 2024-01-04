@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- OrdersMapper.xml -->
+<mapper namespace="com.cafein.mapper.OrdersMapper">
+	
+	<!-- 발주 목록 -->
+	<select id="ordersListPage" resultType="com.cafein.domain.OrdersVO">
+		select od.ordersid, od.orderscode, od.membercode, od.ordersdate, od.deliverydate,
+	   		   od.ordersquantity, od.ordersquantity*it.itemprice ordersprice,
+			   it.itemcode, it.itemname, cli.clientname, mem.membername
+		from orders od
+		join item it 
+		on od.itemcode = it.itemcode
+		left outer join member mem
+		on od.membercode = mem.membercode		
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<if test="option == 'clientname'">
+			where clientname like concat('%', #{keyword}, '%')
+		</if>
+		<if test="option == 'itemname'">
+			where itemname like concat('%', #{keyword}, '%')
+		</if>
+		<if test="orderStartDate != null and orderEndDate != null">
+		 	where ordersdate between #{orderStartDate} and #{orderEndDate}
+		</if>		
+		order by od.ordersid desc		
+		limit #{cri.startPage}, #{cri.pageSize};
+	</select>
+	
+	<!-- 발주 목록  -->
+	
+	<!-- 발주 목록 총 개수 -->
+	<select id="getOrdersCount" resultType="integer">
+		select count(*) 
+		from orders od
+		join item it 
+		on od.itemcode = it.itemcode
+		left outer join client cli
+		on it.clientcode = cli.clientcode;
+		<if test="option == 'clientname'">
+			where clientname like concat('%', #{keyword}, '%')
+		</if>
+		<if test="option == 'itemname'">
+			where itemname like concat('%', #{keyword}, '%')
+		</if>
+		<if test="orderStartDate != null and orderEndDate != null">
+		 	where ordersdate between #{orderStartDate} and #{orderEndDate}
+		</if>		
+	</select>
+
+	<!-- 발주 등록 -->
+	<insert id="insertOrder">
+  		insert into orders(orderscode,membercode,itemcode,ordersquantity,orderstate,ordersdate,deliverydate)
+  		values(#{orderscode},#{membercode},#{itemcode},#{ordersquantity},#{orderstate},#{ordersdate},#{deliverydate})	
+	</insert>	
+	
+</mapper>
