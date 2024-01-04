@@ -26,7 +26,7 @@
 	<!-- 작업지시 조회 -->
 	<div class="col-12" style="margin-top: 20px;">
 		<div class="bg-light rounded h-100 p-4">
-			<h6 class="mb-4">작업 지시 관리  <span class="mb-4">[총 ${fn:length(AllWKList)}건]</span> </h6>
+			<h6 class="mb-4">작업 지시 관리  <span class="mb-4">[총 ${fn:length(WKList)}건]</span> </h6>
 
 		<div class="col-12">
 			<div class="btn-group" role="group">

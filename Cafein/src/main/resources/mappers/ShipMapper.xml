@@ -36,8 +36,8 @@
        wk.pocode, wk.itemname,
        wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
        wk.membercode
-		FROM c7d2307t4_2.work wk
-		JOIN c7d2307t4_2.purchaseorder po ON wk.pocode = po.pocode
+		FROM work wk
+		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
 		GROUP BY wk.workid, wk.workdate1, wk.workcode,
          wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
          wk.membercode
