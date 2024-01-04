@@ -61,7 +61,10 @@ public interface StockDAO {
 	public List<QualityVO> selectMaterialStockListExcel(QualityVO vo) throws Exception;
 	
 	// roastedBean 테이블 조회
-	public QualityVO selectRoastedBean(String lotnumber) throws Exception;
+	public QualityVO selectRoastedBean(String produceid) throws Exception;
+	
+	// roastedBean - lotnumber 테이블 조회
+	public List<QualityVO> selectRoastedBeanLot(String produceid) throws Exception;
 	
 	// receive 테이블 조회
 	public QualityVO selectReceiveInfo(String lotnumber) throws Exception;

@@ -25,6 +25,7 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.QualityVO;
 import com.cafein.domain.RoastedbeanVO;
 import com.cafein.service.ProductionService;
 
@@ -71,8 +72,10 @@ public class ProductionController {
 		logger.debug("생산지시 목록 출력!");
 
 	}
+	
 
 	// 생산지시 등록
+	@ResponseBody
 	@RequestMapping(value = "/produceReg", method = RequestMethod.POST)
 	public String produceRegist(ProduceVO vo, RedirectAttributes rttr) throws Exception {
 		logger.debug("/production/produceReg -> produceRegist() 호출!");
@@ -89,11 +92,11 @@ public class ProductionController {
 		if (!process.equals("포장")) {
 			vo.setPackagevol(0);
 		}
-
 		pService.regProduce(vo);
-
+		
 		return "redirect:/production/produceList";
 	}
+	
 
 	// BOM 등록
 	@RequestMapping(value = "/bomReg", method = RequestMethod.POST)
@@ -106,17 +109,33 @@ public class ProductionController {
 		return "redirect:/production/produceList";
 	}
 
-	// 생산 상태 변경 (state) 생산중 or 완료
+	// 블렌딩+대기+검사전인 생산 상태를 (state) 생산중으로 변경! 블렌딩일때만 실행!(품질 테이블에 데이터 삽입됨)
 	@ResponseBody
-	@PostMapping(value = "/AJAXupdateProduceState")
-	public void AJAXupdateProduceState(ProduceVO vo) throws Exception {
+	@PostMapping(value = "/BupdateProduceState")
+	public void BupdateProduceState(ProduceVO vo, QualityVO qvo) throws Exception {
 		logger.debug("/producetion/updateProduceState() 호출!");
 
 		logger.debug("생산 상태 업데이트! 업데이트할 값은? " + vo.getState());
 		logger.debug("@@@@ 생산 id 는? " + vo.getProduceid());
-
+		
+		qvo.setProduceid(vo.getProduceid());
+		qvo.setItemid(vo.getItemid());
+		qvo.setProductquantity(vo.getAmount());
+		
 		pService.updateProduceState(vo);
-
+		pService.regQualityList(qvo);
+	}
+	
+	// 품질 데이터 추가 삽입 필요없는 생산 상태 변경 (state) 생산중 or 완료
+	@ResponseBody
+	@PostMapping(value = "/AJAXupdateProduceState")
+	public void AJAXupdateProduceState(ProduceVO vo) throws Exception {
+		logger.debug("/producetion/updateProduceState() 호출!");
+		
+		logger.debug("생산 상태 업데이트! 업데이트할 값은? " + vo.getState());
+		logger.debug("@@@@ 생산 id 는? " + vo.getProduceid());
+		
+		pService.updateProduceState(vo);
 	}
 
 	// 포장 완료시 roastedbean에 로스팅완료 제품 insert
@@ -207,22 +226,32 @@ public class ProductionController {
 	// 생산공정 업데이트 (블렌딩 -> 로스팅)
 	@ResponseBody
 	@RequestMapping(value = "/processUpdateRoasting", method = RequestMethod.POST)
-	public String updateProcessRoasting(ProduceVO vo) throws Exception {
+	public String updateProcessRoasting(ProduceVO vo, QualityVO qvo) throws Exception {
 		logger.debug("생산 공정 로스팅으로 업데이트!");
 
 		int temper = pService.getRoastingTemper(vo);
 		vo.setTemper(temper);
 		pService.updateProduceProcessRoasting(vo);
+		
+		qvo.setProduceid(vo.getProduceid());
+		qvo.setItemid(vo.getItemid());
+		qvo.setProductquantity(vo.getAmount());
+		pService.regRoastingQualityList(qvo);
 
 		return "redirect:/production/produceList";
 	}
 
 	// 생산공정 업데이트 (로스팅 -> 포장)
 	@RequestMapping(value = "/processUpdatePackage", method = RequestMethod.POST)
-	public String updateProcessPackage(ProduceVO vo) throws Exception {
+	public String updateProcessPackage(ProduceVO vo, QualityVO qvo) throws Exception {
 		logger.debug("생산 공정 포장으로 업데이트!");
 
 		pService.updateProduceProcess(vo);
+		
+		qvo.setProduceid(vo.getProduceid());
+		qvo.setItemid(vo.getItemid());
+		qvo.setProductquantity(vo.getAmount());
+		pService.regPackingQualityList(qvo);
 
 		return "redirect:/production/produceList";
 	}
@@ -250,6 +279,7 @@ public class ProductionController {
 	}
 
 	
+	// 완제품 리스트 목록 출력(AJAX로 호출)
 	@RequestMapping(value="/roastedDetail", method =RequestMethod.GET )
 	public void roastedBeanDetail(Model model, RoastedbeanVO vo, Criteria cri, HttpSession session) throws Exception{
 		

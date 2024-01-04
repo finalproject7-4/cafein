@@ -190,7 +190,7 @@
 	});
 	
 	$(document).ready(function() {
-	// 생산지시 등록 AJAX 처리
+		// 생산지시 등록 AJAX 처리
 	    $('#exampleModal form').submit(function(e) {
 	        e.preventDefault(); // 기본 제출 동작 방지
 
@@ -214,7 +214,7 @@
 	            }
 	        });
 	    });
-	    
+	             
 	    
 	    // 포장공정 등록 AJAX
 	    $('#updateModal2 form').submit(function(e) {
@@ -240,7 +240,8 @@
 	            }
 	        });
 	    });
-	});	
+	  });
+
 
 
 

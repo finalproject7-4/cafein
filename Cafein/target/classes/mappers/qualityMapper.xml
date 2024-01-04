@@ -7,10 +7,10 @@
 
 	<!-- 품질 관리 목록 (생산 / 반품) -->
 	<select id="selectQualityList" resultType="QualityVO">
-		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, produceprocess, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
+		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, produceprocess, returnid, r.lotnumber, q.itemid, itemcode, i.itemname, auditbycode, 
 		weight, productquantity, auditquantity, normalquantity, defectquantity, 
 		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
-		quantity, registerstock, registerdefect 
+		registerstock, registerdefect 
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
@@ -24,10 +24,13 @@
 	
 	<!-- 품질 관리 목록 검색 버튼 (생산 / 반품) -->
 	<select id="selectQualityListSearchBtn" resultType="QualityVO">
-		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, produceprocess, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
-		weight, productquantity, auditquantity, normalquantity, defectquantity, 
-		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
-		quantity, registerstock, registerdefect 
+		SELECT MIN(q.qualityid) AS 'qualityid', MIN(auditcode) AS 'auditcode', MIN(q.itemtype) AS 'itemtype', 
+		MIN(q.produceid) AS 'produceid', MIN(produceprocess) AS 'produceprocess', MIN(returnid) AS 'returnid', 
+		MIN(q.itemid) AS 'itemid', MIN(itemcode) AS 'itemcode', MIN(i.itemname) AS 'itemname', MIN(r.lotnumber) AS 'lotnumber',  
+		MIN(auditbycode) AS 'auditbycode', MIN(weight) AS 'weight', MIN(productquantity) AS 'productquantity', 
+		MIN(auditquantity) AS 'auditquantity', MIN(normalquantity) AS 'normalquantity', MIN(defectquantity) AS 'defectquantity', 
+		MIN(auditstatus) AS 'auditstatus', MIN(DATE(registerationdate)) AS 'registerationdate', MIN(DATE(completedate)) AS 'completedate', 
+		MIN(registerstock) AS 'registerstock', MIN(registerdefect) AS 'registerdefect' 
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
@@ -55,6 +58,7 @@
 		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
 		</where>
+		GROUP BY q.qualityid
 		ORDER BY q.qualityid DESC
 		LIMIT #{cri.startPage}, #{cri.pageSize}
 	</select>
@@ -62,6 +66,8 @@
 	<!-- 품질 관리 목록 검색 버튼 개수 확인 (생산 / 반품) -->
 	<select id="selectQualityListSearchBtnCount" resultType="integer">
 		SELECT COUNT(*)
+		FROM
+		(SELECT COUNT(*)
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
@@ -89,6 +95,7 @@
 		DATE(registerationdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
 		</where>
+		GROUP BY q.qualityid) AS subquery
 	</select>
 	
 	<!-- 품질 관리 목록 검색 버튼 (자재) -->
@@ -353,7 +360,7 @@
 		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, produceprocess, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
 		weight, productquantity, auditquantity, normalquantity, defectquantity, 
 		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
-		quantity, registerstock, registerdefect 
+		registerstock, registerdefect 
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid

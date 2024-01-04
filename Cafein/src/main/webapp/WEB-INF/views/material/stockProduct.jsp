@@ -59,7 +59,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">LOT번호</th>
+								<th scope="col">생산번호</th>
 								<th scope="col">중량</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
@@ -81,7 +81,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 										${slist.lotnumber }
 									</c:if>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('생산') }">
-										<a href="" class="roastedBean" data-lotnumber="${slist.lotnumber }">${slist.lotnumber }
+										<a href="" class="BeanInfo" data-produceid="${slist.produceid }">${slist.produceid }
 										</a>
 									</c:if>
 									</td>
@@ -495,14 +495,14 @@ $(document).ready(function($) {
     $(".roastedBean").click(function(event) {
         event.preventDefault();  // 기본 동작 (페이지 이동) 방지
 
-        // 클릭된 a 태그의 data-lotnumber 값 가져오기
-        var lotnumber = $(this).data("lotnumber");
+        // 클릭된 a 태그의 data-produceid 값 가져오기
+        var produceid = $(this).data("produceid");
 
         // AJAX 요청
         $.ajax({
             url: "/roastedBeanInfo",
             type: "GET",
-            data: { lotnumber: lotnumber },  // 파라미터 전송
+            data: { produceid: produceid },  // 파라미터 전송
             dataType: "JSON",
             success: function(data) {
             	console.log(data);
@@ -535,6 +535,78 @@ $(document).ready(function($) {
 });
 </script>
 <!-- 완제품 정보 확인 모달창 데이터 (생산) -->
+
+<!-- 완제품 정보 확인 모달창 (생산) 추가 -->
+<div class="modal fade" id="BeanInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">제품 정보 확인</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+		<div class="table-responsive">
+		<table class="table table-hover">
+      		<thead>
+      			<tr>
+      				<th scope="col">LOT번호 조회</th>
+      			</tr>
+      		</thead>
+      		<tbody>
+      		</tbody>	
+      	</table>
+      	</div>
+      	</div>
+			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 완제품 정보 확인 모달창 (생산) 추가 -->
+
+<!-- 완제품 정보 확인 모달창 데이터 (생산) 추가 -->
+<script>
+$(document).ready(function($) {
+    $(".BeanInfo").click(function(event) {
+        event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+
+        // 클릭된 a 태그의 data-produceid 값 가져오기
+        var produceid = $(this).data("produceid");
+
+        // AJAX 요청
+        $.ajax({
+            url: "/roastedBeanLot",
+            type: "GET",
+            data: { produceid: produceid },  // 파라미터 전송
+            dataType: "JSON",
+            success: function(data) {
+            	console.log(data);
+            	// 기존에 있는 데이터 삭제
+            	$("#BeanInfo tbody").empty();
+            	
+            	// 데이터를 테이블에 삽입
+            	$.each(data, function(index, item) {
+            		var row = "<tr><td>" + item.lotnumber + "</td></tr>";
+            		$("#BeanInfo tbody").append(row);
+            	});
+            	
+            	 $("#BeanInfo").modal("show");
+            	
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 완제품 정보 확인 모달창 데이터 (생산) 추가 -->
 
 <!-- 라디오 버튼 이동 -->
 <script>
