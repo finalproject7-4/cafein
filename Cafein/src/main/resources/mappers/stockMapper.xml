@@ -345,12 +345,16 @@
  	
  	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
  	<insert id="insertNormalRoastedBeanLot">
- 		INSERT INTO productlot (produceid, lotnumber)
- 		SELECT produceid, lotnumber
- 		FROM roastedbean
- 		WHERE produceid = #{produceid} 
- 		AND auditstatus = 'Y' 
- 		AND defect = 'N'
+ 		INSERT INTO productlot (stockid, produceid, lotnumber)
+ 		SELECT s.stockid, r.produceid, r.lotnumber
+ 		FROM roastedbean r
+ 		JOIN quality q
+ 		ON r.produceid = q.produceid
+ 		JOIN stock s
+ 		ON q.qualityid = s.qualityid
+ 		WHERE r.produceid = #{produceid} 
+ 		AND r.auditstatus = 'Y' 
+ 		AND r.defect = 'N'
  	</insert>
  	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
  	

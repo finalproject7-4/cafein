@@ -98,7 +98,7 @@ public class StockController {
 		vo.setWorkerbycode(workerbycode);
 		
 		int produceid = vo.getProduceid();
-		sService.normalRoastedBeanLot(produceid);
+		// sService.normalRoastedBeanLot(produceid);
 		
 		if(vo.getItemtype() != null && vo.getItemtype().equals("생산")) {
 			int stockquantity = vo.getStockquantity() / vo.getWeight();
@@ -111,6 +111,7 @@ public class StockController {
 			logger.debug(" 재고 등록 실패! ");
 			return "redirect:/quality/qualities";
 		}else {
+			sService.normalRoastedBeanLot(produceid);
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");
 		}
