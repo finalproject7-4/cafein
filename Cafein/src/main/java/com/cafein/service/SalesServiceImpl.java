@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cafein.domain.ClientVO;
 import com.cafein.domain.ItemVO;
+import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.TestVO;
 import com.cafein.persistence.SalesDAO;
@@ -73,8 +74,6 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.updatePO(svo);
 	}
 	
-
-	
 	//납품서
 	@Override
 	public List<SalesVO> receiptList() throws Exception {
@@ -89,6 +88,36 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.getPOPrint();
 	}
 
+	//수주상태 취소
+	@Override
+	public int updatePOstate(SalesVO svo) throws Exception {
+		logger.debug("S :updatePOstate(svo)");
+		return sdao.updatePOstate(svo);
+	}
+
+	//수주상태 진행
+	@Override
+	public int ingUpdate(SalesVO svo) throws Exception {
+		logger.debug("S :ingUpdate(svo)");
+		return sdao.ingUpdate(svo);
+	}
+
+	//수주 총개수
+	@Override
+	public int countPO(SalesVO svo) throws Exception {
+		logger.debug("S : countPO(SalesVO svo)");
+		return sdao.countPO(svo);
+	}
+
+	@Override
+	public List<SalesVO> POListExcel(SalesVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectPOListExcel(svo);
+	}
+	
+	
+
+	
 	
 	
 	

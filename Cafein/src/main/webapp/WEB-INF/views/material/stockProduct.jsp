@@ -21,18 +21,29 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
   			<label class="form-check-label" for="productRadio">완제품</label>
 		</div>
 		<br>
-		<div class="buttonarea" style="margin-bottom: 10px;">
+		<div class="buttonarea2" style="margin-bottom: 10px;">
 			<input type="button" class="btn btn-sm btn-warning" value="생산" id="produce">
 			<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return">
 			<input type="button" class="btn btn-sm btn-success" value="전체" id="allproduct">
 		</div>
+		<div class="buttonarea4" style="margin-bottom: 10px">
 		<form action="/material/stockProduct" method="GET">
 			<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 			</c:if>
-			<input type="text" name="searchText" placeholder="제품명을 입력하세요">
-			<input type="submit" value="검색">
+			<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+			<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
 		</form>
+		</div>
+			<form action="/productStockPrint" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+					<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+				</c:if>
+				<c:if test="${!empty param.searchText }">
+					<input type="hidden" name="searchText" value="${param.searchText }">
+				</c:if>
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+			</form>
 	</div>
 </div>
 <!-- 재고 조회 -->
@@ -41,18 +52,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">번호</th>
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">LOT번호</th>
+								<th scope="col">생산번호</th>
 								<th scope="col">중량</th>
 								<th scope="col">재고량</th>
-								<th scope="col">창고</th>
-								<th scope="col">작업자</th>
+								<th scope="col">창고명</th>
+								<th scope="col">최종 작업자</th>
 								<th scope="col">등록일</th>
 								<th scope="col">변경일</th>
 								<th scope="col">최근 변경 내역</th>
@@ -65,7 +76,15 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemtype }</td>
 									<td>${slist.itemcode }</td>
 									<td>${slist.itemname }</td>
-									<td>${slist.lotnumber }</td>
+									<td>
+									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('반품') }">
+										${slist.lotnumber }
+									</c:if>
+									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('생산') }">
+										<a href="" class="BeanInfo" data-produceid="${slist.produceid }">${slist.produceid }
+										</a>
+									</c:if>
+									</td>
 									<td>${slist.weight }g</td>
 									<td>
 									<c:if test="${slist.stockquantity < 10 }">
@@ -118,7 +137,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            	let prevPage = $(this).data('page');
    									
    										let searchBtn = "${param.searchBtn}";
-   										let searchText = "${param.searchTxt}";
+   										let searchText = "${param.searchText}";
 
    				                		url = "/material/stockProduct?page=" + prevPage;
    				                
@@ -338,7 +357,7 @@ $(document).ready(function() {
   			</div>
   			<div class="col">
             	<label for="qualityid" class="col-form-label">품질관리ID:</label>
-            	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
+            	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
@@ -408,6 +427,186 @@ $(document).ready(function() {
 });
 </script>
 <!-- 창고 이동 모달창 데이터 (생산) -->
+
+<!-- 완제품 정보 확인 모달창 (생산) -->
+<div class="modal fade" id="roastedBeanInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">제품 정보 확인</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      	<div class="row">
+ 			<div class="col">
+           		<label for="infoproductid" class="col-form-label">완제품번호:</label>
+            	<input type="text" class="form-control" id="infoproductid" name="productid" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="infoproduceid" class="col-form-label">생산번호:</label>
+            	<input type="text" class="form-control" id="infoproduceid" name="produceid" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="infoitemname" class="col-form-label">제품명:</label>
+            	<input type="text" class="form-control" id="infoitemname" name="itemname" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="infolotnumber" class="col-form-label">LOT번호:</label>
+            	<input type="text" class="form-control" id="infolotnumber" name="lotnumber" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="infoweight" class="col-form-label">중량:</label>
+            	<input type="text" class="form-control" id="infoweight" name="weight" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="infoitemprice" class="col-form-label">단가:</label>
+				<input type="text" class="form-control" id="infoitemprice" name="itemprice" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="inforoasteddate" class="col-form-label">로스팅일:</label>
+            	<input type="text" class="form-control" id="inforoasteddate" name="roasteddate" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="infonote" class="col-form-label">비고:</label>
+				<input type="text" class="form-control" id="infonote" name="note" value="" readonly>
+  			</div>
+		</div>		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 완제품 정보 확인 모달창 (생산) -->
+
+<!-- 완제품 정보 확인 모달창 데이터 (생산) -->
+<script>
+$(document).ready(function($) {
+    $(".roastedBean").click(function(event) {
+        event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+
+        // 클릭된 a 태그의 data-produceid 값 가져오기
+        var produceid = $(this).data("produceid");
+
+        // AJAX 요청
+        $.ajax({
+            url: "/roastedBeanInfo",
+            type: "GET",
+            data: { produceid: produceid },  // 파라미터 전송
+            dataType: "JSON",
+            success: function(data) {
+            	console.log(data);
+            	$("#infoproductid").val(data.productid);
+            	$("#infoproduceid").val(data.produceid);
+            	$("#infoitemname").val(data.itemname);
+            	$("#infolotnumber").val(data.lotnumber);
+            	$("#infoweight").val(data.weight);
+            	$("#infoitemprice").val(data.itemprice);
+            	
+            	var roasteddate = new Date(data.roasteddate);
+            	var formattedDate = roasteddate.getFullYear() + "-" + 
+                String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
+                String(roasteddate.getDate()).padStart(2, '0') + " " + 
+                String(roasteddate.getHours()).padStart(2, '0') + ":" + 
+                String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
+                String(roasteddate.getSeconds()).padStart(2, '0');
+            	
+            	$("#inforoasteddate").val(formattedDate);
+            	$("#infonote").val(data.note);
+            	
+            	 $("#roastedBeanInfo").modal("show");
+            	
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 완제품 정보 확인 모달창 데이터 (생산) -->
+
+<!-- 완제품 정보 확인 모달창 (생산) 추가 -->
+<div class="modal fade" id="BeanInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">제품 정보 확인</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+		<div class="table-responsive">
+		<table class="table table-hover">
+      		<thead>
+      			<tr>
+      				<th scope="col">LOT번호 조회</th>
+      			</tr>
+      		</thead>
+      		<tbody>
+      		</tbody>	
+      	</table>
+      	</div>
+      	</div>
+			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 완제품 정보 확인 모달창 (생산) 추가 -->
+
+<!-- 완제품 정보 확인 모달창 데이터 (생산) 추가 -->
+<script>
+$(document).ready(function($) {
+    $(".BeanInfo").click(function(event) {
+        event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+
+        // 클릭된 a 태그의 data-produceid 값 가져오기
+        var produceid = $(this).data("produceid");
+
+        // AJAX 요청
+        $.ajax({
+            url: "/roastedBeanLot",
+            type: "GET",
+            data: { produceid: produceid },  // 파라미터 전송
+            dataType: "JSON",
+            success: function(data) {
+            	console.log(data);
+            	// 기존에 있는 데이터 삭제
+            	$("#BeanInfo tbody").empty();
+            	
+            	// 데이터를 테이블에 삽입
+            	$.each(data, function(index, item) {
+            		var row = "<tr><td>" + item.lotnumber + "</td></tr>";
+            		$("#BeanInfo tbody").append(row);
+            	});
+            	
+            	 $("#BeanInfo").modal("show");
+            	
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 완제품 정보 확인 모달창 데이터 (생산) 추가 -->
 
 <!-- 라디오 버튼 이동 -->
 <script>
@@ -488,9 +687,17 @@ $(document).ready(function(){
     fetchProductStockToast();
 
     // 1분마다 호출
-    setInterval(fetchProductStockToast, 30000); // 60,000 밀리초 = 1분
+    setInterval(fetchProductStockToast, 60000); // 60,000 밀리초 = 1분
 });
 </script>
-<!-- 토스트창 ajax 호출 (30초 간격) -->
+<!-- 토스트창 ajax 호출 (60초 간격) -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->
 
 <%@ include file="../include/footer.jsp"%>

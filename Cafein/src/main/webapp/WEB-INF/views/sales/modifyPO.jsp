@@ -40,15 +40,18 @@
 					
 					<div class="row">
 					<div class="col">
-					수정일자
-					<input name="updatedate" id="todaypo2"  type="text" class="form-control" value="" placeholder="수정일자(클릭)">
+					수주일자
+					<input name="ordersdate" id="ordersdate2"  type="text"  class="form-control"  readonly>
 					</div>
 					
 					<div class="col">
+					수정일자
+					<input name="updatedate" id="todaypo2"  type="text" class="form-control" value="" placeholder="수정일자(클릭)" autocomplete="off" required="required">
+					</div>
+					</div><br>
+					
 					완납예정일
 					<input name="ordersduedate" type="date" id="date2" class="form-control" value="">
-					</div>
-					</div>
 					<br>
 					
 					담당자
@@ -112,7 +115,8 @@ $(document).ready(function() {
 	
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
-	    // Ajax 코드 추가
+	   
+
 	$.ajax({
         type: "POST",
         url: "/sales/modifyPO",
@@ -122,18 +126,16 @@ $(document).ready(function() {
             postate: modifiedPostate,
             pocnt: modifiedPocnt,
             ordersdate: modifiedOrdersDate,
+            updatedate: modifiedUpdatedate,
             ordersduedate: modifiedOrdersDueDate,
             membercode: modifiedMemberCode
         },
+        
         success: function(response) {
             console.log("Modification success:", response);
             $("#modifyModal").modal('hide');
-
-            // 여기서 POList 갱신을 위한 작업 수행
-            // (서버로부터 업데이트된 POList를 가져와서 화면 갱신 등)
         },
         error: function(error) {
-            console.error("Error during modification:", error);
         }
     });
    });
@@ -184,5 +186,6 @@ $(document).ready(function() {
 	
 	});
 </script>
+
 
 

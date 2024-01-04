@@ -13,7 +13,8 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form role="form" action="/sales/modifyWK" method="post">
+				<form role="form" action="/production/modifyWK" method="post">
+				<input type="hidden" id="workid2" name="workid">
 			
 			<div class="modal-body">
 			

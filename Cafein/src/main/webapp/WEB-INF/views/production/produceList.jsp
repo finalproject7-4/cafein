@@ -56,7 +56,7 @@ function getList(pageNumber) {
   		  $("#produceListAll").html(data);
 		 },
 		error: function(error) {
-			alert("못한다");
+			Swal.fire("못한다");
     		console.error("Error fetching quality list:", error);
 		}
 	});
@@ -120,10 +120,10 @@ $(document).ready(function() {
                 $("#produceListAll").html(data); // 결과를 화면에 표시
             },
             error: function(error) {
-            	alert('못간다 :'+$("select[name='produceline']").val()+'/ '+$("select[name='process']").val()
+            	Swal.fire('못간다 :'+$("select[name='produceline']").val()+'/ '+$("select[name='process']").val()
             			+' /'+$("input[name='startDate']").val()+' /'+$("input[name='endDate']").val()+
             			'/ '+ $("select[name='itemname']").val());
-            	alert(formData+' / '+error);
+            	Swal.fire(formData+' / '+error);
                 console.error("Error fetching data:", error);
             	console.log(formData);
             }
