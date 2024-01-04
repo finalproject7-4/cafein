@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+<!-- SweetAlert 추가 -->
+
 <!-- 생산지시 등록 모달 -->
 <jsp:include page="produceReg.jsp"/>
 <!-- 생산지시 등록 모달 -->
@@ -222,8 +226,12 @@ function fetchData(searchBtnValue) {
 <td style="display: none;">${plist.packagevol }</td>
 <td style="display: none;">${plist.amount }</td>
 <td>
+	<!-- 블렌딩 대기 상태일때, 상태변경 버튼 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
+	<c:if test="${plist.process == '블렌딩' && plist.state == '대기'}">
+	<input id="BingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
+	</c:if>
 	<!-- 상태변경 버튼은 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
-	<c:if test="${plist.state == '대기'}">
+	<c:if test="${ plist.process != '블렌딩' && plist.state == '대기'}">
 	<input id="ingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
 	</c:if>
 	<!-- 상태변경 버튼은 '생산중'인 경우 표시해서 클릭시 '완료'로 변경 -->
@@ -482,7 +490,7 @@ function fetchData(searchBtnValue) {
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
-					alert('변경완료!');
+					Swal.fire('변경완료!');
 					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 					
@@ -490,7 +498,43 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					alert('못한다. 못간다.');
+					Swal.fire('못한다. 못간다.');
+					console.error("상태 업데이트 실패:", error);
+				}
+			});
+		});
+		
+	// 블렌딩일때만!! 생산 상태 변경 버튼 클릭 이벤트 처리
+
+		$("td").on("click", "#BingBtn", function() {
+			
+			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
+			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
+			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
+			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
+
+			// AJAX 요청 수행
+			$.ajax({
+				url : "/production/BupdateProduceState",
+				type : "POST",
+				data : {
+					state : stateValue,
+					produceid : produceId,
+					itemid : itemID,
+					amount : amount
+				},
+				success : function(response) {
+					// 성공적으로 처리된 경우 수행할 코드
+					console.log("상태 업데이트 성공!");
+					Swal.fire('변경완료!');
+					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
+					
+
+				},
+				error : function(error) {
+					// 요청 실패 시 수행할 코드
+					Swal.fire('못한다. 못간다.');
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -511,7 +555,7 @@ function fetchData(searchBtnValue) {
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
-					alert('삭제완료!');
+					Swal.fire('삭제완료!');
 					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 					
@@ -519,7 +563,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					alert('못한다. 못간다.');
+					Swal.fire('못한다. 못간다.');
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -531,6 +575,7 @@ function fetchData(searchBtnValue) {
 			$("td").on("click", "#roastingBtn", function() {
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			 var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
+			 var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
 			// AJAX 요청 수행
 			$.ajax({
@@ -539,12 +584,13 @@ function fetchData(searchBtnValue) {
 				data : {
 					produceid : produceId,
 					itemid : itemID,
-					process : "로스팅"
+					process : "로스팅",
+					amount : amount
 				},
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
-					alert('변경완료!');
+					Swal.fire('변경완료!');
 					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 					
@@ -552,7 +598,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					alert('못한다. 못간다.');
+					Swal.fire('못한다. 못간다.');
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
