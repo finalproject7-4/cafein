@@ -163,6 +163,7 @@
 						</tbody>
 					</table>
 				</div>
+				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
