@@ -2,6 +2,7 @@ package com.cafein.persistence;
 
 import java.util.List;
 
+import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReturnVO;
 
@@ -22,8 +23,12 @@ public interface ReturnDAO {
 	// 완제품 목록
 	public List<ProduceVO> prList() throws Exception;
 	
+	// 원자재,부자재 목록
+	public List<ItemVO> itList() throws Exception;
+	
 	// 반품 수정
 	public int updateReturn(ReturnVO rvo) throws Exception;
+
 	
 	
 	

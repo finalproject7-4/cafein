@@ -117,9 +117,9 @@
 							<label for="itemname" class="col-form-label">제품명</label> 
 							
 								<select class="form-select" id="floatingSelect" name="itemname">
-									<c:forEach var="iList" items="${itemList }" begin="0" step="1">
-										<c:if test="${iList.itemtype eq '원자재'}">
-											<option value="${iList.itemname }">${iList.itemname}</option>
+									<c:forEach var="itList" items="${itList }" begin="0" step="1">
+										<c:if test="${itList.itemtype eq '원자재'}">
+											<option value="${itList.itemname }">${itList.itemname}</option>
 										</c:if>
 									</c:forEach>
 								</select>
@@ -179,7 +179,7 @@
 					<div class="col">
 						<label for="returntype" class="col-form-label"><b>반품유형</b></label>
 						<select class="form-select" id="returnTypeSelect2" name="returntype"
-							aria-label="Floating label select example">
+							aria-label="Floating label select example" >
 							<optgroup label="반품유형">
 								<option value="원자재">원자재</option>
 								<option value="부자재">부자재</option>
@@ -192,7 +192,7 @@
 					<div class=col>
 						<label for="returnReason" class="col-form-label"><b>반품사유</b></label>
 						<select class="form-select" id="returnReasonSelect2" name="returnReason"
-							aria-label="Floating label select example">
+							aria-label="Floating label select example" disabled>
 							<optgroup label="반품사유">
 								<option value="제품불량">제품불량</option>
 								<option value="주문오류">주문오류</option>
@@ -489,7 +489,7 @@
     console.log('Exchange Date:', exchangedate);
 
     // 가져온 값들을 모달에 설정
-    $("#returnTypeSelect2").val(returntype);
+    $("#returnTypeSelect2").val(returntype).prop('selected', true);
     $("#returnReasonSelect2").val(returnReason);
     $("#floatingSelect2").val(itemname);
     $("#returnquantity2").val(returnquantity);
@@ -500,39 +500,6 @@
     // 모달 열기
     $("#ModifyModal").modal('show');
 
-    /* // 수정된 값을 서버로 전송
-    $("#ModifyBtn").click(function() {
-        // 가져온 값들을 변수에 저장
-        var modifiedReturnType = $("#returnTypeSelect2").val();
-        var modifiedReturnReason = $("#returnReasonSelect2").val();
-        var modifiedItemName = $("#floatingSelect2").val();
-        var modifiedReturnQuantity = $("#returnquantity2").val();
-        var modifiedSubmitDate = $("#submitDateInput2").val();
-        var modifiedReturnDate = $("#returndate2").val();
-        var modifiedExchangeDate = $("#exchangedate2").val();
-
-        // Ajax를 사용하여 서버로 수정된 값 전송
-        $.ajax({
-            type: "POST",
-            url: "/quality/returnModify",
-            data: {
-                returntype: modifiedReturnType,
-                returnReason: modifiedReturnReason,
-                itemname: modifiedItemName,
-                returnquantity: modifiedReturnQuantity,
-                submitdate: modifiedSubmitDate,
-                returndate: modifiedReturnDate,
-                exchangedate: modifiedExchangeDate
-            },
-            success: function(response) {
-                console.log("Modification success:", response);
-                $("#ModifyModal").modal('hide');
-            },
-            error: function(error) {
-                console.error("Error during modification:", error);
-            }
-        });
-    }); */
 }
 
     
@@ -564,11 +531,11 @@
 			itemSelect.innerHTML = ''; // 기존 옵션 제거
 			
 			// itemList에서 원자재에 해당하는 옵션 추가
-			<c:forEach var="iList" items="${itemList}" begin="0" step="1">
-				<c:if test="${iList.itemtype eq '원자재'}">
+			<c:forEach var="itList" items="${itList}" begin="0" step="1">
+				<c:if test="${itList.itemtype eq '원자재'}">
 					var option = document.createElement('option');
-					option.value = "${iList.itemname}";
-					option.text = "${iList.itemname}";
+					option.value = "${itList.itemname}";
+					option.text = "${itList.itemname}";
 					itemSelect.add(option);
 				</c:if>
 			</c:forEach>
@@ -577,11 +544,11 @@
 			itemSelect.innerHTML = ''; // 기존 옵션 제거
 			
 			// itemList에서 부자재에 해당하는 옵션 추가
-			<c:forEach var="iList" items="${itemList}" begin="0" step="1">
-				<c:if test="${iList.itemtype eq '부자재'}">
+			<c:forEach var="itList" items="${itList}" begin="0" step="1">
+				<c:if test="${itList.itemtype eq '부자재'}">
 					var option = document.createElement('option');
-					option.value = "${iList.itemname}";
-					option.text = "${iList.itemname}";
+					option.value = "${itList.itemname}";
+					option.text = "${itList.itemname}";
 					itemSelect.add(option);
 				</c:if>
 			</c:forEach>
@@ -614,11 +581,11 @@
 			itemSelect.innerHTML = ''; // 기존 옵션 제거
 			
 			// itemList에서 원자재에 해당하는 옵션 추가
-			<c:forEach var="iList" items="${itemList}" begin="0" step="1">
-				<c:if test="${iList.itemtype eq '원자재'}">
+			<c:forEach var="itList" items="${itList}" begin="0" step="1">
+				<c:if test="${itList.itemtype eq '원자재'}">
 					var option = document.createElement('option');
-					option.value = "${iList.itemname}";
-					option.text = "${iList.itemname}";
+					option.value = "${itList.itemname}";
+					option.text = "${itList.itemname}";
 					itemSelect.add(option);
 				</c:if>
 			</c:forEach>
@@ -627,11 +594,11 @@
 			itemSelect.innerHTML = ''; // 기존 옵션 제거
 			
 			// itemList에서 부자재에 해당하는 옵션 추가
-			<c:forEach var="iList" items="${itemList}" begin="0" step="1">
-				<c:if test="${iList.itemtype eq '부자재'}">
+			<c:forEach var="itList" items="${itList}" begin="0" step="1">
+				<c:if test="${itList.itemtype eq '부자재'}">
 					var option = document.createElement('option');
-					option.value = "${iList.itemname}";
-					option.text = "${iList.itemname}";
+					option.value = "${itList.itemname}";
+					option.text = "${itList.itemname}";
 					itemSelect.add(option);
 				</c:if>
 			</c:forEach>
@@ -649,6 +616,31 @@
 		}
 		
 	});
+</script>
+
+<script>
+    // 서버에서 받아온 returnType 값
+    var serverReturnType = '<c:out value="${returnType}" />';
+
+    // JavaScript로 동적으로 처리
+    document.addEventListener('DOMContentLoaded', function () {
+        var returnTypeSelect = document.getElementById('returnTypeSelect2');
+        var optgroup = returnTypeSelect.querySelector('optgroup');
+
+        // 서버에서 받아온 returnType 값에 따라 동적으로 옵션 추가
+        if (serverReturnType === '원자재') {
+            optgroup.innerHTML = '<option value="원자재">원자재</option>';
+        } else if (serverReturnType === '부자재') {
+            optgroup.innerHTML = '<option value="부자재">부자재</option>';
+        } else if (serverReturnType === '완제품') {
+            optgroup.innerHTML = '<option value="완제품">완제품</option>';
+        }
+
+        // 선택된 값으로 설정
+        returnTypeSelect.value = serverReturnType;
+
+        // 이후에 필요한 로직 추가 가능
+    });
 </script>
 </body>
 </html>

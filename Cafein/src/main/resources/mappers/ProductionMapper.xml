@@ -83,16 +83,6 @@
 		AND qualitycheck = #{searchBtn}
 		</if>
 		
-
-		<if test="state != null">
-			AND state like concat('%',#{state},'%')
-		</if>
-		
-		<if test="qualitycheck != null">
-			AND qualitycheck like concat('%','#{qualitycheck}','%')
-		</if>
-				
-
 		<if test="produceline != null and !produceline.equals(0)">
 			AND produceline = #{produceline}
 		</if>
@@ -108,21 +98,12 @@
 	</select>
 	
 
-
-	<!-- BOM  목록 조회
-	<select id="getBomList" resultType="com.cafein.domain.BomVO">
-		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, j.itemname as itemname from bom b join item j on b.itemcode = j.itemcode
-	</select>
-	 -->
-
-
 	<!-- BOM  목록 조회 -->
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
 		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, i.itemname as itemname, i.itemid as itemid from bom b join item i on b.itemcode = i.itemcode 
 		where i.available = 'Y'
  	</select>
 	
-
 	<!-- 생산지시 등록 -->
 	<insert id="insertProducePlan">
 		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode, packagevol) 

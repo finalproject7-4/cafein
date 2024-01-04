@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReturnVO;
 import com.cafein.service.ItemService;
@@ -32,15 +33,16 @@ public class ReturnController {
 	// 반품 목록
 	// http://localhost:8088/quality/returns
 	@RequestMapping(value = "/returns", method = RequestMethod.GET)
-	public void returnsGET(Model model, ReturnVO rvo, ProduceVO pro) throws Exception {
+	public void returnsGET(Model model, ReturnVO rvo, ProduceVO pro, ItemVO ivo) throws Exception {
 
 		logger.debug("returnsGET() 호출");
 		
 		// 완제품 목록
 		model.addAttribute("prList", rService.prList());
 		
-		// 품목 목록
-		model.addAttribute("itemList", iService.itemList());
+		// 원자재,부자재 목록
+		model.addAttribute("itList", rService.itList());
+
 		
 		if (rvo.getReturncode() != null || rvo.getReturndate() != null || rvo.getReturntype() != null) {
 			// 검색결과

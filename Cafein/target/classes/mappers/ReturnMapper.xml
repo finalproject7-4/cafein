@@ -60,6 +60,12 @@
  		SELECT distinct itemname FROM produce
  	</select>
  	
+ 	<!-- 원자재,부자재 목록 -->
+ 	<select id="itList" resultType="com.cafein.domain.ItemVO">
+ 		SELECT * FROM item
+ 	</select>
+ 	
+ 	
  	<!-- 반품 수정 -->
  	<update id="updateReturn">
  		update returns set itemname=#{itemname},returnquantity=#{returnquantity},submitdate=#{submitdate},returndate=#{returndate},exchangedate=#{exchangedate} 
