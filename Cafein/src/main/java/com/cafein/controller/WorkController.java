@@ -35,13 +35,12 @@ public class WorkController {
 	// 작업지시 조회
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public String AllWKListGET(Model model, @ModelAttribute("result") String result) throws Exception {
+	public String AllWKListGET(Model model, WorkVO wvo) throws Exception {
 		logger.debug("AllWKListGET() 실행");
 		
 		List<WorkVO> WKList = shService.AllWKList();
 		
 		model.addAttribute("WKList", WKList );
-		model.addAttribute("result", result);
 		
 		model.addAttribute("pcList", shService.registPC()); 
 		
