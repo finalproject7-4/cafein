@@ -36,14 +36,20 @@
        wk.pocode, wk.itemname,
        wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
        wk.membercode
-		FROM c7d2307t4_2.work wk
-		JOIN c7d2307t4_2.purchaseorder po ON wk.pocode = po.pocode
+		FROM work wk
+		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
 		GROUP BY wk.workid, wk.workdate1, wk.workcode,
          wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
          wk.membercode
 		ORDER BY workdate1 DESC, workid DESC;
 
 	</select>
+	
+<!-- 작업 지시 검색 -->
+<select id="searchWKList" resultType="com.cafein.domain.WorkVO" parameterType="map">
+        SELECT * FROM work
+        WHERE CONCAT(clientname, ' ', itemname) LIKE '%' || #{keyword} || '%';
+    </select>
 	
 	<!-- 작업 지시 등록 -->
 	<insert id="registWK" parameterType="com.cafein.domain.WorkVO">
@@ -61,21 +67,11 @@
 	
 	<!-- 작업지시 코드 생성 -->
 	<select id="getWKCount" resultType="int" parameterType="com.cafein.domain.WorkVO">
-		select count(*) from work
-		<where>
-		  <choose>
-			<when test="worksts == '대기'">
-				and workcode like '%ST%';
-			</when>
-			<when test="worksts == '진행'">
-				and workcode like '%PR%';
-			</when>
-			<when test="worksts == '완료'">
-				and workcode like '%CP%';
-			</when>
-		  </choose>
-		</where>
-	</select>
+    select count(*) from work
+	<where>
+    and workcode like 'WK%';
+	</where>
+</select>
 	
 	<!-- 작업 지시 수정 -->
 	<update id="updateWK">
