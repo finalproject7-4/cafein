@@ -35,7 +35,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+				<input type="submit" value="검색">
 			</form>
 			</div>
 				<form action="/productQualityPrint" method="GET">
@@ -664,7 +664,7 @@ $(document).ready(function() {
       	// select 삽입
         function populateLotOptions(data) {
             var selectElement = document.getElementById('selectlotnumber');
-            // selectElement.innerHTML = ''; // 기존 옵션 초기화
+            selectElement.innerHTML = ''; // 기존 옵션 초기화
 
             data.forEach(function(item) {
                 var option = document.createElement('option');
@@ -674,19 +674,7 @@ $(document).ready(function() {
             });
         }
       	
-      	fetchLotData(produceid);
-      	
-      	
-      	
-      	document.getElementById('selectlotnumber').addEventListener('change', function() {
-      	    var selectedLotNumber = this.value;
-      	    alert(selectedLotNumber);
-
-      	    if (selectedLotNumber) { // 선택된 값이 있을 경우에만 실행
-      	       $('#lotnumberaudit').modal('show');
-      	    }
-      	});
-        
+      	fetchLotData(produceid);    
     });
 });
 </script>
@@ -1387,11 +1375,3 @@ $(document).ready(function(){
 });
 </script>
 <!-- 날짜 비교 -->
-
-<!-- 툴팁 추가 -->
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
-<!-- 툴팁 추가 -->
