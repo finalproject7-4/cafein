@@ -60,17 +60,8 @@
 		<where>
 		  <choose>
 			<when test="postate == '대기'">
-				and pocode like '%AL%';
+				and pocode like '%PO%';
 			</when>
-			<when test="postate == '진행'">
-				and pocode like '%SK%';
-			</when>
-			<when test="postate == '완료'">
-				and pocode like '%FJ%';
-			</when>
-			<otherwise>
-				and pocode like '%GH%';
-			</otherwise>
 		  </choose>
 		</where>
 	</select>
