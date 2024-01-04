@@ -212,11 +212,12 @@ function filterRows(event) {
     $.ajax({
         type: 'POST', // 또는 'GET', 요청 방식에 따라 변경
         url: '/sales/SHList', // 실제 서버의 엔드포인트 URL로 변경해야 합니다.
+        data: JSON.stringify({
         keyword: keyword,
         shipdate1: startDate,
         shipdate2: endDate,
         shipid: modifiedShipid,
-        shipdate1: modifiedshipdate1,
+        shipdate1: modifiedShipdate1,
         shipcode: modifiedShipcode,
         clientname: modifiedClientName,
         itemname: modifiedItemName,
@@ -225,9 +226,10 @@ function filterRows(event) {
         shipsts: modifiedShipsts,
         shipdate2: modifiedShipdate2,
         membercode: modifiedMemberCode
-   		 },
-        success: function(response) {
-            // 서버에서 받아온 데이터를 이용하여 표시 또는 업데이트
+   		 }),
+   		  contentType: 'application/x-www-form-urlencoded',
+   		  success: function(response) {
+   			 console.log("keyword:", keyword)
             updateTable(response);
         },
         error: function(error) {

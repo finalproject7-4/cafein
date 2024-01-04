@@ -1,6 +1,7 @@
 package com.cafein.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
@@ -23,7 +24,7 @@ public interface ShipService {
 	public int shCount(ShipVO svo) throws Exception;
 	
 	// 출하 검색
-	public List<ShipVO> searchSHList(String keyword) throws Exception;
+	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception;
 		
 		
 		

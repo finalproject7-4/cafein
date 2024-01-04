@@ -61,9 +61,9 @@ public class ShipServiceImpl implements ShipService {
 	
 	// 출하 검색
 	@Override
-	public List<ShipVO> searchSHList(String keyword) throws Exception {
+	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
 		logger.debug("searchSHList()");
-	    return shdao.searchSHList(keyword);
+	    return shdao.searchSHList(searchParams);
 	}
 	
 	

@@ -64,8 +64,8 @@ public class ShipDAOImpl implements ShipDAO {
 	
 	// 출하 검색
 	@Override
-	public List<ShipVO> searchSHList(String keyword) throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".searchSHList", keyword);
+	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".searchSHList", searchParams);
 	}
 
 	

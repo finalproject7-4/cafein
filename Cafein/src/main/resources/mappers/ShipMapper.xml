@@ -44,10 +44,23 @@
 </select>
 
 	<!-- 출하 검색 -->
-	<select id="searchSHList" resultType="com.cafein.domain.shipVO" parameterType="map">
-        SELECT * FROM ship
-        WHERE CONCAT(clientname, ' ', itemname) LIKE '%' || #{keyword} || '%';
-    </select>
+	<select id="searchSHList" resultType="com.cafein.domain.ShipVO" parameterType="java.util.Map">
+    <![CDATA[
+        SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+        sh.stockid, st.stockquantity, sh.itemname, sh.lotnumber, sh.clientname,
+        sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
+        FROM ship sh
+        LEFT JOIN stock st ON sh.stockid = st.stockid
+        WHERE
+            clientname LIKE '%' || #{keyword} || '%' OR
+            itemname LIKE '%' || #{keyword} || '%' OR
+            shipcode LIKE '%' || #{keyword} || '%'
+        ORDER BY shipdate1 DESC, shipid DESC;
+    ]]>
+</select>
+	
+
+
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">

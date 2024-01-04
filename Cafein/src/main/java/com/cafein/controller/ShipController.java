@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,10 +73,10 @@ public class ShipController {
 	// 출하 검색
 	@RequestMapping(value = "/SHList", method = RequestMethod.POST)
 	@ResponseBody
-	public List<ShipVO> searchWKListPOST(@RequestParam String keyword) throws Exception {
-	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
-	    List<ShipVO> result = shService.searchSHList(keyword);
-	    logger.debug("작업지시 검색 결과 출력!");
+	public List<ShipVO> searchSHListPOST(@RequestBody Map<String, Object> searchParams) throws Exception {
+	    logger.debug("SearchSHListPOST() 실행. 검색 조건: {}", searchParams);
+	    List<ShipVO> result = shService.searchSHList(searchParams);
+	    logger.debug("출하 검색 결과 출력!");
 	    return result;
 	}
 
