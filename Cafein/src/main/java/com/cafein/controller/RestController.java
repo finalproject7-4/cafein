@@ -472,9 +472,16 @@ public class RestController {
 		
 		// roastedBean AJAX 정보 호출용
 		@GetMapping(value = "/roastedBeanInfo")
-		public QualityVO roastedBeanInfoGET(@ModelAttribute("lotnumber") String lotnumber) throws Exception {
+		public QualityVO roastedBeanInfoGET(@ModelAttribute("produceid") String produceid) throws Exception {
 			logger.debug(" roastedBeanInfo() 호출 ");
-			return sService.roastedBeanInfo(lotnumber);
+			return sService.roastedBeanInfo(produceid);
+		}
+		
+		// roastedBean lotnumber AJAX 정보 호출용
+		@GetMapping(value = "/roastedBeanLot")
+		public List<QualityVO> roastedBeanLotGET(@ModelAttribute("produceid") String produceid) throws Exception {
+			logger.debug(" roastedBeanLot() 호출 ");
+			return sService.roastedBeanLot(produceid);
 		}
 		
 		// receive AJAX 정보 호출용
@@ -483,4 +490,5 @@ public class RestController {
 			logger.debug(" receiveInfo() 호출 ");
 			return sService.receiveInfo(lotnumber);
 		}
+		
 }
