@@ -38,33 +38,45 @@ public class ShipController {
 		logger.debug("AllSHListGET() 실행");
 		
 		model.addAttribute("AllSHList", shService.AllSHList());
-		model.addAttribute("wcList", shService.registWC()); 
+		model.addAttribute("wcList", shService.registWC());
+		model.addAttribute("stList", shService.registST()); 
 		logger.debug("출하 리스트 출력!");
 	}
 	
 	// 출하 등록 - POST
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
-	public String registSH(ShipVO svo, 
-							@RequestParam(value = "shipdate") String shipdate,
-							@RequestParam(value = "stockid", defaultValue = "1") int stockid,
-							RedirectAttributes rttr) throws Exception {
+	public String registSH(ShipVO svo,
+							@RequestParam(value = "shipdate1") String shipdate1
+							) throws Exception {
 		
 		logger.debug("regist() 호출 ");                                 
 		logger.debug(" svo : " + svo);                                               
 
-		svo.setShipdate(Date.valueOf(shipdate));
-		svo.setStockid(stockid);	                                         
+		svo.setShipcode(makeSHcode(svo));
+		svo.setShipdate1(Date.valueOf(shipdate1));	                                         
 		
 		shService.registSH(svo);                                                      
-		logger.debug(" 출하 등록 완료! ");     
-         
-		rttr.addFlashAttribute("result", "CREATEOK");                                
+		logger.debug(" 출하 등록 완료! ");                              
 	                                                                                 
 		logger.debug("/sales/registSH 이동");                                          
 		return "redirect:/sales/SHList";                                             
 	}
 
+	// 작업 지시 코드 생성 메서드
+	public String makeSHcode(ShipVO svo) throws Exception {
+	    // DB에서 전체 작업 수 조회
+	    int count = shService.shCount(svo);
+
+	    // 작업 코드 형식 설정
+	    String codePrefix = "SH";
+	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyMMdd");
+	    String datePart = LocalDate.now().format(dateFormat);
+	    String countPart = String.format("%04d", count + 1); // 4자리 숫자로 포맷팅
+
+	    // 최종 코드 생성
+	    return codePrefix + datePart + countPart;
+	}
 
 	// 실적 조회
 	// http://localhost:8088/sales/PFList

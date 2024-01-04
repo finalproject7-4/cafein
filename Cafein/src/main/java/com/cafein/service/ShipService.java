@@ -16,6 +16,15 @@ public interface ShipService {
 	// 출하 등록 - 작업지시코드
 	public List<WorkVO> registWC() throws Exception;
 	
+	// 출하 등록 - 재고량
+	public List<WorkVO> registST() throws Exception;
+	
+	// 작업 지시 코드 생성
+	public int shCount(ShipVO svo) throws Exception;
+		
+		
+		
+	
 	// 작업 지시 조회
 	public List<WorkVO> AllWKList() throws Exception;
 	

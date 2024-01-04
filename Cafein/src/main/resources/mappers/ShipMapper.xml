@@ -8,26 +8,40 @@
 	<!-- 출하 조회 -->
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT sh.shipid, sh.shipdate, sh.shipcode, sh.workcode,
-		sh.stockid, st.itemid, it.itemname, it.clientcode,
-		sh.shipcount, sh.shipsts, sh.membercode
+		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+		sh.stockid, st.stockquantity, sh.itemname, sh.lotnumber, sh.clientname,
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
-		LEFT JOIN
-		item it ON st.itemid = it.itemid
+		ORDER BY shipdate1 DESC, shipid DESC;
 	</select>
 	
 	<!-- 출하 등록 -->
 	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
-		INSERT INTO ship (shipsts, workcode, clientcode, stockid, shipcount, shipdate, membercode)
-		VALUES ( #{shipsts}, #{workcode}, #{cleintcode}, #{stockid}, #{shipcount}, #{shipdate}, #{membercode} )
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, lotnumber, pocnt, shipsts, membercode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{lotnumber}, #{pocnt}, #{shipsts}, #{membercode} )
 	</insert>
 	
 	<!-- 출하 등록 작업지시코드 -->
 	<select id="wcList" resultType="com.cafein.domain.WorkVO">
-		SELECT wk.workcode, wk.clientcode, wk.itemid, wk.shipcount, wk.shipdate, wk.memvercode
-		FROM work wk 보류
+		SELECT wk.workcode, wk.clientname, wk.itemname, wk.pocnt, wk.workdate1
+		FROM work wk
 	</select>
+	
+	<!-- 출하 등록 재고량 -->
+	<select id="stList" resultType="com.cafein.domain.WorkVO">
+		SELECT it.itemname, st.lotnumber, st.stockquantity
+		FROM stock st
+        JOIN item it ON st.itemid = it.itemid;
+	</select>
+	
+	<!-- 출하 코드 생성 -->
+	<select id="getSHCount" resultType="int" parameterType="com.cafein.domain.ShipVO">
+    select count(*) from ship
+	<where>
+    and shipcode like 'SH%';
+	</where>
+</select>
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
@@ -44,12 +58,6 @@
 		ORDER BY workdate1 DESC, workid DESC;
 
 	</select>
-	
-<!-- 작업 지시 검색 -->
-<select id="searchWKList" resultType="com.cafein.domain.WorkVO" parameterType="map">
-        SELECT * FROM work
-        WHERE CONCAT(clientname, ' ', itemname) LIKE '%' || #{keyword} || '%';
-    </select>
 	
 	<!-- 작업 지시 등록 -->
 	<insert id="registWK" parameterType="com.cafein.domain.WorkVO">

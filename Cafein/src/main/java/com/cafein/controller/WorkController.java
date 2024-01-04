@@ -35,13 +35,12 @@ public class WorkController {
 	// 작업지시 조회
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public String AllWKListGET(Model model, @ModelAttribute("result") String result) throws Exception {
+	public String AllWKListGET(Model model, WorkVO wvo) throws Exception {
 		logger.debug("AllWKListGET() 실행");
 		
 		List<WorkVO> WKList = shService.AllWKList();
 		
 		model.addAttribute("WKList", WKList );
-		model.addAttribute("result", result);
 		
 		model.addAttribute("pcList", shService.registPC()); 
 		
@@ -50,16 +49,6 @@ public class WorkController {
 		return "/production/WKList";
 	}
 	
-	
-//	// 작업지시 검색
-//	@RequestMapping(value = "/WKList", method = RequestMethod.POST)
-//	@ResponseBody
-//	public List<WorkVO> searchWKListGET(@RequestParam String keyword) throws Exception {
-//	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
-//	    List<WorkVO> result = shService.searchWKList(keyword);
-//	    logger.debug("작업지시 검색 결과 출력!");
-//	    return result;
-//	}
 	
 	// 작업지시 등록 - POST
 	// http://localhost:8088/production/WKList

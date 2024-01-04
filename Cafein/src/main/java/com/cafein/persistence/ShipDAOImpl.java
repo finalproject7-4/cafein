@@ -47,6 +47,20 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : 출하 조회/작업지시코드");
 		return sqlSession.selectList(NAMESPACE+".wcList");
 	}
+	
+	// 출하 등록 - 재고량
+	@Override
+	public List<WorkVO> registST() throws Exception {
+		logger.debug("DAO : 출하 조회/작업지시코드");
+		return sqlSession.selectList(NAMESPACE+".stList");
+	}
+
+	// 출하 코드생성
+	@Override
+	public int getSHCount(ShipVO svo) throws Exception {
+		logger.debug("DAO : getShipCount(ShipVO svo)");
+		return sqlSession.selectOne(NAMESPACE + ".getSHCount", svo);
+	}
 
 	// 작업 지시 조회
 	@Override
@@ -60,6 +74,7 @@ public class ShipDAOImpl implements ShipDAO {
 //	public List<WorkVO> searchWKList(String keyword) throws Exception {
 //	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
 //	}
+
 
 	// 작업 지시 등록
 	@Override
