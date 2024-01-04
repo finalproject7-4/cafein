@@ -23,6 +23,7 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.RoastedbeanVO;
 import com.cafein.persistence.ProductionDAO;
 import com.mysql.cj.result.Row;
 
@@ -219,6 +220,73 @@ public class ProductionServiceImpl implements ProductionService{
 		}
 		
 	}
+
+	// 포장공정 완료된 제품 roastedbean 테이블에 추가
+	@Override
+	public void insertRoastedbean(RoastedbeanVO vo) throws Exception {
+		logger.debug("Service - 포장공정완료! 로스티드제품 추가!");
+		
+		pdao.insertRoastedbean(vo);
+	}
+	
+	// 생산 공정과정 업데이트 (블렌딩 -> 로스팅)
+	@Override
+	public void updateProduceProcessRoasting(ProduceVO vo) throws Exception {
+		logger.debug("Service - 생산공정과정 로스팅으로 변경! ");
+		
+		pdao.updateProduceProcessRoasting(vo);
+	}
+
+	
+	// 생산 공정과정 업데이트 (로스팅 -> 포장)
+	@Override
+	public void updateProduceProcess(ProduceVO vo) throws Exception {
+		logger.debug("Service - 생산공정과정 포장으로 변경! ");
+		
+		pdao.updateProduceProcess(vo);
+		
+	}
+	
+	
+	// 대기중인 블렌딩 작업 삭제
+	@Override
+	public void deleteProducePlan(ProduceVO vo) throws Exception {
+		logger.debug("Service - 블렌딩 작업 삭제!");
+		
+		pdao.deleteProducePlan(vo);
+		
+	}
+
+	// 로스팅 제품 온도 체크
+	@Override
+	public int getRoastingTemper(ProduceVO vo) throws Exception {
+		logger.debug("Service - 로스팅 업데이트 제품 온도체크 ");
+		return pdao.getRoastingTemper(vo);
+	}
+
+	// 로스팅 제품 목록 조회
+	@Override
+	public List<RoastedbeanVO> getRoastedList(RoastedbeanVO vo) throws Exception {
+		logger.debug("Service - 로스팅 완료 제품 목록 조회");
+		
+		return pdao.getRoastedList(vo);
+	}
+
+	// 로스팅 목록 글 개수 조회
+	@Override
+	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception {
+		logger.debug("Service - 로스팅 완료 제품 목록 조회");
+		
+		return pdao.countRoastedbean(vo);
+	}
+	
+	
+
+	
+	
+	
+	
+	
 
 	
 	
