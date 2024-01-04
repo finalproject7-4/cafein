@@ -70,9 +70,9 @@ public class SalesController {
 	//납품서
 	// http://localhost:8088/sales/receipt
 	@RequestMapping(value = "/receipt", method = RequestMethod.GET)
-    public String showReceiptPage(Model model) throws Exception{
+    public String showReceiptPage(Model model,SalesVO svo, @RequestParam int poid) throws Exception{
 		logger.debug("showReceiptPage() 실행 ");
-		
+		svo.setPoid(poid);
 		List<SalesVO> receiptList = sService.receiptList();
 		logger.debug(" @@@ " + receiptList);
 		model.addAttribute("receiptList", receiptList);
