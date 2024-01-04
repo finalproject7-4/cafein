@@ -19,13 +19,13 @@
 				
 					<div class="mb-3">
 						<label for="recipient-name" class="col-form-label"><b>출하상태</b></label>
-						<select class="form-select" id="floatingSelect"
+						<select class="form-select" id="floatingSelect" name="shipsts"
 							aria-label="Floating label select example">
 							<optgroup label="출하상태">
-								<option value="1">대기</option>
-								<option value="2">진행</option>
-								<option value="3">완료</option>
-								<option value="4">취소</option>
+								<option value="접수">접수</option>
+								<option value="진행">진행</option>
+								<option value="완료">완료</option>
+								<option value="취소">취소</option>
 							</optgroup>
 						</select>
 					</div>
@@ -48,9 +48,16 @@
 					<div class="mb-3">
 						<b>지시량</b><input type="number" id="pocnt" name="pocnt" class="form-control" placeholder="숫자만 입력하세요">
 					</div>
-					<div class="mb-3">
+					<div class="row">
+					<div class="col">
 						<b>재고량 확인</b><input type="number" id="stockquantity" name="stockquantity" class="form-control" placeholder="숫자만 입력하세요">
 					</div>
+					<div class="col">
+							<b>LOT번호</b><input id="lotnumber" name="lotnumber" class="form-control"
+								id="floatingInput" placeholder="LOT번호">
+						</div>
+						</div>
+						<br>
 					<div class="row">
 						<div class="col">
 							<b>작업지시일자</b><input name="shipdate1" id="shipdate1" type="date" class="form-control"  placeholder="작업지시일자">
@@ -58,7 +65,7 @@
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>담당자</b><input class="form-control" id="floatingInput">
+						<b>담당자</b><input class="form-control" id="floatingInput" name="membercode">
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -147,7 +154,7 @@
 								<c:forEach items="${stList}" var="st" varStatus="status">
 									<tr class="stockset">
 										<td>${counter }</td>
-										<td>${st.itemid }</td>
+										<td>${st.itemname }</td>
 										<td>${st.lotnumber }</td>
 										<td>${st.stockquantity }</td>
 									</tr>
@@ -204,9 +211,11 @@
 		    $('.stockset').click(function() {
 		    	
 		      // 선택한 행의 데이터를 가져오기
+		      var lotnumber = $(this).find('td:eq(2)').text();
 		      var stockquantity = $(this).find('td:eq(3)').text();
 
 		      // 첫 번째 모달의 각 입력 필드에 데이터를 설정
+		      $('#lotnumber').val(lotnumber).prop('readonly', true);
 		      $('#stockquantity').val(stockquantity).prop('readonly', true);
 
 		      if (parseInt(pocnt) > parseInt(stockquantity)) {

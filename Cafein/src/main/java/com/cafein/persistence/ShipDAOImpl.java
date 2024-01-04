@@ -54,7 +54,13 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : 출하 조회/작업지시코드");
 		return sqlSession.selectList(NAMESPACE+".stList");
 	}
-	
+
+	// 출하 코드생성
+	@Override
+	public int getSHCount(ShipVO svo) throws Exception {
+		logger.debug("DAO : getShipCount(ShipVO svo)");
+		return sqlSession.selectOne(NAMESPACE + ".getSHCount", svo);
+	}
 
 	// 작업 지시 조회
 	@Override

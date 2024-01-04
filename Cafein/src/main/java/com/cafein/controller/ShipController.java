@@ -53,6 +53,7 @@ public class ShipController {
 		logger.debug("regist() 호출 ");                                 
 		logger.debug(" svo : " + svo);                                               
 
+		svo.setShipcode(makeSHcode(svo));
 		svo.setShipdate1(Date.valueOf(shipdate1));	                                         
 		
 		shService.registSH(svo);                                                      
@@ -62,6 +63,20 @@ public class ShipController {
 		return "redirect:/sales/SHList";                                             
 	}
 
+	// 작업 지시 코드 생성 메서드
+	public String makeSHcode(ShipVO svo) throws Exception {
+	    // DB에서 전체 작업 수 조회
+	    int count = shService.shCount(svo);
+
+	    // 작업 코드 형식 설정
+	    String codePrefix = "SH";
+	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyMMdd");
+	    String datePart = LocalDate.now().format(dateFormat);
+	    String countPart = String.format("%04d", count + 1); // 4자리 숫자로 포맷팅
+
+	    // 최종 코드 생성
+	    return codePrefix + datePart + countPart;
+	}
 
 	// 실적 조회
 	// http://localhost:8088/sales/PFList

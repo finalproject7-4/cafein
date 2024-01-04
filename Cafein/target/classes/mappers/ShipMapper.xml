@@ -13,6 +13,7 @@
 		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
+		ORDER BY shipdate1 DESC, shipid DESC;
 	</select>
 	
 	<!-- 출하 등록 -->
@@ -29,9 +30,18 @@
 	
 	<!-- 출하 등록 재고량 -->
 	<select id="stList" resultType="com.cafein.domain.WorkVO">
-		SELECT st.itemid, st.lotnumber, st.stockquantity
+		SELECT it.itemname, st.lotnumber, st.stockquantity
 		FROM stock st
+        JOIN item it ON st.itemid = it.itemid;
 	</select>
+	
+	<!-- 출하 코드 생성 -->
+	<select id="getSHCount" resultType="int" parameterType="com.cafein.domain.ShipVO">
+    select count(*) from ship
+	<where>
+    and shipcode like 'SH%';
+	</where>
+</select>
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">

@@ -9,9 +9,9 @@
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<form name="dateSearch" action="/production/SHList" method="get" onsubmit="return filterRows(event)">
-				검색 <input class="workSearch" type="text" name="workSearch" placeholder="수주코드, 작업지시코드, 납품처, 제품명으로 검색">
+				검색 <input class="shipSearch" type="text" name="shipSearch" placeholder="수주코드, 작업지시코드, 납품처, 제품명으로 검색">
 				작업지시일자 <input type="date" id="startDate"
-					name="worksdate"> ~ <input type="date" id="endDate" name="worksdate">
+					name="shipsdate"> ~ <input type="date" id="endDate" name="shipsdate">
 				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
 				<br>
 			</form>
@@ -113,7 +113,7 @@
 <!-- 검색 -->
 <script>
 
-$('.workSearch').on('input', function(event) {
+$('.shipSearch').on('input', function(event) {
     filterRows(event);
 });
     
@@ -122,7 +122,7 @@ function filterRows(event) {
 	event.preventDefault();
 
 	// 입력된 키워드 가져오기
-	var keyword = $('.workSearch').val().toLowerCase();
+	var keyword = $('.shipSearch').val().toLowerCase();
 
 	// 시작일자와 종료일자 가져오기
 	var startDate = $('#startDate').val() ? new Date($('#startDate').val())
@@ -139,12 +139,14 @@ function filterRows(event) {
 				.toLowerCase();
 		var itemName = $(this).find('td:nth-child(6)').text()
 		.toLowerCase();
-		var workCode = $(this).find('td:nth-child(3)').text().toLowerCase(); // 필요에 따라 열 위치 조절
-        var poCode = $(this).find('td:nth-child(4)').text().toLowerCase(); // 필요에 따라 열 위치 조절
+		var lotNumber = $(this).find('td:nth-child(7)').text()
+		.toLowerCase();
+		var shipCode = $(this).find('td:nth-child(3)').text().toLowerCase();
+        var workCode = $(this).find('td:nth-child(4)').text().toLowerCase();
 		var workDateStr = $(this).find('td:nth-child(2)').text();
 		var workDate = workDateStr ? new Date(workDateStr) : null;
 
-		var keywordMatch = keyword === '' || clientName.includes(keyword) || itemName.includes(keyword)|| workCode.includes(keyword) || poCode.includes(keyword);
+		var keywordMatch = keyword === '' || clientName.includes(keyword) || itemName.includes(keyword) || lotNumber.includes(keyword) || shipCode.includes(keyword) || workCode.includes(keyword);
 		var dateMatch = (startDate === null || (workDate !== null
 				&& workDate >= startDate && workDate <= endDate));
 
@@ -153,7 +155,7 @@ function filterRows(event) {
 		} else {
 			$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
 		}
-		console.log('거래처명:', clientName, '품목명:', itemName, '작업코드:', workCode, 'PO코드:', poCode, '작업일자:', workDate,
+		console.log('거래처명:', clientName, '품목명:', itemName, '출하코드:', shipCode, '작업코드:', workCode, '작업일자:', workDate,
 	            '키워드 일치:', keywordMatch, '날짜 일치:', dateMatch);
 	});
 
@@ -189,7 +191,7 @@ $("#allwk").click(function() {
 
 $("#stop").click(function() {
 	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('대기'))").show();
+	$(".table tbody tr:has(td:nth-child(7):contains('접수'))").show();
 	updateTotalCount();
 });
 
