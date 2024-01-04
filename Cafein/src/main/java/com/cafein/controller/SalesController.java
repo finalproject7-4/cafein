@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook; 
@@ -194,9 +196,15 @@ public class SalesController {
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = (Row) sheet.createRow(0);
 	    String[] headers = {"수주번호", "수주상태", "수주코드", "납품처코드-납품처명", "품목코드-품목명", "수량", "수주일자", "수정일자", "납품예정일", "담당자"};
+	    
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	    
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);
+	        cell.setCellStyle(headerStyle);
 	    }
 	    // 첫 번째 행에 열의 헤더 추가
 
@@ -210,7 +218,9 @@ public class SalesController {
 			row.createCell(colNum++).setCellValue(vo2.getPostate());
 			row.createCell(colNum++).setCellValue(vo2.getPocode());
 			row.createCell(colNum++).setCellValue(vo2.getClientcode() + " - " + vo2.getClientname());
+			sheet.setColumnWidth(colNum - 1, 20*256); 
 			row.createCell(colNum++).setCellValue(vo2.getItemcode() + " - " + vo2.getItemname());
+			sheet.setColumnWidth(colNum - 1, 20*256);  // 현재 열의 너비를 자동으로 조정
 			row.createCell(colNum++).setCellValue(vo2.getPocnt());
 			
 			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환입니다. 형식을 정하지 않으면 날짜가 제대로 표기되지 않습니다.
