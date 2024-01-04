@@ -528,7 +528,7 @@ $(".cancelUpdate").click(function () {
         function updateRowNumbers() {
             var counter = 1;
             $(".table tbody tr:visible").each(function() {
-                $(this).find('td:first').text(counter);
+                $(this).find('td:nth-child(2)').text(counter);
                 counter++;
             });
         }
@@ -541,7 +541,7 @@ $(".cancelUpdate").click(function () {
         function updateRowNumbers() {
             var counter = 1;
             $(".table tbody tr:visible").each(function() {
-                $(this).find('td:first').text(counter);
+                $(this).find('td:nth-child(2)').text(counter);
                 counter++;
             });
 
