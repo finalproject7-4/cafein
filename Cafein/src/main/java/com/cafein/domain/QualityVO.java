@@ -94,6 +94,7 @@ public class QualityVO {
 	private Timestamp roasteddate;
 //	private Sting lotnumber;
 	private String note;
+	private String defect;
 	
 	// receive 테이블
 	private int receiveid;
@@ -101,6 +102,12 @@ public class QualityVO {
 //	private String membercode;
 	private Timestamp receivedate;
 	private int receivequantity;
+	
+	// productlot 테이블
+	private int productlotid;
+//	private int produceid;
+//	private int receiveid;
+//	private String lotnumber;
 	
 	// 검색용 특별 변수
 	private String startDate;

@@ -366,4 +366,120 @@ public class QualityController {
 		sService.registerStockY(vo);
 		return "redirect:/quality/qualities";
 	}
+	
+	// roastedBean 검수 / 불량 업데이트 - POST
+	@PostMapping(value = "/roastedBeanDefect")
+	public String roastedBeanDefect(QualityVO vo, HttpSession session) throws Exception{
+		qService.roastedBeanDefect(vo);
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
+		
+		int weight = vo.getWeight();
+		int auditquantity = vo.getAuditquantity();
+		int normalquantity = vo.getNormalquantity();
+		int defectquantity = vo.getDefectquantity();
+		
+		vo.setAuditquantity(auditquantity + vo.getWeight()); // 검수량 변경 (기존 검수량 + 중량)
+		
+		if(vo.getDefect() != null && vo.getDefect().equals("Y")) { // 불량 있음
+			
+			if(vo.getProductquantity() == vo.getAuditquantity()) { // 검수 완료
+				vo.setAuditstatus("검수완료");
+				
+				// 검수코드 생성
+				if(vo.getAuditcode().equals("")) {
+				LocalDateTime now = LocalDateTime.now();
+				String fmt = "yyMMddHHmmss";
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+				String dateTime = now.format(dtf);
+				vo.setAuditcode("QC" + dateTime);
+				}else if(!vo.getAuditcode().equals("")) {
+					vo.setAuditcode(vo.getAuditcode());
+				}
+				
+				vo.setDefectquantity(defectquantity + weight);
+				vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
+				qService.productAuditFull(vo);
+				
+				
+				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+					vo.setQualitycheck("정상");
+					qService.productQualityCheck(vo);
+							
+				}else { // 생산 검수 - 불량
+					vo.setQualitycheck("불량");
+					qService.productQualityCheck(vo);
+				}
+			
+				
+			}else { // 검수 중
+				vo.setAuditstatus("검수중");
+				
+				// 검수코드 생성
+				if(vo.getAuditcode().equals("")) {
+				LocalDateTime now = LocalDateTime.now();
+				String fmt = "yyMMddHHmmss";
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+				String dateTime = now.format(dtf);
+				vo.setAuditcode("QC" + dateTime);
+				}else if(!vo.getAuditcode().equals("")) {
+					vo.setAuditcode(vo.getAuditcode());
+				}
+				
+				vo.setDefectquantity(defectquantity + weight);
+				vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
+				qService.produceAudit(vo);
+			}
+			
+			
+		}else { // 불량 없음
+			if(vo.getProductquantity() == vo.getAuditquantity()) { // 검수 완료
+				vo.setAuditstatus("검수완료");
+				
+				// 검수코드 생성
+				if(vo.getAuditcode().equals("")) {
+				LocalDateTime now = LocalDateTime.now();
+				String fmt = "yyMMddHHmmss";
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+				String dateTime = now.format(dtf);
+				vo.setAuditcode("QC" + dateTime);
+				}else if(!vo.getAuditcode().equals("")) {
+					vo.setAuditcode(vo.getAuditcode());
+				}
+				
+				vo.setNormalquantity(normalquantity + weight);
+				vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
+				qService.productAuditFull(vo);
+				
+				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+					vo.setQualitycheck("정상");
+					qService.productQualityCheck(vo);
+							
+				}else { // 생산 검수 - 불량
+					vo.setQualitycheck("불량");
+					qService.productQualityCheck(vo);
+				}
+
+			}else { // 검수 중
+				vo.setAuditstatus("검수중");
+				
+				// 검수코드 생성
+				if(vo.getAuditcode().equals("")) {
+				LocalDateTime now = LocalDateTime.now();
+				String fmt = "yyMMddHHmmss";
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+				String dateTime = now.format(dtf);
+				vo.setAuditcode("QC" + dateTime);
+				}else if(!vo.getAuditcode().equals("")) {
+					vo.setAuditcode(vo.getAuditcode());
+				}
+				
+				vo.setNormalquantity(normalquantity + weight);
+				vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
+				qService.produceAudit(vo);
+			}
+		}
+		
+		return "redirect:/quality/qualities";
+	}
 }

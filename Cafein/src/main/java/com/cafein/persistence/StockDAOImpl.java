@@ -170,7 +170,20 @@ public class StockDAOImpl implements StockDAO {
 		return sqlSession.selectOne(NAMESPACE + ".selectReceiveInfo", lotnumber);
 	}
 
-	
+	// produceid로 roastedBean LOT 조회 후 입력 (포장)
+	@Override
+	public void insertNormalRoastedBeanLot(int produceid) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertNormalRoastedBeanLot", produceid);
+	}
+
+	// 정상 LOT 번호 조회
+	@Override
+	public List<QualityVO> selectNormalLot(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectNormalLot", vo);
+	}
+
 	
 	
 	

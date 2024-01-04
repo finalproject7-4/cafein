@@ -491,4 +491,16 @@ public class RestController {
 			return sService.receiveInfo(lotnumber);
 		}
 		
+		// 정상 LOT번호 AJAX 정보 호출용
+		@GetMapping(value = "/normalLot")
+		public List<QualityVO> normalLotGET(QualityVO vo) throws Exception{
+			int produceid = vo.getProduceid();
+			logger.debug(" produceid : " + produceid);
+			
+			int receiveid = vo.getReceiveid();
+			logger.debug(" receiveid : " + receiveid);
+			
+			return sService.normalLot(vo);
+		}
+		
 }

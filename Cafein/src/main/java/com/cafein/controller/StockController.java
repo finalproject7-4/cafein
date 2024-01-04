@@ -95,9 +95,15 @@ public class StockController {
 		}else {
 		
 		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
-		
 		vo.setWorkerbycode(workerbycode);
-		vo.setLotnumber(sService.roastedbeanLotNum(vo)); // 생산 LOT 번호 조회
+		
+		int produceid = vo.getProduceid();
+		sService.normalRoastedBeanLot(produceid);
+		
+		if(vo.getItemtype() != null && vo.getItemtype().equals("생산")) {
+			int stockquantity = vo.getStockquantity() / vo.getWeight();
+			vo.setStockquantity(stockquantity);
+		}
 		
 		int result = sService.newStock(vo);
 		if(result == 0) {
