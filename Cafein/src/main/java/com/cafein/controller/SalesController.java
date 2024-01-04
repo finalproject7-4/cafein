@@ -166,6 +166,23 @@ public class SalesController {
 	    }
 		return "redirect:/sales/POList";                                             
 	}
+	//수주상태 진행 변경
+	// http://localhost:8088/sales/POList
+	@RequestMapping(value = "/ingUpdate", method = RequestMethod.POST)
+	public String ingUpdate(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
+		try {
+			logger.debug("/sales/ingUpdate() 호출!");
+			svo.setPoid(poid);
+			
+			logger.debug("수주상태 변경" + svo.getPostate());
+			logger.debug("@@@@ 수주id " + svo.getPoid());
+			sService.ingUpdate(svo);
+			logger.debug("수주상태 업데이트 성공!");
+		} catch (Exception e) {
+			logger.error("수주상태 업데이트 중 오류 발생:", e);
+		}
+		return "redirect:/sales/POList";                                             
+	}
 
 
 

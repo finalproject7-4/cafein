@@ -94,6 +94,14 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.updatePOstate(svo);
 	}
 
+	//수주상태 진행
+	@Override
+	public int ingUpdate(SalesVO svo) throws Exception {
+		logger.debug("S :ingUpdate(svo)");
+		return sdao.ingUpdate(svo);
+	}
+
+	
 	
 	
 	

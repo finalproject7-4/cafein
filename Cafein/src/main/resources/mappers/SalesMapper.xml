@@ -98,7 +98,16 @@
 	 
 	 <!-- 수주상태 취소 -->
 	 <update id="cancelPOState">
-	 	update purchaseorder set postate='취소' 
+    UPDATE purchaseorder SET postate = 
+    CASE 
+        WHEN postate != '완료' THEN '취소'
+        ELSE postate
+    END
+    WHERE poid = #{poid}
+	</update>
+	 <!-- 수주상태 진행 -->
+	 <update id="ingPOState">
+	 	update purchaseorder set postate='진행' 
 	 	where poid=#{poid}
 	 </update>
 	 

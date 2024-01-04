@@ -92,6 +92,14 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : updatePOstate(svo)");
 		return sqlSession.update(NAMESPACE+".cancelPOState",svo);
 	}
+
+	//수주상태 진행
+	@Override
+	public int ingUpdate(SalesVO svo) throws Exception {
+		logger.debug("DAO : ingUpdate(svo)");
+		return sqlSession.update(NAMESPACE+".ingPOState",svo);
+	}
+	
 	
 	
 	

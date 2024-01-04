@@ -38,6 +38,8 @@ public interface SalesDAO {
 
 	//수주상태 취소
 	public int updatePOstate(SalesVO svo) throws Exception;
+	//수주상태 진행
+	public int ingUpdate(SalesVO svo) throws Exception;
 
 	
 	

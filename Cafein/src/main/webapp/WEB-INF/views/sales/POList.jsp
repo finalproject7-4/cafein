@@ -37,9 +37,6 @@
 				<button type="button" class="btn btn-outline-dark"
 					id="cancel">취소</button>
 		</div>
-
-
-
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4" id="ListID">
 			<form role="form" action="/sales/cancelUpdate" method="post">
@@ -61,7 +58,7 @@
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
-								<th scope="col">납품</th>
+								<th scope="col">진행</th>
 								<th scope="col">납품서발행</th>
 							</tr>
 						</thead>
@@ -75,22 +72,15 @@
 							<c:set var="counter" value="1" />
 								<c:forEach items="${POList}" var="po" varStatus="status">
 									<tr>
-										<td id="poidCancel" >${po.poid }</td>
+										<td id="poidCancel" style="display:none;">${po.poid }</td>
 										<td>${counter }</td>
 										<td>${po.postate }</td>
 										<td>${po.pocode }</td>
 										<td>${po.clientname}</td>
 										<td>${po.itemname}</td>
 										<td>${po.pocnt}</td>
-										<c:choose>
-											<c:when test="${empty po.ordersdate}">
-												<td>수정일자 참조</td>
-											</c:when>
-											<c:otherwise>
-												<td><fmt:formatDate value="${po.ordersdate}"
-														dateStyle="short" pattern="yyyy-MM-dd" /></td>
-											</c:otherwise>
-										</c:choose>
+										<td><fmt:formatDate value="${po.ordersdate}"
+												dateStyle="short" pattern="yyyy-MM-dd" /></td>
 										<c:choose>
 											<c:when test="${empty po.updatedate}">
 												<td>업데이트 날짜 없음</td>
@@ -111,9 +101,7 @@
 											<input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
 										</td>
 										<td>
-											<button type="button" class="btn btn-outline-dark"> 
-									        납품
-											</button>
+											<input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}">
 										</td>
 										<td>
 											<button type="button" class="btn btn-outline-dark" 
@@ -133,30 +121,118 @@
 		</div>
 		</div>
 		
-		<!-- 취소 동작(수주상태 취소로 변경) -->
-		<script>
-		$(".cancelUpdate").click(function() {
-		    event.preventDefault();
-		    
-		    var poid =$(this).data("poid");
-		    console.log('poid 값:', poid); 
-		    
-		    $.ajax({
-		        type: 'POST',
-		        url: '/sales/cancelUpdate',
-		        data: { poid: poid },
-		        success: function (response) {
-		            console.log('Ajax success:', response);
-		            location.reload();
-		            
-		        },
-		        error: function (error) {
-		            console.error('Error during cancellation:', error);
-		            Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
-		        }
-		    });
-		});
+<!-- 진행 동작(수주상태 진행으로 변경) -->
+<script>
+$(".ingUpdate").click(function () {
+    event.preventDefault();
+
+    var poid = $(this).data("poid");
+    var postate = $(this).closest('tr').find('td:nth-child(3)').text(); // 주문 상태 가져오기
+
+    console.log('poid 값:', poid);
+    console.log('postate 값:', postate);
+
+    // 주문 상태가 '대기'인 경우만 진행 가능
+    if (postate !== '대기') {
+        Swal.fire({
+            title: '이 주문은 진행할 수 없는 상태입니다.',
+            text: '수주상태를 확인해주세요.',
+            icon: 'error',
+        });
+        return; 
+    }
+
+    Swal.fire({
+        title: '수주를 진행하시겠습니까?',
+        text: '수주가 진행상태로 업데이트 됩니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '승인',
+        cancelButtonText: '취소',
+        reverseButtons: false,
+    }).then(function (result) {
+        if (result.value) { //승인시
+            // Ajax 요청 실행
+            $.ajax({
+                type: 'POST',
+                url: '/sales/ingUpdate',
+                data: { poid: poid },
+                success: function (response) {
+                    console.log('Ajax success:', response);
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error during cancellation:', error);
+                    Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
+                }
+            });
+        }
+    });
+});
 </script>
+<!-- 진행 동작(수주상태 취소로 변경) -->
+<script>
+$(".cancelUpdate").click(function () {
+    event.preventDefault();
+
+    var poid = $(this).data("poid");
+    var postate = $(this).closest('tr').find('td:nth-child(3)').text(); // 주문 상태 가져오기
+
+    console.log('poid 값:', poid);
+    console.log('postate 값:', postate);
+
+    // 주문 상태가 '완료'인 경우 취소 불가
+    if (postate === '완료') {
+        Swal.fire({
+            title: '이 주문은 완료된 상태입니다.',
+            text: '완료된 상태는 취소할 수 없습니다.',
+            icon: 'error',
+        });
+        return; 
+    }
+    // 주문 상태가 '완료'인 경우 취소 불가
+    if (postate === '취소') {
+        Swal.fire({
+            title: '이미 취소된 상태입니다.',
+            icon: 'error',
+        });
+        return; // 취소할 수 없는 상태이므로 함수 종료
+    }
+
+    Swal.fire({
+        title: '수주를 취소하시겠습니까?',
+        text: '수주가 취소상태로 업데이트 됩니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '승인',
+        cancelButtonText: '취소',
+        reverseButtons: false,
+    }).then(function (result) {
+        if (result.value) { //승인시
+            // Ajax 요청 실행
+            $.ajax({
+                type: 'POST',
+                url: '/sales/cancelUpdate',
+                data: { poid: poid },
+                success: function (response) {
+                    console.log('Ajax success:', response);
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error during cancellation:', error);
+                    Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
+                }
+            });
+        }
+    });
+});
+</script>
+
+
 
 		
 		
@@ -273,7 +349,7 @@
 	    $("#itemid2").val(itemname);
 	    $("#floatingSelect2").val(postate);
 	    $("#pocnt2").val(pocnt);
-	    $("#todaypo2").val(ordersduedate);
+	    $("#ordersdate2").val(ordersdate);
 	    $("#date2").val(ordersduedate);
 	    $("#membercode2").val(membercode);
 
@@ -416,7 +492,7 @@
             // 모든 수주 항목 숨김
             $(".table tbody tr").hide();
             // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('대기'))").show();
+            $(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
             // 번호 업데이트
             updateRowNumbers();
         });
@@ -425,7 +501,7 @@
             // 모든 수주 항목 숨김
             $(".table tbody tr").hide();
             // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('진행'))").show();
+            $(".table tbody tr:has(td:nth-child(3):contains('진행'))").show();
             // 번호 업데이트
             updateRowNumbers();
         });
@@ -434,7 +510,7 @@
             // 모든 수주 항목 숨김
             $(".table tbody tr").hide();
             // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('완료'))").show();
+            $(".table tbody tr:has(td:nth-child(3):contains('완료'))").show();
             // 번호 업데이트
             updateRowNumbers();
         });
@@ -443,7 +519,7 @@
             // 모든 수주 항목 숨김
             $(".table tbody tr").hide();
             // 대기 상태인 수주만 보이도록 필터링
-            $(".table tbody tr:has(td:nth-child(2):contains('취소'))").show();
+            $(".table tbody tr:has(td:nth-child(3):contains('취소'))").show();
             // 번호 업데이트
             updateRowNumbers();
         });
@@ -497,8 +573,8 @@ function filterRows(event) {
 
     // 각 행에 대해 키워드 및 날짜 포함 여부 확인
     rows.each(function () {
-        var clientName = $(this).find('td:nth-child(4)').text().toLowerCase();
-        var orderDateStr = $(this).find('td:nth-child(7)').text(); // 7번째 열은 수주일자
+        var clientName = $(this).find('td:nth-child(5)').text().toLowerCase();
+        var orderDateStr = $(this).find('td:nth-child(8)').text();
         var orderDate = orderDateStr ? new Date(orderDateStr) : null;
 
         var keywordMatch = keyword === '' || clientName.includes(keyword);
