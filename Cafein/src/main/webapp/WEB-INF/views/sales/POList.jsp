@@ -32,10 +32,76 @@
 			<input type="hidden" name="state" value="취소">
 			<button type="button" class="btn btn-outline-dark" id="cancel">취소</button>
 		</div>
+		<script>
+		$("#allpo").click(function() {
+			// 모든 수주 항목 숨김
+			$(".table tbody tr").show();
+			// 번호 업데이트
+			updateRowNumbers();
+		});
+
+		$("#stop").click(function() {
+			// 모든 수주 항목 숨김
+			$(".table tbody tr").hide();
+			// 대기 상태인 수주만 보이도록 필터링
+			$(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
+			// 번호 업데이트
+			updateRowNumbers();
+		});
+
+		$("#ing").click(function() {
+			// 모든 수주 항목 숨김
+			$(".table tbody tr").hide();
+			// 대기 상태인 수주만 보이도록 필터링
+			$(".table tbody tr:has(td:nth-child(3):contains('진행'))").show();
+			// 번호 업데이트
+			updateRowNumbers();
+		});
+
+		$("#complete").click(function() {
+			// 모든 수주 항목 숨김
+			$(".table tbody tr").hide();
+			// 대기 상태인 수주만 보이도록 필터링
+			$(".table tbody tr:has(td:nth-child(3):contains('완료'))").show();
+			// 번호 업데이트
+			updateRowNumbers();
+		});
+
+		$("#cancel").click(function() {
+			// 모든 수주 항목 숨김
+			$(".table tbody tr").hide();
+			// 대기 상태인 수주만 보이도록 필터링
+			$(".table tbody tr:has(td:nth-child(3):contains('취소'))").show();
+			// 번호 업데이트
+			updateRowNumbers();
+		});
+
+		function updateTotalCount() {
+			var totalCount = $(".table tbody tr:visible").length;
+			$(".mb-4").text("총 " + totalCount + "건");
+		}
+
+		// 필터링할 때마다 호출하여 업데이트
+		function updateRowNumbers() {
+			var counter = 1;
+			$(".table tbody tr:visible").each(function() {
+				$(this).find('td:nth-child(2)').text(counter);
+				counter++;
+			});
+
+			// 총 건수 업데이트 호출
+			updateTotalCount();
+		}
+		</script>
+		
+		
+		
+		
 		<!-- 수주 리스트 테이블 조회 -->
 		<div class="bg-light rounded h-100 p-4" id="ListID">
 			<form role="form" action="/sales/cancelUpdate" method="post">
-				<span class="mb-4">총 ${fn:length(POList)}건</span> <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
+				<span class="mb-4">총 ${fn:length(POList)}건</span>
+				 <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#registModal" id="regist" value="등록"> <input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 				<div class="table-responsive">
@@ -102,6 +168,109 @@
 						</tbody>
 					</table>
 				</div>
+			<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO.prev }">
+      						<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        						<span aria-hidden="true">&laquo;</span>
+      						</a>
+      						
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+							<script>
+								$(document).ready(function(){
+   									$('.pageBlockPrev').click(function(e) {
+   										e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            	let prevPage = $(this).data('page');
+   									
+   										let searchBtn = "${param.searchBtn}";
+   										let searchText = "${param.searchText}";
+
+   				                		url = "/sales/POList?page=" + prevPage;
+   				                
+   				                		if (searchBtn) {
+   				                    		url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                		}
+   				                
+   				                		if (searchText) {
+   				                    		url += "&searchText=" + encodeURIComponent(searchText);
+   				                		}
+   				                		location.href = url;
+    								});
+								});
+							</script>
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+      						
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+					
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					<script>
+					$(document).ready(function(){
+			            $('.pageBlockNum[data-page="${i}"]').click(function (e) {
+			                e.preventDefault(); // 기본 이벤트 방지
+			                
+			               	let searchText = "${param.searchText}";	
+			                let searchBtn = "${param.searchBtn}";
+
+			                let pageValue = $(this).data('page');
+			                	url = "/sales/POList?page=" + pageValue;
+			                
+			                if (searchBtn) {
+			                    url += "&searchBtn=" + encodeURIComponent(searchBtn);
+			                }
+			                
+			                if (searchText) {
+			                    url += "&searchText=" + encodeURIComponent(searchText);
+			                }
+			                
+			                location.href = url;
+			            });
+					});	
+					</script>
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO.next }">
+      						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        						<span aria-hidden="true">&raquo;</span>
+      						</a>	
+      					<!-- 버튼에 파라미터 추가 이동 (이후) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            let nextPage = $(this).data('page');
+   									
+   									let searchBtn = "${param.searchBtn}";
+   									let searchText = "${param.searchText}";
+
+   				                	url = "/sales/POList?page=" + nextPage;
+   				                
+   				                	if (searchBtn) {
+   				                    	url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                	}
+   				                
+   				                	if (searchText) {
+   				                    	url += "&searchText=" + encodeURIComponent(searchText);
+   				                	}
+   				                
+   				                	location.href = url;
+    							});
+							});
+						</script>
+						<!-- 버튼에 파라미터 추가 이동 (이전) -->  					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
 			</form>
 		</div>
 	</div>
@@ -459,73 +628,6 @@
 			}
 		});
 
-		$("#allpo").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#stop").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#ing").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('진행'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#complete").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('완료'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#cancel").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('취소'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		// 함수를 정의하는 부분
-		function updateRowNumbers() {
-			var counter = 1;
-			$(".table tbody tr:visible").each(function() {
-				$(this).find('td:nth-child(2)').text(counter);
-				counter++;
-			});
-		}
-		function updateTotalCount() {
-			var totalCount = $(".table tbody tr:visible").length;
-			$(".mb-4").text("총 " + totalCount + "건");
-		}
-
-		// 필터링할 때마다 호출하여 업데이트
-		function updateRowNumbers() {
-			var counter = 1;
-			$(".table tbody tr:visible").each(function() {
-				$(this).find('td:nth-child(2)').text(counter);
-				counter++;
-			});
-
-			// 총 건수 업데이트 호출
-			updateTotalCount();
-		}
 	});
 </script>
 
@@ -575,20 +677,6 @@
 		return false;
 	}
 
-	// 테이블에 표시되는 행의 번호를 업데이트하는 함수
-	function updateRowNumbers() {
-		// 표시된 행만 선택하여 번호 업데이트
-		var visibleRows = $('.table tbody tr:visible');
-		visibleRows.each(function(index) {
-			// 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-			$(this).find('td:first').text(index + 1);
-		});
-	}
-	// 총 건수 업데이트 함수
-	function updateTotalCount() {
-		var totalCount = $('.table tbody tr:visible').length;
-		$('.mb-4').text('총 ' + totalCount + '건');
-	}
 </script>
 
 

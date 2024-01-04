@@ -1,34 +1,22 @@
 package com.cafein.controller;
 
-import java.io.OutputStream;
 import java.sql.Date;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
-import com.cafein.domain.ProduceVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.service.SalesService;
 
@@ -44,10 +32,9 @@ public class SalesController {
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
-	public String AllPOListGET(Model model,SalesVO svo,  Criteria cri
+	public String AllPOListGET(Model model, HttpSession session, SalesVO svo,Criteria cri
 			) throws Exception{
 		logger.debug("AllPOListGET() 실행");
-		
 
 		// SalesVO의 Criteria 설정
 		svo.setCri(cri);
@@ -181,7 +168,6 @@ public class SalesController {
 		}
 		return "redirect:/sales/POList";                                             
 	}
-
 
 
 	
