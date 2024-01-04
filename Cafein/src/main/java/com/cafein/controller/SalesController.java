@@ -110,7 +110,6 @@ public class SalesController {
 	
 	// 품목코드 생성 메서드
 	public String makePOcode(SalesVO svo) throws Exception {
-		
 		String code = "";
 		int num = 1001 + sService.poCount(svo);
 		
@@ -120,7 +119,6 @@ public class SalesController {
 			case "완료": code = "FJ"; break;
 			case "취소": code = "GH"; break;
 		}
-		
 		return code + num;
 	}
 	
