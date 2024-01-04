@@ -3,6 +3,7 @@ package com.cafein.persistence;
 import java.util.List;
 
 import com.cafein.domain.ItemVO;
+import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 
 public interface SalesDAO {
@@ -44,6 +45,9 @@ public interface SalesDAO {
 	//총개수
 	public int countPO(SalesVO svo) throws Exception;
 	
+	//리스트출력
+	public List<SalesVO> selectPOListExcel(SalesVO svo) throws Exception;
+
 	
 	
 	

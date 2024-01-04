@@ -2,6 +2,7 @@ package com.cafein.service;
 
 import java.util.List;
 
+import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 
 public interface SalesService {
@@ -40,5 +41,8 @@ public interface SalesService {
 
 	//수주상태 총개수
 	public int countPO(SalesVO svo) throws Exception;
+
+	//수주리스트출력
+	public List<SalesVO> POListExcel(SalesVO svo) throws Exception;
 
 }

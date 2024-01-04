@@ -33,11 +33,8 @@
 		FROM purchaseorder po
 		JOIN item ON po.itemid = item.itemid
 		JOIN client cli ON po.clientid = cli.clientid
-		<if test="option == 'clientcode'">
-			where clientcode like concat('%', #{keyword}, '%')
-		</if>
-		<if test="option == 'itemcode'">
-			where itemcode like concat('%', #{keyword}, '%')
+		<if test="option == 'clientname'">
+			where clientname like concat('%', #{keyword}, '%')
 		</if>
 		ORDER BY ordersdate desc, poid desc
 		limit #{cri.startPage}, #{cri.pageSize}
@@ -102,6 +99,25 @@
 	<!-- 수주조회 총개수 -->
 	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
 		select count(*) from purchaseorder
+		<where>
+		<if test="option == 'clientname'">
+			and clientname like concat('%', #{keyword}, '%')
+		</if>
+		</where>
 	</select>
+	
+	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->
+ 	<select id="selectPOListExcel" resultType="SalesVO">
+ 		SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	    cli.clientid, cli.clientname, cli.clientcode, 
+	    item.itemid, item.itemname, item.itemcode, 
+	    po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
+ 		FROM purchaseorder po
+ 		JOIN client cli
+ 		ON po.clientid = cli.clientid
+ 		JOIN item item
+ 		ON po.itemid = item.itemid
+ 		ORDER BY poid DESC
+ 	</select>
 	 
 </mapper>

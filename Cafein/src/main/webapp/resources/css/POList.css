@@ -17,3 +17,7 @@ input#regist {
  td, th {
  	text-align: center;
  }
+ 
+#ListExcel {
+	float:right;
+}

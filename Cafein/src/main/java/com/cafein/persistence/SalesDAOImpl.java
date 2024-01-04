@@ -106,6 +106,14 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : countPO(svo)");
 		return sqlSession.selectOne(NAMESPACE+".countPO",svo);
 	}
+
+	//리스트출력
+	@Override
+	public List<SalesVO> selectPOListExcel(SalesVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectPOListExcel", svo);
+	}
+	
 	
 	
 	

@@ -8,8 +8,9 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<form name="dateSearch" action="/sales/POList" method="get" onsubmit="return filterRows(event)">
-				납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요"><br> 수주일자 <input type="date" id="startDate"
-					name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
+				<h6 class="mb-4">수주 조회</h6>
+				납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요">&nbsp;&nbsp;&nbsp;&nbsp; 
+				수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
 				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
 				<br>
 			</form>
@@ -18,8 +19,17 @@
 	</div>
 	<br>
 
-	<!-- 수주 상태에 따라 필터링하는 버튼 -->
+	
+		
+		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
+		<div class="bg-light rounded h-100 p-4" id="ListID">
+		<form action="POListPrint" method="GET">
+			<input id="ListExcel" type="submit" value="리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+		</form>
+			<form role="form" action="/sales/cancelUpdate" method="post">
+				<h6 class="mb-4">수주 관리 [총 ${countPO}건]</h6>
+				<!-- 수주 상태에 따라 필터링하는 버튼 -->
 		<div class="btn-group" role="group">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-outline-dark" id="allpo">전체</button>
@@ -50,7 +60,7 @@
 		$("#ing").click(function() {
 			// 모든 수주 항목 숨김
 			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
+			// 대기 상태인 수주만 보이도록 필터링 
 			$(".table tbody tr:has(td:nth-child(3):contains('진행'))").show();
 			// 번호 업데이트
 			updateRowNumbers();
@@ -92,12 +102,9 @@
 		}
 		</script>
 		
-		<!-- 수주 리스트 테이블 조회 -->
-		<div class="bg-light rounded h-100 p-4" id="ListID">
-			<form role="form" action="/sales/cancelUpdate" method="post">
-				<span class="mb-4">총 ${countPO}건</span>
 				 <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" id="regist" value="등록"> <input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
+					data-bs-target="#registModal" id="regist" value="등록"> 
+					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 				<div class="table-responsive">
 					<table class="table">
