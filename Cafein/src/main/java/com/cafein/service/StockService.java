@@ -54,4 +54,16 @@ public interface StockService {
 	// 재고 토스트 데이터 (자재)
 	public QualityVO materialStockToast() throws Exception;
 	
+	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
+	public List<QualityVO> stockListExcel(QualityVO vo) throws Exception;
+	
+	// 재고 엑셀용 출력 목록 조회 (자재)
+	public List<QualityVO> materialStockListExcel(QualityVO vo) throws Exception;
+	
+	// roastedBean 테이블 조회
+	public QualityVO roastedBeanInfo(String lotnumber) throws Exception;
+	
+	// receive 테이블 조회
+	public QualityVO receiveInfo(String lotnumber) throws Exception;
+	
 }

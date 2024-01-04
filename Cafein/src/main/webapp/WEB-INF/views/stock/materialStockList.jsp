@@ -96,7 +96,7 @@
 				</table>
 			</div>
 			
-									<!-- 페이지 블럭 생성 -->
+			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
     				<li class="page-item">
@@ -113,7 +113,7 @@
    						            var prevPage = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
 
    									var dataObject = {
    										"page" : prevPage	
@@ -122,8 +122,8 @@
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!", prevPage);
@@ -157,7 +157,7 @@
    						            var pageNum = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
    									
    									var dataObject = {
    										"page" : pageNum	
@@ -166,8 +166,8 @@
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!");
@@ -203,7 +203,7 @@
    						            var nextPage = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
    									
    									var dataObject = {
    										"page" : nextPage	
@@ -212,8 +212,8 @@
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!", nextPage);

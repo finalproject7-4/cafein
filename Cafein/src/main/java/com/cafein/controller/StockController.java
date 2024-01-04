@@ -47,14 +47,14 @@ public class StockController {
 		List<QualityVO> resultList = sService.stockList(vo); // 생산 + 반품 재고 목록
 		List<QualityVO> storageList = sService.storageList(); // 생산 + 반품 창고 목록
 		
-		model.addAttribute("list", resultList);
-		model.addAttribute("slist", storageList);
-		
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(sService.stockListCount(vo));
 		
 		model.addAttribute("pageVO", pageVO);
+		
+		model.addAttribute("list", resultList);
+		model.addAttribute("slist", storageList);
 	}
 
 	// http://localhost:8088/material/stockProduct
@@ -71,15 +71,15 @@ public class StockController {
 		logger.debug(" rawStorageList : " + rawStorageList);
 		logger.debug(" subStorageList : " + subStorageList);
 		
-		model.addAttribute("list", resultList);
-		model.addAttribute("rlist", rawStorageList);
-		model.addAttribute("slist", subStorageList);
-		
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(sService.materialStockListCount(vo));
 		
 		model.addAttribute("pageVO", pageVO);
+		
+		model.addAttribute("list", resultList);
+		model.addAttribute("rlist", rawStorageList);
+		model.addAttribute("slist", subStorageList);
 	}
 
 	// 재고 입력 (생산 [포장] + 반품)
@@ -265,4 +265,5 @@ public class StockController {
 	public void materialStockToast(Model model) throws Exception{
 		model.addAttribute("materialToast", sService.materialStockToast());
 	}
+	
 }
