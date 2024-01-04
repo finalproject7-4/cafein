@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReturnVO;
+import com.cafein.service.ItemService;
 import com.cafein.service.ReturnService;
 
 @Controller
@@ -23,23 +25,32 @@ public class ReturnController {
 
 	@Inject
 	private ReturnService rService;
-
+	
+	@Inject
+	private ItemService iService;
+	
+	// 반품 목록
 	// http://localhost:8088/quality/returns
 	@RequestMapping(value = "/returns", method = RequestMethod.GET)
-	public void returnsGET(Model model, ReturnVO returnVO) throws Exception {
+	public void returnsGET(Model model, ReturnVO rvo, ProduceVO pro) throws Exception {
 
 		logger.debug("returnsGET() 호출");
-
-		if (returnVO.getReturncode() != null || returnVO.getReturndate() != null || returnVO.getReturntype() != null) {
+		
+		// 완제품 목록
+		model.addAttribute("prList", rService.prList());
+		
+		// 품목 목록
+		model.addAttribute("itemList", iService.itemList());
+		
+		if (rvo.getReturncode() != null || rvo.getReturndate() != null || rvo.getReturntype() != null) {
 			// 검색결과
 
-			List<ReturnVO> returnList = rService.searchReturnsByCondition(returnVO);
+			List<ReturnVO> returnList = rService.searchReturnsByCondition(rvo);
 			model.addAttribute("returnList", returnList);
 		}
 
 		else {
 			// 전체결과
-
 			List<ReturnVO> returnList = rService.searchReturns();
 			model.addAttribute("returnList", returnList);
 		}
@@ -47,30 +58,35 @@ public class ReturnController {
 
 	
 	
+	  // 반품 등록
 	  @PostMapping(value = "/returnRegist") 
-	  public String returnRegistPOST(ReturnVO vo) throws Exception{
+	  public String returnRegistPOST(ReturnVO rvo,  Model model) throws Exception{
 	  
 		  logger.debug("returnRegistPOST() 호출"); 
-		  logger.debug("returnVO : "+vo);
+		  logger.debug("returnVO : "+rvo);
 		  
 		  // 반품 코드 저장
-		  vo.setReturncode(generateReturnCode(vo));
+		  rvo.setReturncode(generateReturnCode(rvo));
 		  
-		 rService.returnRegist(vo); 
+		  // 등록시 기본 설정
+		  rvo.setReturnstatus("대기중");
+		  rvo.setReprocessmethod("검수중");
+		  
+		 rService.returnRegist(rvo); 
 		  
 		  
 		  return "redirect:/quality/returns"; 
 	  }
-		 
-	 
+	  
+	  
 
 	// 반품코드 생성 메서드
-	private String generateReturnCode(ReturnVO vo) throws Exception {
+	private String generateReturnCode(ReturnVO rvo) throws Exception {
 
 		// 반품 유형에 따른 코드
 		String typeCode = "";
 
-		switch (vo.getReturntype()) {
+		switch (rvo.getReturntype()) {
 		case "원자재":
 			typeCode = "MOT";
 			break;
@@ -85,7 +101,7 @@ public class ReturnController {
 
 		// 반품 사유에 따른 코드
 		String reasonCode = "";
-		switch (vo.getReturnReason()) {
+		switch (rvo.getReturnReason()) {
 		case "제품불량":
 			reasonCode = "01";
 			break;
@@ -96,10 +112,29 @@ public class ReturnController {
 		}
 
 		// 품목별 개수 + 100
-		int num = 100 + rService.returnCount(vo);
+		int num = 100 + rService.returnCount(rvo);
 
 		// 3개를 합친 코드
 		return typeCode + reasonCode + num;
 	}
 
+	
+	
+	//반품 수정
+	@PostMapping(value = "/returnModify")
+	public String returnModify(ReturnVO rvo) throws Exception{
+		
+		logger.debug("returnModify(ReturnVO rvo) 호출"); 
+		logger.debug("returnVO : "+rvo);
+		
+		
+		// 수정 서비스
+	     rService.returnModify(rvo);
+		logger.debug("result",rvo);
+		
+		
+		return "redirect:/quality/returns"; 
+	}
+	
+	
 }
