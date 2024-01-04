@@ -49,11 +49,12 @@ public class QualityController {
 		
 	}
 
-	// http://localhost:8088/quality/productQualityList
 	// 품질 관리 (생산 + 반품) 목록
 	@GetMapping(value = "/productQualityList")
 	public void productQualityListGET(Model model, HttpSession session, QualityVO vo, 
 			Criteria cri) throws Exception{
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -63,13 +64,16 @@ public class QualityController {
 		pageVO.setTotalCount(qService.qualityListSearchBtnCount(vo));
 		logger.debug(" 총 개수 : " + pageVO.getTotalCount());
 		
-		model.addAttribute("list", qService.qualityListSearchBtn(vo));
 		model.addAttribute("pageVO", pageVO);
+		
+		model.addAttribute("list", qService.qualityListSearchBtn(vo));
 	}
 	
 	// 품질 관리 (자재) 목록
 	@GetMapping(value = "/materialQualityList")
 	public void materialQualityList(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -79,12 +83,11 @@ public class QualityController {
 		pageVO.setTotalCount(qService.materialQualityListSearchBtnCount(vo));
 		logger.debug(" 총 개수 : " + pageVO.getTotalCount());
 		
-		model.addAttribute("list", qService.materialQualityListSearchBtn(vo));
 		model.addAttribute("pageVO", pageVO);
-
+		
+		model.addAttribute("list", qService.materialQualityListSearchBtn(vo));
 	}
 	
-	// http://localhost:8088/quality/productDefectList	
 	// 불량 현황 (생산 + 반품) 목록
 	@GetMapping(value = "/productDefectList")
 	public void productQualityDefectListGET(Model model, HttpSession session, 
@@ -126,12 +129,15 @@ public class QualityController {
 	
 	// 생산 검수 입력 처리 - POST
 	@PostMapping(value = "/productAudit")
-	public String productQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String productQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
 			return "redirect:/quality/qualities";
 		}
+		
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -154,13 +160,13 @@ public class QualityController {
 			
 			if(result != 0) {
 				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
-					vo.setQualitycheck("정상");
-					qService.productQualityCheck(vo);
-					
-					if(vo.getProcess() != null && !vo.getProcess().equals("생산 - 포장")) {
-						sService.registerStockY(vo);
-					}
-					
+						vo.setQualitycheck("정상");
+						qService.productQualityCheck(vo);
+						
+						if(vo.getProduceprocess() != null && !vo.getProduceprocess().equals("생산 - 포장")) {
+							sService.registerStockY(vo);
+						}
+						
 				}else { // 생산 검수 - 불량
 					vo.setQualitycheck("불량");
 					qService.productQualityCheck(vo);
@@ -198,12 +204,15 @@ public class QualityController {
 	
 	// 반품 검수 입력 처리 - POST
 	@PostMapping(value = "/returnAudit")
-	public String returnQualityAuditPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String returnQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
 			return "redirect:/quality/qualities";
 		}
+		
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -255,12 +264,15 @@ public class QualityController {
 	
 	// 자재 검수 입력 처리 - POST
 	@PostMapping(value = "/materialAudit")
-	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri) throws Exception{
+	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri, HttpSession session) throws Exception{
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
 			return "redirect:/quality/qualities";
 		}
+		
+		// 검수자 입력 (멤버코드)
+		vo.setAuditbycode((String) session.getAttribute("membercode"));
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -344,4 +356,14 @@ public class QualityController {
 		return "redirect:/quality/qualitiesMaterial";
 	}
 	
+	// 포장, 반품이 아닐 때 생산 상태 업데이트 - POST
+	@PostMapping
+	public String updateQualityCheck(QualityVO vo) throws Exception{
+		logger.debug(" /updateQualityCheck(QualityVO vo) 실행! ");
+		System.out.println(" /updateQualityCheck(QualityVO vo) 실행! ");
+		vo.setQualitycheck("정상");
+		qService.productQualityCheck(vo);
+		sService.registerStockY(vo);
+		return "redirect:/quality/qualities";
+	}
 }

@@ -13,6 +13,7 @@ public class QualityVO {
 	private String auditcode;
 	private String itemtype;
 	private int produceid;
+	private String produceprocess;
 	private int returnid;
 	private int itemid;
 	private String auditbycode;
@@ -91,7 +92,7 @@ public class QualityVO {
 	private int weight;
 	private int quantity;
 //	private int itemprice;
-	private int roasteddate;
+	private Timestamp roasteddate;
 //	private Sting lotnumber;
 	private String note;
 	

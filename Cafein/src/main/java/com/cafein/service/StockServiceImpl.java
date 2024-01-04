@@ -127,6 +127,39 @@ public class StockServiceImpl implements StockService {
 		return sdao.selectMaterialStockToast();
 	}
 
+	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
+	@Override
+	public List<QualityVO> stockListExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectStockListExcel(vo);
+	}
+
+	// 재고 엑셀용 출력 목록 조회 (자재)
+	@Override
+	public List<QualityVO> materialStockListExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectMaterialStockListExcel(vo);
+	}
+	
+	// roastedBean 테이블 조회
+	@Override
+	public QualityVO roastedBeanInfo(String lotnumber) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectRoastedBean(lotnumber);
+	}
+
+	// receive 테이블 조회
+	@Override
+	public QualityVO receiveInfo(String lotnumber) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectReceiveInfo(lotnumber);
+	}
+	
+	
+	
+	
+	
+
 	
 	
 	
