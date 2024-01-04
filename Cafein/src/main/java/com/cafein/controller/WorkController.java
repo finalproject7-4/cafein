@@ -12,12 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.SalesVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
 
@@ -33,22 +35,31 @@ public class WorkController {
 	// 작업지시 조회
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public void AllWKListGET(Model model) throws Exception {
+	public String AllWKListGET(Model model, @ModelAttribute("result") String result) throws Exception {
 		logger.debug("AllWKListGET() 실행");
-		model.addAttribute("AllWKList", shService.AllWKList());
+		
+		List<WorkVO> WKList = shService.AllWKList();
+		
+		model.addAttribute("WKList", WKList );
+		model.addAttribute("result", result);
+		
 		model.addAttribute("pcList", shService.registPC()); 
+		
 		logger.debug("작업지시 리스트 출력!");
+		
+		return "/production/WKList";
 	}
 	
-	// 작업지시 검색
-	@RequestMapping(value = "/WKList", method = RequestMethod.POST)
-	@ResponseBody
-	public List<WorkVO> searchWKListGET(@RequestParam String keyword) throws Exception {
-	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
-	    List<WorkVO> result = shService.searchWKList(keyword);
-	    logger.debug("작업지시 검색 결과 출력!");
-	    return result;
-	}
+	
+//	// 작업지시 검색
+//	@RequestMapping(value = "/WKList", method = RequestMethod.POST)
+//	@ResponseBody
+//	public List<WorkVO> searchWKListGET(@RequestParam String keyword) throws Exception {
+//	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
+//	    List<WorkVO> result = shService.searchWKList(keyword);
+//	    logger.debug("작업지시 검색 결과 출력!");
+//	    return result;
+//	}
 	
 	// 작업지시 등록 - POST
 	// http://localhost:8088/production/WKList

@@ -55,11 +55,11 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.selectList(NAMESPACE+".getWKList");
 	}
 	
-	// 작업 지시 검색
-	@Override
-	public List<WorkVO> searchWKList(String keyword) throws Exception {
-	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
-	}
+//	// 작업 지시 검색
+//	@Override
+//	public List<WorkVO> searchWKList(String keyword) throws Exception {
+//	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
+//	}
 
 	// 작업 지시 등록
 	@Override

@@ -5,25 +5,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 
-<form method="post">
 	<!-- 검색 폼 -->
 	<div class="col-12" style="margin-top: 20px;">
 		<div class="bg-light rounded h-100 p-4">
 			<h6 class="mb-4">작업지시 조회</h6>
+<form method="post">
+			검색: <input type="text" id="searchwork" name="clientname" class="searchwork" >
 
-			검색: <input type="text" id="clientname" class="m-2" onkeyup="searchWork()">
-
-
-			<!-- 달력 -->
-
-			작업 지시 기간 : <input type="date" class="m-2" id="workstartdate"
-				name="startDate"> ~ <input type="date" class="m-2"
-				id="shipdate" name="endDate">
+			작업 지시 기간 : <input type="date" class="date" id="workstartdate"
+				name="startDate" name="workdate1"> ~ <input type="date" class="date"
+				id="workenddate" name="workdate2">
 			<!-- 달력 -->
 			<!-- Date: <input type="text" id="datepicker3" name="startDate">
 ~  <input type="text" id="datepicker4" name="endDate"> -->
-			<button type="submit" class="btn btn-dark m-2">조회</button>
-
+			<button id="searchbtn" type="button" class="btn btn-dark m-2">조회</button>
+</form>
 		</div>
 	</div>
 
@@ -80,7 +76,7 @@
 						</thead>
 						<tbody>
 
-							<c:forEach items="${ AllWKList }" var="wk">
+							<c:forEach items="${ WKList }" var="wk">
 								<tr>
 									<td>${wk.workid }</td>
 									<td><fmt:formatDate value="${wk.workdate1 }"
@@ -112,68 +108,60 @@
 			</div>
 			</div>
 		</div>
+	</div>
 		
 		<jsp:include page="registWK.jsp"/>
 		<jsp:include page="modifyWK.jsp"/>
-</form>
 
 <script>
 
-$("#clientname").on("input", function() {
-    var keyword = $(this).val();
-    searchWork(keyword);
-});
+    $(document).ready(function() {
+        $("#searchbtn").click(function() {
+            // 작업지시 일자
+            var wkdateStart = $("input[name='wkdateStart']").val();
+            var wkdateEnd = $("input[name='wkdateEnd']").val();
+            
+            // 검색
+            var searchWork = $("searchwork").val();
 
-function searchWork(keyword) {
-	var keyword = $("#clientname").val();
-    $.ajax({
-        type: "POST",
-        url: "/production/WKList",
-        data: { keyword: keyword },
-        success: function (result) {
-            // 결과 처리 (새 데이터로 테이블 업데이트)
-            updateTable(result);
-        },
-        error: function (xhr, status, error) {
-            console.error("AJAX 요청 중 오류 발생:", status, error);
-            console.log("서버 응답:", xhr.responseText);
-        }
-    });
-}
-    
-    function updateTable(data) {
-        var tableBody = $("#workTable tbody");
-        tableBody.empty(); // 기존 행 지우기
-
-        // 새로운 데이터로 테이블 업데이트
-        for (var i = 0; i < data.length; i++) {
-            var row = "<tr>" +
-                      "<td>" + data[i].workid + "</td>" +
-                      "<td>" + formatDate(data[i].workdate1) + "</td>" +
-                      "<td>" + data[i].workcode + "</td>" +
-                      "<td>" + data[i].pocode + "</td>" +
-                      "<td>" + data[i].clientname + "</td>" +
-                      "<td>" + data[i].itemname + "</td>" +
-                      "<td>" + data[i].worksts + "</td>" +
-                      "<td>" + data[i].pocnt + "</td>" +
-                      "<td>" + formatDate(data[i].workupdate) + "</td>" +
-                      "<td>" + formatDate(data[i].workdate2) + "</td>" +
-                      "<td>" + data[i].membercode + "</td>" +
-                      "<td><button type='button' class='btn btn-outline-dark' onclick='openModifyModal(\"" + data[i].workid + "\", \"" + data[i].pocode + "\", \"" + data[i].clientname + "\", \"" + data[i].itemname + "\", \"" + data[i].worksts + "\", \"" + data[i].pocnt + "\", \"" + data[i].workdate1 + "\", \"" + data[i].workupdate + "\", \"" + data[i].membercode + "\")'>수정</button></td>" +
-                      "</tr>";
-            tableBody.append(row);
-        }
-    }
-
-    // 날짜 형식을 변환하는 함수
-    function formatDate(dateString) {
-        var date = new Date(dateString);
-        var year = date.getFullYear();
-        var month = (date.getMonth() + 1).toString().padStart(2, '0');
-        var day = date.getDate().toString().padStart(2, '0');
-        return year + '-' + month + '-' + day;
-    }
-
+         // Ajax를 사용해 서버로 데이터 전송 및 조회
+            $.ajax({
+                type: "GET",
+                url: "/production/WKList",
+                data: {
+                    wkdateStart: wkdateStart,
+                    wkdateEnd: wkdateEnd,
+                    searchWork: searchWork
+                },
+                success: function(WKList) {
+                    // 성공 시에 테이블을 생성하고 화면에 표시
+                    var tableHtml = '<table>';
+                    for (var i = 0; i < WKList.length; i++) {
+                        tableHtml += '<tr>';
+                        tableHtml += '<td>' + WKList[i].workid + '</td>';
+                        tableHtml += '<td>' + WKList[i].workdate1 + '</td>';
+                        tableHtml += '<td>' + WKList[i].workcode + '</td>';
+                        tableHtml += '<td>' + WKList[i].pocode + '</td>';
+                        tableHtml += '<td>' + WKList[i].clientname + '</td>';
+                        tableHtml += '<td>' + WKList[i].itemname + '</td>';
+                        tableHtml += '<td>' + WKList[i].worksts + '</td>';
+                        tableHtml += '<td>' + WKList[i].pocnt + '</td>';
+                        tableHtml += '<td>' + WKList[i].workupdate + '</td>';
+                        tableHtml += '<td>' + WKList[i].workdate2 + '</td>';
+                        tableHtml += '<td>' + WKList[i].membercode + '</td>';
+                        tableHtml += '</tr>';
+                    }
+                    tableHtml += '</table>';
+                    
+                    $("#result").html(tableHtml);
+                },
+                error: function(error) {
+                    console.error("Error during search:", error);
+                }
+            });
+        });
+</script>
+<script>
 // 수정된 값을 서버로 전송
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장
