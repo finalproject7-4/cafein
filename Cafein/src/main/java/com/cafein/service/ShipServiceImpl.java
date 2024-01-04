@@ -58,6 +58,16 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : shCount(ShipVO svo)");
 		return shdao.getSHCount(svo);
 	}
+	
+	// 출하 검색
+	@Override
+	public List<ShipVO> searchSHList(String keyword) throws Exception {
+		logger.debug("searchSHList()");
+	    return shdao.searchSHList(keyword);
+	}
+	
+	
+	
 
 	// 작업 지시 조회
 	@Override
@@ -72,6 +82,7 @@ public class ShipServiceImpl implements ShipService {
 //		    logger.debug("searchWKList()");
 //		    return shdao.searchWKList(keyword);
 //		}
+
 
 	// 작업 지시 등록
 	@Override

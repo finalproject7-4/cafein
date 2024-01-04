@@ -4,16 +4,21 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.ItemVO;
@@ -62,8 +67,18 @@ public class ShipController {
 		logger.debug("/sales/registSH 이동");                                          
 		return "redirect:/sales/SHList";                                             
 	}
+	
+	// 출하 검색
+	@RequestMapping(value = "/SHList", method = RequestMethod.POST)
+	@ResponseBody
+	public List<ShipVO> searchWKListPOST(@RequestParam String keyword) throws Exception {
+	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
+	    List<ShipVO> result = shService.searchSHList(keyword);
+	    logger.debug("작업지시 검색 결과 출력!");
+	    return result;
+	}
 
-	// 작업 지시 코드 생성 메서드
+	// 출하 코드 생성 메서드
 	public String makeSHcode(ShipVO svo) throws Exception {
 	    // DB에서 전체 작업 수 조회
 	    int count = shService.shCount(svo);

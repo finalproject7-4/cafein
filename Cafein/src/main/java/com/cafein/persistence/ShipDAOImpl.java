@@ -61,7 +61,15 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : getShipCount(ShipVO svo)");
 		return sqlSession.selectOne(NAMESPACE + ".getSHCount", svo);
 	}
+	
+	// 출하 검색
+	@Override
+	public List<ShipVO> searchSHList(String keyword) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".searchSHList", keyword);
+	}
 
+	
+	
 	// 작업 지시 조회
 	@Override
 	public List<WorkVO> getWKList() throws Exception {

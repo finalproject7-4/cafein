@@ -42,6 +42,12 @@
     and shipcode like 'SH%';
 	</where>
 </select>
+
+	<!-- 출하 검색 -->
+	<select id="searchSHList" resultType="com.cafein.domain.shipVO" parameterType="map">
+        SELECT * FROM ship
+        WHERE CONCAT(clientname, ' ', itemname) LIKE '%' || #{keyword} || '%';
+    </select>
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">

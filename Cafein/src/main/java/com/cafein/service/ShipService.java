@@ -19,8 +19,11 @@ public interface ShipService {
 	// 출하 등록 - 재고량
 	public List<WorkVO> registST() throws Exception;
 	
-	// 작업 지시 코드 생성
+	// 출하 코드 생성
 	public int shCount(ShipVO svo) throws Exception;
+	
+	// 출하 검색
+	public List<ShipVO> searchSHList(String keyword) throws Exception;
 		
 		
 		

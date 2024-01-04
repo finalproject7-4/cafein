@@ -23,7 +23,8 @@ public interface ShipDAO {
 	// 출하 코드 생성
 	public int getSHCount(ShipVO svo) throws Exception;
 		
-		
+	// 출하 검색
+	public List<ShipVO> searchSHList(String keyword) throws Exception;	
 		
 	
 	// 작업 지시 조회

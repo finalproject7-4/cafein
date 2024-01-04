@@ -226,6 +226,7 @@
 		            $('#workcode').prop('readonly', false).val('');
 		            $('#clientname').prop('readonly', false).val('');
 		            $('#itemname').prop('readonly', false).val('');
+		            $('#lotnumber').prop('readonly', false).val('');
 		        }
 
 		      // 'workcodeModal'을 닫기
