@@ -152,7 +152,7 @@ public class SalesController {
 	//수주상태 취소 변경
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/cancelUpdate", method = RequestMethod.POST)
-	public void cancelUpdate(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
+	public String cancelUpdate(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
 	    try {
 	        logger.debug("/sales/cancelUpdate() 호출!");
 	        svo.setPoid(poid);
@@ -164,6 +164,7 @@ public class SalesController {
 	    } catch (Exception e) {
 	        logger.error("수주상태 업데이트 중 오류 발생:", e);
 	    }
+		return "redirect:/sales/POList";                                             
 	}
 
 

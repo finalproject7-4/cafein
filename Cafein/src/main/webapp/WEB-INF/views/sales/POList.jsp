@@ -42,14 +42,11 @@
 
 			<!-- 수주 리스트 테이블 조회 -->
 			<div class="bg-light rounded h-100 p-4" id="ListID">
+			<form role="form" action="/sales/cancelUpdate" method="post">
 			<span class="mb-4">총 ${fn:length(POList)}건</span>
-			<input type="hidden" name="poid" class="poidDel">
-			
 			<input type="button" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#registModal" id="regist" value="등록">		
 			<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<input type="hidden" name="poid" class="poidCancle">				
 				<div class="table-responsive">
-				<form class="cancelUpdate">
 					<table class="table">
 						<thead>
 							<tr>
@@ -78,6 +75,7 @@
 							<c:set var="counter" value="1" />
 								<c:forEach items="${POList}" var="po" varStatus="status">
 									<tr>
+										<td id="poidCancel" >${po.poid }</td>
 										<td>${counter }</td>
 										<td>${po.postate }</td>
 										<td>${po.pocode }</td>
@@ -110,7 +108,7 @@
 									        onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 									        수정
 											</button>
-											<input value="취소" type="submit" class="btn btn-outline-dark" data-poid="${po.poid}">
+											<input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
 										</td>
 										<td>
 											<button type="button" class="btn btn-outline-dark"> 
@@ -130,26 +128,27 @@
 						</c:choose>
 					</tbody>
 				</table>
-				</form>
 				</div>
+				</form>
 		</div>
 		</div>
 		
 		<!-- 취소 동작(수주상태 취소로 변경) -->
 		<script>
-		$("form.cancelUpdate").submit(function (event) {
+		$(".cancelUpdate").click(function() {
 		    event.preventDefault();
 		    
-		    // 이 부분에서 data-poid 값을 읽어와서 전송 데이터에 추가
-		    var poid = $(this).find('input[name="poid"]').data('poid');
-
+		    var poid =$(this).data("poid");
+		    console.log('poid 값:', poid); 
+		    
 		    $.ajax({
 		        type: 'POST',
 		        url: '/sales/cancelUpdate',
 		        data: { poid: poid },
 		        success: function (response) {
 		            console.log('Ajax success:', response);
-		            updateUIOnCancellation();
+		            location.reload();
+		            
 		        },
 		        error: function (error) {
 		            console.error('Error during cancellation:', error);
@@ -157,8 +156,6 @@
 		        }
 		    });
 		});
-
-
 </script>
 
 		
