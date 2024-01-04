@@ -6,8 +6,11 @@
  <mapper namespace="com.cafein.mapper.stockMapper">
  	<!-- 재고 목록 조회 검색 버튼 (생산 [포장] + 반품) -->
  	<select id="selectStockList" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
- 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
+ 		SELECT MIN(stockid) AS 'stockid', MIN(s.qualityid) AS 'qualityid', MIN(q.produceid) AS 'produceid', MIN(q.returnid) AS 'returnid', 
+ 		MIN(q.itemtype) AS 'itemtype', MIN(s.itemid) AS 'itemid', MIN(i.itemcode) AS 'itemcode', MIN(i.itemname) AS 'itemname', 
+ 		MIN(weight) AS 'weight', MIN(s.lotnumber) AS 'lotnumber', COUNT(*) AS 'stockquantity', MIN(s.storageid) AS 'storageid', 
+ 		MIN(storagename) AS 'storagename', MIN(storagecode) AS 'storagecode', MIN(DATE(s.registerationdate)) AS 'registerationdate', MIN(DATE(updatedate)) AS 'updatedate', 
+ 		MIN(updatehistory) AS 'updatehistory', MIN(workerbycode) AS 'workerbycode' 
  		FROM stock s
  		JOIN quality q
  		ON s.qualityid = q.qualityid
@@ -34,13 +37,16 @@
  		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))	
  		</if>
  		</where>
- 		ORDER BY stockid DESC
+ 		GROUP BY q.produceid, q.returnid
+ 		ORDER BY MIN(stockid) DESC
  		LIMIT #{cri.startPage}, #{cri.pageSize} 
  	</select>
  	
  	<!-- 재고 목록 조회 검색 버튼 개수 조회 (생산 [포장] + 반품) -->
  	<select id="selectStockListCount" resultType="integer">
- 		SELECT COUNT(*)
+ 		SELECT COUNT(SUBCOUNT)
+ 		FROM
+ 		(SELECT COUNT(*) AS 'SUBCOUNT'
  		FROM stock s
  		JOIN quality q
  		ON s.qualityid = q.qualityid
@@ -67,7 +73,7 @@
  		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))		
  		</if>
  		</where>
- 		ORDER BY stockid DESC
+ 		GROUP BY q.produceid, q.returnid) AS SUBQUERY
  	</select>
  	
  	<!-- 재고 목록 조회 검색 버튼 (자재) -->
@@ -207,7 +213,7 @@
 	
 	<!-- 재고 토스트 데이터 (생산 [포장] + 반품) -->
 	<select id="productStockToast" resultType="QualityVO">
-		SELECT stockid, s.qualityid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
+		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
  		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -243,7 +249,7 @@
 	
 	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->
  	<select id="selectStockListExcel" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
+ 		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
  		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -309,11 +315,20 @@
  	
  	<!-- roastedBean 테이블 조회 -->
 	<select id="selectRoastedBean" resultType="QualityVO">
-		SELECT productid, produceid, itemname, itemid, weight, quantity, itemprice, roasteddate, lotnumber, note 
+		SELECT productid, produceid, itemname, itemid, weight, roasteddate, lotnumber, note 
 		FROM roastedbean
-		WHERE lotnumber = #{lotnumber}
+		WHERE produceid = #{produceid}
+		LIMIT 0, 1
 	</select>
  	<!-- roastedBean 테이블 조회 -->
+ 	
+ 	<!-- roastedBean lotnumber 조회 -->
+ 	<select id="selectRoastedBeanLot" resultType="QualityVO">
+ 		SELECT lotnumber
+ 		FROM roastedbean
+ 		WHERE produceid = #{produceid}
+ 	</select>
+ 	<!-- roastedBean lotnumber 조회 -->
  	
  	<!-- receive 테이블 조회 -->
  	<select id="selectReceiveInfo" resultType="QualityVO">
