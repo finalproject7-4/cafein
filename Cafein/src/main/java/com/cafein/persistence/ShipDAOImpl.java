@@ -58,10 +58,7 @@ public class ShipDAOImpl implements ShipDAO {
 	// 작업 지시 검색
 	@Override
 	public List<WorkVO> searchWKList(String keyword) throws Exception {
-	    Map<String, Object> parameterMap = new HashMap<>();
-	    parameterMap.put("keyword", keyword);
-
-	    return sqlSession.selectList(NAMESPACE + ".searchWKList", parameterMap);
+	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
 	}
 
 	// 작업 지시 등록

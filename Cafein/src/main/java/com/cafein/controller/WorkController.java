@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.WorkVO;
@@ -39,13 +41,13 @@ public class WorkController {
 	}
 	
 	// 작업지시 검색
-	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.POST)
-	public void searchWKListGET(@RequestParam String keyword) throws Exception {
+	@ResponseBody
+	public List<WorkVO> searchWKListGET(@RequestParam String keyword) throws Exception {
 	    logger.debug("SearchWKListGET() 실행. 검색어: {}", keyword);
-
-	    shService.searchWKList(keyword); 
+	    List<WorkVO> result = shService.searchWKList(keyword);
 	    logger.debug("작업지시 검색 결과 출력!");
+	    return result;
 	}
 	
 	// 작업지시 등록 - POST

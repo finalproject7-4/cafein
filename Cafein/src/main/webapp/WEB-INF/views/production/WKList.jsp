@@ -119,66 +119,60 @@
 
 <script>
 
-function searchWork() {
-    var searchKeyword = $('#searchInput').val();
+$("#clientname").on("input", function() {
+    var keyword = $(this).val();
+    searchWork(keyword);
+});
 
-    // AJAX 요청 수행
+function searchWork(keyword) {
+	var keyword = $("#clientname").val();
     $.ajax({
-        type: 'POST',
-        url: '/production/WKList',
-        data: { keyword: searchKeyword,
-//         		workid: ${wk.workid},
-//        	 		pocode: pocode,
-       		 	clientname: clientname
-//             	itemname: itemname,
-//             	worksts: worksts,
-//             	pocnt: pocnt,
-//             	workdate1: workdate1,
-//             	workdate2: workdate2,
-//             	workupdate: workupdate,
-//            		membercode: membercode
-       },
-        success: function (response) {
-        	console.log('서버 응답:', response);
-            updateTable(response);
+        type: "POST",
+        url: "/production/WKList",
+        data: { keyword: keyword },
+        success: function (result) {
+            // 결과 처리 (새 데이터로 테이블 업데이트)
+            updateTable(result);
         },
-        error: function (error) {
-            console.error('검색 중 오류 발생:', error);
+        error: function (xhr, status, error) {
+            console.error("AJAX 요청 중 오류 발생:", status, error);
+            console.log("서버 응답:", xhr.responseText);
         }
     });
 }
+    
+    function updateTable(data) {
+        var tableBody = $("#workTable tbody");
+        tableBody.empty(); // 기존 행 지우기
 
-function updateTable(searchResults) {
-	console.log('전달된 데이터:', searchResults);
-    var tableBody = $('#workTable tbody');
-     tableBody.empty(); // 기존 데이터 비우기
-	console.log('반복문 실행 중');
-    $.each(searchResults, function(index, wk) {
-        // 테이블에 새로운 행 추가
-        var newRow = '<tr>' +
-            '<td>' + (wk.workid || '') + '</td>' +
-            '<td>' + (formatDate(wk.workdate1) || '') + '</td>' +
-            '<td>' + (wk.pocode || '') + '</td>' +
-            '<td>' + (wk.clientname || '') + '</td>' +
-            '<td>' + (wk.itemname || '') + '</td>' +
-            '<td>' + (wk.worksts|| '') + '</td>' +
-            '<td>' + (wk.pocnt|| '') + '</td>' +
-            '<td>' + (formatDate(wk.workdate2) || '') + '</td>' +
-            '<td>' + (formatDate(wk.workupdate) || '') + '</td>' +
-            '<td>' + (wk.membercode || '') + '</td>' +
-            '<td>' +
-            '<button type="button" class="btn btn-outline-dark" onclick="openModifyModal(\'' +
-            (wk.workid || '') + '\',\'' + (wk.pocode || '') + '\',\'' + (wk.clientname || '') + '\',\'' +
-            (wk.itemname || '') + '\',\'' + (wk.worksts || '') + '\',\'' + (wk.pocnt || '') + '\',\'' +
-            (formatDate(wk.workdate1) || '') + '\',\'' + (formatDate(wk.workupdate) || '') + '\',\'' +
-            (wk.membercode || '') + '\')">수정</button>' +
-            '</td>' +
-            '</tr>';
+        // 새로운 데이터로 테이블 업데이트
+        for (var i = 0; i < data.length; i++) {
+            var row = "<tr>" +
+                      "<td>" + data[i].workid + "</td>" +
+                      "<td>" + formatDate(data[i].workdate1) + "</td>" +
+                      "<td>" + data[i].workcode + "</td>" +
+                      "<td>" + data[i].pocode + "</td>" +
+                      "<td>" + data[i].clientname + "</td>" +
+                      "<td>" + data[i].itemname + "</td>" +
+                      "<td>" + data[i].worksts + "</td>" +
+                      "<td>" + data[i].pocnt + "</td>" +
+                      "<td>" + formatDate(data[i].workupdate) + "</td>" +
+                      "<td>" + formatDate(data[i].workdate2) + "</td>" +
+                      "<td>" + data[i].membercode + "</td>" +
+                      "<td><button type='button' class='btn btn-outline-dark' onclick='openModifyModal(\"" + data[i].workid + "\", \"" + data[i].pocode + "\", \"" + data[i].clientname + "\", \"" + data[i].itemname + "\", \"" + data[i].worksts + "\", \"" + data[i].pocnt + "\", \"" + data[i].workdate1 + "\", \"" + data[i].workupdate + "\", \"" + data[i].membercode + "\")'>수정</button></td>" +
+                      "</tr>";
+            tableBody.append(row);
+        }
+    }
 
-        tableBody.append(newRow);
-        console.log(newRow);
-    });
-}
+    // 날짜 형식을 변환하는 함수
+    function formatDate(dateString) {
+        var date = new Date(dateString);
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        return year + '-' + month + '-' + day;
+    }
 
 // 수정된 값을 서버로 전송
 $("#modifyButton").click(function() {

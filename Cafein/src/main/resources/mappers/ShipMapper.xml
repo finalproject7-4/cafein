@@ -47,26 +47,9 @@
 	
 <!-- 작업 지시 검색 -->
 <select id="searchWKList" resultType="com.cafein.domain.WorkVO" parameterType="map">
-   SELECT wk.workid, wk.workdate1, wk.workcode, wk.clientname,
-           wk.pocode, wk.itemname,
-           wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
-           wk.membercode
-    FROM c7d2307t4_2.work wk
-    JOIN c7d2307t4_2.purchaseorder po ON wk.pocode = po.pocode
-    WHERE
-        <if test="keyword != null and keyword.trim() != ''">
-            (
-                wk.workcode LIKE '%' || #{keyword} || '%'
-                OR wk.clientname LIKE '%' || #{keyword} || '%'
-                OR wk.itemname LIKE '%' || #{keyword} || '%'
-                OR wk.membercode LIKE '%' || #{keyword} || '%'
-            )
-        </if>
-    GROUP BY wk.workid, wk.workdate1, wk.workcode,
-             wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
-             wk.membercode
-    ORDER BY workdate1 DESC, workid DESC;
-</select>
+        SELECT * FROM work
+        WHERE CONCAT(clientname, ' ', itemname) LIKE '%' || #{keyword} || '%';
+    </select>
 	
 	<!-- 작업 지시 등록 -->
 	<insert id="registWK" parameterType="com.cafein.domain.WorkVO">
