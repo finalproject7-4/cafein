@@ -160,7 +160,9 @@
 											</td>
 											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
-												<button type="button" class="btn btn-outline-dark" onclick="location.href='/sales/receipt';">불러오기</button>
+												<input value="불러오기" type="button" class="btn btn-outline-dark" onclick="receiptSend(`${po.poid}`)">
+
+												 
 											</td>
 										</tr>
 										<c:set var="counter" value="${counter+1 }" />
@@ -170,6 +172,24 @@
 						</tbody>
 					</table>
 				</div>
+<script>
+function receiptSend(poid) {
+    $.ajax({
+        url: '/sales/receipt',  // 서버에서 데이터를 가져올 URL
+        type: 'GET',
+        data: { poid: poid },  // poid 값을 서버에 전달
+        success: function() {
+
+            // 예시: 새로운 페이지로 이동
+            location.href = "/sales/receipt?poid=" + encodeURIComponent(poid);
+        },
+        error: function() {
+            console.error('Error fetching receipt information');
+        }
+    });
+}
+
+</script>
 				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
