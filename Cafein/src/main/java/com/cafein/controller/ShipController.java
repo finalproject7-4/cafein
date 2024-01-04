@@ -1,6 +1,9 @@
 package com.cafein.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
 
@@ -62,63 +65,6 @@ public class ShipController {
 		return "redirect:/sales/SHList";                                             
 	}
 
-	// 작업지시 조회
-	// http://localhost:8088/sales/WKList
-	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public void AllWKListGET(Model model) throws Exception {
-		logger.debug("AllWKListGET() 실행");
-		model.addAttribute("AllWKList", shService.AllWKList());
-		model.addAttribute("pcList", shService.registPC()); 
-		logger.debug("작업지시 리스트 출력!");
-	}
-	
-	// 작업지시 등록 - POST
-	// http://localhost:8088/sales/WKList
-	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
-	public String registWK(WorkVO wvo,@RequestParam(value = "workdate1") String workdate1) throws Exception {
-		
-		logger.debug("registWK() 호출 ");                                 
-		logger.debug(" wvo : " + wvo);  
-		
-		wvo.setWorkcode(makeWKcode(wvo));
-		wvo.setWorkdate1(Date.valueOf(workdate1));
-		
-		shService.registWK(wvo);                                                      
-		logger.debug(" 작업지시 등록 완료! ");     
-                                       
-	                                                                                 
-		logger.debug("/sales/registWK 이동");                                          
-		return "redirect:/sales/WKList";                                             
-	}
-
-	
-	// 작업 지시 코드 생성 메서드
-	public String makeWKcode(WorkVO wvo) throws Exception {
-		
-		String code = "";
-		int num = 1001 + shService.wkCount(wvo);
-		
-		switch(wvo.getWorksts()) {
-			case "대기": code = "ST"; break;
-			case "진행": code = "PR"; break;
-			case "완료": code = "CP"; break;
-		}
-		
-		return code + num;
-	}
-	
-	// 작업지시 수정 - POST
-	// http://localhost:8088/sales/WKList
-	@RequestMapping(value = "/modifyWK", method = RequestMethod.POST)
-	public String modifyPOST(WorkVO wvo) throws Exception {
-		logger.debug(" /modify form -> modifyPOST()");
-		logger.debug(" 수정할 정보 " + wvo);
-
-		// 서비스 - 정보수정 동작
-		int result = shService.WKModify(wvo);
-		logger.debug("result", result);
-		return "redirect:/sales/WKList";
-	}
 
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
