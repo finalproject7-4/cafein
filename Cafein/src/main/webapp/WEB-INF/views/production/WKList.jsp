@@ -4,7 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
-
+<br>
+<fiedset>
 	<!-- 검색 폼 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
@@ -107,7 +108,7 @@
 			</div>
 		</div>
 	</div>
-		
+</fiedset>
 		<jsp:include page="registWK.jsp"/>
 		<jsp:include page="modifyWK.jsp"/>
 

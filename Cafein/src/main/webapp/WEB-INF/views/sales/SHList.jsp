@@ -4,12 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
-
-	<!-- 검색 폼 -->
+<br>
+<fieldset>
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<form name="dateSearch" action="/production/SHList" method="get" onsubmit="return filterRows(event)">
-				검색 <input class="shipSearch" type="text" name="shipSearch" placeholder="수주코드, 작업지시코드, 납품처, 제품명으로 검색">
+				검색 <input class="shipSearch" type="text" name="shipSearch" placeholder="출하코드, 작업지시코드, 납품처, 제품명, LOT으로 검색">
 				작업지시일자 <input type="date" id="startDate"
 					name="shipsdate"> ~ <input type="date" id="endDate" name="shipsdate">
 				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
@@ -18,6 +18,7 @@
 
 		</div>
 	</div>
+	<br>
 
 	<!-- 작업지시 조회 -->
 	<div class="col-12" style="margin-top: 20px;">
@@ -106,6 +107,7 @@
 			</div>
 		</div>
 	</div>
+	</fieldset>
 		
  		<jsp:include page="registSH.jsp"/> 
 <%-- 		<jsp:include page="modifySH.jsp"/> --%>
