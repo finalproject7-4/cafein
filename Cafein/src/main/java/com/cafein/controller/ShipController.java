@@ -38,28 +38,25 @@ public class ShipController {
 		logger.debug("AllSHListGET() 실행");
 		
 		model.addAttribute("AllSHList", shService.AllSHList());
-		model.addAttribute("wcList", shService.registWC()); 
+		model.addAttribute("wcList", shService.registWC());
+		model.addAttribute("stList", shService.registST()); 
 		logger.debug("출하 리스트 출력!");
 	}
 	
 	// 출하 등록 - POST
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
-	public String registSH(ShipVO svo, 
-							@RequestParam(value = "shipdate") String shipdate,
-							@RequestParam(value = "stockid", defaultValue = "1") int stockid,
-							RedirectAttributes rttr) throws Exception {
+	public String registSH(ShipVO svo,
+							@RequestParam(value = "shipdate1") String shipdate1
+							) throws Exception {
 		
 		logger.debug("regist() 호출 ");                                 
 		logger.debug(" svo : " + svo);                                               
 
-		svo.setShipdate(Date.valueOf(shipdate));
-		svo.setStockid(stockid);	                                         
+		svo.setShipdate1(Date.valueOf(shipdate1));	                                         
 		
 		shService.registSH(svo);                                                      
-		logger.debug(" 출하 등록 완료! ");     
-         
-		rttr.addFlashAttribute("result", "CREATEOK");                                
+		logger.debug(" 출하 등록 완료! ");                              
 	                                                                                 
 		logger.debug("/sales/registSH 이동");                                          
 		return "redirect:/sales/SHList";                                             

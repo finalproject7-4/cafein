@@ -8,7 +8,7 @@
 	<!-- 검색 폼 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/production/WKist" method="get" onsubmit="return filterRows(event)">
+			<form name="dateSearch" action="/production/WKList" method="get" onsubmit="return filterRows(event)">
 				검색 <input class="workSearch" type="text" name="workSearch" placeholder="수주코드, 작업지시코드, 납품처, 제품명으로 검색">
 				작업지시일자 <input type="date" id="startDate"
 					name="worksdate"> ~ <input type="date" id="endDate" name="worksdate">
