@@ -99,6 +99,13 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : ingUpdate(svo)");
 		return sqlSession.update(NAMESPACE+".ingPOState",svo);
 	}
+
+	//총개수
+	@Override
+	public int countPO(SalesVO svo) throws Exception {
+		logger.debug("DAO : countPO(svo)");
+		return sqlSession.selectOne(NAMESPACE+".countPO",svo);
+	}
 	
 	
 	

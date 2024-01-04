@@ -101,6 +101,13 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.ingUpdate(svo);
 	}
 
+	//수주 총개수
+	@Override
+	public int countPO(SalesVO svo) throws Exception {
+		logger.debug("S : countPO(SalesVO svo)");
+		return sdao.countPO(svo);
+	}
+
 	
 	
 	

@@ -41,6 +41,9 @@ public interface SalesDAO {
 	//수주상태 진행
 	public int ingUpdate(SalesVO svo) throws Exception;
 
+	//총개수
+	public int countPO(SalesVO svo) throws Exception;
+	
 	
 	
 	

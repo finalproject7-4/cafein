@@ -45,6 +45,7 @@ public class SalesController {
 		pageVO.setTotalCount(sService.poCount(svo));
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 
+		model.addAttribute("countPO",sService.countPO(svo));
 		model.addAttribute("POList", sService.POList(svo));
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("cliList", sService.registCli()); 

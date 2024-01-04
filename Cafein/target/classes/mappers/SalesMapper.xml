@@ -98,5 +98,10 @@
 		JOIN item ON re.itemid = item.itemid
 		JOIN purchaseorder po ON re.poid = po.poid
 	</select>
+	
+	<!-- 수주조회 총개수 -->
+	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
+		select count(*) from purchaseorder
+	</select>
 	 
 </mapper>

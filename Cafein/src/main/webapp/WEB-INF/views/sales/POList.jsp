@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
-<h1>수주관리</h1>
+<br>
 <fieldset>
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
@@ -34,11 +34,9 @@
 		</div>
 		<script>
 		$("#allpo").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").show();
-			// 번호 업데이트
-			updateRowNumbers();
+			location.reload();
 		});
+
 
 		$("#stop").click(function() {
 			// 모든 수주 항목 숨김
@@ -94,13 +92,10 @@
 		}
 		</script>
 		
-		
-		
-		
 		<!-- 수주 리스트 테이블 조회 -->
 		<div class="bg-light rounded h-100 p-4" id="ListID">
 			<form role="form" action="/sales/cancelUpdate" method="post">
-				<span class="mb-4">총 ${fn:length(POList)}건</span>
+				<span class="mb-4">총 ${countPO}건</span>
 				 <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#registModal" id="regist" value="등록"> <input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
@@ -342,7 +337,7 @@
 			// 주문 상태가 '완료'인 경우 취소 불가
 			if (postate === '완료') {
 				Swal.fire({
-					title : '이 주문은 완료된 상태입니다.',
+					title : '이미 완료된 주문입니다.',
 					text : '완료된 상태는 취소할 수 없습니다.',
 					icon : 'error',
 				});
@@ -351,7 +346,7 @@
 			// 주문 상태가 '완료'인 경우 취소 불가
 			if (postate === '취소') {
 				Swal.fire({
-					title : '이미 취소된 상태입니다.',
+					title : '이미 취소된 주문입니다.',
 					icon : 'error',
 				});
 				return; // 취소할 수 없는 상태이므로 함수 종료
@@ -665,12 +660,11 @@
 			} else {
 				$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
 			}
-			console.log('Client Name:', clientName, 'Order Date:', orderDate,
-					'Keyword Match:', keywordMatch, 'Date Match:', dateMatch);
 		});
 
 		// 번호 업뎃
 		updateRowNumbers();
+		
 		// 총 건수 업뎃
 		updateTotalCount();
 		// 폼이 실제로 제출되지 않도록 false 반환
