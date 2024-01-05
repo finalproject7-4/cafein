@@ -121,7 +121,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
  												자재검수
 											</button>
 										</c:if>
-										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0 }"> <!-- 불량 X -->
+										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0 && !empty mlist.registerstock && mlist.registerstock.equals('N') }"> <!-- 불량 X -->
 											<form action="/material/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
 												<input type="hidden" value="${mlist.qualityid }" name="qualityid">
 												<input type="hidden" value="${mlist.itemid }" name="itemid">
