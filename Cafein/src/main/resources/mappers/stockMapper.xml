@@ -161,8 +161,14 @@
  	
  	<!-- 재고 입력 (생산 [포장] + 반품) -->
  	<insert id="insertStock">
+ 	<if test="storageid == 0">
  		INSERT INTO stock (qualityid, itemid, stockquantity, workerbycode)
  		VALUES (#{qualityid}, #{itemid}, #{stockquantity}, #{workerbycode})
+ 	</if>
+ 	 <if test="storageid != 0">
+ 		INSERT INTO stock (qualityid, itemid, stockquantity, storageid, workerbycode)
+ 		VALUES (#{qualityid}, #{itemid}, #{stockquantity}, #{storageid}, #{workerbycode})
+ 	</if>
  	</insert>
  	 	
  	<!-- 재고 등록 중복 확인 (생산 [포장] + 반품) -->

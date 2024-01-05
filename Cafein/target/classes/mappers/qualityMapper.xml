@@ -105,7 +105,7 @@
 	
 	<!-- 품질 관리 목록 검색 버튼 (자재) -->
 	<select id="selectMaterialQualityListSearchBtn" resultType="QualityVO">
-		SELECT q.qualityid, auditcode, i.itemtype, q.receiveid, q.itemid, i.itemcode, i.itemname, auditbycode, 
+		SELECT q.qualityid, auditcode, i.itemtype, q.receiveid, s.storageid, q.itemid, i.itemcode, i.itemname, auditbycode, 
 		productquantity, auditquantity, normalquantity, defectquantity, 
 		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
 		registerstock, registerdefect 
@@ -114,6 +114,8 @@
 		ON q.itemid = i.itemid
 		JOIN receive r
 		ON q.receiveid = r.receiveid
+		LEFT OUTER JOIN storage s
+		ON r.storagecode = s.storagecode
 		<where>
 		(q.itemtype = '자재')
 		<if test="searchBtn != null and startDate == null and endDate == null">
