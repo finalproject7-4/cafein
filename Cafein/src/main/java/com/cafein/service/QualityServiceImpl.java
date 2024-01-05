@@ -180,6 +180,15 @@ public class QualityServiceImpl implements QualityService {
 		// TODO Auto-generated method stub
 		return qdao.selectMaterialDefectsListSearchBtnExcel(vo);
 	}
+
+	// roastedBean 검수, 불량 처리 (포장)
+	@Override
+	public void roastedBeanDefect(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		qdao.updateRoastedBeanDefect(vo);
+	}
+	
+	
 	
 
 	

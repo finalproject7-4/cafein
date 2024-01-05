@@ -58,7 +58,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">LOT번호</th>
+								<th scope="col">입고번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
 								<th scope="col">최종 작업자</th>
@@ -75,7 +75,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemcode }</td>
 									<td>${slist.itemname }</td>
 									<td>
-									<a href="" class="receive" data-lotnumber="${slist.lotnumber }">${slist.lotnumber }</a></td>
+									<a href="" class="receive" data-receiveid="${slist.receiveid }">${slist.receiveid }</a></td>
 									<td>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개

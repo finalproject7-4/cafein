@@ -6,11 +6,11 @@
  <mapper namespace="com.cafein.mapper.stockMapper">
  	<!-- 재고 목록 조회 검색 버튼 (생산 [포장] + 반품) -->
  	<select id="selectStockList" resultType="QualityVO">
- 		SELECT MIN(stockid) AS 'stockid', MIN(s.qualityid) AS 'qualityid', MIN(q.produceid) AS 'produceid', MIN(q.returnid) AS 'returnid', 
- 		MIN(q.itemtype) AS 'itemtype', MIN(s.itemid) AS 'itemid', MIN(i.itemcode) AS 'itemcode', MIN(i.itemname) AS 'itemname', 
- 		MIN(weight) AS 'weight', MIN(s.lotnumber) AS 'lotnumber', COUNT(*) AS 'stockquantity', MIN(s.storageid) AS 'storageid', 
- 		MIN(storagename) AS 'storagename', MIN(storagecode) AS 'storagecode', MIN(DATE(s.registerationdate)) AS 'registerationdate', MIN(DATE(updatedate)) AS 'updatedate', 
- 		MIN(updatehistory) AS 'updatehistory', MIN(workerbycode) AS 'workerbycode' 
+ 		SELECT DISTINCT stockid, s.qualityid, q.produceid, q.returnid, 
+ 		q.itemtype, s.itemid, i.itemcode, i.itemname, 
+ 		weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', 
+ 		DATE(updatedate) AS 'updatedate', updatehistory, workerbycode 
  		FROM stock s
  		JOIN quality q
  		ON s.qualityid = q.qualityid
@@ -37,16 +37,19 @@
  		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))	
  		</if>
  		</where>
- 		GROUP BY q.produceid, q.returnid
- 		ORDER BY MIN(stockid) DESC
+ 		ORDER BY stockid DESC
  		LIMIT #{cri.startPage}, #{cri.pageSize} 
  	</select>
  	
  	<!-- 재고 목록 조회 검색 버튼 개수 조회 (생산 [포장] + 반품) -->
  	<select id="selectStockListCount" resultType="integer">
- 		SELECT COUNT(SUBCOUNT)
- 		FROM
- 		(SELECT COUNT(*) AS 'SUBCOUNT'
+		SELECT COUNT(*)
+		FROM
+		(SELECT DISTINCT stockid, s.qualityid, q.produceid, q.returnid, 
+ 		q.itemtype, s.itemid, i.itemcode, i.itemname, 
+ 		weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', 
+ 		DATE(updatedate) AS 'updatedate', updatehistory, workerbycode 
  		FROM stock s
  		JOIN quality q
  		ON s.qualityid = q.qualityid
@@ -70,15 +73,15 @@
  		<if test="searchBtn == null and searchText != null">
  		AND 
  		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))		
+ 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))	
  		</if>
  		</where>
- 		GROUP BY q.produceid, q.returnid) AS SUBQUERY
+ 		) AS subquery
  	</select>
  	
  	<!-- 재고 목록 조회 검색 버튼 (자재) -->
  	<select id="selectMaterialStockList" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, i.itemtype, s.itemid, i.itemcode, i.itemname, s.lotnumber, stockquantity, s.storageid, 
+ 		SELECT stockid, s.qualityid, q.receiveid, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
  		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -158,8 +161,8 @@
  	
  	<!-- 재고 입력 (생산 [포장] + 반품) -->
  	<insert id="insertStock">
- 		INSERT INTO stock (qualityid, itemid, lotnumber, stockquantity, workerbycode)
- 		VALUES (#{qualityid}, #{itemid}, #{lotnumber}, #{stockquantity}, #{workerbycode})
+ 		INSERT INTO stock (qualityid, itemid, stockquantity, workerbycode)
+ 		VALUES (#{qualityid}, #{itemid}, #{stockquantity}, #{workerbycode})
  	</insert>
  	 	
  	<!-- 재고 등록 중복 확인 (생산 [포장] + 반품) -->
@@ -213,7 +216,7 @@
 	
 	<!-- 재고 토스트 데이터 (생산 [포장] + 반품) -->
 	<select id="productStockToast" resultType="QualityVO">
-		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
+		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, stockquantity, s.storageid, 
  		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -231,7 +234,7 @@
 	
 	<!-- 재고 토스트 데이터 (자재) -->
 	<select id="materialStockToast" resultType="QualityVO">
-	 	SELECT stockid, s.qualityid, i.itemtype, s.itemid, i.itemcode, i.itemname, s.lotnumber, stockquantity, s.storageid, 
+	 	SELECT stockid, s.qualityid, q.receiveid, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
  		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -249,7 +252,7 @@
 	
 	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->
  	<select id="selectStockListExcel" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, s.lotnumber, stockquantity, s.storageid, 
+ 		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, stockquantity, s.storageid, 
  		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -282,7 +285,7 @@
  	
  	<!-- 재고 엑셀 출력용 목록 조회 (자재) -->
   	<select id="selectMaterialStockListExcel" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, i.itemtype, s.itemid, i.itemcode, i.itemname, s.lotnumber, stockquantity, s.storageid, 
+ 		SELECT stockid, s.qualityid, q.receiveid, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
  		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -322,13 +325,15 @@
 	</select>
  	<!-- roastedBean 테이블 조회 -->
  	
- 	<!-- roastedBean lotnumber 조회 -->
+ 	<!-- roastedBean lotnumber 미검수 조회 -->
  	<select id="selectRoastedBeanLot" resultType="QualityVO">
  		SELECT lotnumber
  		FROM roastedbean
- 		WHERE produceid = #{produceid}
+ 		WHERE produceid = #{produceid} 
+ 		AND auditstatus = 'N' 
+ 		AND defect = 'N'
  	</select>
- 	<!-- roastedBean lotnumber 조회 -->
+ 	<!-- roastedBean lotnumber 미검수 조회 -->
  	
  	<!-- receive 테이블 조회 -->
  	<select id="selectReceiveInfo" resultType="QualityVO">
@@ -337,5 +342,41 @@
  		WHERE lotnumber = #{lotnumber}
  	</select>
  	<!-- receive 테이블 조회 -->
+ 	
+ 	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
+ 	<insert id="insertNormalRoastedBeanLot">
+ 		INSERT INTO productlot (stockid, produceid, lotnumber)
+ 		SELECT s.stockid, r.produceid, r.lotnumber
+ 		FROM roastedbean r
+ 		JOIN quality q
+ 		ON r.produceid = q.produceid
+ 		JOIN stock s
+ 		ON q.qualityid = s.qualityid
+ 		WHERE r.produceid = #{produceid} 
+ 		AND r.auditstatus = 'Y' 
+ 		AND r.defect = 'N'
+ 	</insert>
+ 	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
+ 	
+ 	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
+ 	<insert id="insertNormalRoastedBeanLotMat">
+ 		INSERT INTO productlot (stockid, receiveid, lotnumber)
+ 		SELECT s.stockid, r.receiveid, r.lotnumber
+		FROM receive r
+		JOIN quality q
+		ON r.receiveid = q.receiveid
+		JOIN stock s
+		ON q.qualityid = s.qualityid
+		WHERE r.receiveid = #{receiveid}
+ 	</insert>
+ 	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
+ 	
+ 	<!-- 정상 LOT번호 검색 -->
+ 	<select id="selectNormalLot" resultType="QualityVO">
+ 		SELECT lotnumber
+ 		FROM productlot
+		WHERE produceid = #{produceid} OR receiveid = #{receiveid}
+ 	</select>
+ 	<!-- 정상 LOT번호 검색 -->
  
  </mapper>

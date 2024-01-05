@@ -546,6 +546,7 @@ $(document).ready(function($) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      <div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<div class="table-responsive">
 		<table class="table table-hover">
@@ -559,6 +560,7 @@ $(document).ready(function($) {
       	</table>
       	</div>
       	</div>
+      </div>
 			
       </div>
       <div class="modal-footer">
@@ -581,7 +583,7 @@ $(document).ready(function($) {
 
         // AJAX 요청
         $.ajax({
-            url: "/roastedBeanLot",
+            url: "/normalLot",
             type: "GET",
             data: { produceid: produceid },  // 파라미터 전송
             dataType: "JSON",
