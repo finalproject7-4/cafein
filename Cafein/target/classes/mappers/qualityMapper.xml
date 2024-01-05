@@ -499,6 +499,30 @@
 		WHERE lotnumber = #{lotnumber}
 	</update>
 	<!-- roastedBean 검수, 불량 처리 (포장) -->
+	
+	<!-- 품질 관리 토스트 데이터 조회 (생산 + 반품) -->
+	<select id="productQualityToast" resultType="QualityVO">
+		SELECT qualityid, q.itemtype, itemname, DATE(q.registerationdate) AS 'registerationdate', q.auditstatus
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		WHERE (q.itemtype = '생산' OR q.itemtype = '반품') AND q.auditstatus != '검수완료'
+		ORDER BY registerationdate
+		LIMIT 0, 1
+	</select>
+	<!-- 품질 관리 토스트 데이터 조회 (생산 + 반품) -->
+	
+	<!-- 품질 관리 토스트 데이터 조회 (자재) -->
+	<select id="materialQualityToast" resultType="QualityVO">
+		SELECT qualityid, i.itemtype, itemname, DATE(q.registerationdate) AS 'registerationdate', q.auditstatus
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		WHERE q.itemtype = '자재' AND q.auditstatus != '검수완료'
+		ORDER BY registerationdate
+		LIMIT 0, 1
+	</select>
+	<!-- 품질 관리 토스트 데이터 조회 (자재) -->
 
 	<!-- 품질 관리 목록 (생산 / 반품) 추가 : WHERE q.itemtype = '생산' OR q.itemtype = '반품' -->
 </mapper>

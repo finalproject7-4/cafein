@@ -490,4 +490,17 @@ public class QualityController {
 		
 		return "redirect:/quality/qualities";
 	}
+	
+	// http://localhost:8088/quality/productQualityToast
+	@GetMapping(value = "/productQualityToast")
+	// 품질 관리 미완료 알림 토스트 (생산 + 반품)
+	public void productQualityToast(Model model) throws Exception{
+		model.addAttribute("productToast", qService.productQualityToast());
+	}
+	
+	@GetMapping(value = "/materialQualityToast")
+	// 품질 관리 미완료 알림 토스트 (자재)
+	public void materalQualityToast(Model model) throws Exception{
+		model.addAttribute("materialToast", qService.materialQualityToast());
+	}
 }

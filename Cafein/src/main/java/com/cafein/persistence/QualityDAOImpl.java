@@ -181,6 +181,20 @@ public class QualityDAOImpl implements QualityDAO {
 		sqlSession.update(NAMESPACE + ".updateRoastedBeanDefect", vo);
 	}
 
+	// 품질 관리 토스트 데이터 조회 (생산 + 반품)
+	@Override
+	public QualityVO selectProductQualityToast() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".productQualityToast");
+	}
+
+	// 품질 관리 토스트 데이터 조회 (자재)
+	@Override
+	public QualityVO selectMaterialQualityToast() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".materialQualityToast");
+	}
+
 	
 	
 	
