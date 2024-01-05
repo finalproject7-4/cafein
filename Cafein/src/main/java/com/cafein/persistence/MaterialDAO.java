@@ -59,6 +59,9 @@ public interface MaterialDAO {
 	// 출고 목록 총 개수
 	public Integer getReleasesCount(ReleasesVO vo) throws Exception;
 
+	// 출고코드 개수 계산 (중복코드 생성 방지)
+	public Integer getreleasecodeCount(String datePart) throws Exception;
+
 
 
 }

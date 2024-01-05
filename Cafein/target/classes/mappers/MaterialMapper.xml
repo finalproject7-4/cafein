@@ -181,7 +181,7 @@
 	<!-- 출고 목록 -->
 	<select id="getReleasesList" resultType="ReleasesVO">
 		select rl.releaseid, rl.releasecode, rl.stockid, 
-			   rl.releasestate, rl.releasedate, rl.releasequantity, 
+			   rl.releasedate, rl.releasequantity, 
 			   sto.stockquantity, it.itemname, mem.membername
 		from releases rl
 		join stock sto 
@@ -221,5 +221,11 @@
 			</if>		
 		</where>	
 	</select>
+	
+	<!-- 입고코드 개수 계산 -->
+	<select id="getreleasecodeCount" resultType="integer">
+		select count(*) from releases
+		where releasecode like concat('%', #{datePart}, '%')
+	</select>	
 	
 </mapper>

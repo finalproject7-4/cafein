@@ -58,6 +58,8 @@ public interface MaterialService {
 
 	// 출고 목록 총 개수
 	public Integer releasesCount(ReleasesVO vo) throws Exception;
-
+	
+	// 출고코드 개수 계산 (중복코드 생성 방지)
+	public Integer releasecodeCount(String datePart) throws Exception;
 	
 }
