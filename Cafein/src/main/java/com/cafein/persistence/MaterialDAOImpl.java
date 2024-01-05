@@ -124,6 +124,12 @@ public class MaterialDAOImpl implements MaterialDAO {
 		logger.debug("DAO - insertQuality(ReceiveVO vo)");
 		sqlSession.insert(NAMESPACE + ".insertQuality", vo);
 	}
+
+	@Override
+	public Integer getreleasecodeCount(String datePart) throws Exception {
+		logger.debug("DAO - getreleasecodeCount(String datePart)");
+		return sqlSession.selectOne(NAMESPACE + ".getreleasecodeCount", datePart);
+	}
 	
 	
 }

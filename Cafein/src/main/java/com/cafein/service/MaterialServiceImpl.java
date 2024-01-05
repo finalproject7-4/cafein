@@ -123,6 +123,12 @@ public class MaterialServiceImpl implements MaterialService {
 		return materdao.getReleasesCount(vo);
 	}
 
+	@Override
+	public Integer releasecodeCount(String datePart) throws Exception {
+		logger.debug("Service - releasecodeCount(String datePart)");
+		return materdao.getreleasecodeCount(datePart);
+	}
+
 
 	
 }
