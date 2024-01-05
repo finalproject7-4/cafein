@@ -124,7 +124,8 @@
 											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<input value="불러오기" type="button" class="btn btn-outline-dark" 
-												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
+												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 
 												 
 											</td>
@@ -483,21 +484,22 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form role="form" action="/sales/modifyPO" method="post">
-				poid<input type="text" name="poid" id="rpoid"><br>
-				clientid<input type="text" name="clientid" id="rclientid"><br>
-				itemid<input type="text" name="itemid" id="ritemid"><br>
-				
+				<form role="form" action="/sales/receipt" method="get">
 				<div class="modal-body">
+				poid
+				<input id="rpoid" name="poid" class="form-control mb-3" type="number" value="" readonly>
+				clientid
+				<input id="rclientid" name="clientid" class="form-control mb-3" type="number" value="" readonly>
+				itemid
+				<input id="ritemid" name="itemid" class="form-control mb-3" type="number" value="" readonly>
 				납품처/코드
-				<input autocomplete="off" id="rclientname" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
-				
+				<input autocomplete="off" id="rclientname" name="clientname" class="form-control mb-3" type="text"  readonly>				
 				품목명/코드
-				<input autocomplete="off" id="ritemname" name="itemname" class="form-control mb-3" type="text"  >
+				<input autocomplete="off" id="ritemname" name="itemname" class="form-control mb-3" type="text" readonly >
 					<div class="mb-3">
 						<label for="postate" class="col-form-label"><b>수주상태</b></label>
-						<select class="form-select" id="rfloatingSelect" name="postate">
-						    <optgroup label="수주상태">
+						<select class="form-select" id="rfloatingSelect" name="postate" disabled>
+						    <optgroup label="수주상태" >
 						        <option value="대기">대기</option>
 						        <option value="진행">진행</option>
 						        <option value="완료">완료</option>
@@ -506,7 +508,7 @@
 						</select>
 					</div>	
 					수량
-					<input autocomplete="off" id="rpocnt" name="pocnt" class="form-control mb-3" type="number" value="">
+					<input autocomplete="off" id="rpocnt" name="pocnt" class="form-control mb-3" type="number" value="" readonly>
 					
 					<div class="row">
 					<div class="col">
@@ -516,19 +518,17 @@
 					
 					<div class="col">
 					완납예정일
-					<input name="ordersduedate" type="date" id="rdate" class="form-control" value="">
+					<input name="ordersduedate" type="date" id="rdate" class="form-control" value="" readonly>
 					</div>
 					</div><br>
 					
-					<br>
-					
-					담당자
-					<input autocomplete="off" id="rmembercode" name="membercode" class="form-control mb-3" type="number" value="">
+					담당자코드
+					<input autocomplete="off" id="rmembercode" name="membercode" class="form-control mb-3" type="number" value="" readonly>
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" id="receiptBtn">저장</button>
+						data-bs-dismiss="modal">확인</button>
+					<input type="button" class="btn btn-primary" id="receiptBtn" value="엑셀파일다운">
 				</div>
 				</form>
 			</div>

@@ -14,16 +14,15 @@
 
 	<!-- 수주 조회 -->
 	<select id="getPOList" resultType="com.cafein.domain.SalesVO">
-	    SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
-	    cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
-	    po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
-	    FROM purchaseorder po
-	    JOIN item ON po.itemid = item.itemid
-	    JOIN client cli ON po.clientid = cli.clientid
-	    <if test="postate != null" >
-   			where postate=#{postate}
-	    </if>
-	    ORDER BY ordersdate desc, poid desc
+	   SELECT re.receiptid, cli.clientname, cli.businessnumber, cli.representative, cli.clientaddress, 
+	cli.clientphone, cli.clientfax, ship.lotnumber, item.itemname, item.origin, item.itemweight, 
+	item.itemprice, po.ordersduedate, re.etc, re.sign
+		FROM receipt re
+		JOIN client cli ON re.clientid = cli.clientid
+		JOIN ship ON re.shipid = ship.shipid
+		JOIN item ON re.itemid = item.itemid
+		JOIN purchaseorder po ON re.poid = po.poid
+		where poid=#{poid}
 	</select>
 	
 	
