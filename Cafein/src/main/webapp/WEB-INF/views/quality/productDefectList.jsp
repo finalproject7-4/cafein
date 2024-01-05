@@ -69,7 +69,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${dlist.itemcode }</td>
 									<td>${dlist.itemname }</td>
 									<c:if test="${dlist.weight != 0 }">
-									<td>${dlist.weight }</td>
+									<td>${dlist.weight }(g)</td>
 									</c:if>
 									<c:if test="${dlist.weight == 0 }">
 									<td></td>
@@ -95,7 +95,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</table>
 			</div>
 			
-						<!-- 페이지 블럭 생성 -->
+			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
     				<li class="page-item">

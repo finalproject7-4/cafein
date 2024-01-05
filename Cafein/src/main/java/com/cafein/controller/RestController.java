@@ -355,7 +355,7 @@ public class RestController {
 		
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = sheet.createRow(0);
-	    String[] headers = {"불량번호", "품질관리번호", "상품구분", "품목코드", "제품명", "중량", "불량", "불량사유", "처리방식", "등록일"};
+	    String[] headers = {"불량번호", "품질관리번호", "상품구분", "품목코드", "제품명", "중량 (g)", "불량", "불량사유", "처리방식", "등록일"};
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);

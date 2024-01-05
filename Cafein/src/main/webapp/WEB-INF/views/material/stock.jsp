@@ -91,7 +91,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
  									실사 변경
 									</button>
 									</td>
-									<td>${slist.storagecode } - ${slist.storagename }
+									<td>
+									<c:if test="${!empty slist.storagecode }">
+									${slist.storagecode } - ${slist.storagename }
+									</c:if>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('원자재') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
@@ -422,7 +425,11 @@ $(document).ready(function() {
         linputField.value = lotNumber;
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + " - " + storageName;
+        if(storageCode != ""){
+        	stinputField.value = storageCode + " - " + storageName;        	
+        }else{
+        	stinputField.value = "입고 라인";
+        }
     });
 });
 </script>
@@ -511,7 +518,11 @@ $(document).ready(function() {
         linputField.value = lotNumber;
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + " - " + storageName;
+        if(storageCode != ""){
+        	stinputField.value = storageCode + " - " + storageName;        	
+        }else{
+        	stinputField.value = "입고 라인";
+        }
     });
 });
 </script>

@@ -59,8 +59,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">생산번호</th>
 								<th scope="col">중량</th>
+								<th scope="col">생산번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
 								<th scope="col">최종 작업자</th>
@@ -76,6 +76,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemtype }</td>
 									<td>${slist.itemcode }</td>
 									<td>${slist.itemname }</td>
+									<c:if test="${slist.weight != 0 }">
+									<td>${slist.weight }(g)</td>
+									</c:if>
+									<c:if test="${slist.weight == 0 }">
+									<td></td>
+									</c:if>
 									<td>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('반품') }">
 										${slist.returnid }
@@ -85,7 +91,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 										</a>
 									</c:if>
 									</td>
-									<td>${slist.weight }g</td>
 									<td>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개
@@ -102,7 +107,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
  									실사 변경
 									</button>
 									</td>
-									<td>${slist.storagecode } - ${slist.storagename }
+									<td>
+									<c:if test="${!empty slist.storagecode }">
+									${slist.storagecode } - ${slist.storagename }
+									</c:if>
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
@@ -276,11 +284,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="nowquantity" class="col-form-label">현재 재고량:</label>
+           		<label for="nowquantity" class="col-form-label">현재 재고량 (개):</label>
             	<input type="number" class="form-control" id="nowquantity" name="nowquantity" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="stockquantity" class="col-form-label">변경 재고량:</label>
+            	<label for="stockquantity" class="col-form-label">변경 재고량 (개):</label>
             	<input type="number" class="form-control" id="qid" name="stockquantity" value="" required>
   			</div>
 		</div>
@@ -436,7 +444,11 @@ $(document).ready(function() {
         }
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + " - " + storageName;
+        if(storageCode != ""){
+        	stinputField.value = storageCode + " - " + storageName;        	
+        }else{
+        	stinputField.value = "생산 / 반품 라인";
+        }
     });
 });
 </script>
@@ -475,7 +487,7 @@ $(document).ready(function() {
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="infoweight" class="col-form-label">중량:</label>
+           		<label for="infoweight" class="col-form-label">중량 (g):</label>
             	<input type="text" class="form-control" id="infoweight" name="weight" value="" readonly>
   			</div>
  			<div class="col">
