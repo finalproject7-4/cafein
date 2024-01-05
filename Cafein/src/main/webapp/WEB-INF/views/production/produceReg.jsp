@@ -126,7 +126,7 @@
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode">
 							</div>
-							<div class="col" style="display:none;">
+							<div class="col">
 								<label for="itemid" class="col-form-label">아이템ID</label>
 								<input name="itemid" class="form-control" id="itemidPro">
 							</div>

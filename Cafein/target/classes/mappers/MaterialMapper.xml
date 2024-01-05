@@ -222,7 +222,7 @@
 		</where>	
 	</select>
 	
-	<!-- 입고코드 개수 계산 -->
+	<!-- 출고코드 개수 계산 -->
 	<select id="getreleasecodeCount" resultType="integer">
 		select count(*) from releases
 		where releasecode like concat('%', #{datePart}, '%')

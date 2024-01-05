@@ -225,8 +225,8 @@
 	
 	<!-- 재고리스트 출력 -->
 	<insert id="insertReleasesList">
-		insert into releases(releasecode, membercode, itemid, stockid, releasequantity )
-		values (#{releasecode}, #{membercode}, #{itemid}, #{stockid}, #{releasequantity})
+		insert into releases(releasecode, membercode, itemid, stockid, releasequantity, releasedate )
+		values (#{releasecode}, #{membercode}, #{itemid}, #{stockid}, #{releasequantity}, #{releasedate})
 	</insert>
 	
 	

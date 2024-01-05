@@ -44,7 +44,7 @@ public class ProductionController {
 	private ProductionService pService;
 	
 	@Inject
-	private MaterialService mService;
+	private MaterialService mateService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
 	// http://localhost:8088/production/produceList
@@ -91,9 +91,8 @@ public class ProductionController {
 		logger.debug("지시 정보는? " + vo);
 		String process = vo.getProcess();
 		
-		String[] rrate = vo.getRate().split(":");
-
-		// 로스팅 공정이 아닐때는 온도 0으로 설정
+		
+			// 로스팅 공정이 아닐때는 온도 0으로 설정
 		if (!process.equals("로스팅")) {
 			vo.setTemper(0);
 		}
@@ -104,19 +103,49 @@ public class ProductionController {
 		}
 		pService.regProduce(vo);
 		
+		// 총 생산량 / 비율로 실제 재고에서 차감할 수량 계산
+		String[] rrate = vo.getRate().split(":");
 		ReleasesVO rvo = new ReleasesVO();
 		
+	
+		int rate1;
+		int rate2;
+		int rate3;
+				logger.debug("생산일은?! "+vo.getProducedate());
 		if(vo.getStockid1() !=null) {
+			rvo.setMembercode(vo.getMembercode());
+			rvo.setReleasedate(vo.getProducedate());
+			rvo.setItemid(vo.getItemid1());
+			rate1 = Integer.parseInt(rrate[0]);
+			int usingAmount = (vo.getAmount()/10000)*rate1;
+			rvo.setReleasecode(generateReceiveCode());
+			rvo.setReleasequantity(usingAmount);
 			rvo.setStockid(vo.getStockid1());
 			pService.insertReleasesList(rvo);			
 		}
 		
 		if(vo.getStockid2() != null) {
+			rvo.setMembercode(vo.getMembercode());
+			rvo.setReleasedate(vo.getProducedate());
+			rvo.setItemid(vo.getItemid2());
+			rate2 = Integer.parseInt(rrate[1]);
+			int usingAmount2 = (vo.getAmount()/10000)*rate2;
+			rvo.setReleasequantity(usingAmount2);
+			rvo.setReleasecode(generateReceiveCode());
 			rvo.setStockid(vo.getStockid2());
 			pService.insertReleasesList(rvo);			
+	
 		}
+			
 		
 		if(vo.getStockid3() != null) {
+			rvo.setMembercode(vo.getMembercode());
+			rvo.setReleasedate(vo.getProducedate());
+			rvo.setItemid(vo.getItemid3());
+			rate3 = Integer.parseInt(rrate[2]);
+			int usingAmount3 = (vo.getAmount()/10000)*rate3;
+			rvo.setReleasequantity(usingAmount3);
+			rvo.setReleasecode(generateReceiveCode());
 			rvo.setStockid(vo.getStockid3());
 			pService.insertReleasesList(rvo);			
 		}
@@ -132,7 +161,7 @@ public class ProductionController {
 	      String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
 	      // 출고코드 개수 계산
-//	      int counter = mService.releasecodeCount(datePart) + 1;
+	      int counter = mateService.releasecodeCount(datePart) + 1;
 
 	      String formattedCounter = String.format("%02d", counter);
 	      return prefix + datePart + formattedCounter;

@@ -461,7 +461,7 @@ function fetchData(searchBtnValue) {
     	var secondStockId = $(columns[12]).text(); // 두번째 재고 id (출고 등록에 사용)
     	var thirdStockId = $(columns[13]).text(); // 세번째 재고 id (출고 등록에 사용)
     	var temper = $(columns[4]).text(); // 온도
-    	var itemid = $(columns[15]).text(); // 아이템ID
+    	var itemid = $(columns[14]).text(); // 아이템ID
     	
     	$('#itemnamePro').val(selectedItemName);
     	$('#rate').val(selectedRate);

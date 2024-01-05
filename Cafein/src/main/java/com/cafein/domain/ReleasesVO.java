@@ -18,6 +18,7 @@ public class ReleasesVO {
 	
 	// item 테이블
 	private String itemname;
+	private int itemid;
 	
 	// stock 테이블
 	private int stockquantity;
