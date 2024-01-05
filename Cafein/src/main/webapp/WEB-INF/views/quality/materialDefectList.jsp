@@ -269,11 +269,3 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
-
-<!-- 툴팁 추가 -->
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
-<!-- 툴팁 추가 -->

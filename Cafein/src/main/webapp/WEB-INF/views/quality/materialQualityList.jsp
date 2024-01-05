@@ -33,7 +33,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+				<input type="submit" value="검색">
 			</form>	
 			</div>
 				<form action="/materialQualityPrint" method="GET">
@@ -780,11 +780,3 @@ $(document).ready(function(){
 });
 </script>
 <!-- 날짜 비교 -->
-
-<!-- 툴팁 추가 -->
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
-<!-- 툴팁 추가 -->
