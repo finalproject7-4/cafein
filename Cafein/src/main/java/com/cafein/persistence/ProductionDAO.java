@@ -7,6 +7,7 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.QualityVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
 
 public interface ProductionDAO {
@@ -68,6 +69,9 @@ public interface ProductionDAO {
 	
 	// 로스팅 -> 포장으로 작업 전환시 품질테이블에 신규 데이터 삽입
 	public void regPackingQualityList(QualityVO vo) throws Exception;
+	
+	// 생산지시 등록시 출고 등록(대기)
+	public void insertReleasesList(ReleasesVO vo) throws Exception;
 	
 	
 }

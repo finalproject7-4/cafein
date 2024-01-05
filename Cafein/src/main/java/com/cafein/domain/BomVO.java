@@ -24,4 +24,9 @@ public class BomVO {
 	private String itemname1;
 	private String itemname2;
 	private String itemname3;
+	
+	// 출고등록에 필요한 변수
+	private Integer stockid1;
+	private Integer stockid2;
+	private Integer stockid3;
 }

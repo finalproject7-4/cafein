@@ -37,6 +37,9 @@
 										<th scope="col" style="display: none;">원재료ID1</th>
 										<th scope="col" style="display: none;">원재료ID2</th>
 										<th scope="col" style="display: none;">원재료ID3</th>
+										<th scope="col" style="display: none;">재고ID1</th>
+										<th scope="col" style="display: none;">재고ID2</th>
+										<th scope="col" style="display: none;">재고ID3</th>
 										<th scope="col"  style="display: none;">아이템ID</th>
                                     </tr>
 								</thead>
@@ -54,6 +57,9 @@
                                       <td style="display: none;">${bList.itemid1 }</td> 
                                       <td style="display: none;">${bList.itemid2 }</td> 
                                       <td style="display: none;">${bList.itemid3 }</td> 
+                                      <td style="display: none;">${bList.stockid1 }</td> 
+                                      <td style="display: none;">${bList.stockid2 }</td> 
+                                      <td style="display: none;">${bList.stockid3 }</td> 
                                       <td style="display: none;">${bList.itemid }</td> 
                                     </tr>
 								  </c:forEach>
@@ -451,8 +457,11 @@ function fetchData(searchBtnValue) {
     	var firstItemId = $(columns[8]).text(); // 첫번째 원재료 id (등록에 사용)
     	var secondItemId = $(columns[9]).text(); // 두번째 원재료 id (등록에 사용)
     	var thirdItemId = $(columns[10]).text(); // 세번째 원재료 id (등록에 사용)
+    	var firstStockId = $(columns[11]).text(); // 첫번째 재고 id (출고 등록에 사용)
+    	var secondStockId = $(columns[12]).text(); // 두번째 재고 id (출고 등록에 사용)
+    	var thirdStockId = $(columns[13]).text(); // 세번째 재고 id (출고 등록에 사용)
     	var temper = $(columns[4]).text(); // 온도
-    	var itemid = $(columns[11]).text(); // 아이템ID
+    	var itemid = $(columns[15]).text(); // 아이템ID
     	
     	$('#itemnamePro').val(selectedItemName);
     	$('#rate').val(selectedRate);
@@ -462,6 +471,9 @@ function fetchData(searchBtnValue) {
     	$('#itemidOri1').val(firstItemId);
     	$('#itemidOri2').val(secondItemId);
     	$('#itemidOri3').val(thirdItemId);
+    	$('#stockid1').val(firstStockId);
+    	$('#stockid2').val(secondStockId);
+    	$('#stockid3').val(thirdStockId);
     	$('#temper').val(temper);
     	$('#itemidPro').val(itemid);
     	

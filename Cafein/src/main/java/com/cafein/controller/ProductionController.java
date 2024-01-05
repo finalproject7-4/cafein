@@ -2,6 +2,9 @@ package com.cafein.controller;
 
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +29,9 @@ import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.QualityVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
+import com.cafein.service.MaterialService;
 import com.cafein.service.ProductionService;
 
 @Controller
@@ -37,6 +42,9 @@ public class ProductionController {
 
 	@Inject
 	private ProductionService pService;
+	
+	@Inject
+	private MaterialService mService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
 	// http://localhost:8088/production/produceList
@@ -82,6 +90,8 @@ public class ProductionController {
 
 		logger.debug("지시 정보는? " + vo);
 		String process = vo.getProcess();
+		
+		String[] rrate = vo.getRate().split(":");
 
 		// 로스팅 공정이 아닐때는 온도 0으로 설정
 		if (!process.equals("로스팅")) {
@@ -94,8 +104,39 @@ public class ProductionController {
 		}
 		pService.regProduce(vo);
 		
+		ReleasesVO rvo = new ReleasesVO();
+		
+		if(vo.getStockid1() !=null) {
+			rvo.setStockid(vo.getStockid1());
+			pService.insertReleasesList(rvo);			
+		}
+		
+		if(vo.getStockid2() != null) {
+			rvo.setStockid(vo.getStockid2());
+			pService.insertReleasesList(rvo);			
+		}
+		
+		if(vo.getStockid3() != null) {
+			rvo.setStockid(vo.getStockid3());
+			pService.insertReleasesList(rvo);			
+		}
+		
 		return "redirect:/production/produceList";
 	}
+	
+	
+	  // 출고코드 생성 메서드
+	   public String generateReceiveCode() throws Exception {
+	      
+	      String prefix = "RL";
+	      String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+	      // 출고코드 개수 계산
+//	      int counter = mService.releasecodeCount(datePart) + 1;
+
+	      String formattedCounter = String.format("%02d", counter);
+	      return prefix + datePart + formattedCounter;
+	   }
 	
 
 	// BOM 등록

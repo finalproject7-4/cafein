@@ -101,12 +101,16 @@
 	<!-- BOM  목록 조회 -->
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
 		SELECT bomid, b.itemcode, b.itemid as itemid, itemid1, itemid2, itemid3, temper, rate, roastedtime,
-        i.itemname AS itemname, i1.itemname AS itemname1, i2.itemname AS itemname2, i3.itemname AS itemname3
+        i.itemname AS itemname, i1.itemname AS itemname1, i2.itemname AS itemname2, i3.itemname AS itemname3,
+        s1.stockid AS stockid1, s2.stockid AS stockid2, s3.stockid AS stockid3
 		FROM bom b
 		JOIN item i ON b.itemcode = i.itemcode
 		LEFT JOIN item i1 ON b.itemid1 = i1.itemid
 		LEFT JOIN item i2 ON b.itemid2 = i2.itemid
 		LEFT JOIN item i3 ON b.itemid3 = i3.itemid
+		LEFT JOIN stock s1 ON b.itemid1 = s1.itemid
+		LEFT JOIN stock s2 ON b.itemid2 = s2.itemid
+		LEFT JOIN stock s3 ON b.itemid3 = s3.itemid
 		WHERE i.available = 'Y'
  	</select>
 	
@@ -217,8 +221,13 @@
 		values ('생산', #{produceid}, #{itemid}, '포장', #{productquantity})
 	</insert>
 	
+	<!-- 블렌딩 대기 -> 생산중 변경시 재고 차감 -->
 	
-	
+	<!-- 재고리스트 출력 -->
+	<insert id="insertReleasesList">
+		insert into releases(releasecode, membercode, itemid, stockid, releasequantity )
+		values (#{releasecode}, #{membercode}, #{itemid}, #{stockid}, #{releasequantity})
+	</insert>
 	
 	
 </mapper>

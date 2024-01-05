@@ -36,6 +36,11 @@ public class ProduceVO {
 	private Criteria cri;
 
 
+	// 출고등록에 필요한 변수
+		private Integer stockid1;
+		private Integer stockid2;
+		private Integer stockid3;
+		private String rate;
 	
 	
 	
