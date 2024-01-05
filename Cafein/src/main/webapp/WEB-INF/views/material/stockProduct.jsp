@@ -78,7 +78,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemname }</td>
 									<td>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('반품') }">
-										${slist.lotnumber }
+										${slist.returnid }
 									</c:if>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('생산') }">
 										<a href="" class="BeanInfo" data-produceid="${slist.produceid }">${slist.produceid }
@@ -96,6 +96,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<button type="button" class="btn btn-primary btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
+									data-produceid="${slist.produceid }" data-returnid="${slist.returnid}" 
 									data-stockquantity="${slist.stockquantity }" data-itemname="${slist.itemname }" 
 									data-lotnumber="${slist.lotnumber }">
  									실사 변경
@@ -105,7 +106,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
-									data-itemname="${slist.itemname }" data-lotnumber="${slist.lotnumber }" 
+									data-itemname="${slist.itemname }" data-produceid="${slist.produceid }" 
+									data-returnid="${slist.returnid }" 
 									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
 									창고 이동
 									</button>
@@ -268,8 +270,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
             	<input type="text" class="form-control" id="itemname" name="itemname" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="lotnumber" class="col-form-label">LOT번호:</label>
-            	<input type="text" class="form-control" id="lotnumber" name="lotnumber" value="" readonly>
+            	<label for="produceid" class="col-form-label">생산/반품번호:</label>
+            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
@@ -302,6 +304,8 @@ $(document).ready(function() {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let stockId = button.getAttribute('data-stockid'); // stockid
         let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let produceId = button.getAttribute('data-produceid'); // produceid
+        let returnId = button.getAttribute('data-returnid'); // returnid
         let nowQuantity = button.getAttribute('data-stockquantity'); // stockquantity
         let itemName = button.getAttribute('data-itemname'); // stockquantity
         let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
@@ -319,8 +323,12 @@ $(document).ready(function() {
         let iinputField = myModal.querySelector('input[name="itemname"]');
         iinputField.value = itemName;
         
-        let linputField = myModal.querySelector('input[name="lotnumber"]');
-        linputField.value = lotNumber;
+        let pinputField = myModal.querySelector('input[name="produceid"]');
+        if(produceId != 0){
+        	pinputField.value = produceId;
+        }else if(returnId != 0){
+        	pinputField.value = returnId;
+        }
     });
 });
 </script>
@@ -366,8 +374,8 @@ $(document).ready(function() {
             	<input type="text" class="form-control" id="itemname" name="itemname" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="lotnumber" class="col-form-label">LOT번호:</label>
-            	<input type="text" class="form-control" id="lotnumber" name="lotnumber" value="" readonly>
+            	<label for="produceid" class="col-form-label">생산/반품번호:</label>
+            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
@@ -403,6 +411,8 @@ $(document).ready(function() {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let stockId = button.getAttribute('data-stockid'); // stockid
         let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let produceId = button.getAttribute('data-produceid'); // produceid
+        let returnId = button.getAttribute('data-returnid'); // returnid
         let itemName = button.getAttribute('data-itemname'); // stockquantity
         let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
         let storageName = button.getAttribute('data-storagename'); // storagename
@@ -418,8 +428,12 @@ $(document).ready(function() {
         let iinputField = myModal.querySelector('input[name="itemname"]');
         iinputField.value = itemName;
         
-        let linputField = myModal.querySelector('input[name="lotnumber"]');
-        linputField.value = lotNumber;
+        let pinputField = myModal.querySelector('input[name="produceid"]');
+        if(produceId != 0){
+        	pinputField.value = produceId;
+        }else if(returnId != 0){
+        	pinputField.value = returnId;
+        }
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
         stinputField.value = storageCode + " - " + storageName;
@@ -464,16 +478,12 @@ $(document).ready(function() {
            		<label for="infoweight" class="col-form-label">중량:</label>
             	<input type="text" class="form-control" id="infoweight" name="weight" value="" readonly>
   			</div>
-  			<div class="col">
-           		<label for="infoitemprice" class="col-form-label">단가:</label>
-				<input type="text" class="form-control" id="infoitemprice" name="itemprice" value="" readonly>
-  			</div>
-		</div>
-		<div class="row">
  			<div class="col">
            		<label for="inforoasteddate" class="col-form-label">로스팅일:</label>
             	<input type="text" class="form-control" id="inforoasteddate" name="roasteddate" value="" readonly>
   			</div>
+		</div>
+		<div class="row">
   			<div class="col">
            		<label for="infonote" class="col-form-label">비고:</label>
 				<input type="text" class="form-control" id="infonote" name="note" value="" readonly>
