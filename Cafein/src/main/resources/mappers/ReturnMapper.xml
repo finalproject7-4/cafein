@@ -51,26 +51,34 @@
  	
 	<!-- 반품 등록 -->
 	<insert id="insertReturn" >
-		insert into returns(returncode,itemname,submitdate,returndate,exchangedate,returnquantity,returnstatus,reprocessmethod,returntype,returnReason) 
-		values(#{returncode},#{itemname},#{submitdate},#{returndate},#{exchangedate},#{returnquantity},#{returnstatus},#{reprocessmethod},#{returntype},#{returnReason}) 	
+		insert into returns(returncode, itemid, returnname, returndate, exchangedate, returnquantity, returnstatus, reprocessmethod, returntype, returnReason, returninfo)
+    values(#{returncode}, (select itemid from item where itemname = #{returnname}), #{returnname}, #{returndate}, #{exchangedate}, #{returnquantity}, #{returnstatus}, #{reprocessmethod}, #{returntype}, #{returnReason}, #{returninfo}) 	
 	</insert>
  	
- 	<!-- 완제품 목록 -->
- 	<select id="prList" resultType="com.cafein.domain.ProduceVO">
- 		SELECT distinct itemname FROM produce
- 	</select>
  	
- 	<!-- 원자재,부자재 목록 -->
+ 	<!-- 아이템 목록 -->
  	<select id="itList" resultType="com.cafein.domain.ItemVO">
- 		SELECT * FROM item
+ 		SELECT itemid,itemcode, itemtype, itemname FROM item
  	</select>
  	
  	
  	<!-- 반품 수정 -->
  	<update id="updateReturn">
- 		update returns set itemname=#{itemname},returnquantity=#{returnquantity},submitdate=#{submitdate},returndate=#{returndate},exchangedate=#{exchangedate} 
+ 		update returns set itemname=#{itemname},returnquantity=#{returnquantity},returndate=#{returndate},exchangedate=#{exchangedate} 
  		where returnid=#{returnid}
  	</update>
  
+ 	<!-- 반품 삭제 -->
+ 	<delete id="deleteReturn">
+ 	DELETE FROM returns WHERE returnid = #{returnid}
+ 	</delete>
+ 	
+ 	<!-- 품질 관리 등록 -->
+ 	<insert id="addReturn">
+ 		insert into quality (itemtype,returnid,itemid,returnquantity)
+ 		values ('반품', #{returnid}, 
+ 		(SELECT itemid FROM item WHERE itemcode = #{itemcode}), #{returnquantity}
+ 		)
+ 	</insert>
  
 </mapper>

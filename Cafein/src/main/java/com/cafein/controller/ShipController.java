@@ -4,20 +4,25 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cafein.domain.ItemVO;
-import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -62,8 +67,18 @@ public class ShipController {
 		logger.debug("/sales/registSH 이동");                                          
 		return "redirect:/sales/SHList";                                             
 	}
+	
+	// 출하 검색
+	@RequestMapping(value = "/SHList", method = RequestMethod.POST)
+	@ResponseBody
+	public List<ShipVO> searchSHListPOST(@RequestBody Map<String, Object> searchParams) throws Exception {
+	    logger.debug("SearchSHListPOST() 실행. 검색 조건: {}", searchParams);
+	    List<ShipVO> result = shService.searchSHList(searchParams);
+	    logger.debug("출하 검색 결과 출력!");
+	    return result;
+	}
 
-	// 작업 지시 코드 생성 메서드
+	// 출하 코드 생성 메서드
 	public String makeSHcode(ShipVO svo) throws Exception {
 	    // DB에서 전체 작업 수 조회
 	    int count = shService.shCount(svo);
@@ -77,14 +92,41 @@ public class ShipController {
 	    // 최종 코드 생성
 	    return codePrefix + datePart + countPart;
 	}
+	
+	// 출하 수정 - POST
+		// http://localhost:8088/sales/SHList
+		@RequestMapping(value = "/modifySH", method = RequestMethod.POST)
+		public String modifyPOST(ShipVO svo) throws Exception {
+			logger.debug(" /modify form -> modifyPOST()");
+			logger.debug(" 수정할 정보 " + svo);
+
+			// 서비스 - 정보수정 동작
+			int result = shService.SHModify(svo);
+			logger.debug("result", result);
+			return "redirect:/sales/SHList";
+		}
 
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
 	@RequestMapping(value = "/PFList", method = RequestMethod.GET)
-	public void AllPFListGET(Model model) throws Exception {
+	public void AllPFListGET(Model model, WorkVO wvo) throws Exception {
 		logger.debug("AllPFListGET() 실행");
+		
 		model.addAttribute("AllPFList", shService.AllPFList());
 		logger.debug("실적 리스트 출력!");
+	}
+	
+	// 실적 수정 - POST
+	// http://localhost:8088/sales/SHList
+	@RequestMapping(value = "/modifyPF", method = RequestMethod.POST)
+	public String modifyPFPOST(WorkVO wvo) throws Exception {
+		logger.debug(" /modify form -> modifyPOST()");
+		logger.debug(" 수정할 정보 " + wvo);
+
+		// 서비스 - 정보수정 동작
+		int result = shService.PFModify(wvo);
+		logger.debug("result", result);
+		return "redirect:/sales/PFList";
 	}
 
 }

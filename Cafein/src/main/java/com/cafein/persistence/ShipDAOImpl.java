@@ -61,6 +61,23 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : getShipCount(ShipVO svo)");
 		return sqlSession.selectOne(NAMESPACE + ".getSHCount", svo);
 	}
+	
+	// 출하 검색
+	@Override
+	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".searchSHList", searchParams);
+	}
+	
+	// 출하 수정
+	@Override
+	public int updateSH(ShipVO svo) throws Exception {
+		logger.debug("DAO : SHModify(ShipVO svo)");
+		return sqlSession.update(NAMESPACE + ".updateSH", svo);
+	}
+	
+	
+	
+	
 
 	// 작업 지시 조회
 	@Override
@@ -111,11 +128,13 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.selectList(NAMESPACE+".getPFList");
 	}
 
+	// 실적 수정
 	@Override
-	public void registPF(WorkVO wvo) throws Exception {
-		logger.debug(" DAO : registPF(WorkVO wvo)");
-		sqlSession.insert(NAMESPACE+".registPF",wvo);
+	public int updatePF(WorkVO wvo) throws Exception {
+		logger.debug("DAO : PFModify(WorkVO wvo)");
+		return sqlSession.update(NAMESPACE + ".updatePF", wvo);
 	}
+
 	
 	
 
