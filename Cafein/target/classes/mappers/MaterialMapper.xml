@@ -43,7 +43,7 @@
 		join item it 
 		on od.itemcode = it.itemcode
 		where not exists (select orderscode from receive rc where rc.orderscode = od.orderscode) 
-		AND od.orderstate = '완료'	
+		and od.orderstate = '완료'	
 	</select>
 	
 	<!-- 발주 목록 총 개수 -->
@@ -98,10 +98,12 @@
 	<select id="getReceiveList" resultType="ReceiveVO">
 		select rc.receiveid, rc.receivecode, rc.orderscode, rc.receivequantity, rc.receivedate,
 	   		   rc.itemid, rc.storagecode, rc.lotnumber, rc.membercode, rc.receivestate,
-	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername
+	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername, sto.stockid
 		from receive rc
 		join item it 
 		on rc.itemid = it.itemid
+		left outer join stock sto
+		on it.itemid = sto.itemid		
 		left outer join member mem
 		on rc.membercode = mem.membercode
 		left outer join orders od
@@ -156,6 +158,12 @@
 	<insert id="insertReceive">
   		insert into receive (receivecode,orderscode,membercode,itemid,storagecode,lotnumber,receivestate,receivedate,receivequantity)
   		values (#{receivecode},#{orderscode},#{membercode},#{itemid},#{storagecode},#{lotnumber},#{receivestate},#{receivedate},#{receivequantity})	
+	</insert>
+	
+	<!-- 입고 완료 후 품질관리로 이동 -->
+	<insert id="insertQuality">
+		insert into quality (receiveid,itemid,itemtype,productquantity)
+		values (#{receiveid},#{itemid},'자재',#{receivequantity})
 	</insert>
 	
 	<!-- 입고 수정 -->

@@ -24,6 +24,9 @@ public class OrdersVO {
 	
 	private int orderprice;
 	
+	// stock 테이블
+	private int stockid;
+	
 	// member 테이블
 	private String membername;
 	

@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>      
 <%@ include file="../include/header.jsp" %>
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
 <!-- 입고관리 페이지 시작 -->
 <div class="col-12">
@@ -15,7 +17,7 @@
 		<span style="margin-left: 300px">
 			입고일자 <input type="date" class="m-2" name="receiveStartDate"> ~ <input type="date" class="m-2" name="receiveEndDate">			
 		</span>			
-		<span style="margin-left: 230px;">
+		<span style="margin-left: 225px;">
 			<input type="submit" class="btn btn-sm btn-dark" value="조회">
 		</span>
 		</form>
@@ -42,7 +44,6 @@
 						<th scope="col">품명</th>
 						<th scope="col">수량</th>
 						<th scope="col">입고일자</th>
-						<th scope="col">창고코드</th>
 						<th scope="col">LOT번호</th>
 						<th scope="col">담당자</th>
 						<th scope="col">입고상태</th>
@@ -63,7 +64,6 @@
 						<td>
 							<fmt:formatDate value="${rcl.receivedate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
-						<td>${rcl.storagecode }</td>
 						<td>${rcl.lotnumber }</td>
 						<td>${rcl.membername }</td>
 						<c:choose>
@@ -79,7 +79,7 @@
 								<td>${rcl.receivestate }</td>
 								<td>
 									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membercode }')">수정
+										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.stockid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membercode }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-outline-dark m-1" value="삭제" id="deleteBtn">
 								</td>
@@ -205,7 +205,7 @@
 			
 		</div>
 	</div>
-	<!-- 입고 목록 시작 -->
+	<!-- 입고 목록 끝 -->
 
 	<!-- 입고 등록 모달 -->
 	<jsp:include page="receiveRegist.jsp"/>
@@ -231,6 +231,7 @@
                         	<table class="table">
                             	<thead>
                                 	<tr>
+                                	   <th style="display: none;"></th>
                                 	   <th style="display: none;"></th>
                                        <th scope="col">발주코드</th>
                                        <th scope="col">품명</th>
@@ -299,7 +300,7 @@
     <!-- 창고 목록 모달 끝 -->
     
 </div>
-<!-- 입고관리 페이지 시작 -->
+<!-- 입고관리 페이지 끝 -->
 
 <script>
 	var receiveRegistModal = document.getElementById('receiveRegistModal')
@@ -311,9 +312,10 @@
 	})
 	
 	// 입고 수정
-	function receiveModifyModal(receiveid, itemid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membercode) {
+	function receiveModifyModal(receiveid, itemid, stockid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membercode) {
 		console.log('receiveid:', receiveid);
 		console.log('itemid:', itemid);
+		console.log('stockid:', stockid);
 		console.log('orderscode:', orderscode);
 		console.log('itemname:', itemname);
 		console.log('ordersquantity:', ordersquantity);
@@ -327,6 +329,7 @@
 		// 가져온 값들을 모달에 설정
 		$("#receiveid2").val(receiveid);
 		$("#itemid2").val(itemid);
+		$("#stockid2").val(stockid);
 		$("#orderscode2").val(orderscode);
 		$("#itemname2").val(itemname);
 		$("#ordersquantity2").val(ordersquantity);
@@ -362,7 +365,18 @@
 	
 	// 입고 삭제 (입고상태가 대기일 경우에만 삭제 가능)
     $("td").on("click", "#deleteBtn", function() {
-        if(confirm("삭제하시겠습니까?")) {
+    	
+    	Swal.fire({
+  		  title: '삭제하시겠습니까?',
+  		  text: "",
+  		  icon: 'warning',
+  		  showCancelButton: true,
+  		  confirmButtonColor: '#3085d6',
+  		  cancelButtonColor: '#d33',
+  		  confirmButtonText: '삭제',
+  		  cancelButtonText: '취소'
+  		}).then((result) => {
+  			if (result.value) {
         	
         	var receiveid = $(this).closest("tr").find("td:first").text(); // 입고id
 			console.log(receiveid);
@@ -385,8 +399,9 @@
            		}
 			});
         	
-        } 
-        
+        	} 
+   		 })
+   		 
      });		
 	
     /* 달력 이전날짜 비활성화 */

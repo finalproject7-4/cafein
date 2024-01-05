@@ -118,6 +118,12 @@ public class MaterialDAOImpl implements MaterialDAO {
 		logger.debug("DAO - getReleasesCount(ReleasesVO vo)");
 		return sqlSession.selectOne(NAMESPACE + ".getReleasesCount", vo);
 	}
+
+	@Override
+	public void insertQuality(ReceiveVO vo) throws Exception {
+		logger.debug("DAO - insertQuality(ReceiveVO vo)");
+		sqlSession.insert(NAMESPACE + ".insertQuality", vo);
+	}
 	
 	
 }

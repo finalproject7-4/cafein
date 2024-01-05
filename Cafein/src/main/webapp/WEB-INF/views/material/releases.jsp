@@ -3,9 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp" %>
 
+<!-- 출고관리 페이지 시작 -->
 <div class="col-12">
 
-	<!-- 출고 조회 -->
+	<!-- 출고 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<form name="search" method="get">
 		<span>
@@ -14,28 +15,29 @@
 		<span style="margin-left: 300px">
 			출고일자 <input type="date" class="m-2" name="releaseStartDate"> ~ <input type="date" class="m-2" name="releaseEndDate">			
 		</span>			
-		<span style="margin-left: 230px;">
+		<span style="margin-left: 225px;">
 			<input type="submit" class="btn btn-sm btn-dark" value="조회">
 		</span>
 		</form>
 	</div>
-	<!-- 출고 조회 -->
+	<!-- 출고 조회 끝 -->
 
-	<!-- 출고 목록 -->
+	<!-- 출고 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(releasesList)} 건</span>
 		<span style="margin-left: 95%;">
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+<!-- 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button> -->
 <!-- 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseModifyModal" data-bs-whatever="@getbootstrap" value="수정"> -->
 <!-- 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseDetailModal" data-bs-whatever="@getbootstrap" value="상세내역"> -->
 		</span>
 		
 		<div class="table-responsive">
-			<table class="table" style="margin-top: 10px;">
+			<table class="table" style="margin-top: 20px;">
 				<thead>
 					<tr style="text-align: center;">
 						<th scope="col">번호</th>
 						<th scope="col">출고코드</th>
+						<th scope="col">생산지시번호</th>
 						<th scope="col">품명</th>
 						<th scope="col">재고수량</th>
 						<th scope="col">출고수량</th>
@@ -52,6 +54,7 @@
 							<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
 						</td>
 						<td>${rl.releasecode }</td>
+						<td></td>
 						<td>${rl.itemname }</td>
 						<td>${rl.stockquantity }</td>
 						<td>${rl.releasequantity }</td>
@@ -63,16 +66,16 @@
 							<c:when test="${rl.releasestate == '완료'}">
 								<td><b>${rl.releasestate }</b></td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="<%-- receiveDetailModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membercode }') --%>">상세내역
+									<button type="button" class="btn btn-sm btn-outline-dark m-1"
+										onclick="<%-- releaseDetailModal('${rl.releaseid }', '${rl.itemid }', '${rl.orderscode }', '${rl.itemname }', '${rl.ordersquantity }', '${rl.receivestate }', '${rl.receivedate }', '${rl.receivequantity }', '${rl.storagecode }', '${rl.lotnumber }', '${rl.membercode }') --%>">상세내역
 									</button>
 								</td>
 							</c:when>
 							<c:otherwise>
 								<td>${rl.releasestate }</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="<%-- receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membercode }') --%>">수정
+									<button type="button" class="btn btn-sm btn-outline-dark m-1"
+										onclick="<%-- releaseModifyModal('${rl.releaseid }', '${rl.itemid }', '${rl.orderscode }', '${rl.itemname }', '${rl.ordersquantity }', '${rl.receivestate }', '${rl.receivedate }', '${rl.receivequantity }', '${rl.storagecode }', '${rl.lotnumber }', '${rl.membercode }') --%>">수정
 									</button>
 									<button type="button" class="btn btn-sm btn-outline-dark m-1">삭제</button>
 								</td>
@@ -198,8 +201,29 @@
 			
 		</div>
 	</div>
-	<!-- 출고 목록 -->
+	<!-- 출고 목록 끝 -->
 	
-</div>	
+	<!-- 출고 등록 모달 -->
+	<jsp:include page="releaseRegist.jsp"/>
+	
+	<!-- 출고 수정 모달 -->
+	<jsp:include page="releaseModify.jsp"/>
+	
+	<!-- 출고 상세내역 모달 -->
+	<jsp:include page="releaseDetail.jsp"/>	
+	
+</div>
+<!-- 출고관리 페이지 시작 -->
+
+<script>
+	var releaseRegistModal = document.getElementById('releaseRegistModal')
+	releaseRegistModal.addEventListener('show.bs.modal', function (event) {
+		var button = event.relatedTarget
+		var recipient = button.getAttribute('data-bs-whatever')
+		var modalTitle = releaseRegistModal.querySelector('.modal-title')
+	 	var modalBodyInput = releaseRegistModal.querySelector('.modal-body input')
+	})
+</script>
+
 
 <%@ include file="../include/footer.jsp" %>

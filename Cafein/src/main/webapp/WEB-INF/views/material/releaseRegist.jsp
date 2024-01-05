@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!-- 입고 등록 모달창 -->
-<div class="modal fade" id="receiveRegistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- 출고 등록 모달창 시작 -->
+<div class="modal fade" id="releaseRegistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			
 			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">입고 등록</h5>
+			<h5 class="modal-title" id="exampleModalLabel">출고 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 			</div>
@@ -17,7 +17,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col">
-						<label for="orderscode" class="col-form-label"><b>발주코드</b></label>
+						<label for="orderscode" class="col-form-label"><b>생산지시번호</b></label>
 						<input name="orderscode" id="orderscode" class="form-control mb-2" readonly>
 					</div>
 				</div>
@@ -27,15 +27,15 @@
 						<input id="itemname" class="form-control mb-2" readonly>
 					</div>
 					<div class="col">
-						<label for="ordersquantity" class="col-form-label"><b>발주수량</b></label>
+						<label for="ordersquantity" class="col-form-label"><b>재고수량</b></label>
 						<input id="ordersquantity" class="form-control mb-2" min="0" readonly>
 					</div>
 				</div>
 				<div class="mb-2">
-					<label for="receivestate" class="col-form-label"><b>입고상태</b></label>
+					<label for="receivestate" class="col-form-label"><b>출고상태</b></label>
 					<select class="form-select mb-2" id="floatingSelect" name="receivestate"
 							aria-label="Floating label select example">
-						<optgroup label="입고상태">
+						<optgroup label="출고상태">
 							<option value="대기">대기</option>
 							<option value="완료">완료</option>
 						</optgroup>
@@ -43,19 +43,15 @@
 				</div>			
 				<div class="row">
 					<div class="col">
-						<label for="receivedate" class="col-form-label"><b>입고일자</b></label>
+						<label for="receivedate" class="col-form-label"><b>출고일자</b></label>
 						<input type="date" name="receivedate" id="receivedate" class="form-control mb-2" placeholder="납기일자">
 					</div>
 					<div class="col">
-						<label for="receivequantity" class="col-form-label"><b>입고수량</b></label>
+						<label for="receivequantity" class="col-form-label"><b>출고수량</b></label>
 						<input type="number" name="receivequantity" id="receivequantity" class="form-control mb-2" min="0">
 					</div>
 				</div>				
 				<div class="row">
-					<div class="col">
-						<label for="storagecode" class="col-form-label"><b>창고코드</b></label>
-						<input type="text" name="storagecode" id="storagecode" class="form-control mb-2">
-					</div>
 					<div class="col">
 						<label for="membercode" class="col-form-label"><b>담당자</b></label>
 						<input type="text" name="membercode" id="membercode" class="form-control mb-2">
@@ -72,6 +68,7 @@
 		</div>
 	</div>
 </div>
+<!-- 출고 등록 모달창 끝 -->
 	
 <script>
 $(document).ready(function() {

@@ -2,20 +2,19 @@
     pageEncoding="UTF-8"%>
 
 <!-- 입고 등록 모달창 -->
-<div class="modal fade" id="receiveModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="releaseModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			
 			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">입고 수정</h5>
+			<h5 class="modal-title" id="exampleModalLabel">입고 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 			</div>
 				
 			<form action="receiveModify" method="post">
-			<input type="hidden" name="receiveid" id="receiveid2">
-			<input type="hidden" name="itemid" id="itemid2">
-			<input type="hidden" name="stockid" id="stockid2">
+			<input type="hidden" name="receiveid2" id="receiveid">
+			<input type="hidden" id="itemid2">
 			<div class="modal-body">
 				<div class="row">
 					<div class="col">
@@ -84,8 +83,8 @@
 <script>
 $(document).ready(function() {
     // 입고수량 입력값이 발주수량을 초과하지 못하도록 제한
-    $("#receivequantity2").on("input", function() {
-        var oCount = parseInt($("#ordersquantity2").val());
+    $("#receivequantity").on("input", function() {
+        var oCount = parseInt($("#ordersquantity").val());
         var rCount = parseInt($(this).val());
         
         if (rCount > oCount) {

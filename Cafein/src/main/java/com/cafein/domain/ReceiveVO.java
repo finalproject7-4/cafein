@@ -26,6 +26,10 @@ public class ReceiveVO {
 	private String itemcode;
 	private String itemname;
 	
+	// stock 테이블
+	private int stockid;	
+	private int stockquantity;
+	
 	// client 테이블
 	private String clientname;
 	

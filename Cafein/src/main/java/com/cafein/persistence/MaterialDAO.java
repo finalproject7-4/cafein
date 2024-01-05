@@ -44,6 +44,9 @@ public interface MaterialDAO {
 	// 입고 등록
 	public void insertReceive(ReceiveVO vo) throws Exception;
 
+	// 입고 완료 -> 품질관리로 이동
+	public void insertQuality(ReceiveVO vo) throws Exception;
+
 	// 입고 수정
 	public int updateReceive(ReceiveVO vo) throws Exception;
 
@@ -57,6 +60,5 @@ public interface MaterialDAO {
 	public Integer getReleasesCount(ReleasesVO vo) throws Exception;
 
 
-	
-	
+
 }

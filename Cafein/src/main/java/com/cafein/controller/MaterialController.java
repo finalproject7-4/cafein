@@ -2,6 +2,7 @@ package com.cafein.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -40,7 +41,7 @@ public class MaterialController {
 	// 발주 목록 - GET
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
 	public void ordersList(Model model, OrdersVO vo, Criteria cri) throws Exception {
-		logger.debug("orderList() 호출");
+		logger.debug("ordersList() 호출");
 		logger.debug("OrdersVO: " + vo);
 		
 		// OrdersVO의 Criteria 설정
@@ -54,8 +55,8 @@ public class MaterialController {
 		
 		// 데이터를 연결된 뷰페이지로 전달
 		model.addAttribute("ordersList", materService.ordersList(vo));
-		model.addAttribute("clientList", cService.clientList());
-		model.addAttribute("itemList", iService.itemList());
+		model.addAttribute("clientList", cService.clientList()); // 공급처 모달
+		model.addAttribute("itemList", iService.itemList()); // 품목 모달
 		model.addAttribute("pageVO", pageVO);
 		
 		// 연결된 뷰페이지로 이동
@@ -144,8 +145,11 @@ public class MaterialController {
 		// 생성한 입고코드 저장
 		vo.setReceivecode(generateReceiveCode());
 		
+		// 생성한 LOT번호 저장
+		vo.setLotnumber(generateLotNumber());
+		
 		// 서비스
-		materService.receiveRegist(vo);
+		materService.receiveRegist(vo); // 입고 등록
 		
 		return "redirect:/material/receive";
 	}
@@ -163,13 +167,41 @@ public class MaterialController {
 		return prefix + datePart + formattedCounter;
 	}
 	
+	// LOT 번호 생성 메서드
+	public String generateLotNumber() throws Exception {
+		
+        Random random = new Random();
+
+        // 0부터 9999999999까지의 랜덤한 숫자 생성
+        long randomNumber = (long) (random.nextDouble() * 10000000000L);
+
+        // 생성된 숫자를 12자리 문자열로 변환
+        String formattedNumber = String.format("%012d", randomNumber);
+
+        // 문자열을 원하는 형태로 포맷팅
+        String formattedPhoneNumber = formattedNumber.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+
+        return formattedPhoneNumber;
+        
+	}
+	
 	// 입고 수정 - POST
 	@RequestMapping(value = "/receiveModify", method = RequestMethod.POST)
 	public String receiveModify(ReceiveVO vo) throws Exception {
 		logger.debug("receiveModify() 호출");
+		logger.debug("입고 상태: " + vo.getReceivestate());
 		
 		// 서비스
-		materService.receiveModify(vo);
+		// 입고상태가 대기일 경우 수정만 처리
+		if(!vo.getReceivestate().equals("완료")) {
+			materService.receiveModify(vo);
+		}
+		
+		// 입고상태가 완료일 경우 수정 후 품질관리로 이동
+		if(vo.getReceivestate().equals("완료")) {
+			materService.receiveModify(vo);
+			materService.moveQuality(vo);
+		}
 		
 		return "redirect:/material/receive";
 	}

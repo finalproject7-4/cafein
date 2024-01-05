@@ -44,6 +44,9 @@ public interface MaterialService {
 	// 입고 등록
 	public void receiveRegist(ReceiveVO vo) throws Exception;
 
+	// 입고 완료 -> 품질관리로 이동
+	public void moveQuality(ReceiveVO vo) throws Exception;
+
 	// 입고 수정
 	public int receiveModify(ReceiveVO vo) throws Exception;
 

@@ -50,6 +50,12 @@ public class MaterialServiceImpl implements MaterialService {
 		logger.debug("Service - orderscodeCount(String datePart)");
 		return materdao.getOrderscodeCount(datePart);
 	}
+	
+	@Override
+	public void moveQuality(ReceiveVO vo) throws Exception {
+		logger.debug("Service - moveQuality(ReceiveVO vo)");
+		materdao.insertQuality(vo);
+	}
 
 	@Override
 	public int orderModify(OrdersVO vo) throws Exception {
@@ -116,6 +122,7 @@ public class MaterialServiceImpl implements MaterialService {
 		logger.debug("Service - releaseCount(ReleasesVO vo)");
 		return materdao.getReleasesCount(vo);
 	}
+
 
 	
 }

@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>    
 <%@ include file="../include/header.jsp" %>
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
 <!-- 발주관리 페이지 시작 -->
 <div class="col-12">
@@ -400,32 +402,45 @@
 	
 	// 발주 삭제 (발주상태가 대기일 경우에만 삭제 가능)
     $("td").on("click", "#deleteBtn", function() {
-        if(confirm("삭제하시겠습니까?")) {
+    	
+    	Swal.fire({
+    		  title: '삭제하시겠습니까?',
+    		  text: "",
+    		  icon: 'warning',
+    		  showCancelButton: true,
+    		  confirmButtonColor: '#3085d6',
+    		  cancelButtonColor: '#d33',
+    		  confirmButtonText: '삭제',
+    		  cancelButtonText: '취소'
+    		}).then((result) => {
+    			if (result.value) {
+    			  
+        		var ordersid = $(this).closest("tr").find("td:first").text(); // 발주id
+				console.log(ordersid);
         	
-        	var ordersid = $(this).closest("tr").find("td:first").text(); // 발주id
-			console.log(ordersid);
+        		// AJAX 요청 수행
+        		$.ajax({
+           			url : "/material/orderDelete",
+           			type : "POST",
+           			data : {
+        	   			ordersid : ordersid
+           			},
+          			success : function(response) {
+              			// 성공적으로 처리된 경우 수행할 코드
+              			console.log("삭제 성공");
+              			location.reload();
+           			},
+           			error : function(error) {
+              			// 요청 실패 시 수행할 코드
+              			console.error("삭제 실패:", error);
+           			}
+				});
         	
-        	// AJAX 요청 수행
-        	$.ajax({
-           		url : "/material/orderDelete",
-           		type : "POST",
-           		data : {
-        	   		ordersid : ordersid
-           		},
-          		success : function(response) {
-              		// 성공적으로 처리된 경우 수행할 코드
-              		console.log("삭제 성공");
-              		location.reload();
-           		},
-           		error : function(error) {
-              		// 요청 실패 시 수행할 코드
-              		console.error("삭제 실패:", error);
-           		}
-			});
-        	
-        } 
+    			} 
         
-     });	
+    	 })
+
+    });    	
 	
     $(document).ready(function() {
 	    // 공급처 모달
