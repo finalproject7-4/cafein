@@ -28,13 +28,11 @@
  		<if test="searchBtn != null and searchText != null">
  		AND q.itemtype = #{searchBtn} 
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%') 
  		</if>
  		<if test="searchBtn == null and searchText != null">
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))	
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%') 	
  		</if>
  		</where>
  		ORDER BY stockid DESC
@@ -67,13 +65,11 @@
  		<if test="searchBtn != null and searchText != null">
  		AND q.itemtype = #{searchBtn} 
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')
  		</if>
  		<if test="searchBtn == null and searchText != null">
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))	
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')
  		</if>
  		</where>
  		) AS subquery
@@ -100,13 +96,11 @@
  		<if test="searchBtn != null and searchText != null">
  		AND i.itemtype = #{searchBtn} 
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')
  		</if>
  		<if test="searchBtn == null and searchText != null">
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))		
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')		
  		</if>
  		</where>
  		ORDER BY stockid DESC
@@ -133,13 +127,11 @@
  		<if test="searchBtn != null and searchText != null">
  		AND i.itemtype = #{searchBtn} 
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%') 
  		</if>
  		<if test="searchBtn == null and searchText != null">
  		AND 
- 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
- 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))		
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')	
  		</if>
  		</where>
  		ORDER BY stockid DESC

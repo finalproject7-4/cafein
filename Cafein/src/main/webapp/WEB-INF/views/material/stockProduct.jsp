@@ -31,8 +31,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 			</c:if>
-			<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
-			<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
+			<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
+			<input type="submit" value="검색" data-toggle="tooltip" title="제품명이 필요합니다!">
 		</form>
 		</div>
 			<form action="/productStockPrint" method="GET">

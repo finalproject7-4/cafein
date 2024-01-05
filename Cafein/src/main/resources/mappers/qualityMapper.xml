@@ -245,18 +245,15 @@
 		AND q.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn != '반품' and searchText != null">
 		AND produceprocess = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn == '반품' and searchText != null">
 		AND q.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>					
 		</where>
 		ORDER BY defectid DESC
@@ -286,18 +283,15 @@
 		AND q.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn != '반품' and searchText != null">
 		AND produceprocess = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn == '반품' and searchText != null">
 		AND q.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>					
 		</where>
 		ORDER BY defectid DESC) AS subquery
@@ -318,13 +312,11 @@
 		AND i.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchText != null">
 		AND i.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>		
 		</where>
 		ORDER BY defectid DESC
@@ -346,13 +338,11 @@
 		AND i.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchText != null">
 		AND i.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>			
 		</where>
 	</select>
