@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!-- 품목 등록 모달창 -->
+	<!-- 품목 수정 모달 시작 -->
 	<div class="modal fade" id="itemModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -54,6 +54,4 @@
 			</div>
 		</div>
 	</div>
-	
-<script>
-</script>
+	<!-- 품목 수정 모달 끝 -->

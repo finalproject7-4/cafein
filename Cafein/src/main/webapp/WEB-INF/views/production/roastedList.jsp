@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 
-
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+<!-- SweetAlert 추가 -->
 
 <script>
 $(document).ready(function() {
@@ -36,7 +38,7 @@ function getList(){
 <!-- LOT 조회 -->
 <div >
 <form name="searchForm" action="" method="get">
-	<input type="text" id="lotnumber" name="lotnumber" placeholder="lot번호 검색">
+	<input type="text" id="searchLot" name="searchLot" placeholder="lot번호 검색">
 
 <!-- 조회 달력 -->
 <input type="date" id="searchDate" name="searchDate">
@@ -61,7 +63,7 @@ $(document).ready(function() {
 
         // 폼 데이터 수집
         let formData = {
-            lotnumber: $("input[name='lotnumber']").val(),
+        	searchLot: $("input[name='searchLot']").val(),
             searchDate: $("input[name='searchDate']").val()
         };
 
@@ -74,12 +76,13 @@ $(document).ready(function() {
             success: function(data) {
                 // 성공적으로 데이터를 받아왔을 때 처리할 코드
                 $("#roastedBeanList").html(data); // 결과를 화면에 표시
-                alert("성공했지롱");
-                alert($("input[name='lotnumber']").val());
+                Swal.fire("찾아따!!!!!");
+                Swal.fire($("input[name='searchLot']").val());
+                Swal.fire($("input[name='searchDate']").val());
             },
             error: function(error) {
-            	alert("못간다 ");
-            	alert($("input[name='searchDate']").val()+' / '+$("input[name='lotnumber']").val());
+            	Swal.fire("찾을수 없음! ");
+            	Swal.fire($("input[name='searchDate']").val()+' / 에베베 '+$("input[name='searchLot']").val());
                 console.error("Error fetching data:", error);
             	console.log(formData);
             }

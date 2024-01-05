@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+<!-- SweetAlert 추가 -->
     
 <!-- 생산지시 모달창 시작-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -11,7 +15,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form action="produceReg" method="post">
+						<form action="" method="post">
 						<div class="row">
 							<div class="col">
 								<label for="process" class="col-form-label">공정과정</label> 
@@ -74,6 +78,36 @@
 								<label for="itemname3" class="col-form-label">원재료3</label>
 								<input type="text" name="itemname3" class="form-control" id="itemnameOri3" readonly>
 							</div>
+							<!-- 아래가 실제 등록될 itemid1~3 값 -->
+							</div>
+							<div class="row" style="display:none;">
+							<div class="col">
+								<label for="itemid1" class="col-form-label">원재료1</label>
+								<input name="itemid1" type="text" class="form-control" id="itemidOri1" readonly>
+							</div>
+							<div class="col">
+								<label for="itemid2" class="col-form-label">원재료2</label>
+								<input type="text" name="itemid2" class="form-control" id="itemidOri2" readonly>
+							</div>
+							<div class="col">
+								<label for="itemid3" class="col-form-label">원재료3</label>
+								<input type="text" name="itemid3" class="form-control" id="itemidOri3" readonly>
+							</div>
+							</div>
+							<!-- 출고대기등록할 때 쓸 stockid -->
+							<div class="row">
+							<div class="col">
+								<label for="stockid1" class="col-form-label">재고ID1</label>
+								<input name="stockid1" type="text" class="form-control" id="stockid1" readonly>
+							</div>
+							<div class="col">
+								<label for="stockid2" class="col-form-label">재고ID2</label>
+								<input type="text" name="stockid2" class="form-control" id="stockid2" readonly>
+							</div>
+							<div class="col">
+								<label for="stockid3" class="col-form-label">재고ID3</label>
+								<input type="text" name="stockid3" class="form-control" id="stockid3" readonly>
+							</div>
 							</div>
 							<div class="row">
 							<div class="col">
@@ -92,7 +126,7 @@
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode">
 							</div>
-							<div class="col" style="display:none;">
+							<div class="col">
 								<label for="itemid" class="col-form-label">아이템ID</label>
 								<input name="itemid" class="form-control" id="itemidPro">
 							</div>
@@ -156,6 +190,10 @@
 								<label for="packagevol" class="col-form-label">1팩당 포장량</label>
 								<input type="number" min="500" max="1000" step="500" name=packagevol class="form-control">
 							</div>
+							<div class="col" id="packagevolup" style="display: none;">
+								<label for="amount" class="col-form-label">지시 생산량</label>
+								<input type="text" id="amountPack2" name="amount" class="form-control" >
+							</div>
 					</div>
 					<div class="row">
 							<div class="col">
@@ -201,15 +239,15 @@
 	            type: 'POST',
 	            data: formData,
 	            success: function(response) {
-	                console.log('포장공정 등록 성공!');
-	                alert("포장공정 등록 완료");
+	            	console.log('생산지시 등록 성공!');
+	                Swal.fire("등록 완료");
 	                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 	                $('#exampleModal').modal('hide');
 	            },
 	            error: function(error) {
-	                console.error('포장공정 등록 실패:', error);
-	                alert("이미 포장이 완료되었습니다.")
+	            	 console.error('생산지시 등록 실패:', error);
+		                Swal.fire("이미 작업 지시가 등록된 시간대입니다.");
 	                 $('#exampleModal form')[0].reset(); // 폼에 입력한 것 초기화. 사용자 실수 줄이기 위해서.
 	            }
 	        });
@@ -227,15 +265,16 @@
 	            type: 'POST',
 	            data: formData,
 	            success: function(response) {
-	                console.log('생산지시 등록 성공!');
-	                alert("등록 완료");
+	            	console.log('포장공정 등록 성공!');
+	                Swal.fire("포장공정 등록 완료");
+	                
 	                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 	                $('#updateModal2').modal('hide');
 	            },
 	            error: function(error) {
-	                console.error('생산지시 등록 실패:', error);
-	                alert("이미 작업 지시가 등록된 시간대입니다.")
+	            	console.error('포장공정 등록 실패:', error);
+	                Swal.fire("이미 포장이 완료되었습니다.");	      
 	                 $('#updateModal2 form')[0].reset(); // 폼에 입력한 것 초기화. 사용자 실수 줄이기 위해서.
 	            }
 	        });

@@ -174,6 +174,14 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.selectList(NAMESPACE + ".selectMaterialDefectsListSearchBtnExcel", vo);
 	}
 
+	// roastedBean 검수, 불량 처리 (포장)
+	@Override
+	public void updateRoastedBeanDefect(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateRoastedBeanDefect", vo);
+	}
+
+	
 	
 	
 	

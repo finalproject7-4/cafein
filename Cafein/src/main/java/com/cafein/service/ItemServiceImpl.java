@@ -55,4 +55,10 @@ public class ItemServiceImpl implements ItemService {
 		return idao.updateItem(vo);
 	}
 
+	@Override
+	public void itemDelete(ItemVO vo) throws Exception {
+		logger.debug("Service - itemDelete(int itemid)");
+		idao.deleteItem(vo);
+	}
+
 }

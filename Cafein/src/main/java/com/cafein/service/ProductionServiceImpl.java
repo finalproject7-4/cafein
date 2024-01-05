@@ -24,6 +24,7 @@ import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.QualityVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
 import com.cafein.persistence.ProductionDAO;
 import com.mysql.cj.result.Row;
@@ -303,6 +304,16 @@ public class ProductionServiceImpl implements ProductionService{
 		logger.debug("Service - 블렌딩 완료! 로스팅 시작! 품질 데이터 신규 삽입");
 		
 		pdao.regPackingQualityList(vo);
+	}
+	
+
+	// 생산지시 등록과 동시에 출고 지시 등록
+	@Override
+	public void insertReleasesList(ReleasesVO vo) throws Exception {
+		logger.debug("Service - 생산등록 했으니 출고 지시도 등록한다!");
+		
+		pdao.insertReleasesList(vo);
+		
 	}
 	
 	

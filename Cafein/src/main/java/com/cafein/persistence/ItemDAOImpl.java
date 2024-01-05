@@ -57,5 +57,10 @@ public class ItemDAOImpl implements ItemDAO {
 		return sqlSession.update(NAMESPACE + ".updateItem", vo);
 	}
 
+	@Override
+	public void deleteItem(ItemVO vo) {
+		logger.debug("DAO - deleteItem(int itemid)");
+		sqlSession.update(NAMESPACE + ".deleteItem", vo);
+	}
 
 }

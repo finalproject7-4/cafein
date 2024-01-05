@@ -162,6 +162,30 @@ public class StockServiceImpl implements StockService {
 		return sdao.selectReceiveInfo(lotnumber);
 	}
 
+	// produceid로 roastedBean LOT 조회 후 입력 (포장)
+	@Override
+	public void normalRoastedBeanLot(int produceid) throws Exception {
+		// TODO Auto-generated method stub
+		sdao.insertNormalRoastedBeanLot(produceid);
+	}
+	
+	// receiveid로 receive LOT 조회 후 입력 (자재)
+	@Override
+	public void normalRoastedBeanLotMat(int receiveid) throws Exception {
+		// TODO Auto-generated method stub
+		sdao.insertNormalRoastedBeanLotMat(receiveid);
+	}
+
+	// 정상 LOT 번호 검색
+	@Override
+	public List<QualityVO> normalLot(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectNormalLot(vo);
+	}
+
+	
+	
+
 	
 	
 	

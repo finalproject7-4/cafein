@@ -34,7 +34,13 @@
 										<th scope="col" style="display: none;">원재료1</th>
 										<th scope="col" style="display: none;">원재료2</th>
 										<th scope="col" style="display: none;">원재료3</th>
-										<th scope="col" style="display: none;">아이템ID</th>
+										<th scope="col" style="display: none;">원재료ID1</th>
+										<th scope="col" style="display: none;">원재료ID2</th>
+										<th scope="col" style="display: none;">원재료ID3</th>
+										<th scope="col" style="display: none;">재고ID1</th>
+										<th scope="col" style="display: none;">재고ID2</th>
+										<th scope="col" style="display: none;">재고ID3</th>
+										<th scope="col"  style="display: none;">아이템ID</th>
                                     </tr>
 								</thead>
 								<tbody>
@@ -48,6 +54,12 @@
                                       <td style="display: none;">${bList.itemname1 }</td> 
                                       <td style="display: none;">${bList.itemname2 }</td> 
                                       <td style="display: none;">${bList.itemname3 }</td> 
+                                      <td style="display: none;">${bList.itemid1 }</td> 
+                                      <td style="display: none;">${bList.itemid2 }</td> 
+                                      <td style="display: none;">${bList.itemid3 }</td> 
+                                      <td style="display: none;">${bList.stockid1 }</td> 
+                                      <td style="display: none;">${bList.stockid2 }</td> 
+                                      <td style="display: none;">${bList.stockid3 }</td> 
                                       <td style="display: none;">${bList.itemid }</td> 
                                     </tr>
 								  </c:forEach>
@@ -85,6 +97,7 @@
 									<tr>
 										<th scope="col">품목코드</th>
 										<th scope="col">품명</th>
+										<th scope="col" >제품ID</th>
 										</tr>
 								</thead>
 								<tbody>
@@ -92,6 +105,7 @@
                                     <tr class="itemset">
                                       <td>${iList.itemcode }</td> 
                                       <td>${iList.itemname }</td>                                    
+                                      <td >${iList.itemid }</td>                                    
                                     </tr>
 								  </c:forEach>
 								</tbody>
@@ -251,7 +265,7 @@ function fetchData(searchBtnValue) {
 	<input type="button" id="roastingBtn" class="btn btn-sm btn-dark m-1" name="process" value="수정">
 	</c:if>
 	<c:if test="${plist.state == '완료' &&  plist.process =='로스팅' && plist.qualitycheck == '정상' }">
-	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
+	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }','${plist.amount }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
 		</c:if>
 </td>
 </tr>
@@ -440,14 +454,26 @@ function fetchData(searchBtnValue) {
     	var firstItem = $(columns[5]).text(); // 첫번째 원재료
     	var secondItem = $(columns[6]).text(); // 두번째 원재료
     	var thirdItem = $(columns[7]).text(); // 세번째 원재료
+    	var firstItemId = $(columns[8]).text(); // 첫번째 원재료 id (등록에 사용)
+    	var secondItemId = $(columns[9]).text(); // 두번째 원재료 id (등록에 사용)
+    	var thirdItemId = $(columns[10]).text(); // 세번째 원재료 id (등록에 사용)
+    	var firstStockId = $(columns[11]).text(); // 첫번째 재고 id (출고 등록에 사용)
+    	var secondStockId = $(columns[12]).text(); // 두번째 재고 id (출고 등록에 사용)
+    	var thirdStockId = $(columns[13]).text(); // 세번째 재고 id (출고 등록에 사용)
     	var temper = $(columns[4]).text(); // 온도
-    	var itemid = $(columns[8]).text(); // 아이템ID
+    	var itemid = $(columns[14]).text(); // 아이템ID
     	
     	$('#itemnamePro').val(selectedItemName);
     	$('#rate').val(selectedRate);
     	$('#itemnameOri1').val(firstItem);
     	$('#itemnameOri2').val(secondItem);
     	$('#itemnameOri3').val(thirdItem);
+    	$('#itemidOri1').val(firstItemId);
+    	$('#itemidOri2').val(secondItemId);
+    	$('#itemidOri3').val(thirdItemId);
+    	$('#stockid1').val(firstStockId);
+    	$('#stockid2').val(secondStockId);
+    	$('#stockid3').val(thirdStockId);
     	$('#temper').val(temper);
     	$('#itemidPro').val(itemid);
     	
@@ -463,10 +489,12 @@ function fetchData(searchBtnValue) {
 		var columns = $(this).find('td');
 		var selectedItemCode = $(columns[0]).text(); // 제품코드 품명
 		var selectedItemName = $(columns[1]).text(); // 제품명
+		var selectedItemId = $(columns[2]).text(); // 제품아이디
 		
 
 		$('#itemcodeBom').val(selectedItemCode);
 		$('#itemnameBom').val(selectedItemName);
+		$('#itemidBom').val(selectedItemId);
 
 		$('#itemModal1').modal('hide');
 	});
@@ -542,7 +570,18 @@ function fetchData(searchBtnValue) {
 		
 		// 공정 삭제 버튼 클릭시 이벤트
 		$("td").on("click", "#deletProduceBtn", function() {
-			if(confirm("삭제하시겠습니까?")){
+			Swal.fire({
+		          title: '삭제하시겠습니까?',
+		          text: "",
+		          icon: 'warning',
+		          showCancelButton: true,
+		          confirmButtonColor: '#3085d6',
+		          cancelButtonColor: '#d33',
+		          confirmButtonText: '삭제',
+		          cancelButtonText: '취소'
+		        }).then((result) => {
+		          if (result.value) {
+
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 
 			// AJAX 요청 수행
@@ -567,7 +606,8 @@ function fetchData(searchBtnValue) {
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
-		}
+			}
+		});
 		});
 		
 	// 생산 공정 수정(블렌딩->로스팅) 변경 버튼 클릭 이벤트 처리
@@ -607,5 +647,4 @@ function fetchData(searchBtnValue) {
 	}); 
 
 </script>
-
 
