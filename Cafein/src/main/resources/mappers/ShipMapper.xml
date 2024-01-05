@@ -114,6 +114,12 @@
 	 	where workid=#{workid}
 	 </update>
 	 
+	 <!-- 작업지시 삭제 -->
+	<delete id="deleteWK">
+		delete from work
+		where workid=#{workid}
+	</delete>
+	 
 	 
 	 
 	

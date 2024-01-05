@@ -121,6 +121,16 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.update(NAMESPACE + ".updateWK", wvo);
 	}
 
+	// 작업 지시 삭제
+	@Override
+	public void deleteWK(WorkVO wvo) throws Exception {
+		logger.debug("DAO - deleteWK(WorkVO wvo)");
+		sqlSession.delete(NAMESPACE + ".deleteWK", wvo);
+	}
+
+	
+	
+	
 	// 실적 조회
 	@Override
 	public List<WorkVO> getPFList() throws Exception {

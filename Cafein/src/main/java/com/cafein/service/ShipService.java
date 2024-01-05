@@ -3,6 +3,7 @@ package com.cafein.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cafein.domain.ReceiveVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 
@@ -48,6 +49,12 @@ public interface ShipService {
 	
 	// 작업 지시 수정
 	public int WKModify(WorkVO wvo) throws Exception;
+	
+	// 작업 지시 삭제
+	public void WKDelete(WorkVO wvo) throws Exception;
+	
+	
+	
 	
 	// 실적 조회
 	public List<WorkVO> AllPFList() throws Exception;

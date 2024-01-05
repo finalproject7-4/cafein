@@ -118,6 +118,17 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : WKModify(int workid)");
 		return shdao.updateWK(wvo);
 	}
+	
+	// 작업 지시 삭제
+	@Override
+	public void WKDelete(WorkVO wvo) throws Exception {
+		logger.debug("Service - WKDelete(WorkVO wvo)");
+		shdao.deleteWK(wvo);
+	}
+	
+	
+	
+	
 
 	// 실적 조회
 	@Override

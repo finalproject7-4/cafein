@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.ReceiveVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -98,5 +99,16 @@ public class WorkController {
 		logger.debug("result", result);
 		return "redirect:/production/WKList";
 	}
+	
+	// 작업지시 삭제 - POST
+		@RequestMapping(value = "/WKList", method = RequestMethod.POST)
+		public String WKDelete(WorkVO wvo) throws Exception {
+			logger.debug("WKdelete() 호출");
+			
+			// 서비스
+			shService.WKDelete(wvo);
+			
+			return "redirect:/production/WKList";
+		}
 	
 }
