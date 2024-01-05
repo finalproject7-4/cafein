@@ -76,12 +76,9 @@ $(document).ready(function() {
             success: function(data) {
                 // 성공적으로 데이터를 받아왔을 때 처리할 코드
                 $("#roastedBeanList").html(data); // 결과를 화면에 표시
-                Swal.fire("찾아따!!!!!");
-                Swal.fire($("input[name='searchLot']").val());
-                Swal.fire($("input[name='searchDate']").val());
             },
             error: function(error) {
-            	Swal.fire("찾을수 없음! ");
+            	Swal.fire("검색하신 조건으로 찾을 수 없습니다.");
             	Swal.fire($("input[name='searchDate']").val()+' / 에베베 '+$("input[name='searchLot']").val());
                 console.error("Error fetching data:", error);
             	console.log(formData);
@@ -91,7 +88,39 @@ $(document).ready(function() {
   
 });
 
+//현재 활성화 페이지 가져오기
+function getCurrentPageNumber() {
+	var currentPage = 1; // 기본적으로 1페이지로 설정
 
+	 // 현재 활성화된 페이지 번호를 찾기 위한 로직
+	  $(".page-item").each(function() {
+		  if ($(this).hasClass("active")) {
+ 		   currentPage = $(this).find(".page-link").data("page"); // 활성화된 페이지 번호 가져오기
+ 		   return false; // 반복문 종료
+		  }
+	});
+
+	return currentPage;
+	 }
+
+function getList(pageNumber) {
+	$.ajax({
+		 url: "/production/roastedDetail",
+		 type: "GET",
+		 data: {
+  		  page: pageNumber // 현재 페이지 번호 전달
+   		 // 나머지 필요한 데이터도 전달 가능
+		 },
+		 dataType: "html",
+		 success: function(data) {
+  		  $("#roastedBeanList").html(data);
+		 },
+		error: function(error) {
+			Swal.fire("목록을 불러오지 못했습니다.");
+    		console.error("Error fetching quality list:", error);
+		}
+	});
+}
 
 
 

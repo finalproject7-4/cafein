@@ -56,7 +56,7 @@ function getList(pageNumber) {
   		  $("#produceListAll").html(data);
 		 },
 		error: function(error) {
-			Swal.fire("못한다");
+			Swal.fire("페이지를 찾을 수 없습니다.");
     		console.error("Error fetching quality list:", error);
 		}
 	});
@@ -75,7 +75,7 @@ function getList(pageNumber) {
 <div >
 <form name="dateSearch" action="/production/produceList3" method="get">
 <select id="itemnameSelSearch" name="itemname">
-			<option value="">제품명</option>
+			<option value="itemname">제품명</option>
 	<c:forEach var="iList" items="${itemList }" >
 			<option value="${iList.itemname }">${iList.itemname}</option>
 	</c:forEach>
@@ -120,10 +120,7 @@ $(document).ready(function() {
                 $("#produceListAll").html(data); // 결과를 화면에 표시
             },
             error: function(error) {
-            	Swal.fire('못간다 :'+$("select[name='produceline']").val()+'/ '+$("select[name='process']").val()
-            			+' /'+$("input[name='startDate']").val()+' /'+$("input[name='endDate']").val()+
-            			'/ '+ $("select[name='itemname']").val());
-            	Swal.fire(formData+' / '+error);
+            	Swal.fire("검색하신 조건으로 만족하는 결과가 없습니다.");
                 console.error("Error fetching data:", error);
             	console.log(formData);
             }

@@ -77,5 +77,14 @@ public interface ProductionService {
 	// 생산지시 등록과 동시에 출고지시 등록
 	public void insertReleasesList(ReleasesVO vo) throws Exception;
 	
+	// 생산코드 생성 메서드
+	public Integer getProducecodeCount(String datePart) throws Exception;
+	
+	// 출고지시리스트 대기 -> 완료로 변경
+	public void updateCompletRelease(ProduceVO vo) throws Exception;
+
+	// 재고리스트 업데이트
+	public void updateStockList(ProduceVO vo) throws Exception;
+	
 
 }

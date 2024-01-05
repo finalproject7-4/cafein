@@ -3,6 +3,7 @@ package com.cafein.controller;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
@@ -91,7 +92,7 @@ public class ProductionController {
 		logger.debug("지시 정보는? " + vo);
 		String process = vo.getProcess();
 		
-		
+		logger.debug("검색 아이템명은? "+vo.getItemname());
 			// 로스팅 공정이 아닐때는 온도 0으로 설정
 		if (!process.equals("로스팅")) {
 			vo.setTemper(0);
@@ -101,7 +102,10 @@ public class ProductionController {
 		if (!process.equals("포장")) {
 			vo.setPackagevol(0);
 		}
+		vo.setProducecode(generateProduceCode());
 		pService.regProduce(vo);
+		
+		logger.debug("생산 아이디 만들어졌나요?!"+ vo.getProducecode()); 
 		
 		// 총 생산량 / 비율로 실제 재고에서 차감할 수량 계산
 		String[] rrate = vo.getRate().split(":");
@@ -113,6 +117,7 @@ public class ProductionController {
 		int rate3;
 				logger.debug("생산일은?! "+vo.getProducedate());
 		if(vo.getStockid1() !=null) {
+			rvo.setProducecode(vo.getProducecode());
 			rvo.setMembercode(vo.getMembercode());
 			rvo.setReleasedate(vo.getProducedate());
 			rvo.setItemid(vo.getItemid1());
@@ -125,6 +130,7 @@ public class ProductionController {
 		}
 		
 		if(vo.getStockid2() != null) {
+			rvo.setProducecode(vo.getProducecode());
 			rvo.setMembercode(vo.getMembercode());
 			rvo.setReleasedate(vo.getProducedate());
 			rvo.setItemid(vo.getItemid2());
@@ -139,6 +145,7 @@ public class ProductionController {
 			
 		
 		if(vo.getStockid3() != null) {
+			rvo.setProducecode(vo.getProducecode());
 			rvo.setMembercode(vo.getMembercode());
 			rvo.setReleasedate(vo.getProducedate());
 			rvo.setItemid(vo.getItemid3());
@@ -153,6 +160,17 @@ public class ProductionController {
 		return "redirect:/production/produceList";
 	}
 	
+	
+	 
+	 // 생산코드 생성 메서드
+	   public String generateProduceCode() throws Exception {
+		   
+		   String prefix = "PRO";
+		   LocalDateTime now = LocalDateTime.now();
+	        String datePart = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+		   
+		   return prefix + datePart ;
+	   }
 	
 	  // 출고코드 생성 메서드
 	   public String generateReceiveCode() throws Exception {
@@ -187,13 +205,40 @@ public class ProductionController {
 
 		logger.debug("생산 상태 업데이트! 업데이트할 값은? " + vo.getState());
 		logger.debug("@@@@ 생산 id 는? " + vo.getProduceid());
+		logger.debug("생산코드는? "+vo.getProducecode());
 		
+		// 생산 상태 업데이트
+		pService.updateProduceState(vo);
+		
+		
+		// 품질리스트 insert
 		qvo.setProduceid(vo.getProduceid());
 		qvo.setItemid(vo.getItemid());
 		qvo.setProductquantity(vo.getAmount());
-		
-		pService.updateProduceState(vo);
 		pService.regQualityList(qvo);
+				
+				
+		// 출고리스트 상태 업데이트
+		pService.updateCompletRelease(vo);
+		
+		// 재고리스트 업데이트
+		if (vo.getStockid1() != null) {
+		    vo.setStockid(vo.getStockid1());
+		    pService.updateStockList(vo);
+			}
+			
+		if(vo.getStockid2() != null) {
+			vo.setStockid(vo.getStockid2());
+			pService.updateStockList(vo);
+			}
+		if(vo.getStockid3() != null) {
+			vo.setStockid(vo.getStockid3());
+			pService.updateStockList(vo);
+			}
+		
+		
+		
+		
 	}
 	
 	// 품질 데이터 추가 삽입 필요없는 생산 상태 변경 (state) 생산중 or 완료

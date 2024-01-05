@@ -212,6 +212,37 @@ public class ProductionDAOImpl implements ProductionDAO {
 		
 	}
 
+
+	// 생산코드 생성 메서드
+	@Override
+	public Integer getProducecodeCount(String datePart) throws Exception {
+		logger.debug("DAO - 생산 코드 생성!");
+		return sqlSession.insert(NAMESPACE+".getProducecodeCount", datePart);
+	}
+
+
+	// 출고지시리스트 대기 -> 완료로 변경
+	@Override
+	public void updateCompletRelease(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 출고상태 완료로 변경!");
+		
+		sqlSession.update(NAMESPACE+".updateCompletRelease", vo);
+		
+	}
+
+
+	// 재고리스트 업데이트 (사용 수량 차감)
+	@Override
+	public void updateStockList(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 재고리스트 업데이트");
+		
+		sqlSession.update(NAMESPACE + ".updateStockList", vo);
+	}
+	
+	
+	
+	
+
 	
 	
 	

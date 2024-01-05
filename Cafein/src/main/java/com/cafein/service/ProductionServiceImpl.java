@@ -315,6 +315,33 @@ public class ProductionServiceImpl implements ProductionService{
 		pdao.insertReleasesList(vo);
 		
 	}
+
+	// 생산코드 생성 메서드
+	@Override
+	public Integer getProducecodeCount(String datePart) throws Exception {
+		logger.debug("Service - 생산코드 생성 실행!");
+		return pdao.getProducecodeCount(datePart);
+	}
+
+	
+	// 출고리스트 상태 대기 -> 완료 변경
+	@Override
+	public void updateCompletRelease(ProduceVO vo) throws Exception {
+		logger.debug("Service - 출고리스트 완료로 변경!");
+		
+		pdao.updateCompletRelease(vo);
+		
+	}
+
+	@Override
+	public void updateStockList(ProduceVO vo) throws Exception {
+		logger.debug("Service - 재고리스트 업데이트");
+		
+		pdao.updateStockList(vo);
+	}
+	
+	
+	
 	
 	
 	

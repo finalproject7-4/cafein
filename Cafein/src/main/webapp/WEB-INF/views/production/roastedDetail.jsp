@@ -70,7 +70,7 @@
 		},
 		error: function(error){
 				console.error("Error fetching data: ", error);
-				Swal.fire("못가요");
+				Swal.fire("페이지를 찾을 수 없습니다.");
 		}
 	});
 	});
@@ -103,7 +103,7 @@
 		},
 		 	error: function(error) {
 			console.error("Error fetching data:", error);
-			Swal.fire("못갔어요");
+			Swal.fire("페이지를 찾을 수 없습니다.");
 		}
 		});
 		});

@@ -10,11 +10,13 @@ public class ReleasesVO {
 	// releases 테이블
 	private int releaseid;
 	private String releasecode;
+	private String producecode;
 	private String membercode;
 	private int stockid;
 	private String releasestate;
 	private Date releasedate;
 	private int releasequantity;
+	private int produceid;
 	
 	// item 테이블
 	private String itemname;
