@@ -20,7 +20,11 @@
 	    FROM purchaseorder po
 	    JOIN item ON po.itemid = item.itemid
 	    JOIN client cli ON po.clientid = cli.clientid
-	    WHERE
+	    <where>
+	    <if test="postate != null" >
+	    postate=#{postate}
+	    </if>
+	    </where> 
 	    ORDER BY ordersdate desc, poid desc
 	</select>
 	
@@ -33,12 +37,6 @@
 		FROM purchaseorder po
 		JOIN item ON po.itemid = item.itemid
 		JOIN client cli ON po.clientid = cli.clientid
-		<if test="option == 'clientcode'">
-			where clientcode like concat('%', #{keyword}, '%')
-		</if>
-		<if test="option == 'itemcode'">
-			where itemcode like concat('%', #{keyword}, '%')
-		</if>
 		ORDER BY ordersdate desc, poid desc
 		limit #{cri.startPage}, #{cri.pageSize}
 	</select>
@@ -101,7 +99,41 @@
 	
 	<!-- 수주조회 총개수 -->
 	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
-		select count(*) from purchaseorder
-	</select>
+    select count(*) from purchaseorder
+    <where>
+        <if test="postate == '대기'">
+            and postate = '대기'
+        </if>
+        <if test="postate == '진행'">
+            and postate = '진행'
+        </if>
+        <if test="postate == '완료'">
+            and postate = '완료'
+        </if>
+        <if test="postate == '취소'">
+            and postate = '취소'
+        </if>
+    </where>
+</select>
+
+ <!-- 수주상태 대기 -->
+ <select id="stop" resultType="com.cafein.domain.SalesVO">
+ select * from purchaseorder
+ where postate='대기'
+ </select>
+	
+	<!-- 리스트 출력 -->
+ 	<select id="selectPOListExcel" resultType="SalesVO">
+ 		SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	    cli.clientid, cli.clientname, cli.clientcode, 
+	    item.itemid, item.itemname, item.itemcode, 
+	    po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
+ 		FROM purchaseorder po
+ 		JOIN client cli
+ 		ON po.clientid = cli.clientid
+ 		JOIN item item
+ 		ON po.itemid = item.itemid
+ 		ORDER BY poid DESC
+ 	</select>
 	 
 </mapper>

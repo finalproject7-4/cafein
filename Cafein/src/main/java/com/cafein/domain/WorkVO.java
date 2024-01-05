@@ -76,5 +76,20 @@ public class WorkVO {
 	private String clientfax;
 	private String clientemail;
 	private String available;
+	
+	// stock 테이블
+	private int stockid;
+//	private int qualityid;
+//	private String itemtype;
+//	private int itemid;
+	private String lotnumber;
+	private int stockquantity;
+	private int storageid;
+	private Date registerationdate;
+	private String workerbycode;
+//	private Date updatedate;
+	private String updatehistory;
+	private int nowquantity;
+	private String nowstorage;
 
 }

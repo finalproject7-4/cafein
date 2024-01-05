@@ -544,7 +544,7 @@ $(document).ready(function() {
   			<div class="col">
             	<label for="productprocessmethod" class="col-form-label">처리방식:</label>
 				<select class="form-select" aria-label="Small select example" id="productprocessmethod" name="processmethod">
-  					<option value="폐기" selected>폐기</option>
+  					<option value="반품" selected>반품</option>
 				</select>
   			</div>
 		</div>
