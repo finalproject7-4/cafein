@@ -101,7 +101,7 @@ public class WorkController {
 	}
 	
 	// 작업지시 삭제 - POST
-		@RequestMapping(value = "/WKList", method = RequestMethod.POST)
+		@RequestMapping(value = "/WKDelete", method = RequestMethod.POST)
 		public String WKDelete(WorkVO wvo) throws Exception {
 			logger.debug("WKdelete() 호출");
 			

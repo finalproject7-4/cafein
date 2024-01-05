@@ -92,6 +92,7 @@
 									<td>${wk.membercode }</td>
 									<td>
 									<!-- 버튼 수정 -->
+									<td>
 									<button type="button" class="btn btn-outline-dark"
     										onclick="openModifyModal('${wk.workid}','${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
     										수정
@@ -305,8 +306,8 @@ $("#modifyButton").click(function() {
 	  		}).then((result) => {
 	  			if (result.value) {
 	        	
-	        	var receiveid = $(this).closest("tr").find("td:first").text(); // 입고id
-				console.log(receiveid);
+	        	var workid = $(this).closest("tr").find("td:first").text();
+				console.log(workid);
 	        	
 	        	// AJAX 요청 수행
 	        	$.ajax({
