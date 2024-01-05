@@ -109,6 +109,9 @@ public class QualityVO {
 //	private int receiveid;
 //	private String lotnumber;
 	
+	// return 테이블
+	private String reprocessmethod;
+	
 	// 검색용 특별 변수
 	private String startDate;
 	private String endDate;

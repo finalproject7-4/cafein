@@ -232,6 +232,15 @@ public class QualityController {
 			logger.debug(" 검수 상태 : " + vo.getAuditstatus());
 			logger.debug(" vo : " + vo);
 			result = qService.returnAuditFull(vo);
+			
+			if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+				vo.setReprocessmethod("정상");
+				qService.returnsQualityid(vo);
+			}else { // 생산 검수 - 불량
+				vo.setReprocessmethod("불량");
+				qService.returnsQualityid(vo);
+			}
+			
 		}else if(vo.getAuditquantity() != 0 && vo.getProductquantity() > vo.getAuditquantity()) { // 생산량 > 검수량 ("검수중")
 			vo.setAuditstatus("검수중");
 			
@@ -257,7 +266,6 @@ public class QualityController {
 			return "redirect:/quality/qualities";
 		}
 		logger.debug(" 검수 성공 ");
-		qService.returnsQualityid(vo);
 		rttr.addFlashAttribute("AUDIT", "O");
 		return "redirect:/quality/qualities";
 	}
