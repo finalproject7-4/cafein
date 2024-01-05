@@ -128,11 +128,13 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.selectList(NAMESPACE+".getPFList");
 	}
 
+	// 실적 수정
 	@Override
-	public void registPF(WorkVO wvo) throws Exception {
-		logger.debug(" DAO : registPF(WorkVO wvo)");
-		sqlSession.insert(NAMESPACE+".registPF",wvo);
+	public int updatePF(WorkVO wvo) throws Exception {
+		logger.debug("DAO : PFModify(WorkVO wvo)");
+		return sqlSession.update(NAMESPACE + ".updatePF", wvo);
 	}
+
 	
 	
 

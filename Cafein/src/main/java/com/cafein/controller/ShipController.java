@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.ShipVO;
+import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
 
 @Controller
@@ -108,10 +109,24 @@ public class ShipController {
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
 	@RequestMapping(value = "/PFList", method = RequestMethod.GET)
-	public void AllPFListGET(Model model) throws Exception {
+	public void AllPFListGET(Model model, WorkVO wvo) throws Exception {
 		logger.debug("AllPFListGET() 실행");
+		
 		model.addAttribute("AllPFList", shService.AllPFList());
 		logger.debug("실적 리스트 출력!");
+	}
+	
+	// 실적 수정 - POST
+	// http://localhost:8088/sales/SHList
+	@RequestMapping(value = "/modifyPF", method = RequestMethod.POST)
+	public String modifyPFPOST(WorkVO wvo) throws Exception {
+		logger.debug(" /modify form -> modifyPOST()");
+		logger.debug(" 수정할 정보 " + wvo);
+
+		// 서비스 - 정보수정 동작
+		int result = shService.PFModify(wvo);
+		logger.debug("result", result);
+		return "redirect:/sales/PFList";
 	}
 
 }

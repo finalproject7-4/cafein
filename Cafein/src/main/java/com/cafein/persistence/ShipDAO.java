@@ -46,11 +46,13 @@ public interface ShipDAO {
 	// 작업 지시 수정
 	public int updateWK(WorkVO wvo) throws Exception;
 	
+	
+	
 	// 실적 조회
 	public List<WorkVO> getPFList() throws Exception;
 	
-	// 실적 등록
-	public void registPF(WorkVO wvo) throws Exception;
+	// 실적 수정
+	public int updatePF(WorkVO wvo) throws Exception;
 
 	
 

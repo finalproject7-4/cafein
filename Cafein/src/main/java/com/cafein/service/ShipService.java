@@ -52,7 +52,7 @@ public interface ShipService {
 	// 실적 조회
 	public List<WorkVO> AllPFList() throws Exception;
 	
-	// 실적 등록
-	public void registPF(WorkVO wvo) throws Exception;
+	// 실적 수정
+	public int PFModify(WorkVO wvo) throws Exception;
 	
 }

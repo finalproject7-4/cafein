@@ -20,8 +20,8 @@ public class WorkVO {
 	private int receiptid;
 
 //	private String clientcode;
-	private int recordcount;
-	private String returncode;
+	private int returncount;
+	private String returnreason;
 	
 	// produce 테이블
 	private Integer produceid;

@@ -126,11 +126,11 @@ public class ShipServiceImpl implements ShipService {
 		return shdao.getPFList();
 	}
 
-	// 실적 등록
+	// 실적 수정
 	@Override
-	public void registPF(WorkVO wvo) throws Exception {
-		logger.debug("registPFList 메서드 호출");
-		shdao.registWK(wvo);
+	public int PFModify(WorkVO wvo) throws Exception {
+		logger.debug("S : PFModify(int workid)");
+		return shdao.updatePF(wvo);
 	}
 
 

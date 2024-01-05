@@ -41,7 +41,7 @@
 	<where>
     and shipcode like 'SH%';
 	</where>
-</select>
+	</select>
 
 	<!-- 출하 검색 -->
 	<select id="searchSHList" resultType="com.cafein.domain.ShipVO" parameterType="java.util.Map">
@@ -57,7 +57,7 @@
             shipcode LIKE '%' || #{keyword} || '%'
         ORDER BY shipdate1 DESC, shipid DESC;
     ]]>
-</select>
+	</select>
 
 	<!-- 출하 수정 -->
 	<update id="updateSH">
@@ -105,7 +105,7 @@
 	<where>
     and workcode like 'WK%';
 	</where>
-</select>
+	</select>
 	
 	<!-- 작업 지시 수정 -->
 	<update id="updateWK">
@@ -113,11 +113,26 @@
 	 	pocnt=#{pocnt}, workdate1=#{workdate1}, workupdate=#{workupdate}
 	 	where workid=#{workid}
 	 </update>
+	 
+	 
+	 
 	
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
-		<!-- select * from ship -->
-		SELECT * FROM work
+	<![CDATA[
+    SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
+           wk.pocnt, wk.membercode, wk.returncount, wk.returnreason
+    FROM work wk
+    WHERE wk.worksts = '완료'
+    ORDER BY workid DESC;
+    ]]>
 	</select>
+	
+	<!-- 실적 수정 -->
+	<update id="updatePF">
+	 	update work set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returncount=#{returncount}, returnreason=#{returnreason}
+	 	where workid=#{workid}
+	 </update>
 
 </mapper>
