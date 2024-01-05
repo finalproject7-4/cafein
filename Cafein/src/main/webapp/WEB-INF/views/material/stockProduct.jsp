@@ -256,11 +256,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -360,11 +360,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
   			</div>
 		</div>

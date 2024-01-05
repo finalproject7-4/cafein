@@ -255,11 +255,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -352,11 +352,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -441,11 +441,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -523,7 +523,7 @@ $(document).ready(function() {
   <form>
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel2">자재 정보 확인</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">자재 입고 정보 확인</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

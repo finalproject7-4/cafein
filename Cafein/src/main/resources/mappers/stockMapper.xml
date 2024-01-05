@@ -81,7 +81,7 @@
  	
  	<!-- 재고 목록 조회 검색 버튼 (자재) -->
  	<select id="selectMaterialStockList" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, q.receiveid, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
+ 		SELECT stockid, s.qualityid, q.receiveid, r.lotnumber, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
  		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
@@ -234,7 +234,7 @@
 	
 	<!-- 재고 토스트 데이터 (자재) -->
 	<select id="materialStockToast" resultType="QualityVO">
-	 	SELECT stockid, s.qualityid, q.receiveid, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
+	 	SELECT stockid, s.qualityid, q.receiveid, r.lotnumber, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
  		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
  		JOIN quality q
