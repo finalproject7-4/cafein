@@ -1,6 +1,9 @@
 package com.cafein.persistence;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -44,6 +47,37 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : 출하 조회/작업지시코드");
 		return sqlSession.selectList(NAMESPACE+".wcList");
 	}
+	
+	// 출하 등록 - 재고량
+	@Override
+	public List<WorkVO> registST() throws Exception {
+		logger.debug("DAO : 출하 조회/작업지시코드");
+		return sqlSession.selectList(NAMESPACE+".stList");
+	}
+
+	// 출하 코드생성
+	@Override
+	public int getSHCount(ShipVO svo) throws Exception {
+		logger.debug("DAO : getShipCount(ShipVO svo)");
+		return sqlSession.selectOne(NAMESPACE + ".getSHCount", svo);
+	}
+	
+	// 출하 검색
+	@Override
+	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".searchSHList", searchParams);
+	}
+	
+	// 출하 수정
+	@Override
+	public int updateSH(ShipVO svo) throws Exception {
+		logger.debug("DAO : SHModify(ShipVO svo)");
+		return sqlSession.update(NAMESPACE + ".updateSH", svo);
+	}
+	
+	
+	
+	
 
 	// 작업 지시 조회
 	@Override
@@ -51,6 +85,13 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("작업 지시 조회 성공");
 		return sqlSession.selectList(NAMESPACE+".getWKList");
 	}
+	
+//	// 작업 지시 검색
+//	@Override
+//	public List<WorkVO> searchWKList(String keyword) throws Exception {
+//	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
+//	}
+
 
 	// 작업 지시 등록
 	@Override
@@ -77,7 +118,7 @@ public class ShipDAOImpl implements ShipDAO {
 	@Override
 	public int updateWK(WorkVO wvo) throws Exception {
 		logger.debug("DAO : WKModify(WorkVO wvo)");
-		return sqlSession.selectOne(NAMESPACE + ".updateWK", wvo);
+		return sqlSession.update(NAMESPACE + ".updateWK", wvo);
 	}
 
 	// 실적 조회
@@ -87,11 +128,13 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.selectList(NAMESPACE+".getPFList");
 	}
 
+	// 실적 수정
 	@Override
-	public void registPF(WorkVO wvo) throws Exception {
-		logger.debug(" DAO : registPF(WorkVO wvo)");
-		sqlSession.insert(NAMESPACE+".registPF",wvo);
+	public int updatePF(WorkVO wvo) throws Exception {
+		logger.debug("DAO : PFModify(WorkVO wvo)");
+		return sqlSession.update(NAMESPACE + ".updatePF", wvo);
 	}
+
 	
 	
 

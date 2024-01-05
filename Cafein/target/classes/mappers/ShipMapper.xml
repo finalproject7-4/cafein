@@ -8,26 +8,66 @@
 	<!-- 출하 조회 -->
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT sh.shipid, sh.shipdate, sh.shipcode, sh.workcode,
-		sh.stockid, st.itemid, it.itemname, it.clientcode,
-		sh.shipcount, sh.shipsts, sh.membercode
+		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
-		LEFT JOIN
-		item it ON st.itemid = it.itemid
+		ORDER BY shipdate1 DESC, shipid DESC;
 	</select>
 	
 	<!-- 출하 등록 -->
 	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
-		INSERT INTO ship (shipsts, workcode, clientcode, stockid, shipcount, shipdate, membercode)
-		VALUES ( #{shipsts}, #{workcode}, #{cleintcode}, #{stockid}, #{shipcount}, #{shipdate}, #{membercode} )
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode} )
 	</insert>
 	
 	<!-- 출하 등록 작업지시코드 -->
 	<select id="wcList" resultType="com.cafein.domain.WorkVO">
-		SELECT wk.workcode, wk.clientcode, wk.itemid, wk.shipcount, wk.shipdate, wk.memvercode
-		FROM work wk 보류
+		SELECT wk.workcode, wk.clientname, wk.itemname, wk.pocnt, wk.workdate1
+		FROM work wk
 	</select>
+	
+	<!-- 출하 등록 재고량 -->
+	<select id="stList" resultType="com.cafein.domain.WorkVO">
+		SELECT it.itemname, st.stockquantity
+		FROM stock st
+        JOIN item it ON st.itemid = it.itemid;
+	</select>
+	
+	<!-- 출하 코드 생성 -->
+	<select id="getSHCount" resultType="int" parameterType="com.cafein.domain.ShipVO">
+    select count(*) from ship
+	<where>
+    and shipcode like 'SH%';
+	</where>
+	</select>
+
+	<!-- 출하 검색 -->
+	<select id="searchSHList" resultType="com.cafein.domain.ShipVO" parameterType="java.util.Map">
+    <![CDATA[
+        SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+        sh.stockid, st.stockquantity, sh.itemname, sh.lotnumber, sh.clientname,
+        sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
+        FROM ship sh
+        LEFT JOIN stock st ON sh.stockid = st.stockid
+        WHERE
+            clientname LIKE '%' || #{keyword} || '%' OR
+            itemname LIKE '%' || #{keyword} || '%' OR
+            shipcode LIKE '%' || #{keyword} || '%'
+        ORDER BY shipdate1 DESC, shipid DESC;
+    ]]>
+	</select>
+
+	<!-- 출하 수정 -->
+	<update id="updateSH">
+	 	update ship set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, shipsts=#{shipsts}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}
+	 	where shipid=#{shipid}
+	 </update>
+	
+
+
 	
 	<!-- 작업지시 조회 -->
 	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
@@ -36,8 +76,8 @@
        wk.pocode, wk.itemname,
        wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
        wk.membercode
-		FROM c7d2307t4_2.work wk
-		JOIN c7d2307t4_2.purchaseorder po ON wk.pocode = po.pocode
+		FROM work wk
+		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
 		GROUP BY wk.workid, wk.workdate1, wk.workcode,
          wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
          wk.membercode
@@ -61,20 +101,10 @@
 	
 	<!-- 작업지시 코드 생성 -->
 	<select id="getWKCount" resultType="int" parameterType="com.cafein.domain.WorkVO">
-		select count(*) from work
-		<where>
-		  <choose>
-			<when test="worksts == '대기'">
-				and workcode like '%ST%';
-			</when>
-			<when test="worksts == '진행'">
-				and workcode like '%PR%';
-			</when>
-			<when test="worksts == '완료'">
-				and workcode like '%CP%';
-			</when>
-		  </choose>
-		</where>
+    select count(*) from work
+	<where>
+    and workcode like 'WK%';
+	</where>
 	</select>
 	
 	<!-- 작업 지시 수정 -->
@@ -83,11 +113,26 @@
 	 	pocnt=#{pocnt}, workdate1=#{workdate1}, workupdate=#{workupdate}
 	 	where workid=#{workid}
 	 </update>
+	 
+	 
+	 
 	
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
-		<!-- select * from ship -->
-		SELECT * FROM work
+	<![CDATA[
+    SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
+           wk.pocnt, wk.membercode, wk.returncount, wk.returnreason
+    FROM work wk
+    WHERE wk.worksts = '완료'
+    ORDER BY workid DESC;
+    ]]>
 	</select>
+	
+	<!-- 실적 수정 -->
+	<update id="updatePF">
+	 	update work set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returncount=#{returncount}, returnreason=#{returnreason}
+	 	where workid=#{workid}
+	 </update>
 
 </mapper>

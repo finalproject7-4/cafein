@@ -31,11 +31,11 @@ public class SalesDAOImpl implements SalesDAO {
 	}
 	
 	// 수주 조회
-	@Override
-	public List<SalesVO> getPOList() throws Exception{
-		logger.debug("DAO : 수주조회");
-		return sqlSession.selectList(NAMESPACE+".getPOList");
-	}
+//	@Override
+//	public List<SalesVO> getPOList() throws Exception{
+//		logger.debug("DAO : 수주조회");
+//		return sqlSession.selectList(NAMESPACE+".getPOList");
+//	}
 
 	//페이징
 	@Override
@@ -99,6 +99,27 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : ingUpdate(svo)");
 		return sqlSession.update(NAMESPACE+".ingPOState",svo);
 	}
+
+	//총개수
+	@Override
+	public int countPO(SalesVO svo) throws Exception {
+		logger.debug("DAO : countPO(svo)");
+		return sqlSession.selectOne(NAMESPACE+".countPO",svo);
+	}
+
+	//리스트출력
+	@Override
+	public List<SalesVO> selectPOListExcel(SalesVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectPOListExcel", svo);
+	}
+	//수주상태-대기
+	@Override
+	public List<SalesVO> stopState() throws Exception {
+		logger.debug("DAO : 수주조회");
+		return sqlSession.selectList(NAMESPACE+".stop");
+	}
+	
 	
 	
 	

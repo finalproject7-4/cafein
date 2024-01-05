@@ -35,7 +35,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+				<input type="submit" value="검색">
 			</form>
 			</div>
 				<form action="/productQualityPrint" method="GET">
@@ -52,13 +52,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</form>	
 			<br>
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">번호</th>
 								<th scope="col">검수번호</th>
 								<th scope="col">상품구분</th>
-								<th scope="col">생산/반품번호</th>
+								<th scope="col">생산/반품번호</th>						
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
 								<th scope="col">검수자</th>
@@ -105,25 +105,25 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									</td>
 									<td>${clist.auditbycode }</td>
 									<td>
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.produceprocess && clist.produceprocess == '포장')}">${clist.productquantity }(개)</c:if>
-										<c:if test="${!empty clist.produceprocess && !clist.produceprocess.equals('포장') }">${clist.productquantity }(g)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">${clist.productquantity }(개)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }">${clist.productquantity }(g)</c:if>
 									</td>
 									<td>
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.produceprocess && clist.produceprocess == '포장')}">${clist.auditquantity }(개)</c:if>
-										<c:if test="${!empty clist.produceprocess && !clist.produceprocess.equals('포장') }">${clist.auditquantity }(g)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">${clist.auditquantity }(개)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }">${clist.auditquantity }(g)</c:if>
 									</td>
 									<td>
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.produceprocess && clist.produceprocess == '포장')}">${clist.normalquantity }(개)</c:if>
-										<c:if test="${!empty clist.produceprocess && !clist.produceprocess.equals('포장') }">${clist.normalquantity }(g)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">${clist.normalquantity }(개)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }">${clist.normalquantity }(g)</c:if>
 									</td>
 									<td>
 									<c:if test="${clist.defectquantity == 0}">
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.produceprocess && clist.produceprocess == '포장')}">${clist.defectquantity }(개)</c:if>
-										<c:if test="${!empty clist.produceprocess && !clist.produceprocess.equals('포장') }">${clist.defectquantity }(g)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">${clist.defectquantity }(개)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }">${clist.defectquantity }(g)</c:if>
 									</c:if>
 									<c:if test="${clist.defectquantity != 0}">
-										<c:if test="${(!empty clist.itemtype && clist.itemtype == '반품') || (!empty clist.produceprocess && clist.produceprocess == '포장')}"><b style="color: red;">${clist.defectquantity }</b>(개)</c:if>
-										<c:if test="${!empty clist.produceprocess && !clist.produceprocess.equals('포장') }"><b style="color: red;">${clist.defectquantity }</b>(g)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }"><b style="color: red;">${clist.defectquantity }</b>(개)</c:if>
+										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }"><b style="color: red;">${clist.defectquantity }</b>(g)</c:if>
 									</c:if>
 									</td>
 									<td>
@@ -196,8 +196,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 											<c:if test="${!empty clist.produceprocess && clist.produceprocess.equals('포장') && !empty clist.registerstock && clist.registerstock.equals('N')}"> <!-- 생산 - 포장인 경우 -->
 												<form action="/material/newStock" method="POST" > <!-- 재고로 --> <!-- 버튼 눌러서 재고 등록 여부 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
+													<input type="hidden" value="${clist.itemtype }" name="itemtype">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
+													<input type="hidden" value="${clist.weight }" name="weight">
 													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
 													<input type="submit" class="btn btn-success btn-sm" value="정상">
 												</form>
@@ -227,8 +229,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 												<c:if test="${!empty clist.produceprocess && clist.produceprocess.equals('포장')}"> <!-- 포장인 경우 -->
 												<form action="/material/newStock" method="POST" > <!-- 재고로 --> <!-- 생산 상태 업데이트 -->
 													<input type="hidden" value="${clist.qualityid }" name="qualityid">
+													<input type="hidden" value="${clist.itemtype }" name="itemtype">
 													<input type="hidden" value="${clist.itemid }" name="itemid">
 													<input type="hidden" value="${clist.produceid }" name="produceid">
+													<input type="hidden" value="${clist.weight }" name="weight">
 													<input type="hidden" value="${clist.normalquantity }" name="stockquantity">
 													<c:if test="${!empty clist.registerstock && clist.registerstock.equals('N') }">
 													<input type="submit" value="정상" class="btn btn-success btn-sm" >
@@ -471,10 +475,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		</div>
 	</div>	
 	
-<!-- 생산 검수 모달창 (포장) -->
+<!-- 생산 검수 모달창 - LOT 선택 (포장) -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-  <form action="/quality/productAudit" method="POST">
+<!--   <form action="/quality/productAudit" method="POST"> -->
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (포장)</h1>
@@ -513,36 +517,58 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="productquantity" class="col-form-label">생산량 (개):</label>
-            	<input type="number" class="form-control" id="productquantity" name="productquantity" value="" readonly>
+           		<label for="productquantity" class="col-form-label">생산량:</label>
+            	<input type="text" class="form-control" id="productquantity" name="productquantity" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="auditquantity" class="col-form-label">검수량 (개):</label>
-            	<input type="number" class="form-control" id="auditquantity" name="auditquantity" value="" required>
+            	<label for="weight" class="col-form-label">개별 중량:</label>
+            	<input type="text" class="form-control" id="weight" name="weight" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="normalquantity" class="col-form-label">정상 (개 / 자동 계산):</label>
-            	<input type="number" class="form-control" id="normalquantity" name="normalquantity" value="" readonly>
+           		<label for="auditquantity" class="col-form-label">검수량:</label>
+            	<input type="text" class="form-control" id="auditquantity" name="auditquantity" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="defectquantity" class="col-form-label">불량 입력 (개):</label>
-            	<input type="number" class="form-control" id="defectquantity" name="defectquantity" value="" required>
+            	<label for="defectquantity" class="col-form-label">불량:</label>
+            	<input type="text" class="form-control" id="defectquantity" name="defectquantity" value="" readonly>
   			</div>
 		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="normalquantity" class="col-form-label">정상:</label>
+            	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+				<table class="table table-hover" style="margin-top: 10px;">
+					<thead>
+						<tr>
+							<th>LOT번호</th>
+							<th>정상</th>
+							<th>불량</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+  			</div>
+		</div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <button type="submit" class="btn btn-primary">검수 저장</button>
+<!--         <button type="button" class="btn btn-primary">검수 저장</button> -->
       </div>
     </div>
-   </form>
+<!--    </form> -->
   </div>
 </div>
-<!-- 생산 검수 모달창 (포장) -->
+<!-- 생산 검수 모달창 - LOT 선택 (포장) -->
 
-<!-- 생산 검수 모달창 데이터 (포장) -->
+<!-- 생산 검수 모달창 데이터 - LOT 선택 (포장) -->
 <script>
 $(document).ready(function() {
     let myModal = document.getElementById('exampleModal');
@@ -583,6 +609,9 @@ $(document).ready(function() {
         let pqinputField = myModal.querySelector('input[name="productquantity"]');
         pqinputField.value = productquantity;
         
+        let winputField = myModal.querySelector('input[name="weight"]');
+        winputField.value = weight; 
+        
         let aqinputField = myModal.querySelector('input[name="auditquantity"]');
         aqinputField.value = auditquantity;
         
@@ -592,57 +621,71 @@ $(document).ready(function() {
         let dqinputField = myModal.querySelector('input[name="defectquantity"]');
         dqinputField.value = defectquantity;
         
-    	const productQuantityInput = document.getElementById("productquantity");
-    	const auditQuantityInput = document.getElementById("auditquantity");
-    	const defectiveQuantityInput = document.getElementById("defectquantity");
-            
-    	// 검수량 입력 필드의 blur 이벤트 리스너 추가
-    	auditQuantityInput.addEventListener("blur", function() {
-    		const productQuantity = parseInt(productQuantityInput.value, 10); // 생산량
-    		const auditQuantity = parseInt(auditQuantityInput.value, 10);     // 검수량
-    		const defectiveQuantity = parseInt(defectiveQuantityInput.value, 10);          // 불량 개수
-    		
-        	// 검수량이 생산량보다 큰 경우
-        	if (auditQuantity > productquantity) {
-        		alert("검수량은 생산량보다 많을 수 없습니다!");
-        		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
-        		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스
-        		return;
-        	}else if(auditQuantity < auditquantity){
-        		alert("검수량은 기존 검수량보다 적을 수 없습니다!");
-        		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
-        		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스 
-        		return;
-    		}
-				const normalQuantity = auditQuantity - defectiveQuantity;
- 				document.getElementById("normalquantity").value = normalQuantity;
-    	});
+//     	const productQuantityInput = document.getElementById("productquantity");
+//     	const auditQuantityInput = document.getElementById("auditquantity");
+//     	const defectiveQuantityInput = document.getElementById("defectquantity");
+    	
+      // LOT번호와 정상/불량 데이터를 가져오는 함수
+        function fetchLotData(produceid) {
+            $.ajax({
+                url: '/roastedBeanLot', // 실제 AJAX 엔드포인트 URL로 교체해야 함
+                type: 'GET',
+                data: { produceid: produceid },
+                dataType: 'json',
+                success: function(data) {
+                	console.log(data);
+                	updateTableWithData(data);
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        }
 
-    	// 불량 개수 입력 필드의 blur 이벤트 리스너 추가
-    	defectiveQuantityInput.addEventListener("blur", function() {
-    		const auditQuantity = parseInt(auditQuantityInput.value, 10);                  // 검수량
-    		const defectiveQuantity = parseInt(defectiveQuantityInput.value, 10);          // 불량 개수
+        // 테이블을 업데이트하는 함수
+            function updateTableWithData(data) {
+                const tableBody = document.querySelector('#exampleModal table tbody');
+                tableBody.innerHTML = ''; // 기존 데이터 초기화
 
-    		// 불량 개수가 검수량을 초과하는 경우
-    		if (defectiveQuantity > auditQuantity) {
-    			alert("불량 개수는 검수량을 초과할 수 없습니다!");
-    			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
-    			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
-    			return;
-    		}else if(defectiveQuantity < defectquantity){
-    			alert("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
-    			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
-    			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
-    			return;
-    		}
-    			const normalQuantity = auditQuantity - defectiveQuantity;
-     			document.getElementById("normalquantity").value = normalQuantity;
-    		
-    	});
+                data.forEach(function(item, index) {
+                	const row = "<tr><td>" 
+                	+ item.lotnumber +
+                	"</td><td>" + 
+					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<input type='hidden' name='qualityid' value='"+ qualityid + "'>" +
+					"<input type='hidden' name='produceid' value='"+ produceid + "'>" +
+					"<input type='hidden' name='auditcode' value='"+ auditcode + "'>" +
+					"<input type='hidden' name='lotnumber' value='" + item.lotnumber + "'>" +
+					"<input type='hidden' name='auditstatus' value='Y'>" +
+					"<input type='hidden' name='defect' value='N'>" + 
+					"<input type='hidden' name='weight' value='" + weight + "'>" +
+					"<input type='hidden' name='productquantity' value='" + productquantity + "'>" +
+					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
+					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
+					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
+					"<input type='submit' class='btn btn-sm btn-primary' value='정상'></form></td><td>" +
+					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<input type='hidden' name='qualityid' value='"+ qualityid + "'>" +
+					"<input type='hidden' name='produceid' value='"+ produceid + "'>" +
+					"<input type='hidden' name='auditcode' value='"+ auditcode + "'>" +
+					"<input type='hidden' name='lotnumber' value='" + item.lotnumber + "'>" +
+					"<input type='hidden' name='auditstatus' value='Y'>" +
+					"<input type='hidden' name='defect' value='Y'>" + 
+					"<input type='hidden' name='weight' value='" + weight + "'>" +
+					"<input type='hidden' name='productquantity' value='" + productquantity + "'>" +
+					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
+					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
+					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
+					"<input type='submit' class='btn btn-sm btn-danger' value='불량'></form></td>";
+                    tableBody.innerHTML += row;
+                });
+            }
+       	// 생산ID(produceid)를 사용하여 데이터를 가져와 테이블을 업데이트
+        fetchLotData(produceid);
     });
 });
 </script>
-<!-- 생산 검수 모달창 데이터 (포장) -->
+<!-- 생산 검수 모달창 데이터 - LOT 선택 (포장) -->
 
 <!-- 생산 검수 모달창 (포장 X) -->
 <div class="modal fade" id="produceAuditModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1076,8 +1119,7 @@ $(document).ready(function() {
         ininputField.value = itemname;
 
         let dqinputField = myModal.querySelector('input[name="defectquantity"]');
-        dqinputField.value = defectquantity;
-             
+        dqinputField.value = defectquantity;   
     });
 });
 </script>
@@ -1318,11 +1360,3 @@ $(document).ready(function(){
 });
 </script>
 <!-- 날짜 비교 -->
-
-<!-- 툴팁 추가 -->
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
-<!-- 툴팁 추가 -->

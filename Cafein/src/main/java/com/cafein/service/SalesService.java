@@ -10,7 +10,7 @@ public interface SalesService {
 	public void registPO(SalesVO svo) throws Exception;
 	
 	// 수주 조회
-	public List<SalesVO> AllPOList() throws Exception;
+//	public List<SalesVO> AllPOList() throws Exception;
 		
 	// 수주등록 - 납품처
 	public List<SalesVO> registCli() throws Exception;
@@ -38,4 +38,12 @@ public interface SalesService {
 	//수주상태 진행으로 변경
 	public int ingUpdate(SalesVO svo) throws Exception;
 
+	//수주상태 총개수
+	public int countPO(SalesVO svo) throws Exception;
+
+	//수주리스트출력
+	public List<SalesVO> POListExcel(SalesVO svo) throws Exception;
+	//수주상태 대기
+	public List<SalesVO> stopState() throws Exception;
+	
 }

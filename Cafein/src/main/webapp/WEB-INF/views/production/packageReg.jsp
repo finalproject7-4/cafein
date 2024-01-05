@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+<!-- SweetAlert 추가 -->
+
 <!-- 포장 완료 등록 모달창 시작-->
 <div class="modal fade" id="packageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -92,14 +97,14 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 console.log('포장 공정 완료!');
-                alert("포장 공정 완료");
+                Swal.fire("포장 공정 완료");
                 var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 				getList(currentPage);
                 $('#packageModal').modal('hide');
             },
             error: function(error) {
                 console.error('포장완료 등록 실패:', error);
-                alert("이미 완료된 작업입니다.")
+                Swal.fire("이미 완료된 작업입니다.")
             }
         });
     }); 

@@ -3,23 +3,125 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
-<h1>수주관리</h1>
+<br>
 <fieldset>
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/sales/POList" method="get" onsubmit="return filterRows(event)">
-				납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요"><br> 수주일자 <input type="date" id="startDate"
-					name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
-				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
-				<br>
-			</form>
-
+				<form action="/sales/POList" method="GET" style="margin-bottom: 10px;">
+				<h6>수주 조회</h6>
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="납품처명을 입력하세요">
+				</c:if>
+				납품처조회
+				<input type="text" name="searchText" placeholder="납품처명을 입력하세요">
+				수주일자				
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+			</form>	
+			<form action="POList" method="GET">
+					<c:if test="${!empty param.searchBtn }">
+						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+					</c:if>
+					<c:if test="${!empty param.startDate }">
+						<input type="hidden" value="${param.startDate }" name="startDate">
+					</c:if>
+					<c:if test="${!empty param.endDate }">
+						<input type="hidden" value="${param.endDate }" name="endDate">
+					</c:if>
+				</form>
 		</div>
 	</div>
+	
+	
+	
 	<br>
+	<script>
+	$(".search").click(function (searchBtnValue) {
+	    $.ajax({
+	        url: "/sales/POList",
+	        type: "GET",
+	        data: {
+	            searchBtn: searchBtnValue
+	        },
+	        success: function (data) {
+	            $(".table-responsive").html(data);
+	        },
+	        error: function (error) {
+	            console.error("Error fetching data:", error);
+	        }
+	    });
 
-	<!-- 수주 상태에 따라 필터링하는 버튼 -->
+	    $("form[action='/sales/POList']").submit(function (event) {
+	        event.preventDefault(); // 기본 폼 제출 동작 방지
+
+	        // 폼 데이터 수집
+	        let formData = {
+	            startDate: $("input[name='startDate']").val(),
+	            endDate: $("input[name='endDate']").val()
+	        };
+
+	        // 선택된 검색 버튼 값이 있으면 추가
+	        if ($("input[name='searchBtn']").length > 0) {
+	            formData.searchBtn = $("input[name='searchBtn']").val();
+	        }
+
+	        // AJAX 요청 수행
+	        $.ajax({
+	            url: "/sales/POList",
+	            type: "GET",
+	            data: formData,
+	            success: function (data) {
+	                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+	                $(".table-responsive").html(data);
+	            },
+	            error: function (error) {
+	                console.error("Error fetching data:", error);
+	            }
+	        });
+	    });
+
+	    /* 날짜비교 */
+	    const checkDates = function () {
+	        const startDateStr = document.getElementById("startDate").value;
+	        const endDateStr = document.getElementById("endDate").value;
+
+	        // 둘 다 유효한 날짜 문자열인지 확인
+	        if (startDateStr && endDateStr) {
+	            const startDate = new Date(startDateStr);
+	            const endDate = new Date(endDateStr);
+
+	            if (startDate > endDate) {
+	                Swal.fire("종료일은 시작일과 같거나 이후여야 합니다.");
+	                document.getElementById("endDate").value = "";
+	            }
+	        }
+	    };
+
+	    // 페이지 로드 시 한 번 실행
+	    checkDates();
+
+	    // 날짜 입력 값에서 포커스가 빠져나갈 때 실행
+	    $("#startDate, #endDate").on("blur", checkDates);
+
+	    // 툴팁
+	    $('[data-toggle="tooltip"]').tooltip();
+	});
+
+	
+	</script>
+
+	
+		
+		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
+		<div class="bg-light rounded h-100 p-4" id="ListID">
+		<form action="POListPrint" method="GET">
+			<input id="ListExcel" type="submit" value="리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+		</form>
+			<form role="form" action="/sales/cancelUpdate" method="post">
+				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
+				<!-- 수주 상태에 따라 필터링하는 버튼 -->
 		<div class="btn-group" role="group">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-outline-dark" id="allpo">전체</button>
@@ -32,11 +134,56 @@
 			<input type="hidden" name="state" value="취소">
 			<button type="button" class="btn btn-outline-dark" id="cancel">취소</button>
 		</div>
-		<!-- 수주 리스트 테이블 조회 -->
-		<div class="bg-light rounded h-100 p-4" id="ListID">
-			<form role="form" action="/sales/cancelUpdate" method="post">
-				<span class="mb-4">총 ${fn:length(POList)}건</span> <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" id="regist" value="등록"> <input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
+		<script>
+		$("#allpo").click(function() {
+		   location.href="/sales/POList";
+		});
+
+		$("#stop").click(function () {
+		 	console.log("대기 버튼 클릭됨");
+			event.preventDefault();
+		    location.href="/sales/POList?postate=대기";
+		});
+
+		$("#ing").click(function() {
+		 console.log("진행 버튼 클릭됨");
+		 event.preventDefault();
+		 location.href="/sales/POList?postate=진행";
+		});
+
+		$("#complete").click(function() {
+			console.log("완료 버튼 클릭됨");
+			 event.preventDefault();
+			 location.href="/sales/POList?postate=완료";
+		});
+
+		$("#cancel").click(function() {
+			console.log("취소 버튼 클릭됨");
+			 event.preventDefault();
+			 location.href="/sales/POList?postate=취소";
+		});
+
+		function updateTotalCount() {
+			var totalCount = $(".table tbody tr:visible").length;
+			$(".settingPO").text("총 " + totalCount + "건");
+		}
+
+		// 필터링할 때마다 호출하여 업데이트
+		function updateRowNumbers() {
+			var counter = 1;
+			$(".table tbody tr:visible").each(function() {
+				$(this).find('td:nth-child(2)').text(counter);
+				counter++;
+			});
+
+			// 총 건수 업데이트 호출
+			updateTotalCount();
+		}
+		</script>
+		
+				 <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
+					data-bs-target="#registModal" id="regist" value="등록"> 
+					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 				<div class="table-responsive">
 					<table class="table">
@@ -92,7 +239,9 @@
 											</td>
 											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
-												<button type="button" class="btn btn-outline-dark" onclick="location.href='/sales/receipt';">불러오기</button>
+												<input value="불러오기" type="button" class="btn btn-outline-dark" onclick="receiptSend(`${po.poid}`)">
+
+												 
 											</td>
 										</tr>
 										<c:set var="counter" value="${counter+1 }" />
@@ -102,6 +251,157 @@
 						</tbody>
 					</table>
 				</div>
+<script>
+function receiptSend(poid) {
+    $.ajax({
+        url: '/sales/receipt',  // 서버에서 데이터를 가져올 URL
+        type: 'GET',
+        data: { poid: poid },  // poid 값을 서버에 전달
+        success: function() {
+
+            // 예시: 새로운 페이지로 이동
+            location.href = "/sales/receipt?poid=" + encodeURIComponent(poid);
+        },
+        error: function() {
+            console.error('Error fetching receipt information');
+        }
+    });
+}
+
+</script>
+				
+			<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO.prev }">
+      						<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        						<span aria-hidden="true">&laquo;</span>
+      						</a>
+      						
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+							<script>
+								$(document).ready(function(){
+   									$('.pageBlockPrev').click(function(e) {
+   										e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            	let prevPage = $(this).data('page');
+   									
+   						            	let searchBtn = "${param.searchBtn}";
+   						            	let searchText = "${param.searchText}";
+   						            	let startdate = "${param.startdate}";
+   						            	let enddate = "${param.enddate}";
+
+   						            	url = "/sales/POList?page=" + nextPage;
+
+   						            	if (searchBtn) {
+   						            	  url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   						            	}
+
+   						            	if (searchText) {
+   						            	  url += "&searchText=" + encodeURIComponent(searchText);
+   						            	}
+
+   						            	if (startdate) {
+   						            	  url += "&startdate=" + encodeURIComponent(startdate);
+   						            	}
+
+   						            	if (enddate) {
+   						            	  url += "&enddate=" + encodeURIComponent(enddate);
+   						            	}
+
+   				                		location.href = url;
+    								});
+								});
+							</script>
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+      						
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+					
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					<script>
+					$(document).ready(function(){
+			            $('.pageBlockNum[data-page="${i}"]').click(function (e) {
+			                e.preventDefault(); // 기본 이벤트 방지
+			                
+			               	let searchText = "${param.searchText}";	
+			                let searchBtn = "${param.searchBtn}";
+			                let startdate = "${param.startdate}";
+			            	let enddate = "${param.enddate}";
+
+			                let pageValue = $(this).data('page');
+		                	url = "/sales/POList?page=" + pageValue;
+			                
+			                if (searchBtn) {
+			                    url += "&searchBtn=" + encodeURIComponent(searchBtn);
+			                }
+			                
+			                if (searchText) {
+			                    url += "&searchText=" + encodeURIComponent(searchText);
+			                }
+			                if (startdate) {
+			            	  url += "&startdate=" + encodeURIComponent(startdate);
+			            	}
+
+			            	if (enddate) {
+			            	  url += "&enddate=" + encodeURIComponent(enddate);
+			            	}
+			                
+			                location.href = url;
+			            });
+					});	
+					</script>
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO.next }">
+      						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        						<span aria-hidden="true">&raquo;</span>
+      						</a>	
+      					<!-- 버튼에 파라미터 추가 이동 (이후) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            let nextPage = $(this).data('page');
+   									
+   									let searchBtn = "${param.searchBtn}";
+   									let searchText = "${param.searchText}";
+   									let startdate = "${param.startdate}";
+					            	let enddate = "${param.enddate}";
+
+   				                	url = "/sales/POList?page=" + nextPage;
+   				                
+   				                	if (searchBtn) {
+   				                    	url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                	}
+   				                
+   				                	if (searchText) {
+   				                    	url += "&searchText=" + encodeURIComponent(searchText);
+   				                	}
+   				                	if (startdate) {
+					            	  url += "&startdate=" + encodeURIComponent(startdate);
+					            	}
+
+					            	if (enddate) {
+					            	  url += "&enddate=" + encodeURIComponent(enddate);
+					            	}
+   				                
+   				                	location.href = url;
+    							});
+							});
+						</script>
+						<!-- 버튼에 파라미터 추가 이동 (이전) -->  					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
 			</form>
 		</div>
 	</div>
@@ -173,7 +473,7 @@
 			// 주문 상태가 '완료'인 경우 취소 불가
 			if (postate === '완료') {
 				Swal.fire({
-					title : '이 주문은 완료된 상태입니다.',
+					title : '이미 완료된 주문입니다.',
 					text : '완료된 상태는 취소할 수 없습니다.',
 					icon : 'error',
 				});
@@ -182,7 +482,7 @@
 			// 주문 상태가 '완료'인 경우 취소 불가
 			if (postate === '취소') {
 				Swal.fire({
-					title : '이미 취소된 상태입니다.',
+					title : '이미 취소된 주문입니다.',
 					icon : 'error',
 				});
 				return; // 취소할 수 없는 상태이므로 함수 종료
@@ -459,137 +759,9 @@
 			}
 		});
 
-		$("#allpo").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#stop").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#ing").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('진행'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#complete").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('완료'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		$("#cancel").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('취소'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
-		});
-
-		// 함수를 정의하는 부분
-		function updateRowNumbers() {
-			var counter = 1;
-			$(".table tbody tr:visible").each(function() {
-				$(this).find('td:nth-child(2)').text(counter);
-				counter++;
-			});
-		}
-		function updateTotalCount() {
-			var totalCount = $(".table tbody tr:visible").length;
-			$(".mb-4").text("총 " + totalCount + "건");
-		}
-
-		// 필터링할 때마다 호출하여 업데이트
-		function updateRowNumbers() {
-			var counter = 1;
-			$(".table tbody tr:visible").each(function() {
-				$(this).find('td:nth-child(2)').text(counter);
-				counter++;
-			});
-
-			// 총 건수 업데이트 호출
-			updateTotalCount();
-		}
 	});
 </script>
 
-<!-- 검색 -->
-<script>
-	function filterRows(event) {
-		// 기본 폼 제출 동작 방지
-		event.preventDefault();
-
-		// 입력된 키워드 가져오기
-		var keyword = $('.clientSearch').val().toLowerCase();
-
-		// 시작일자와 종료일자 가져오기
-		var startDate = $('#startDate').val() ? new Date($('#startDate').val())
-				: null;
-		var endDate = $('#endDate').val() ? new Date($('#endDate').val())
-				: null;
-
-		// 테이블의 모든 행 가져오기
-		var rows = $('.table tbody tr');
-
-		// 각 행에 대해 키워드 및 날짜 포함 여부 확인
-		rows.each(function() {
-			var clientName = $(this).find('td:nth-child(5)').text()
-					.toLowerCase();
-			var orderDateStr = $(this).find('td:nth-child(8)').text();
-			var orderDate = orderDateStr ? new Date(orderDateStr) : null;
-
-			var keywordMatch = keyword === '' || clientName.includes(keyword);
-			var dateMatch = (startDate === null || (orderDate !== null
-					&& orderDate >= startDate && orderDate <= endDate));
-
-			if (keywordMatch && dateMatch) {
-				$(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
-			} else {
-				$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
-			}
-			console.log('Client Name:', clientName, 'Order Date:', orderDate,
-					'Keyword Match:', keywordMatch, 'Date Match:', dateMatch);
-		});
-
-		// 번호 업뎃
-		updateRowNumbers();
-		// 총 건수 업뎃
-		updateTotalCount();
-		// 폼이 실제로 제출되지 않도록 false 반환
-		return false;
-	}
-
-	// 테이블에 표시되는 행의 번호를 업데이트하는 함수
-	function updateRowNumbers() {
-		// 표시된 행만 선택하여 번호 업데이트
-		var visibleRows = $('.table tbody tr:visible');
-		visibleRows.each(function(index) {
-			// 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-			$(this).find('td:first').text(index + 1);
-		});
-	}
-	// 총 건수 업데이트 함수
-	function updateTotalCount() {
-		var totalCount = $('.table tbody tr:visible').length;
-		$('.mb-4').text('총 ' + totalCount + '건');
-	}
-</script>
 
 
 <%@ include file="../include/footer.jsp"%>

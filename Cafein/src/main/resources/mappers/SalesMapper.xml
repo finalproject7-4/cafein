@@ -20,28 +20,46 @@
 	    FROM purchaseorder po
 	    JOIN item ON po.itemid = item.itemid
 	    JOIN client cli ON po.clientid = cli.clientid
-	    WHERE
+	    <if test="postate != null" >
+   			where postate=#{postate}
+	    </if>
 	    ORDER BY ordersdate desc, poid desc
 	</select>
 	
 	
 	<!-- 품목 목록 (페이징) -->
-	<select id="POListPage" resultType="com.cafein.domain.SalesVO">
-		SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
-		cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
-		po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
-		FROM purchaseorder po
-		JOIN item ON po.itemid = item.itemid
-		JOIN client cli ON po.clientid = cli.clientid
-		<if test="option == 'clientcode'">
-			where clientcode like concat('%', #{keyword}, '%')
+<select id="POListPage" resultType="com.cafein.domain.SalesVO">
+	SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
+	po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
+	FROM purchaseorder po
+	JOIN item ON po.itemid = item.itemid
+	JOIN client cli ON po.clientid = cli.clientid
+	<where>
+		<if test="postate != null" >
+			postate=#{postate}
 		</if>
-		<if test="option == 'itemcode'">
-			where itemcode like concat('%', #{keyword}, '%')
+		<if test="searchBtn != null and searchText == null">
+			AND cli.clientname = #{searchBtn}
 		</if>
-		ORDER BY ordersdate desc, poid desc
-		limit #{cri.startPage}, #{cri.pageSize}
-	</select>
+		<if test="searchBtn != null and searchText != null">
+			AND item.itemtype = #{searchBtn} 
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(ordersdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
+	ORDER BY ordersdate DESC, poid DESC
+	LIMIT #{cri.startPage}, #{cri.pageSize}
+</select>
+
 	
 	<!-- 수주등록-납품처 -->
 	<select id="cliList" resultType="com.cafein.domain.SalesVO">
@@ -98,5 +116,54 @@
 		JOIN item ON re.itemid = item.itemid
 		JOIN purchaseorder po ON re.poid = po.poid
 	</select>
+	
+	<!-- 수주조회 총개수 -->
+	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
+   SELECT count(*)
+	FROM purchaseorder po
+	JOIN item ON po.itemid = item.itemid
+	JOIN client cli ON po.clientid = cli.clientid
+	<where>
+		<if test="postate != null" >
+			postate=#{postate}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND item.itemtype = #{searchBtn} 
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(ordersdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
+</select>
+
+ <!-- 수주상태 대기 -->
+ <select id="stop" resultType="com.cafein.domain.SalesVO">
+ select * from purchaseorder
+ where postate='대기'
+ </select>
+	
+	<!-- 리스트 출력 -->
+ 	<select id="selectPOListExcel" resultType="SalesVO">
+ 		SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	    cli.clientid, cli.clientname, cli.clientcode, 
+	    item.itemid, item.itemname, item.itemcode, 
+	    po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
+ 		FROM purchaseorder po
+ 		JOIN client cli
+ 		ON po.clientid = cli.clientid
+ 		JOIN item item
+ 		ON po.itemid = item.itemid
+ 		ORDER BY poid DESC
+ 	</select>
 	 
 </mapper>

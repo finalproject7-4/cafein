@@ -22,7 +22,7 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>\
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	
 	
@@ -96,7 +96,7 @@
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="/production/produceList" class="dropdown-item">생산목록</a>
                             <a href="/production/roastedList" class="dropdown-item">완제품</a>
-                            <a href="/production/direction" class="dropdown-item">작업지시관리</a>
+                            <a href="/production/WKList" class="dropdown-item">작업지시관리</a>
                         </div>
                     </div>
                  
@@ -121,8 +121,8 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class='fas fa-poll' style='font-size:24px'></i><b> 영업관리</b></a>
                         <div class="dropdown-menu bg-transparent border-0"> 
                             <a href="/sales/POList" class="dropdown-item">수주관리</a>
-                            <a href="/sales/ship" class="dropdown-item">출하관리</a>
-                            <a href="/sales/record" class="dropdown-item">실적관리</a>
+                            <a href="/sales/SHList" class="dropdown-item">출하관리</a>
+                            <a href="/sales/PFList" class="dropdown-item">실적관리</a>
                         </div>
                     </div>
                 </div>

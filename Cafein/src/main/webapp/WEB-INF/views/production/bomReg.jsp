@@ -20,6 +20,10 @@
 								<label for="itemname" class="col-form-label">제품명</label> 
 								<input id="itemnameBom" name="itemname" class="form-control" readonly>
 							</div>
+							<div class="col" >
+								<label for="itemid" class="col-form-label">아이템ID</label> 
+								<input id="itemidBom" name="itemid" class="form-control" readonly>
+							</div>
 						</div>
 							<div class="row">
 							<div class="col">
@@ -33,34 +37,34 @@
 							</div>
 							<div class="row">
 							<div class="col">
-								<label for="itemname1" class="col-form-label">원재료1</label> 
-								<select id="itemnameSel1" name="itemname1" class="form-select">
+								<label for="itemid1" class="col-form-label">원재료1</label> 
+								<select id="itemnameSel1" name="itemid1" class="form-select">
 								<option value="">선택</option>
 								<c:forEach var="iList" items="${itemList }">
 									<c:if test="${iList.itemtype=='원자재' }">
-										<option value="${iList.itemname }">${iList.itemname}</option>
+										<option value="${iList.itemid }">${iList.itemname}</option>
 									</c:if>
 								</c:forEach>
 								</select> 
 							</div>
 							<div class="col">
-								<label for="itemname2" class="col-form-label">원재료2</label>
-								<select id="itemnameSel2" name="itemname2" class="form-select">
+								<label for="itemid2" class="col-form-label">원재료2</label>
+								<select id="itemnameSel2" name="itemid2" class="form-select">
 								<option value="">선택</option>
 								<c:forEach var="iList" items="${itemList }">
 									<c:if test="${iList.itemtype=='원자재' }">
-										<option value="${iList.itemname }">${iList.itemname}</option>
+										<option value="${iList.itemid }">${iList.itemname}</option>
 									</c:if>
 								</c:forEach>
 								</select> 
 							</div>
 							<div class="col">
-								<label for="itemname3" class="col-form-label">원재료3</label>
-								<select id="itemnameSel3" name="itemname3" class="form-select">
+								<label for="itemid3" class="col-form-label">원재료3</label>
+								<select id="itemnameSel3" name="itemid3" class="form-select">
 								<option value="">선택</option>
 								<c:forEach var="iList" items="${itemList }">
 									<c:if test="${iList.itemtype=='원자재' }">
-										<option value="${iList.itemname }">${iList.itemname}</option>
+										<option value="${iList.itemid }">${iList.itemname}</option>
 									</c:if>
 								</c:forEach>
 								</select> 

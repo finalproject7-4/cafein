@@ -74,4 +74,7 @@ public interface QualityService {
 	
 	// 불량 현황 엑셀용 출력 목록 조회 (자재)
 	public List<QualityVO> materialDefectsListSearchBtnExcel(QualityVO vo) throws Exception;
+
+	// roastedBean 검수, 불량 처리 (포장)
+	public void roastedBeanDefect(QualityVO vo) throws Exception;
 }

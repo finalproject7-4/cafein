@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import com.cafein.domain.BomVO;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.QualityVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
 
 @Repository
@@ -173,6 +175,44 @@ public class ProductionDAOImpl implements ProductionDAO {
 		return sqlSession.selectOne(NAMESPACE+".countRoastedbean", vo);
 	}
 
+
+	// 블렌딩 작업 생산 들어가면 품질 리스트 데이터 삽입
+	@Override
+	public void regQualityList(QualityVO vo) throws Exception {
+		logger.debug("DAO - 블렌딩 생산 시작됐으니 품질 리스트도 업데이트!");
+		
+		sqlSession.insert(NAMESPACE+".regQualityList", vo);
+		
+	}
+
+
+	// 블렌딩 -> 로스팅으로 작업 전환시 생성될 신규 품질 데이터
+	@Override
+	public void regRoastingQualityList(QualityVO vo) throws Exception {
+		logger.debug("DAO - 블렌딩 완료! 로스팅 작업 시작해서 신규 품질 데이터 삽입!");
+		
+		sqlSession.insert(NAMESPACE+".regRoastingQualityList", vo);
+	}
+	
+	// 로스팅 -> 포장으로 작업 전환시 생성될 신규 품질 데이터
+	@Override
+	public void regPackingQualityList(QualityVO vo) throws Exception {
+		logger.debug("DAO - 로스팅 완료! 포장 작업 시작해서 신규 품질 데이터 삽입!");
+		
+		sqlSession.insert(NAMESPACE+".regPackingQualityList", vo);
+	}
+
+
+	// 생산지시 등록과 동시에 출고 등록
+	@Override
+	public void insertReleasesList(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - 생산등록해서 출고등록도 한다!");
+		
+		sqlSession.insert(NAMESPACE+".insertReleasesList",vo);
+		
+	}
+
+	
 	
 	
 	

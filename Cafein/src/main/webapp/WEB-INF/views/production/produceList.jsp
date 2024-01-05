@@ -56,7 +56,7 @@ function getList(pageNumber) {
   		  $("#produceListAll").html(data);
 		 },
 		error: function(error) {
-			alert("못한다");
+			Swal.fire("못한다");
     		console.error("Error fetching quality list:", error);
 		}
 	});
@@ -120,10 +120,10 @@ $(document).ready(function() {
                 $("#produceListAll").html(data); // 결과를 화면에 표시
             },
             error: function(error) {
-            	alert('못간다 :'+$("select[name='produceline']").val()+'/ '+$("select[name='process']").val()
+            	Swal.fire('못간다 :'+$("select[name='produceline']").val()+'/ '+$("select[name='process']").val()
             			+' /'+$("input[name='startDate']").val()+' /'+$("input[name='endDate']").val()+
             			'/ '+ $("select[name='itemname']").val());
-            	alert(formData+' / '+error);
+            	Swal.fire(formData+' / '+error);
                 console.error("Error fetching data:", error);
             	console.log(formData);
             }
@@ -193,7 +193,7 @@ $(document).ready(function() {
 	});
 	
 	// 생산지시 수정(로스팅 -> 포장)  클릭시 실행될 함수
-	function openUpdateModal2(produceid, producedate, producetime, produceline, itemname, itemid, packagevol) {
+	function openUpdateModal2(produceid, producedate, producetime, produceline, itemname, itemid, packagevol, amount) {
     // 모달 내부의 입력 필드에 데이터 설정
     document.getElementById('produceidUpdate2').value = produceid;
     document.getElementById('producedateUpdate2').value = producedate;
@@ -201,6 +201,7 @@ $(document).ready(function() {
     document.getElementById('producelineUpdate2').value = produceline;
     document.getElementById('itemnameUpdate2').value = itemname;
     document.getElementById('itemidUpdate2').value = itemid;
+    document.getElementById('amountPack2').value = amount;
 
     // 모달 열기
     $('#updateModal2').modal('show');

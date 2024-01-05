@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cafein.domain.ClientVO;
 import com.cafein.domain.ItemVO;
+import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.TestVO;
 import com.cafein.persistence.SalesDAO;
@@ -31,11 +32,11 @@ public class SalesServiceImpl implements SalesService {
 	}
 
 	/*수주조회*/
-	@Override
-	public List<SalesVO> AllPOList() throws Exception{
-		logger.debug("S :AllPOList()");
-		return sdao.getPOList();
-	}
+//	@Override
+//	public List<SalesVO> AllPOList() throws Exception{
+//		logger.debug("S :AllPOList()");
+//		return sdao.getPOList();
+//	}
 	
 	//페이징
 	@Override
@@ -100,6 +101,28 @@ public class SalesServiceImpl implements SalesService {
 		logger.debug("S :ingUpdate(svo)");
 		return sdao.ingUpdate(svo);
 	}
+
+	//수주 총개수
+	@Override
+	public int countPO(SalesVO svo) throws Exception {
+		logger.debug("S : countPO(SalesVO svo)");
+		return sdao.countPO(svo);
+	}
+	//리스트출력
+	@Override
+	public List<SalesVO> POListExcel(SalesVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return sdao.selectPOListExcel(svo);
+	}
+
+	//수주상태-대기
+	@Override
+	public List<SalesVO> stopState() throws Exception {
+		logger.debug("S :stopState()");
+		return sdao.stopState();
+	}
+	
+	
 
 	
 	

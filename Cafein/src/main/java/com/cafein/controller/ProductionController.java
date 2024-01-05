@@ -2,6 +2,9 @@ package com.cafein.controller;
 
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +28,10 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.QualityVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
+import com.cafein.service.MaterialService;
 import com.cafein.service.ProductionService;
 
 @Controller
@@ -36,6 +42,9 @@ public class ProductionController {
 
 	@Inject
 	private ProductionService pService;
+	
+	@Inject
+	private MaterialService mateService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
 	// http://localhost:8088/production/produceList
@@ -71,16 +80,19 @@ public class ProductionController {
 		logger.debug("생산지시 목록 출력!");
 
 	}
+	
 
 	// 생산지시 등록
+	@ResponseBody
 	@RequestMapping(value = "/produceReg", method = RequestMethod.POST)
 	public String produceRegist(ProduceVO vo, RedirectAttributes rttr) throws Exception {
 		logger.debug("/production/produceReg -> produceRegist() 호출!");
 
 		logger.debug("지시 정보는? " + vo);
 		String process = vo.getProcess();
-
-		// 로스팅 공정이 아닐때는 온도 0으로 설정
+		
+		
+			// 로스팅 공정이 아닐때는 온도 0으로 설정
 		if (!process.equals("로스팅")) {
 			vo.setTemper(0);
 		}
@@ -89,11 +101,72 @@ public class ProductionController {
 		if (!process.equals("포장")) {
 			vo.setPackagevol(0);
 		}
-
 		pService.regProduce(vo);
-
+		
+		// 총 생산량 / 비율로 실제 재고에서 차감할 수량 계산
+		String[] rrate = vo.getRate().split(":");
+		ReleasesVO rvo = new ReleasesVO();
+		
+	
+		int rate1;
+		int rate2;
+		int rate3;
+				logger.debug("생산일은?! "+vo.getProducedate());
+		if(vo.getStockid1() !=null) {
+			rvo.setMembercode(vo.getMembercode());
+			rvo.setReleasedate(vo.getProducedate());
+			rvo.setItemid(vo.getItemid1());
+			rate1 = Integer.parseInt(rrate[0]);
+			int usingAmount = (vo.getAmount()/10000)*rate1;
+			rvo.setReleasecode(generateReceiveCode());
+			rvo.setReleasequantity(usingAmount);
+			rvo.setStockid(vo.getStockid1());
+			pService.insertReleasesList(rvo);			
+		}
+		
+		if(vo.getStockid2() != null) {
+			rvo.setMembercode(vo.getMembercode());
+			rvo.setReleasedate(vo.getProducedate());
+			rvo.setItemid(vo.getItemid2());
+			rate2 = Integer.parseInt(rrate[1]);
+			int usingAmount2 = (vo.getAmount()/10000)*rate2;
+			rvo.setReleasequantity(usingAmount2);
+			rvo.setReleasecode(generateReceiveCode());
+			rvo.setStockid(vo.getStockid2());
+			pService.insertReleasesList(rvo);			
+	
+		}
+			
+		
+		if(vo.getStockid3() != null) {
+			rvo.setMembercode(vo.getMembercode());
+			rvo.setReleasedate(vo.getProducedate());
+			rvo.setItemid(vo.getItemid3());
+			rate3 = Integer.parseInt(rrate[2]);
+			int usingAmount3 = (vo.getAmount()/10000)*rate3;
+			rvo.setReleasequantity(usingAmount3);
+			rvo.setReleasecode(generateReceiveCode());
+			rvo.setStockid(vo.getStockid3());
+			pService.insertReleasesList(rvo);			
+		}
+		
 		return "redirect:/production/produceList";
 	}
+	
+	
+	  // 출고코드 생성 메서드
+	   public String generateReceiveCode() throws Exception {
+	      
+	      String prefix = "RL";
+	      String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+	      // 출고코드 개수 계산
+	      int counter = mateService.releasecodeCount(datePart) + 1;
+
+	      String formattedCounter = String.format("%02d", counter);
+	      return prefix + datePart + formattedCounter;
+	   }
+	
 
 	// BOM 등록
 	@RequestMapping(value = "/bomReg", method = RequestMethod.POST)
@@ -106,17 +179,33 @@ public class ProductionController {
 		return "redirect:/production/produceList";
 	}
 
-	// 생산 상태 변경 (state) 생산중 or 완료
+	// 블렌딩+대기+검사전인 생산 상태를 (state) 생산중으로 변경! 블렌딩일때만 실행!(품질 테이블에 데이터 삽입됨)
 	@ResponseBody
-	@PostMapping(value = "/AJAXupdateProduceState")
-	public void AJAXupdateProduceState(ProduceVO vo) throws Exception {
+	@PostMapping(value = "/BupdateProduceState")
+	public void BupdateProduceState(ProduceVO vo, QualityVO qvo) throws Exception {
 		logger.debug("/producetion/updateProduceState() 호출!");
 
 		logger.debug("생산 상태 업데이트! 업데이트할 값은? " + vo.getState());
 		logger.debug("@@@@ 생산 id 는? " + vo.getProduceid());
-
+		
+		qvo.setProduceid(vo.getProduceid());
+		qvo.setItemid(vo.getItemid());
+		qvo.setProductquantity(vo.getAmount());
+		
 		pService.updateProduceState(vo);
-
+		pService.regQualityList(qvo);
+	}
+	
+	// 품질 데이터 추가 삽입 필요없는 생산 상태 변경 (state) 생산중 or 완료
+	@ResponseBody
+	@PostMapping(value = "/AJAXupdateProduceState")
+	public void AJAXupdateProduceState(ProduceVO vo) throws Exception {
+		logger.debug("/producetion/updateProduceState() 호출!");
+		
+		logger.debug("생산 상태 업데이트! 업데이트할 값은? " + vo.getState());
+		logger.debug("@@@@ 생산 id 는? " + vo.getProduceid());
+		
+		pService.updateProduceState(vo);
 	}
 
 	// 포장 완료시 roastedbean에 로스팅완료 제품 insert
@@ -207,22 +296,34 @@ public class ProductionController {
 	// 생산공정 업데이트 (블렌딩 -> 로스팅)
 	@ResponseBody
 	@RequestMapping(value = "/processUpdateRoasting", method = RequestMethod.POST)
-	public String updateProcessRoasting(ProduceVO vo) throws Exception {
+	public String updateProcessRoasting(ProduceVO vo, QualityVO qvo) throws Exception {
 		logger.debug("생산 공정 로스팅으로 업데이트!");
 
 		int temper = pService.getRoastingTemper(vo);
 		vo.setTemper(temper);
 		pService.updateProduceProcessRoasting(vo);
+		
+		// 품질테이블에 로스팅공정 추가
+		qvo.setProduceid(vo.getProduceid());
+		qvo.setItemid(vo.getItemid());
+		qvo.setProductquantity(vo.getAmount());
+		pService.regRoastingQualityList(qvo);
 
 		return "redirect:/production/produceList";
 	}
 
 	// 생산공정 업데이트 (로스팅 -> 포장)
 	@RequestMapping(value = "/processUpdatePackage", method = RequestMethod.POST)
-	public String updateProcessPackage(ProduceVO vo) throws Exception {
+	public String updateProcessPackage(ProduceVO vo, QualityVO qvo) throws Exception {
 		logger.debug("생산 공정 포장으로 업데이트!");
 
 		pService.updateProduceProcess(vo);
+		
+		// 품질테이블에 포장공정 추가
+		qvo.setProduceid(vo.getProduceid());
+		qvo.setItemid(vo.getItemid());
+		qvo.setProductquantity(vo.getAmount());
+		pService.regPackingQualityList(qvo);
 
 		return "redirect:/production/produceList";
 	}
@@ -250,6 +351,7 @@ public class ProductionController {
 	}
 
 	
+	// 완제품 리스트 목록 출력(AJAX로 호출)
 	@RequestMapping(value="/roastedDetail", method =RequestMethod.GET )
 	public void roastedBeanDetail(Model model, RoastedbeanVO vo, Criteria cri, HttpSession session) throws Exception{
 		
@@ -272,5 +374,16 @@ public class ProductionController {
 				
 				
 	}
+	
+	
+	
+	// 메인페이지
+	// http://localhost:8088/production/main
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public void cafeinMain() {
+		
+	}
+	
+	
 
 }
