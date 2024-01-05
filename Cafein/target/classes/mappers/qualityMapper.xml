@@ -215,7 +215,7 @@
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
-		ON q.produceid = p.produceid 
+		ON q.produceid = p.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
@@ -224,12 +224,14 @@
 	
 	<!-- 불량 현황 목록 검색 버튼 (생산 / 반품) -->
 	<select id="selectDefectsListSearchBtn" resultType="QualityVO">
-		SELECT defectid, d.qualityid, q.itemtype, produceprocess, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
+		SELECT DISTINCT defectid, d.qualityid, q.itemtype, produceprocess, weight, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
 		FROM defects d
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid 
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		<where>
@@ -262,11 +264,15 @@
 	<!-- 불량 현황 목록 검색 버튼 개수 확인 (생산 / 반품) -->
 	<select id="selectDefectsListSearchBtnCount" resultType="integer">
 		SELECT COUNT(*)
+		FROM
+		(SELECT DISTINCT defectid, d.qualityid, q.itemtype, produceprocess, weight, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
 		FROM defects d
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid 
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		<where>
@@ -276,7 +282,7 @@
 		</if>
 		<if test="searchBtn != null and searchBtn == '반품' and searchText == null">
 		AND q.itemtype = #{searchBtn}
-		</if>	
+		</if>
 		<if test="searchBtn == null and searchText != null">
 		AND (d.qualityid = #{searchText} OR 
 		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
@@ -290,8 +296,9 @@
 		AND q.itemtype = #{searchBtn}
 		AND (d.qualityid = #{searchText} OR 
 		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
-		</if>						
-		</where>	
+		</if>					
+		</where>
+		ORDER BY defectid DESC) AS subquery
 	</select>
 	<!-- 불량 현황 목록 개수 확인 (생산 / 반품) -->
 	
@@ -430,12 +437,14 @@
 	
 	<!-- 불량 현황 엑셀 출력용 목록 조회 (생산 + 반품) -->
 	<select id="selectDefectsListSearchBtnExcel" resultType="QualityVO">
-		SELECT defectid, d.qualityid, q.itemtype, produceprocess, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
+		SELECT DISTINCT defectid, d.qualityid, q.itemtype, produceprocess, weight, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
 		FROM defects d
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid 
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		<where>
