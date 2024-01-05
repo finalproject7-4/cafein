@@ -72,6 +72,9 @@ public interface StockService {
 	// produceid로 roastedBean LOT 조회 후 입력 (포장)
 	public void normalRoastedBeanLot(int produceid) throws Exception;
 	
+	// receiveid로 receive LOT 조회 후 입력 (자재)
+	public void normalRoastedBeanLotMat(int receiveid) throws Exception;
+	
 	// 정상 LOT 번호 검색
 	public List<QualityVO> normalLot(QualityVO vo) throws Exception;
 	

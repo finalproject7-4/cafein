@@ -72,6 +72,9 @@ public interface StockDAO {
 	// produceid로 roastedBean LOT 조회 후 입력 (포장)
 	public void insertNormalRoastedBeanLot(int produceid) throws Exception;
 	
+	// receiveid로 receive LOT 조회 후 입력 (자재)
+	public void insertNormalRoastedBeanLotMat(int receiveid) throws Exception;
+	
 	// 정상 LOT 번호 조회
 	public List<QualityVO> selectNormalLot(QualityVO vo) throws Exception;
 }

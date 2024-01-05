@@ -358,6 +358,19 @@
  	</insert>
  	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
  	
+ 	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
+ 	<insert id="insertNormalRoastedBeanLotMat">
+ 		INSERT INTO productlot (stockid, receiveid, lotnumber)
+ 		SELECT s.stockid, r.receiveid, r.lotnumber
+		FROM receive r
+		JOIN quality q
+		ON r.receiveid = q.receiveid
+		JOIN stock s
+		ON q.qualityid = s.qualityid
+		WHERE r.receiveid = #{receiveid}
+ 	</insert>
+ 	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
+ 	
  	<!-- 정상 LOT번호 검색 -->
  	<select id="selectNormalLot" resultType="QualityVO">
  		SELECT lotnumber

@@ -168,6 +168,13 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		sdao.insertNormalRoastedBeanLot(produceid);
 	}
+	
+	// receiveid로 receive LOT 조회 후 입력 (자재)
+	@Override
+	public void normalRoastedBeanLotMat(int receiveid) throws Exception {
+		// TODO Auto-generated method stub
+		sdao.insertNormalRoastedBeanLotMat(receiveid);
+	}
 
 	// 정상 LOT 번호 검색
 	@Override
@@ -175,6 +182,7 @@ public class StockServiceImpl implements StockService {
 		// TODO Auto-generated method stub
 		return sdao.selectNormalLot(vo);
 	}
+
 	
 	
 
