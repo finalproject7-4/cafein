@@ -8,7 +8,7 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<form name="dateSearch" action="/sales/POList" method="get" onsubmit="return filterRows(event)">
-				<h6 class="mb-4">수주 조회</h6>
+				<h6>수주 조회</h6>
 				납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요">&nbsp;&nbsp;&nbsp;&nbsp; 
 				수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
 				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
@@ -28,7 +28,7 @@
 			<input id="ListExcel" type="submit" value="리스트 출력(.xlsx)" class="btn btn-sm btn-success">
 		</form>
 			<form role="form" action="/sales/cancelUpdate" method="post">
-				<h6 class="mb-4">수주 관리 [총 ${countPO}건]</h6>
+				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
 				<!-- 수주 상태에 따라 필터링하는 버튼 -->
 		<div class="btn-group" role="group">
 			<input type="hidden" name="state" value="전체">
@@ -48,47 +48,32 @@
 		});
 
 		$("#stop").click(function () {
-			 console.log("대기 버튼 클릭됨");
-		   window.location.href="/sales/POList?postate=대기";
-		   $(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링 
-			$(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
+		 	console.log("대기 버튼 클릭됨");
+			event.preventDefault();
+		    location.href="/sales/POList?postate=대기";
 		});
 
-
-
 		$("#ing").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링 
-			$(".table tbody tr:has(td:nth-child(3):contains('진행'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
+		 console.log("진행 버튼 클릭됨");
+		 event.preventDefault();
+		 location.href="/sales/POList?postate=진행";
 		});
 
 		$("#complete").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('완료'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
+			console.log("완료 버튼 클릭됨");
+			 event.preventDefault();
+			 location.href="/sales/POList?postate=완료";
 		});
 
 		$("#cancel").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('취소'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
+			console.log("취소 버튼 클릭됨");
+			 event.preventDefault();
+			 location.href="/sales/POList?postate=취소";
 		});
 
 		function updateTotalCount() {
 			var totalCount = $(".table tbody tr:visible").length;
-			$(".mb-4").text("총 " + totalCount + "건");
+			$(".settingPO").text("총 " + totalCount + "건");
 		}
 
 		// 필터링할 때마다 호출하여 업데이트

@@ -12,7 +12,7 @@ public interface SalesDAO {
 	public void registPO(SalesVO svo) throws Exception;
 	
 	// 수주 조회
-	public List<SalesVO> getPOList() throws Exception;
+//	public List<SalesVO> getPOList() throws Exception;
 
 	// 품목 목록 (페이징)
 	public List<SalesVO> getPOList(SalesVO svo) throws Exception;

@@ -31,11 +31,11 @@ public class SalesDAOImpl implements SalesDAO {
 	}
 	
 	// 수주 조회
-	@Override
-	public List<SalesVO> getPOList() throws Exception{
-		logger.debug("DAO : 수주조회");
-		return sqlSession.selectList(NAMESPACE+".getPOList");
-	}
+//	@Override
+//	public List<SalesVO> getPOList() throws Exception{
+//		logger.debug("DAO : 수주조회");
+//		return sqlSession.selectList(NAMESPACE+".getPOList");
+//	}
 
 	//페이징
 	@Override

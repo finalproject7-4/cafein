@@ -20,11 +20,9 @@
 	    FROM purchaseorder po
 	    JOIN item ON po.itemid = item.itemid
 	    JOIN client cli ON po.clientid = cli.clientid
-	    <where>
 	    <if test="postate != null" >
-	    postate=#{postate}
+   			where postate=#{postate}
 	    </if>
-	    </where> 
 	    ORDER BY ordersdate desc, poid desc
 	</select>
 	
@@ -37,6 +35,11 @@
 		FROM purchaseorder po
 		JOIN item ON po.itemid = item.itemid
 		JOIN client cli ON po.clientid = cli.clientid
+		<where>
+		<if test="postate != null" >
+   			postate=#{postate}
+	    </if>
+	    </where>
 		ORDER BY ordersdate desc, poid desc
 		limit #{cri.startPage}, #{cri.pageSize}
 	</select>
