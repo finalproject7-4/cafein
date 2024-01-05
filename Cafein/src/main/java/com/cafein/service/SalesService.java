@@ -2,7 +2,6 @@ package com.cafein.service;
 
 import java.util.List;
 
-import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 
 public interface SalesService {

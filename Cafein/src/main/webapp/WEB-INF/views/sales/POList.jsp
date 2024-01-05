@@ -44,11 +44,16 @@
 		</div>
 		<script>
 		$("#allpo").click(function() {
-			location.reload();
+		   location.href="/sales/POList";
 		});
 
 		$("#stop").click(function () {
 		   location.href="/sales/POList?postate=대기";
+		   $(".table tbody tr").hide();
+			// 대기 상태인 수주만 보이도록 필터링 
+			$(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
+			// 번호 업데이트
+			updateRowNumbers();
 		});
 
 
