@@ -57,10 +57,24 @@ public interface QualityDAO {
 	// 불량 현황 등록 (생산 / 반품)
 	public int insertDefects(QualityVO vo) throws Exception;
 	
-	
 	// 재고 등록 여부 업데이트
 	// StockDAO 참고
 	
 	// 반품 등록 여부 업데이트
 	public void updateRegisterDefect(QualityVO vo) throws Exception;
+	
+	// 품질 관리 엑셀용 출력 목록 조회 (생산 + 반품)
+	public List<QualityVO> selectQualityListSearchBtnExcel(QualityVO vo) throws Exception;
+
+	// 품질 관리 엑셀용 출력 목록 조회 (자재)
+	public List<QualityVO> selectMaterialQualityListSearchBtnExcel(QualityVO vo) throws Exception;
+
+	// 불량 현황 엑셀용 출력 목록 조회 (생산 + 반품)
+	public List<QualityVO> selectDefectsListSearchBtnExcel(QualityVO vo) throws Exception;
+	
+	// 불량 현황 엑셀용 출력 목록 조회 (자재)
+	public List<QualityVO> selectMaterialDefectsListSearchBtnExcel(QualityVO vo) throws Exception;
+
+	// roastedBean 검수, 불량 처리 (포장)
+	public void updateRoastedBeanDefect(QualityVO vo) throws Exception;
 }

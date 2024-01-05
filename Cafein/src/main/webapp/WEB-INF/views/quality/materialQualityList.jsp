@@ -7,6 +7,7 @@
 https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 "></script>
 <!-- SweetAlert 추가 -->
+
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<h2>자재 품질 관리</h2>
@@ -25,14 +26,28 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
 			</div>
 			
-			<form action="/quality/materialQualityList" method="GET">
+			<div class="buttonarea3" style="margin-bottom: 10px;">
+			<form action="/quality/materialQualityList" method="GET" style="margin-bottom: 10px;">
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
-				<input type="date" name="startDate" required> ~
-				<input type="date" name="endDate" required>
-				<input type="submit" value="검색">
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
 			</form>	
+			</div>
+				<form action="/materialQualityPrint" method="GET">
+					<c:if test="${!empty param.searchBtn }">
+						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+					</c:if>
+					<c:if test="${!empty param.startDate }">
+						<input type="hidden" value="${param.startDate }" name="startDate">
+					</c:if>
+					<c:if test="${!empty param.endDate }">
+						<input type="hidden" value="${param.endDate }" name="endDate">
+					</c:if>
+					<input type="submit" value="엑셀 파일 저장" class="btn btn-sm btn-success">
+				</form>
 			<br>		
 				<div class="table-responsive">
 					<table class="table">
@@ -529,7 +544,7 @@ $(document).ready(function() {
   			<div class="col">
             	<label for="productprocessmethod" class="col-form-label">처리방식:</label>
 				<select class="form-select" aria-label="Small select example" id="productprocessmethod" name="processmethod">
-  					<option value="폐기" selected>폐기</option>
+  					<option value="반품" selected>반품</option>
 				</select>
   			</div>
 		</div>
@@ -735,3 +750,39 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
+
+<!-- 날짜 비교 -->
+<script>
+$(document).ready(function(){
+    const checkDates = function() {
+        const startDateStr = document.getElementById("startDate").value;
+        const endDateStr = document.getElementById("endDate").value;
+
+        // 둘 다 유효한 날짜 문자열인지 확인
+        if (startDateStr && endDateStr) {
+            const startDate = new Date(startDateStr);
+            const endDate = new Date(endDateStr);
+
+            if (startDate > endDate) {
+                Swal.fire("종료일은 시작일과 같거나 이후여야 합니다.");
+                document.getElementById("endDate").value = "";
+            }   
+        }
+    };
+
+    // 페이지 로드 시 한 번 실행
+    checkDates();
+
+    // 날짜 입력 값에서 포커스가 빠져나갈 때 실행
+    $("#startDate, #endDate").on("blur", checkDates);
+});
+</script>
+<!-- 날짜 비교 -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->

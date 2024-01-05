@@ -53,4 +53,28 @@ public interface StockDAO {
 	
 	// 재고 토스트 데이터 (자재)
 	public QualityVO selectMaterialStockToast() throws Exception;
+	
+	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
+	public List<QualityVO> selectStockListExcel(QualityVO vo) throws Exception;
+	
+	// 재고 엑셀용 출력 목록 조회 (반품)
+	public List<QualityVO> selectMaterialStockListExcel(QualityVO vo) throws Exception;
+	
+	// roastedBean 테이블 조회
+	public QualityVO selectRoastedBean(String produceid) throws Exception;
+	
+	// roastedBean - lotnumber 테이블 조회
+	public List<QualityVO> selectRoastedBeanLot(String produceid) throws Exception;
+	
+	// receive 테이블 조회
+	public QualityVO selectReceiveInfo(String lotnumber) throws Exception;
+	
+	// produceid로 roastedBean LOT 조회 후 입력 (포장)
+	public void insertNormalRoastedBeanLot(int produceid) throws Exception;
+	
+	// receiveid로 receive LOT 조회 후 입력 (자재)
+	public void insertNormalRoastedBeanLotMat(int receiveid) throws Exception;
+	
+	// 정상 LOT 번호 조회
+	public List<QualityVO> selectNormalLot(QualityVO vo) throws Exception;
 }

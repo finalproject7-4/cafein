@@ -11,9 +11,10 @@ public class ShipVO {
 	// 출하
 	private int shipid;
 	private String shipcode;
-	private int shipcount;
+	private int pocnt;
 	private String shipsts;
-	private Date shipdate;
+	private Date shipdate1;
+	private Date shipdate2;
 	
 	private String pocode;
 	
@@ -62,11 +63,18 @@ public class ShipVO {
 	private int recordcount;
 	private String returncode;
 	
-//	@Override
-//	public String toString() {
-//		return "SalesVO [shipid=" + shipid + ", shipcode=" + shipcode + ", shipcount=" + shipcount + ", shipsts=" + shipsts
-//				+ ", shipdate=" + shipdate + ", pocode=" + pocode + ", membercode=" + membercode + ", lotnumber="
-//				+ lotnumber + "]";
-//	}
+	// 거래처
+	private int clientid;
+//	private String clientcode;
+	private String clientname;
+	private String categoryofclient;
+	private String typeofclient;
+	private String businessnumber;
+	private String representative;
+	private String manager;
+	private String clientaddress;
+	private String clientphone;
+	private String clientfax;
+	private String clientemail;
 	
 }

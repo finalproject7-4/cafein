@@ -1,6 +1,8 @@
 package com.cafein.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -42,6 +44,20 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S :registWC()");
 		return shdao.registWC();
 	}
+	
+	// 출하 등록 - 재고량
+	@Override
+	public List<WorkVO> registST() throws Exception {
+		logger.debug("S :registST()");
+		return shdao.registST();
+	}
+	
+	// 출하 코드 생성
+	@Override
+	public int shCount(ShipVO svo) throws Exception {
+		logger.debug("S : shCount(ShipVO svo)");
+		return shdao.getSHCount(svo);
+	}
 
 	// 작업 지시 조회
 	@Override
@@ -50,6 +66,13 @@ public class ShipServiceImpl implements ShipService {
 		return shdao.getWKList();
 	}
 	
+//	// 작업 지시 검색
+//	@Override
+//	public List<WorkVO> searchWKList(String keyword) throws Exception {
+//		    logger.debug("searchWKList()");
+//		    return shdao.searchWKList(keyword);
+//		}
+
 	// 작업 지시 등록
 	@Override
 	public void registWK(WorkVO wvo) throws Exception {

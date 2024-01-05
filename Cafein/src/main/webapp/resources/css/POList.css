@@ -13,3 +13,11 @@ input#regist {
 #itemModal {
      z-index: 9999;
   }
+  
+ td, th {
+ 	text-align: center;
+ }
+ 
+#ListExcel {
+	float:right;
+}

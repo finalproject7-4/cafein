@@ -25,13 +25,24 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<input type="button" class="btn btn-sm btn-secondary" value="부자재" id="submaterial">
 		<input type="button" class="btn btn-sm btn-success" value="전체" id="allmaterial">
 	</div>
+	<div class="buttonarea3" style="margin-bottom: 10px;">
 	<form action="/material/stock" method="GET">
 		<c:if test="${!empty param.searchBtn }">
 			<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 		</c:if>
-		<input type="text" name="searchText" placeholder="검색어를 입력하세요">
-		<input type="submit" value="검색">
+		<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+		<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
 	</form>
+	</div>
+		<form action="/materialStockPrint" method="GET">
+			<c:if test="${!empty param.searchBtn }">
+			<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+			</c:if>
+			<c:if test="${!empty param.searchText }">
+			<input type="hidden" name="searchText" value="${param.searchText }">
+			</c:if>
+			<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+		</form>
 	</div>
 </div>
 <!-- 재고 조회 -->
@@ -47,10 +58,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">LOT번호</th>
+								<th scope="col">입고번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
-								<th scope="col">작업자</th>
+								<th scope="col">최종 작업자</th>
 								<th scope="col">등록일</th>
 								<th scope="col">변경일</th>
 								<th scope="col">최근 변경 내역</th>
@@ -63,7 +74,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemtype }</td>
 									<td>${slist.itemcode }</td>
 									<td>${slist.itemname }</td>
-									<td>${slist.lotnumber }</td>
+									<td>
+									<a href="" class="receive" data-receiveid="${slist.receiveid }">${slist.receiveid }</a></td>
 									<td>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개
@@ -129,7 +141,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            	let prevPage = $(this).data('page');
    									
    										let searchBtn = "${param.searchBtn}";
-   										let searchText = "${param.searchTxt}";
+   										let searchText = "${param.searchText}";
 
    				                		url = "/material/stock?page=" + prevPage;
    				                
@@ -505,6 +517,114 @@ $(document).ready(function() {
 </script>
 <!-- 창고 이동 (부자재) 모달창 데이터 -->
 
+<!-- 자재 입고 정보 확인 모달창 -->
+<div class="modal fade" id="receiveInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">자재 정보 확인</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      	<div class="row">
+ 			<div class="col">
+           		<label for="inforeceiveid" class="col-form-label">입고번호:</label>
+            	<input type="text" class="form-control" id="inforeceiveid" name="receiveid" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="inforeceivecode" class="col-form-label">입고코드:</label>
+            	<input type="text" class="form-control" id="inforeceivecode" name="receivecode" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="infomembercode" class="col-form-label">작업자:</label>
+            	<input type="text" class="form-control" id="infomembercode" name="membercode" value="" readonly>
+  			</div>
+  			<div class="col">
+            	<label for="infoitemcode" class="col-form-label">품목코드:</label>
+            	<input type="text" class="form-control" id="infoitemcode" name="itemcode" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="infostoragecode" class="col-form-label">창고코드:</label>
+            	<input type="text" class="form-control" id="infostoragecode" name="storagecode" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="infolotnumber" class="col-form-label">LOT번호:</label>
+				<input type="text" class="form-control" id="infolotnumber" name="lotnumber" value="" readonly>
+  			</div>
+		</div>
+		<div class="row">
+ 			<div class="col">
+           		<label for="inforeceivedate" class="col-form-label">입고일:</label>
+            	<input type="text" class="form-control" id="inforeceivedate" name="receivedate" value="" readonly>
+  			</div>
+  			<div class="col">
+           		<label for="inforeceivequantity" class="col-form-label">입고량:</label>
+				<input type="text" class="form-control" id="inforeceivequantity" name="receivequantity" value="" readonly>
+  			</div>
+		</div>		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+   </form>
+  </div>
+</div>
+<!-- 자재 입고 정보 확인 모달창 -->
+
+<!-- 자재 입고 정보 확인 모달창 데이터 -->
+<script>
+$(document).ready(function($) {
+    $(".receive").click(function(event) {
+        event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+
+        // 클릭된 a 태그의 data-lotnumber 값 가져오기
+        var lotnumber = $(this).data("lotnumber");
+
+        // AJAX 요청
+        $.ajax({
+            url: "/receiveInfo",
+            type: "GET",
+            data: { lotnumber: lotnumber },  // 파라미터 전송
+            dataType: "JSON",
+            success: function(data) {
+            	console.log(data);
+            	$("#inforeceiveid").val(data.receiveid);
+            	$("#inforeceivecode").val(data.receivecode);
+            	$("#infomembercode").val(data.membercode);
+            	$("#infoitemcode").val(data.itemcode);
+            	$("#infostoragecode").val(data.storagecode);
+            	$("#infolotnumber").val(data.lotnumber);
+            	
+            	var receivedate = new Date(data.receivedate);
+            	var formattedDate = receivedate.getFullYear() + "-" + 
+                String(receivedate.getMonth() + 1).padStart(2, '0') + "-" + 
+                String(receivedate.getDate()).padStart(2, '0') + " " + 
+                String(receivedate.getHours()).padStart(2, '0') + ":" + 
+                String(receivedate.getMinutes()).padStart(2, '0') + ":" + 
+                String(receivedate.getSeconds()).padStart(2, '0');
+            	
+            	$("#inforeceivedate").val(formattedDate);
+            	$("#inforeceivequantity").val(data.receivequantity);
+            	
+            	 $("#receiveInfo").modal("show");
+            	
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
+});
+</script>
+<!-- 자재 입고 정보 확인 모달창 데이터 -->
+
 <!-- 라디오 버튼 이동 -->
 <script>
 $(document).ready(function(){
@@ -584,9 +704,17 @@ $(document).ready(function(){
     fetchProductStockToast();
 
     // 1분마다 호출
-    setInterval(fetchProductStockToast, 30000); // 60,000 밀리초 = 1분
+    setInterval(fetchProductStockToast, 60000); // 60,000 밀리초 = 1분
 });
 </script>
-<!-- 토스트창 ajax 호출 (30초 간격) -->
+<!-- 토스트창 ajax 호출 (60초 간격) -->
+
+<!-- 툴팁 추가 -->
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<!-- 툴팁 추가 -->
 
 <%@ include file="../include/footer.jsp"%>

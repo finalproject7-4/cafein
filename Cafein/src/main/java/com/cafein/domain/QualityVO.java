@@ -13,6 +13,7 @@ public class QualityVO {
 	private String auditcode;
 	private String itemtype;
 	private int produceid;
+	private String produceprocess;
 	private int returnid;
 	private int itemid;
 	private String auditbycode;
@@ -89,11 +90,11 @@ public class QualityVO {
 //	private String itemname;
 //	private int itemid;
 	private int weight;
-	private int quantity;
 //	private int itemprice;
-	private int roasteddate;
+	private Timestamp roasteddate;
 //	private Sting lotnumber;
 	private String note;
+	private String defect;
 	
 	// receive 테이블
 	private int receiveid;
@@ -101,6 +102,15 @@ public class QualityVO {
 //	private String membercode;
 	private Timestamp receivedate;
 	private int receivequantity;
+	
+	// productlot 테이블
+	private int productlotid;
+//	private int produceid;
+//	private int receiveid;
+//	private String lotnumber;
+	
+	// return 테이블
+	private String reprocessmethod;
 	
 	// 검색용 특별 변수
 	private String startDate;

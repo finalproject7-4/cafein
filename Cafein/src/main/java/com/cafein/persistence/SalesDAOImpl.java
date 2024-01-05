@@ -72,11 +72,6 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.update(NAMESPACE + ".updatePO", svo);
 	}
 	
-	
-	
-
-	
-	
 	//납품서
 	@Override
 	public List<SalesVO> getReceiptList() throws Exception {
@@ -90,9 +85,44 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : getPOPrint()");
 		return sqlSession.selectList(NAMESPACE+".getPOList");
 	}
-	
-	
 
+	//수주상태취소
+	@Override
+	public int updatePOstate(SalesVO svo) throws Exception {
+		logger.debug("DAO : updatePOstate(svo)");
+		return sqlSession.update(NAMESPACE+".cancelPOState",svo);
+	}
+
+	//수주상태 진행
+	@Override
+	public int ingUpdate(SalesVO svo) throws Exception {
+		logger.debug("DAO : ingUpdate(svo)");
+		return sqlSession.update(NAMESPACE+".ingPOState",svo);
+	}
+
+	//총개수
+	@Override
+	public int countPO(SalesVO svo) throws Exception {
+		logger.debug("DAO : countPO(svo)");
+		return sqlSession.selectOne(NAMESPACE+".countPO",svo);
+	}
+
+	//리스트출력
+	@Override
+	public List<SalesVO> selectPOListExcel(SalesVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectPOListExcel", svo);
+	}
+	//수주상태-대기
+	@Override
+	public List<SalesVO> stopState() throws Exception {
+		logger.debug("DAO : 수주조회");
+		return sqlSession.selectList(NAMESPACE+".stop");
+	}
+	
+	
+	
+	
 	
 	
 

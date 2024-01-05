@@ -15,7 +15,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body">
-    	재고 <b>${materialToast.stockid }</b>번의 <b>${materialToast.itemname }</b>의 재고가 <b style="color: red;">${materialToast.stockquantity }</b>개 남았습니다.
+    	재고 <b>${materialToast.stockid }</b>번의 <b>${materialToast.itemname }</b>이(가) <b style="color: red;">${materialToast.stockquantity }</b>개 남았습니다.
     </div>
   </div>
 </div>

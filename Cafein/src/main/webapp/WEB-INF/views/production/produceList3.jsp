@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+<!-- SweetAlert 추가 -->
+
 <!-- 생산지시 등록 모달 -->
 <jsp:include page="produceReg.jsp"/>
 <!-- 생산지시 등록 모달 -->
@@ -30,7 +34,10 @@
 										<th scope="col" style="display: none;">원재료1</th>
 										<th scope="col" style="display: none;">원재료2</th>
 										<th scope="col" style="display: none;">원재료3</th>
-										<th scope="col" style="display: none;">아이템ID</th>
+										<th scope="col" style="display: none;">원재료ID1</th>
+										<th scope="col" style="display: none;">원재료ID2</th>
+										<th scope="col" style="display: none;">원재료ID3</th>
+										<th scope="col"  style="display: none;">아이템ID</th>
                                     </tr>
 								</thead>
 								<tbody>
@@ -44,6 +51,9 @@
                                       <td style="display: none;">${bList.itemname1 }</td> 
                                       <td style="display: none;">${bList.itemname2 }</td> 
                                       <td style="display: none;">${bList.itemname3 }</td> 
+                                      <td style="display: none;">${bList.itemid1 }</td> 
+                                      <td style="display: none;">${bList.itemid2 }</td> 
+                                      <td style="display: none;">${bList.itemid3 }</td> 
                                       <td style="display: none;">${bList.itemid }</td> 
                                     </tr>
 								  </c:forEach>
@@ -81,6 +91,7 @@
 									<tr>
 										<th scope="col">품목코드</th>
 										<th scope="col">품명</th>
+										<th scope="col" >제품ID</th>
 										</tr>
 								</thead>
 								<tbody>
@@ -88,6 +99,7 @@
                                     <tr class="itemset">
                                       <td>${iList.itemcode }</td> 
                                       <td>${iList.itemname }</td>                                    
+                                      <td >${iList.itemid }</td>                                    
                                     </tr>
 								  </c:forEach>
 								</tbody>
@@ -222,8 +234,12 @@ function fetchData(searchBtnValue) {
 <td style="display: none;">${plist.packagevol }</td>
 <td style="display: none;">${plist.amount }</td>
 <td>
+	<!-- 블렌딩 대기 상태일때, 상태변경 버튼 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
+	<c:if test="${plist.process == '블렌딩' && plist.state == '대기'}">
+	<input id="BingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
+	</c:if>
 	<!-- 상태변경 버튼은 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
-	<c:if test="${plist.state == '대기'}">
+	<c:if test="${ plist.process != '블렌딩' && plist.state == '대기'}">
 	<input id="ingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
 	</c:if>
 	<!-- 상태변경 버튼은 '생산중'인 경우 표시해서 클릭시 '완료'로 변경 -->
@@ -243,7 +259,7 @@ function fetchData(searchBtnValue) {
 	<input type="button" id="roastingBtn" class="btn btn-sm btn-dark m-1" name="process" value="수정">
 	</c:if>
 	<c:if test="${plist.state == '완료' &&  plist.process =='로스팅' && plist.qualitycheck == '정상' }">
-	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
+	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }','${plist.amount }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
 		</c:if>
 </td>
 </tr>
@@ -432,14 +448,20 @@ function fetchData(searchBtnValue) {
     	var firstItem = $(columns[5]).text(); // 첫번째 원재료
     	var secondItem = $(columns[6]).text(); // 두번째 원재료
     	var thirdItem = $(columns[7]).text(); // 세번째 원재료
+    	var firstItemId = $(columns[8]).text(); // 첫번째 원재료 id (등록에 사용)
+    	var secondItemId = $(columns[9]).text(); // 두번째 원재료 id (등록에 사용)
+    	var thirdItemId = $(columns[10]).text(); // 세번째 원재료 id (등록에 사용)
     	var temper = $(columns[4]).text(); // 온도
-    	var itemid = $(columns[8]).text(); // 아이템ID
+    	var itemid = $(columns[11]).text(); // 아이템ID
     	
     	$('#itemnamePro').val(selectedItemName);
     	$('#rate').val(selectedRate);
     	$('#itemnameOri1').val(firstItem);
     	$('#itemnameOri2').val(secondItem);
     	$('#itemnameOri3').val(thirdItem);
+    	$('#itemidOri1').val(firstItemId);
+    	$('#itemidOri2').val(secondItemId);
+    	$('#itemidOri3').val(thirdItemId);
     	$('#temper').val(temper);
     	$('#itemidPro').val(itemid);
     	
@@ -455,10 +477,12 @@ function fetchData(searchBtnValue) {
 		var columns = $(this).find('td');
 		var selectedItemCode = $(columns[0]).text(); // 제품코드 품명
 		var selectedItemName = $(columns[1]).text(); // 제품명
+		var selectedItemId = $(columns[2]).text(); // 제품아이디
 		
 
 		$('#itemcodeBom').val(selectedItemCode);
 		$('#itemnameBom').val(selectedItemName);
+		$('#itemidBom').val(selectedItemId);
 
 		$('#itemModal1').modal('hide');
 	});
@@ -482,7 +506,7 @@ function fetchData(searchBtnValue) {
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
-					alert('변경완료!');
+					Swal.fire('변경완료!');
 					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 					
@@ -490,7 +514,43 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					alert('못한다. 못간다.');
+					Swal.fire('못한다. 못간다.');
+					console.error("상태 업데이트 실패:", error);
+				}
+			});
+		});
+		
+	// 블렌딩일때만!! 생산 상태 변경 버튼 클릭 이벤트 처리
+
+		$("td").on("click", "#BingBtn", function() {
+			
+			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
+			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
+			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
+			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
+
+			// AJAX 요청 수행
+			$.ajax({
+				url : "/production/BupdateProduceState",
+				type : "POST",
+				data : {
+					state : stateValue,
+					produceid : produceId,
+					itemid : itemID,
+					amount : amount
+				},
+				success : function(response) {
+					// 성공적으로 처리된 경우 수행할 코드
+					console.log("상태 업데이트 성공!");
+					Swal.fire('변경완료!');
+					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
+					getList(currentPage);
+					
+
+				},
+				error : function(error) {
+					// 요청 실패 시 수행할 코드
+					Swal.fire('못한다. 못간다.');
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -498,7 +558,18 @@ function fetchData(searchBtnValue) {
 		
 		// 공정 삭제 버튼 클릭시 이벤트
 		$("td").on("click", "#deletProduceBtn", function() {
-			if(confirm("삭제하시겠습니까?")){
+			Swal.fire({
+		          title: '삭제하시겠습니까?',
+		          text: "",
+		          icon: 'warning',
+		          showCancelButton: true,
+		          confirmButtonColor: '#3085d6',
+		          cancelButtonColor: '#d33',
+		          confirmButtonText: '삭제',
+		          cancelButtonText: '취소'
+		        }).then((result) => {
+		          if (result.value) {
+
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 
 			// AJAX 요청 수행
@@ -511,7 +582,7 @@ function fetchData(searchBtnValue) {
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
-					alert('삭제완료!');
+					Swal.fire('삭제완료!');
 					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 					
@@ -519,11 +590,12 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					alert('못한다. 못간다.');
+					Swal.fire('못한다. 못간다.');
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
-		}
+			}
+		});
 		});
 		
 	// 생산 공정 수정(블렌딩->로스팅) 변경 버튼 클릭 이벤트 처리
@@ -531,6 +603,7 @@ function fetchData(searchBtnValue) {
 			$("td").on("click", "#roastingBtn", function() {
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			 var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
+			 var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
 			// AJAX 요청 수행
 			$.ajax({
@@ -539,12 +612,13 @@ function fetchData(searchBtnValue) {
 				data : {
 					produceid : produceId,
 					itemid : itemID,
-					process : "로스팅"
+					process : "로스팅",
+					amount : amount
 				},
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
-					alert('변경완료!');
+					Swal.fire('변경완료!');
 					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
 					getList(currentPage);
 					
@@ -552,7 +626,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					alert('못한다. 못간다.');
+					Swal.fire('못한다. 못간다.');
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -561,5 +635,4 @@ function fetchData(searchBtnValue) {
 	}); 
 
 </script>
-
 

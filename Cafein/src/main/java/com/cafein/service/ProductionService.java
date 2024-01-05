@@ -8,6 +8,7 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
+import com.cafein.domain.QualityVO;
 import com.cafein.domain.RoastedbeanVO;
 
 public interface ProductionService {
@@ -62,6 +63,15 @@ public interface ProductionService {
 	
 	// 로스팅 목록 개수 조회
 	public Integer countRoastedbean(RoastedbeanVO vo) throws Exception;
+	
+	// 블렌딩 작업 시작하면 품질 리스트 데이터 추가
+	public void regQualityList(QualityVO vo) throws Exception;
+	
+	// 블렌딩 -> 로스팅 작업 전환시 품질 신규 데이터 삽입
+	public void regRoastingQualityList(QualityVO vo) throws Exception;
+	
+	// 로스팅 -> 포장 작업 전환시 품질 신규 데이터 삽입
+	public void regPackingQualityList(QualityVO vo) throws Exception;
 	
 	
 	
