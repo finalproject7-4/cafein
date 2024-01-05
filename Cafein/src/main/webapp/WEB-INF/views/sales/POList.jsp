@@ -47,15 +47,13 @@
 			location.reload();
 		});
 
-
-		$("#stop").click(function() {
-			// 모든 수주 항목 숨김
-			$(".table tbody tr").hide();
-			// 대기 상태인 수주만 보이도록 필터링
-			$(".table tbody tr:has(td:nth-child(3):contains('대기'))").show();
-			// 번호 업데이트
-			updateRowNumbers();
+		$("#stop").click(function () {
+		   location.href="/sales/POList?postate=대기";
 		});
+
+
+
+
 
 		$("#ing").click(function() {
 			// 모든 수주 항목 숨김

@@ -12,7 +12,6 @@ public class SalesVO {
 	private Criteria cri;
 	
 	// 검색용 변수
-	private String option;
 	private String keyword;
 	
 	//po 테이블

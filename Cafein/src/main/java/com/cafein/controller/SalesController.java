@@ -28,7 +28,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
-import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.service.SalesService;
 
@@ -54,11 +53,13 @@ public class SalesController {
 		// 페이징 처리
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
-		pageVO.setTotalCount(sService.poCount(svo));
+		pageVO.setTotalCount(sService.countPO(svo));
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 
 		model.addAttribute("countPO",sService.countPO(svo));
 		model.addAttribute("POList", sService.POList(svo));
+		logger.debug("@@@postate"+svo.getPostate());
+		logger.debug("@@@POList"+sService.POList(svo));
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("cliList", sService.registCli()); 
 		model.addAttribute("iList", sService.registItem());  

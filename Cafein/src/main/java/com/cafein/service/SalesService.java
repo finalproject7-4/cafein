@@ -44,5 +44,7 @@ public interface SalesService {
 
 	//수주리스트출력
 	public List<SalesVO> POListExcel(SalesVO svo) throws Exception;
-
+	//수주상태 대기
+	public List<SalesVO> stopState() throws Exception;
+	
 }

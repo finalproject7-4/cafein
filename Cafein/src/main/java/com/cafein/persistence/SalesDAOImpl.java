@@ -113,6 +113,12 @@ public class SalesDAOImpl implements SalesDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(NAMESPACE + ".selectPOListExcel", svo);
 	}
+	//수주상태-대기
+	@Override
+	public List<SalesVO> stopState() throws Exception {
+		logger.debug("DAO : 수주조회");
+		return sqlSession.selectList(NAMESPACE+".stop");
+	}
 	
 	
 	

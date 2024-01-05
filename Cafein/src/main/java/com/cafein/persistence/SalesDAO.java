@@ -48,7 +48,9 @@ public interface SalesDAO {
 	//리스트출력
 	public List<SalesVO> selectPOListExcel(SalesVO svo) throws Exception;
 
-	
+	//수주상태-대기
+	public List<SalesVO> stopState() throws Exception;
+
 	
 	
 }
