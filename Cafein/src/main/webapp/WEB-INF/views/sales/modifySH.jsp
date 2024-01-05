@@ -14,12 +14,12 @@
 			</div>
 			
 			<form role="form" action="/sales/modifySH" method="post">
-			<input type="hidden" id="shipid2" name="shipid">
+			<input type="hidden" id="shipid1" name="shipid">
 			<div class="modal-body">
 				
 					<div class="mb-3">
-						<label for="recipient-name" class="col-form-label"><b>출하상태</b></label>
-						<select class="form-select" id="floatingSelect" name="shipsts"
+						<label for="shipstate" class="col-form-label"><b>출하상태</b></label>
+						<select class="form-select" id="shipsts1" name="shipsts"
 							aria-label="Floating label select example">
 							<optgroup label="출하상태">
 								<option value="접수">접수</option>
@@ -32,51 +32,43 @@
 					<div class="row">
 						<div class="col">
 							<b>작업지시코드</b><input id="workcode1" name="workcode" class="form-control"
-								id="floatingInput" placeholder="작업지시코드">
+								id="floatingInput" placeholder="작업지시코드" readonly="readonly">
 						</div>
 						<div class="col">
 							<b>납품처</b><input id="clientname1" name="clientname" class="form-control"
-								id="floatingInput" placeholder="납품처">
+								id="floatingInput" placeholder="납품처" readonly="readonly">
 						</div>
 						<div class="col">
 							<b>품명</b><input id="itemname1" name="itemname" class="form-control"
-								id="floatingInput" placeholder="품명">
+								id="floatingInput" placeholder="품명" readonly="readonly">
 						</div>
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>지시량</b><input type="number" id="pocnt1" name="pocnt" class="form-control" placeholder="숫자만 입력하세요">
+						<b>지시량</b><input type="number" id="pocnt1" name="pocnt" class="form-control" placeholder="숫자만 입력하세요" readonly="readonly">
 					</div>
 					<div class="row">
-					<div class="col">
-						<b>재고량 확인</b><input type="number" id="stockquantity1" name="stockquantity" class="form-control" placeholder="숫자만 입력하세요">
-					</div>
-					<div class="col">
-							<b>LOT번호</b><input id="lotnumber1" name="lotnumber" class="form-control"
-								id="floatingInput" placeholder="LOT번호">
 						</div>
-						</div>
-						<br>
 					<div class="row">
 						<div class="col">
-							<b>작업지시일자</b><input name="shipdate1" id="shipdate11" type="date" class="form-control"  placeholder="작업지시일자">
+							<b>출하일자</b><input name="shipdate1" id="shipdate11" type="date" class="form-control"  placeholder="작업지시일자">
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col">
-							<b>수정일자</b><input name="shipdate2" id="shipdate2" type="date" class="form-control"  placeholder="작업지시일자">
+							<b>완료일자</b><input name="shipdate2" id="shipdate21" type="date" class="form-control"  placeholder="작업지시일자">
 						</div>
 					</div>
 					<br>
 					<div class="mb-3">
-						<b>담당자</b><input class="form-control" id="floatingInput" name="membercode">
+						<b>담당자</b><input class="form-control" id="membercode1" name="membercode">
 					</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal">취소</button>
-				<input type="submit" class="btn btn-primary" value="저장">
+				<input type="submit" class="btn btn-primary" id="ModifyBtn" value="저장">
 			</div>
 			</form>
 		</div>

@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cafein.domain.ItemVO;
-import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
-import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
 
 @Controller
@@ -98,14 +95,14 @@ public class ShipController {
 	// 출하 수정 - POST
 		// http://localhost:8088/sales/SHList
 		@RequestMapping(value = "/modifySH", method = RequestMethod.POST)
-		public String modifySHPOST(ShipVO svo) throws Exception {
+		public String modifyPOST(ShipVO svo) throws Exception {
 			logger.debug(" /modify form -> modifyPOST()");
 			logger.debug(" 수정할 정보 " + svo);
 
 			// 서비스 - 정보수정 동작
 			int result = shService.SHModify(svo);
 			logger.debug("result", result);
-			return "redirect:/production/SHList";
+			return "redirect:/sales/SHList";
 		}
 
 	// 실적 조회

@@ -61,8 +61,8 @@
 
 	<!-- 출하 수정 -->
 	<update id="updateSH">
-	 	update ship set shipcode=#{shipcode}, workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, shipsts=#{shipsts}, membercode=#{membercode},
-	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}, lotnumber=#{lotnumber}
+	 	update ship set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, shipsts=#{shipsts}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}
 	 	where shipid=#{shipid}
 	 </update>
 	

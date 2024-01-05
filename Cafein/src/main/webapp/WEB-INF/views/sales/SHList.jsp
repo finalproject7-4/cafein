@@ -52,7 +52,7 @@
 					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
 					등록</button></span>
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<form role="form" action="/production/WKList" method="post">
+			<form role="form" action="/sales/SHList" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table" id="workTable">
@@ -90,8 +90,8 @@
 							<td>
 								<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark"
-    										onclick="openModifyModal()">
-                                   수정
+    										onclick="openModifyModal('${sh.shipid}','${sh.workcode}', '${sh.clientname}', '${sh.itemname}', '${sh.shipsts}', '${sh.pocnt}', '${sh.shipdate1}', '${sh.membercode}')">
+    										수정
 									</button>
 									</td>
 								</tr>
@@ -322,13 +322,13 @@ function updateTotalCount() {
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장
     var modifiedShipid = $("#shipid1").val();
-    var modifiedShipcode = $("#shipcode1").val();
+    var modifiedWorkCode = $("#workcode1").val();
     var modifiedClientName = $("#clientcname1").val();
     var modifiedItemName = $("#itemname1").val();
     var modifiedShipsts = $("#shipsts1").val();
     var modifiedPocnt = $("#pocnt1").val();
     var modifiedShipdate1 = $("#shipdate11").val();
-    var modifiedShipdate2 = $("#shipdate2").val();
+    var modifiedShipdate2 = $("#shipdate21").val();
     var modifiedMemberCode = $("#membercode1").val();
 
     // Ajax를 사용하여 서버로 수정된 값 전송
@@ -338,12 +338,12 @@ $("#modifyButton").click(function() {
         data: {
             shipid1: modifiedShipid,
             shipdate11: modifiedShipdate1,
-            shipcode1: modifiedShipcode,
+            workcode1: modifiedWorkCode,
             clientname1: modifiedClientName,
             itemname1: modifiedItemName,
             pocnt1: modifiedPocnt,
             shipsts1: modifiedShipsts,
-            shipdate2: modifiedShipdate2,
+            shipdate21: modifiedShipdate2,
             membercode1: modifiedMemberCode
         },
         success: function(response) {
@@ -356,18 +356,18 @@ $("#modifyButton").click(function() {
     });
 });
 	   
-	   function openModifyModal(shipid, shipcode, clientname, itemname, shipsts, pocnt, shipdate1, shipdate2, membercode) {
-
+	   function openModifyModal(shipid, workcode, clientname, itemname, shipsts, pocnt, shipdate1, shipdate2, membercode) {
+		   console.log("openModifyModal called with shipid:", shipid);
 		   
 		   // 가져온 값들을 모달에 설정
 		   $("#shipid1").val(shipid);
-    		$("#shipcode1").val(shipcode);
-   			$("#clientcname1").val(clientname);
+    		$("#workcode1").val(workcode);
+   			$("#clientname1").val(clientname);
     		$("#itemname1").val(itemname);
-    		$("#shipsts1").val(shiptst);
+    		$("#shipsts1").val(shipsts);
     		$("#pocnt1").val(pocnt);
     		$("#shipdate11").val(shipdate1);
-    		$("#shipdate2").val(shipdate2);
+    		$("#shipdate21").val(shipdate2);
     		$("#membercode1").val(membercode);
 
 		    // 모달 열기
@@ -382,13 +382,36 @@ $("#modifyButton").click(function() {
 	        $('#shipdate11').val(formattedDate);
 	    });
 	    
-// 	    $('#workupdate2').click(function(){
-// 	        var today = new Date();
-// 	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
-// 	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-// 	        $('#workupdate2').val(formattedDate);
-// 	    });
+	    $('#shipdate21').click(function(){
+	        var today = new Date();
+	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+	        $('#shipdate21').val(formattedDate);
+	    });
 	    
+	  // 완료일자 필드 초기화 시점에 호출되는 함수
+	    function updateShipdateField() {
+	        var shipstsValue = $("#shipsts1").val();
+
+	        // 상태가 '완료'일 때만 완료일자 필드를 활성화
+	        if (shipstsValue === '완료') {
+	            $("#shipdate21").prop('readonly', false);
+	        } else {
+	            $("#shipdate21").prop('readonly', true);
+	        }
+	    }
+
+	    // 모달 열릴 때 이벤트 처리
+	    $('#modifyModal').on('show.bs.modal', function (event) {
+	        // 모달 열릴 때 상태에 따라 완료일자 필드 업데이트
+	        updateShipdateField();
+	    });
+
+	    // 상태가 변경될 때 이벤트 처리
+	    $("#shipsts1").change(function() {
+	        // 상태 변경 시 완료일자 필드 업데이트
+	        updateShipdateField();
+	    });
 	   </script>
 	   
 
