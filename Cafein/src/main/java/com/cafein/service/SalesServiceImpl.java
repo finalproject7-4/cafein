@@ -32,11 +32,11 @@ public class SalesServiceImpl implements SalesService {
 	}
 
 	/*수주조회*/
-	@Override
-	public List<SalesVO> AllPOList() throws Exception{
-		logger.debug("S :AllPOList()");
-		return sdao.getPOList();
-	}
+//	@Override
+//	public List<SalesVO> AllPOList() throws Exception{
+//		logger.debug("S :AllPOList()");
+//		return sdao.getPOList();
+//	}
 	
 	//페이징
 	@Override

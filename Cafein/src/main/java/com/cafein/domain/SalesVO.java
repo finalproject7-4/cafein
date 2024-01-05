@@ -12,7 +12,10 @@ public class SalesVO {
 	private Criteria cri;
 	
 	// 검색용 변수
-	private String keyword;
+	private Date startDate;
+	private Date endDate;
+	private String searchText;
+	private String searchBtn;
 	
 	//po 테이블
 	private int poid;

@@ -7,17 +7,109 @@
 <fieldset>
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/sales/POList" method="get" onsubmit="return filterRows(event)">
+				<form action="/sales/POList" method="GET" style="margin-bottom: 10px;">
 				<h6>수주 조회</h6>
-				납품처조회 <input class="clientSearch" type="text" name="clientname" placeholder="납품처명을 입력하세요">&nbsp;&nbsp;&nbsp;&nbsp; 
-				수주일자 <input type="date" id="startDate" name="ordersdate"> ~ <input type="date" id="endDate" name="ordersdate">
-				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
-				<br>
-			</form>
-
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="납품처명을 입력하세요">
+				</c:if>
+				납품처조회
+				<input type="text" name="searchText" placeholder="납품처명을 입력하세요">
+				수주일자				
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+			</form>	
+			<form action="POList" method="GET">
+					<c:if test="${!empty param.searchBtn }">
+						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+					</c:if>
+					<c:if test="${!empty param.startDate }">
+						<input type="hidden" value="${param.startDate }" name="startDate">
+					</c:if>
+					<c:if test="${!empty param.endDate }">
+						<input type="hidden" value="${param.endDate }" name="endDate">
+					</c:if>
+				</form>
 		</div>
 	</div>
+	
+	
+	
 	<br>
+	<script>
+	$(".search").click(function (searchBtnValue) {
+	    $.ajax({
+	        url: "/sales/POList",
+	        type: "GET",
+	        data: {
+	            searchBtn: searchBtnValue
+	        },
+	        success: function (data) {
+	            $(".table-responsive").html(data);
+	        },
+	        error: function (error) {
+	            console.error("Error fetching data:", error);
+	        }
+	    });
+
+	    $("form[action='/sales/POList']").submit(function (event) {
+	        event.preventDefault(); // 기본 폼 제출 동작 방지
+
+	        // 폼 데이터 수집
+	        let formData = {
+	            startDate: $("input[name='startDate']").val(),
+	            endDate: $("input[name='endDate']").val()
+	        };
+
+	        // 선택된 검색 버튼 값이 있으면 추가
+	        if ($("input[name='searchBtn']").length > 0) {
+	            formData.searchBtn = $("input[name='searchBtn']").val();
+	        }
+
+	        // AJAX 요청 수행
+	        $.ajax({
+	            url: "/sales/POList",
+	            type: "GET",
+	            data: formData,
+	            success: function (data) {
+	                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+	                $(".table-responsive").html(data);
+	            },
+	            error: function (error) {
+	                console.error("Error fetching data:", error);
+	            }
+	        });
+	    });
+
+	    /* 날짜비교 */
+	    const checkDates = function () {
+	        const startDateStr = document.getElementById("startDate").value;
+	        const endDateStr = document.getElementById("endDate").value;
+
+	        // 둘 다 유효한 날짜 문자열인지 확인
+	        if (startDateStr && endDateStr) {
+	            const startDate = new Date(startDateStr);
+	            const endDate = new Date(endDateStr);
+
+	            if (startDate > endDate) {
+	                Swal.fire("종료일은 시작일과 같거나 이후여야 합니다.");
+	                document.getElementById("endDate").value = "";
+	            }
+	        }
+	    };
+
+	    // 페이지 로드 시 한 번 실행
+	    checkDates();
+
+	    // 날짜 입력 값에서 포커스가 빠져나갈 때 실행
+	    $("#startDate, #endDate").on("blur", checkDates);
+
+	    // 툴팁
+	    $('[data-toggle="tooltip"]').tooltip();
+	});
+
+	
+	</script>
 
 	
 		
@@ -195,18 +287,30 @@ function receiptSend(poid) {
    									
    						            	let prevPage = $(this).data('page');
    									
-   										let searchBtn = "${param.searchBtn}";
-   										let searchText = "${param.searchText}";
+   						            	let searchBtn = "${param.searchBtn}";
+   						            	let searchText = "${param.searchText}";
+   						            	let startdate = "${param.startdate}";
+   						            	let enddate = "${param.enddate}";
 
-   				                		url = "/sales/POList?page=" + prevPage;
-   				                
-   				                		if (searchBtn) {
-   				                    		url += "&searchBtn=" + encodeURIComponent(searchBtn);
-   				                		}
-   				                
-   				                		if (searchText) {
-   				                    		url += "&searchText=" + encodeURIComponent(searchText);
-   				                		}
+   						            	url = "/sales/POList?page=" + nextPage;
+
+   						            	if (searchBtn) {
+   						            	  url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   						            	}
+
+   						            	if (searchText) {
+   						            	  url += "&searchText=" + encodeURIComponent(searchText);
+   						            	}
+
+   						            	// 추가된 부분
+   						            	if (startdate) {
+   						            	  url += "&startdate=" + encodeURIComponent(startdate);
+   						            	}
+
+   						            	if (enddate) {
+   						            	  url += "&enddate=" + encodeURIComponent(enddate);
+   						            	}
+
    				                		location.href = url;
     								});
 								});
@@ -641,52 +745,6 @@ function receiptSend(poid) {
 	});
 </script>
 
-<!-- 검색 -->
-<script>
-	function filterRows(event) {
-		// 기본 폼 제출 동작 방지
-		event.preventDefault();
-
-		// 입력된 키워드 가져오기
-		var keyword = $('.clientSearch').val().toLowerCase();
-
-		// 시작일자와 종료일자 가져오기
-		var startDate = $('#startDate').val() ? new Date($('#startDate').val())
-				: null;
-		var endDate = $('#endDate').val() ? new Date($('#endDate').val())
-				: null;
-
-		// 테이블의 모든 행 가져오기
-		var rows = $('.table tbody tr');
-
-		// 각 행에 대해 키워드 및 날짜 포함 여부 확인
-		rows.each(function() {
-			var clientName = $(this).find('td:nth-child(5)').text()
-					.toLowerCase();
-			var orderDateStr = $(this).find('td:nth-child(8)').text();
-			var orderDate = orderDateStr ? new Date(orderDateStr) : null;
-
-			var keywordMatch = keyword === '' || clientName.includes(keyword);
-			var dateMatch = (startDate === null || (orderDate !== null
-					&& orderDate >= startDate && orderDate <= endDate));
-
-			if (keywordMatch && dateMatch) {
-				$(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
-			} else {
-				$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
-			}
-		});
-
-		// 번호 업뎃
-		updateRowNumbers();
-		
-		// 총 건수 업뎃
-		updateTotalCount();
-		// 폼이 실제로 제출되지 않도록 false 반환
-		return false;
-	}
-
-</script>
 
 
 <%@ include file="../include/footer.jsp"%>
