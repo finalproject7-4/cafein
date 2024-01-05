@@ -67,9 +67,18 @@ public class ShipDAOImpl implements ShipDAO {
 	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
 		return sqlSession.selectList(NAMESPACE + ".searchSHList", searchParams);
 	}
+	
+	// 출하 수정
+	@Override
+	public int updateSH(ShipVO svo) throws Exception {
+		logger.debug("DAO : SHModify(ShipVO svo)");
+		return sqlSession.update(NAMESPACE + ".updateSH", svo);
+	}
+	
+	
+	
+	
 
-	
-	
 	// 작업 지시 조회
 	@Override
 	public List<WorkVO> getWKList() throws Exception {

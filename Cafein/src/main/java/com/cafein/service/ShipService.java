@@ -26,6 +26,8 @@ public interface ShipService {
 	// 출하 검색
 	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception;
 		
+	// 출하 수정
+	public int SHModify(ShipVO svo) throws Exception;
 		
 		
 	
@@ -45,7 +47,7 @@ public interface ShipService {
 	public int wkCount(WorkVO wvo) throws Exception;
 	
 	// 작업 지시 수정
-	public int WKModify(WorkVO svo) throws Exception;
+	public int WKModify(WorkVO wvo) throws Exception;
 	
 	// 실적 조회
 	public List<WorkVO> AllPFList() throws Exception;

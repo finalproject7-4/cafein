@@ -9,7 +9,7 @@
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
 		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
-		sh.stockid, st.stockquantity, sh.itemname, sh.lotnumber, sh.clientname,
+		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
 		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
@@ -18,8 +18,8 @@
 	
 	<!-- 출하 등록 -->
 	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
-		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, lotnumber, pocnt, shipsts, membercode)
-		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{lotnumber}, #{pocnt}, #{shipsts}, #{membercode} )
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode} )
 	</insert>
 	
 	<!-- 출하 등록 작업지시코드 -->
@@ -30,7 +30,7 @@
 	
 	<!-- 출하 등록 재고량 -->
 	<select id="stList" resultType="com.cafein.domain.WorkVO">
-		SELECT it.itemname, st.lotnumber, st.stockquantity
+		SELECT it.itemname, st.stockquantity
 		FROM stock st
         JOIN item it ON st.itemid = it.itemid;
 	</select>
@@ -58,6 +58,13 @@
         ORDER BY shipdate1 DESC, shipid DESC;
     ]]>
 </select>
+
+	<!-- 출하 수정 -->
+	<update id="updateSH">
+	 	update ship set shipcode=#{shipcode}, workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, shipsts=#{shipsts}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}, lotnumber=#{lotnumber}
+	 	where shipid=#{shipid}
+	 </update>
 	
 
 

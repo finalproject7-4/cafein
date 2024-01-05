@@ -64,7 +64,6 @@
 								<th scope="col">작업지시코드</th>
 								<th scope="col">납품처</th>
 								<th scope="col">제품명</th>
-								<th scope="col">LOT</th>
 								<th scope="col">출하량</th>
 								<th scope="col">출하상태</th>
 								<th scope="col">완료일자</th>
@@ -83,7 +82,6 @@
 							<td>${sh.workcode }</td>
 							<td>${sh.clientname}</td>
 							<td>${sh.itemname }</td>
-							<td>${sh.lotnumber }</td>
 							<td>${sh.pocnt }</td>
 							<td>${sh.shipsts }</td>
 							<td><fmt:formatDate value="${sh.shipdate2 }"
@@ -110,7 +108,7 @@
 	</fieldset>
 		
  		<jsp:include page="registSH.jsp"/> 
-<%-- 		<jsp:include page="modifySH.jsp"/> --%>
+		<jsp:include page="modifySH.jsp"/>
 
 <!-- 검색 -->
 <script>
@@ -205,7 +203,6 @@ function filterRows(event) {
     var modifiedPocnt = $("#pocnt").val();
     var modifiedShipdate1 = $("#shipdate1").val();
     var modifiedShipdate2 = $("#shipdate2").val();
-    var modifiedLotnumber = $("#lotnumber").val();
     var modifiedMemberCode = $("#membercode").val();
 
     // AJAX 요청 보내기
@@ -221,7 +218,6 @@ function filterRows(event) {
         shipcode: modifiedShipcode,
         clientname: modifiedClientName,
         itemname: modifiedItemName,
-        lotnumber: modifiedLotnumber,
         pocnt: modifiedPocnt,
         shipsts: modifiedShipsts,
         shipdate2: modifiedShipdate2,
@@ -264,7 +260,6 @@ function updateTable(data) {
         newRow.append('<td>' + sh.workcode + '</td>');
         newRow.append('<td>' + sh.clientname + '</td>');
         newRow.append('<td>' + sh.itemname + '</td>');
-        newRow.append('<td>' + sh.lotnumber + '</td>');
         newRow.append('<td>' + sh.pocnt + '</td>');
         newRow.append('<td>' + sh.shipsts + '</td>');
         newRow.append('<td>' + sh.shipdate2 + '</td>');
@@ -326,30 +321,30 @@ function updateTotalCount() {
 // 수정된 값을 서버로 전송
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장
-    var modifiedWorkid = $("#workid2").val();
-    var modifiedPocode = $("#pocode2").val();
-    var modifiedClientName = $("#clientcode2").val();
-    var modifiedItemName = $("#itemcode2").val();
-    var modifiedWorksts = $("#worksts2").val();
-    var modifiedPocnt = $("#pocnt2").val();
-    var modifiedWorkdate1 = $("#workdate11").val();
-    var modifiedWorkupdate = $("#workupdate2").val();
-    var modifiedMemberCode = $("#membercode2").val();
+    var modifiedShipid = $("#shipid1").val();
+    var modifiedShipcode = $("#shipcode1").val();
+    var modifiedClientName = $("#clientcname1").val();
+    var modifiedItemName = $("#itemname1").val();
+    var modifiedShipsts = $("#shipsts1").val();
+    var modifiedPocnt = $("#pocnt1").val();
+    var modifiedShipdate1 = $("#shipdate11").val();
+    var modifiedShipdate2 = $("#shipdate2").val();
+    var modifiedMemberCode = $("#membercode1").val();
 
     // Ajax를 사용하여 서버로 수정된 값 전송
     $.ajax({
         type: "POST",
-        url: "/production/modifyWK",
+        url: "/sales/modifySH",
         data: {
-        	 workid: modifiedWorkid,
-        	 pocode: modifiedPocode,
-        	 clientname: modifiedClientName,
-             itemname: modifiedItemName,
-             worksts: modifiedWorksts,
-             pocnt: modifiedPocnt,
-             workdate1: modifiedworkDate1,
-             workupdate: modifiedWorkupDate,
-             membercode: modifiedMemberCode
+            shipid1: modifiedShipid,
+            shipdate11: modifiedShipdate1,
+            shipcode1: modifiedShipcode,
+            clientname1: modifiedClientName,
+            itemname1: modifiedItemName,
+            pocnt1: modifiedPocnt,
+            shipsts1: modifiedShipsts,
+            shipdate2: modifiedShipdate2,
+            membercode1: modifiedMemberCode
         },
         success: function(response) {
             console.log("Modification success:", response);
@@ -361,38 +356,38 @@ $("#modifyButton").click(function() {
     });
 });
 	   
-	   function openModifyModal(workid, pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
+	   function openModifyModal(shipid, shipcode, clientname, itemname, shipsts, pocnt, shipdate1, shipdate2, membercode) {
 
 		   
 		   // 가져온 값들을 모달에 설정
-		   $("#workid2").val(workid);
-		    $("#pocode2").val(pocode);
-		    $("#clientcode2").val(clientname);
-		    $("#itemcode2").val(itemname);
-		    $("#worksts2").val(worksts);
-		    $("#pocnt2").val(pocnt);
-		    $("#workdate11").val(workdate1);
-		    $("#workupdate2").val(workupdate);
-		    $("#membercode2").val(membercode);
+		   $("#shipid1").val(shipid);
+    		$("#shipcode1").val(shipcode);
+   			$("#clientcname1").val(clientname);
+    		$("#itemname1").val(itemname);
+    		$("#shipsts1").val(shiptst);
+    		$("#pocnt1").val(pocnt);
+    		$("#shipdate11").val(shipdate1);
+    		$("#shipdate2").val(shipdate2);
+    		$("#membercode1").val(membercode);
 
 		    // 모달 열기
 		    $("#modifyModal").modal('show');
 		    
 		}
 	   
-	    $('#workdate11').click(function(){
+	    $('#shipdate11').click(function(){
 	        var today = new Date();
 	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
 	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-	        $('#workdate11').val(formattedDate);
+	        $('#shipdate11').val(formattedDate);
 	    });
 	    
-	    $('#workupdate2').click(function(){
-	        var today = new Date();
-	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
-	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-	        $('#workupdate2').val(formattedDate);
-	    });
+// 	    $('#workupdate2').click(function(){
+// 	        var today = new Date();
+// 	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
+// 	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+// 	        $('#workupdate2').val(formattedDate);
+// 	    });
 	    
 	   </script>
 	   

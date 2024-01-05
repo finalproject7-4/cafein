@@ -52,10 +52,6 @@
 					<div class="col">
 						<b>재고량 확인</b><input type="number" id="stockquantity" name="stockquantity" class="form-control" placeholder="숫자만 입력하세요">
 					</div>
-					<div class="col">
-							<b>LOT번호</b><input id="lotnumber" name="lotnumber" class="form-control"
-								id="floatingInput" placeholder="LOT번호">
-						</div>
 						</div>
 						<br>
 					<div class="row">
@@ -145,7 +141,6 @@
 								<tr>
 									<th scope="col">No.</th>
 									<th scope="col">제품명</th>
-									<th scope="col">LOT</th>
 									<th scope="col">재고량</th>
 								</tr>
 							</thead>
@@ -155,7 +150,6 @@
 									<tr class="stockset">
 										<td>${counter }</td>
 										<td>${st.itemname }</td>
-										<td>${st.lotnumber }</td>
 										<td>${st.stockquantity }</td>
 									</tr>
 									<c:set var="counter" value="${counter+1 }" />
@@ -211,11 +205,9 @@
 		    $('.stockset').click(function() {
 		    	
 		      // 선택한 행의 데이터를 가져오기
-		      var lotnumber = $(this).find('td:eq(2)').text();
-		      var stockquantity = $(this).find('td:eq(3)').text();
+		      var stockquantity = $(this).find('td:eq(2)').text();
 
 		      // 첫 번째 모달의 각 입력 필드에 데이터를 설정
-		      $('#lotnumber').val(lotnumber).prop('readonly', true);
 		      $('#stockquantity').val(stockquantity).prop('readonly', true);
 
 		      if (parseInt(pocnt) > parseInt(stockquantity)) {
@@ -226,7 +218,6 @@
 		            $('#workcode').prop('readonly', false).val('');
 		            $('#clientname').prop('readonly', false).val('');
 		            $('#itemname').prop('readonly', false).val('');
-		            $('#lotnumber').prop('readonly', false).val('');
 		        }
 
 		      // 'workcodeModal'을 닫기

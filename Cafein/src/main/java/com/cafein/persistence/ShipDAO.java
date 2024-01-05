@@ -26,6 +26,9 @@ public interface ShipDAO {
 		
 	// 출하 검색
 	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception;	
+	
+	// 출하 수정
+	public int updateSH(ShipVO svo) throws Exception;
 		
 	
 	// 작업 지시 조회

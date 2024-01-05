@@ -66,6 +66,13 @@ public class ShipServiceImpl implements ShipService {
 	    return shdao.searchSHList(searchParams);
 	}
 	
+	// 출하 수정
+	@Override
+	public int SHModify(ShipVO svo) throws Exception {
+		logger.debug("S : SHModify(int shipid)");
+		return shdao.updateSH(svo);
+	}
+	
 	
 	
 

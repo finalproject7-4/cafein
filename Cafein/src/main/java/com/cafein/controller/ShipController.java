@@ -94,6 +94,19 @@ public class ShipController {
 	    // 최종 코드 생성
 	    return codePrefix + datePart + countPart;
 	}
+	
+	// 출하 수정 - POST
+		// http://localhost:8088/sales/SHList
+		@RequestMapping(value = "/modifySH", method = RequestMethod.POST)
+		public String modifySHPOST(ShipVO svo) throws Exception {
+			logger.debug(" /modify form -> modifyPOST()");
+			logger.debug(" 수정할 정보 " + svo);
+
+			// 서비스 - 정보수정 동작
+			int result = shService.SHModify(svo);
+			logger.debug("result", result);
+			return "redirect:/production/SHList";
+		}
 
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
