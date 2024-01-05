@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+<!-- SweetAlert 추가 -->
+
 <script>
 	
 	// 페이지 이전 클릭시 이동
@@ -10,15 +14,15 @@
 	e.preventDefault(); // 기본 이벤트 제거
    var prevPage = $(this).data('page');
 	
-	var lotnumber = "${param.searchBtn}";
+	var searchLot = "${param.searchLot}";
 	var searchDate = "${param.startDate}";
 
 	var dataObject = {
 		"page" : prevPage	
 	};
 	
-	if (lotnumber) {
-	    dataObject.lotnumber = lotnumber;
+	if (searchLot) {
+	    dataObject.searchLot = searchLot;
 	}
 	if (searchDate) {
 	    dataObject.searchDate = searchDate;
@@ -44,13 +48,13 @@
 		e.preventDefault();
 		
 		var pageNum = $(this).data('page');
-		var lotnumber = "${param.searchBtn}";
+		var searchLot = "${param.searchLot}";
 		var searchDate = "${param.satrtDate}";
 		var dataObject = {
 				"page" : pageNum
 		};
-		if(lotnumber){
-			dataObject.lotnumber = lotnumber;
+		if(searchLot){
+			dataObject.searchLot = searchLot;
 		}
 		if(searchDate){
 			dataObject.searchDate = searchDate;
@@ -66,7 +70,7 @@
 		},
 		error: function(error){
 				console.error("Error fetching data: ", error);
-				alert("못가요");
+				Swal.fire("못가요");
 		}
 	});
 	});
@@ -76,15 +80,15 @@
 		e.preventDefault(); // 기본 이벤트 제거
 	    var nextPage = $(this).data('page');
 				
-	    var lotnumber = "${param.searchBtn}";
+	    var searchLot = "${param.searchLot}";
 		var searchDate = "${param.startDate}";
 
 		var dataObject = {
 			"page" : nextPage	
 		};
 				
-		if (lotnumber) {
-		  	dataObject.lotnumber = lotnumber;
+		if (searchLot) {
+		  	dataObject.searchLot = searchLot;
 			}
 		if (searchDate) {
 			dataObject.searchDate = searchDate;
@@ -99,7 +103,7 @@
 		},
 		 	error: function(error) {
 			console.error("Error fetching data:", error);
-			alert("못갔어요");
+			Swal.fire("못갔어요");
 		}
 		});
 		});

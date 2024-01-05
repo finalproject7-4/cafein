@@ -193,7 +193,7 @@ $(document).ready(function() {
 	});
 	
 	// 생산지시 수정(로스팅 -> 포장)  클릭시 실행될 함수
-	function openUpdateModal2(produceid, producedate, producetime, produceline, itemname, itemid, packagevol) {
+	function openUpdateModal2(produceid, producedate, producetime, produceline, itemname, itemid, packagevol, amount) {
     // 모달 내부의 입력 필드에 데이터 설정
     document.getElementById('produceidUpdate2').value = produceid;
     document.getElementById('producedateUpdate2').value = producedate;
@@ -201,6 +201,7 @@ $(document).ready(function() {
     document.getElementById('producelineUpdate2').value = produceline;
     document.getElementById('itemnameUpdate2').value = itemname;
     document.getElementById('itemidUpdate2').value = itemid;
+    document.getElementById('amountPack2').value = amount;
 
     // 모달 열기
     $('#updateModal2').modal('show');

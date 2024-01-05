@@ -100,20 +100,26 @@
 
 	<!-- BOM  목록 조회 -->
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
-		select bomid, b.itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, i.itemname as itemname, i.itemid as itemid from bom b join item i on b.itemcode = i.itemcode 
-		where i.available = 'Y'
+		SELECT bomid, b.itemcode, b.itemid as itemid, itemid1, itemid2, itemid3, temper, rate, roastedtime,
+        i.itemname AS itemname, i1.itemname AS itemname1, i2.itemname AS itemname2, i3.itemname AS itemname3
+		FROM bom b
+		JOIN item i ON b.itemcode = i.itemcode
+		LEFT JOIN item i1 ON b.itemid1 = i1.itemid
+		LEFT JOIN item i2 ON b.itemid2 = i2.itemid
+		LEFT JOIN item i3 ON b.itemid3 = i3.itemid
+		WHERE i.available = 'Y'
  	</select>
 	
 	<!-- 생산지시 등록 -->
 	<insert id="insertProducePlan">
-		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemname1, itemname2, itemname3, amount, membercode, packagevol) 
-		values(#{producedate}, #{produceline}, #{producetime}, #{itemid}, #{itemname}, #{process}, #{temper}, #{itemname1}, #{itemname2}, #{itemname3}, #{amount}, #{membercode}, #{packagevol} )
+		insert into produce (producedate, produceline, producetime, itemid, itemname, process, temper, itemid1, itemid2, itemid3, amount, membercode, packagevol) 
+		values(#{producedate}, #{produceline}, #{producetime}, #{itemid}, #{itemname}, #{process}, #{temper}, #{itemid1}, #{itemid2}, #{itemid3}, #{amount}, #{membercode}, #{packagevol} )
 	</insert>
 	
 	<!-- BOM 등록 -->
 	<insert id="insertBom">
-		insert into bom (itemcode, itemname1, itemname2, itemname3, temper, rate, roastedtime, membercode) 
-		values(#{itemcode}, #{itemname1}, #{itemname2}, #{itemname3}, #{temper}, #{rate}, #{roastedtime}, #{membercode})
+		insert into bom (itemcode, itemid, itemid1, itemid2, itemid3, temper, rate, roastedtime, membercode) 
+		values(#{itemcode}, #{itemid}, #{itemid1}, #{itemid2}, #{itemid3}, #{temper}, #{rate}, #{roastedtime}, #{membercode})
 	</insert>
 	
 	<!-- BOM 등록되지 않은 품목 조회 -->
@@ -123,7 +129,7 @@
 	
 	<!-- 품목 목록 조회 -->
 	<select id="getItemList" resultType="com.cafein.domain.ItemVO">
-		select* from item
+		select * from item
 	</select>
 	
 	<!-- 생산 상태 업데이트 -->
@@ -165,12 +171,12 @@
 		select * from roastedbean 
 		
 		<where>
-			<if test="searchDate != null and lotnumber == null and lotnumber.equals('')">
-				roasteddate = #{searchDate}
+			<if test="searchDate != null">
+				roasteddate like concat ('%', #{searchDate},'%')
 			</if>
 			
-			<if test="searchDate == null and lotnumber != null and !lotnumber.equals('')">
-				and lotnumber like concat ('%',#{lotnumber},'%')		
+			<if test="searchDate == null and searchLot != null and !searchLot.equals('')">
+				and lotnumber like concat ('%',#{searchLot},'%')		
 			</if>
 		</where> 
 
@@ -180,7 +186,15 @@
 	<!-- 로스팅 목록 개수 전체글 개수 조회 -->
 	<select id="countRoastedbean" resultType="Integer">
 		select count(*) from roastedbean
-
+		<where>
+			<if test="searchDate != null">
+				roasteddate like concat ('%', #{searchDate},'%')
+			</if>
+			
+			<if test="searchDate == null and lotnumber != null and !lotnumber.equals('')">
+				and lotnumber like concat ('%',#{lotnumber},'%')		
+			</if>
+		</where> 
 	</select>
 	
 	<!-- 생산지시 블렌딩 작업들어갈때 품질(quality) 테이블 데이터 삽입 -->

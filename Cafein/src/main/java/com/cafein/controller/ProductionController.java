@@ -233,6 +233,7 @@ public class ProductionController {
 		vo.setTemper(temper);
 		pService.updateProduceProcessRoasting(vo);
 		
+		// 품질테이블에 로스팅공정 추가
 		qvo.setProduceid(vo.getProduceid());
 		qvo.setItemid(vo.getItemid());
 		qvo.setProductquantity(vo.getAmount());
@@ -248,6 +249,7 @@ public class ProductionController {
 
 		pService.updateProduceProcess(vo);
 		
+		// 품질테이블에 포장공정 추가
 		qvo.setProduceid(vo.getProduceid());
 		qvo.setItemid(vo.getItemid());
 		qvo.setProductquantity(vo.getAmount());
@@ -302,5 +304,16 @@ public class ProductionController {
 				
 				
 	}
+	
+	
+	
+	// 메인페이지
+	// http://localhost:8088/production/main
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public void cafeinMain() {
+		
+	}
+	
+	
 
 }
