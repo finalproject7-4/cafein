@@ -61,13 +61,13 @@ public interface StockDAO {
 	public List<QualityVO> selectMaterialStockListExcel(QualityVO vo) throws Exception;
 	
 	// roastedBean 테이블 조회
-	public QualityVO selectRoastedBean(String produceid) throws Exception;
+	public QualityVO selectRoastedBean(String lotnumber) throws Exception;
 	
 	// roastedBean - lotnumber 테이블 조회
 	public List<QualityVO> selectRoastedBeanLot(String produceid) throws Exception;
 	
 	// receive 테이블 조회
-	public QualityVO selectReceiveInfo(String lotnumber) throws Exception;
+	public QualityVO selectReceiveInfo(String receiveid) throws Exception;
 	
 	// produceid로 roastedBean LOT 조회 후 입력 (포장)
 	public void insertNormalRoastedBeanLot(int produceid) throws Exception;

@@ -538,12 +538,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<div class="row">
  			<div class="col">
            		<label for="normalquantity" class="col-form-label">정상:</label>
-            	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" readonly>
+            	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" style="margin-bottom: 10px;" readonly>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-				<table class="table table-hover" style="margin-top: 10px;">
+ 			<label for="lottable">LOT번호별 품질 검사:</label>
+				<table class="table table-hover" id="lottable">
 					<thead>
 						<tr>
 							<th>LOT번호</th>

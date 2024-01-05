@@ -585,13 +585,13 @@ $(document).ready(function($) {
         event.preventDefault();  // 기본 동작 (페이지 이동) 방지
 
         // 클릭된 a 태그의 data-lotnumber 값 가져오기
-        var lotnumber = $(this).data("lotnumber");
+        var receiveid = $(this).data("receiveid");
 
         // AJAX 요청
         $.ajax({
             url: "/receiveInfo",
             type: "GET",
-            data: { lotnumber: lotnumber },  // 파라미터 전송
+            data: { receiveid: receiveid },  // 파라미터 전송
             dataType: "JSON",
             success: function(data) {
             	console.log(data);

@@ -362,10 +362,13 @@
 	
 	<!-- 품질 관리 엑셀 출력용 목록 조회 (생산 + 반품) -->
 	<select id="selectQualityListSearchBtnExcel" resultType="QualityVO">
-		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, produceprocess, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
-		weight, productquantity, auditquantity, normalquantity, defectquantity, 
-		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
-		registerstock, registerdefect 
+		SELECT DISTINCT q.qualityid, auditcode, q.itemtype, 
+		q.produceid, produceprocess, returnid, 
+		q.itemid, itemcode, i.itemname, 
+		auditbycode, weight, productquantity, 
+		auditquantity, normalquantity, defectquantity, 
+		q.auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
+		registerstock, registerdefect
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid

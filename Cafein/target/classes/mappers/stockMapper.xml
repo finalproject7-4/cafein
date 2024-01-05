@@ -252,8 +252,11 @@
 	
 	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->
  	<select id="selectStockListExcel" resultType="QualityVO">
- 		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, stockquantity, s.storageid, 
- 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
+ 		SELECT DISTINCT stockid, s.qualityid, q.produceid, q.returnid, 
+ 		q.itemtype, s.itemid, i.itemcode, i.itemname, 
+ 		weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', 
+ 		DATE(updatedate) AS 'updatedate', updatehistory, workerbycode 
  		FROM stock s
  		JOIN quality q
  		ON s.qualityid = q.qualityid
@@ -320,8 +323,7 @@
 	<select id="selectRoastedBean" resultType="QualityVO">
 		SELECT productid, produceid, itemname, itemid, weight, roasteddate, lotnumber, note 
 		FROM roastedbean
-		WHERE produceid = #{produceid}
-		LIMIT 0, 1
+		WHERE lotnumber = #{lotnumber}
 	</select>
  	<!-- roastedBean 테이블 조회 -->
  	
@@ -339,7 +341,7 @@
  	<select id="selectReceiveInfo" resultType="QualityVO">
  		SELECT receiveid, receivecode, membercode, itemcode, storagecode, lotnumber, receivedate, receivequantity
  		FROM receive
- 		WHERE lotnumber = #{lotnumber}
+ 		WHERE receiveid = #{receiveid}
  	</select>
  	<!-- receive 테이블 조회 -->
  	

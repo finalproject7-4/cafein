@@ -594,11 +594,47 @@ $(document).ready(function($) {
             	
             	// 데이터를 테이블에 삽입
             	$.each(data, function(index, item) {
-            		var row = "<tr><td>" + item.lotnumber + "</td></tr>";
+            		var row = "<tr><td><a href='' class='lotinfo' data-lotnumber='" + item.lotnumber + "'>" + item.lotnumber + "</a></td></tr>";
             		$("#BeanInfo tbody").append(row);
             	});
             	
             	 $("#BeanInfo").modal("show");
+            	 
+                 $(".lotinfo").click(function(event) {
+                     event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+                     var lotnumber = $(this).data("lotnumber");
+                     
+                     $.ajax({
+                    	 url : "/roastedBeanInfo",
+                    	 type : "GET",
+                    	 data : {
+                    		 lotnumber : lotnumber
+                    	 },
+                    	 success : function(data){
+                         	$("#infoproductid").val(data.productid);
+                        	$("#infoproduceid").val(data.produceid);
+                        	$("#infoitemname").val(data.itemname);
+                        	$("#infolotnumber").val(data.lotnumber);
+                        	$("#infoweight").val(data.weight);
+                        	$("#infoitemprice").val(data.itemprice);
+                        	
+                        	var roasteddate = new Date(data.roasteddate);
+                        	var formattedDate = roasteddate.getFullYear() + "-" + 
+                            String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
+                            String(roasteddate.getDate()).padStart(2, '0') + " " + 
+                            String(roasteddate.getHours()).padStart(2, '0') + ":" + 
+                            String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
+                            String(roasteddate.getSeconds()).padStart(2, '0');
+                        	
+                        	$("#inforoasteddate").val(formattedDate);
+                        	$("#infonote").val(data.note);
+                        	
+                    		$("#BeanInfo").modal("hide");
+                    		$("#roastedBeanInfo").modal("show");
+                    	 }
+                     });
+
+                 });
             	
             },
             error: function(error) {
