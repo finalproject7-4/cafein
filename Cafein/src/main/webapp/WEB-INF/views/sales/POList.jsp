@@ -302,7 +302,6 @@ function receiptSend(poid) {
    						            	  url += "&searchText=" + encodeURIComponent(searchText);
    						            	}
 
-   						            	// 추가된 부분
    						            	if (startdate) {
    						            	  url += "&startdate=" + encodeURIComponent(startdate);
    						            	}
@@ -330,9 +329,11 @@ function receiptSend(poid) {
 			                
 			               	let searchText = "${param.searchText}";	
 			                let searchBtn = "${param.searchBtn}";
+			                let startdate = "${param.startdate}";
+			            	let enddate = "${param.enddate}";
 
 			                let pageValue = $(this).data('page');
-			                	url = "/sales/POList?page=" + pageValue;
+		                	url = "/sales/POList?page=" + pageValue;
 			                
 			                if (searchBtn) {
 			                    url += "&searchBtn=" + encodeURIComponent(searchBtn);
@@ -341,6 +342,13 @@ function receiptSend(poid) {
 			                if (searchText) {
 			                    url += "&searchText=" + encodeURIComponent(searchText);
 			                }
+			                if (startdate) {
+			            	  url += "&startdate=" + encodeURIComponent(startdate);
+			            	}
+
+			            	if (enddate) {
+			            	  url += "&enddate=" + encodeURIComponent(enddate);
+			            	}
 			                
 			                location.href = url;
 			            });
@@ -364,6 +372,8 @@ function receiptSend(poid) {
    									
    									let searchBtn = "${param.searchBtn}";
    									let searchText = "${param.searchText}";
+   									let startdate = "${param.startdate}";
+					            	let enddate = "${param.enddate}";
 
    				                	url = "/sales/POList?page=" + nextPage;
    				                
@@ -374,6 +384,13 @@ function receiptSend(poid) {
    				                	if (searchText) {
    				                    	url += "&searchText=" + encodeURIComponent(searchText);
    				                	}
+   				                	if (startdate) {
+					            	  url += "&startdate=" + encodeURIComponent(startdate);
+					            	}
+
+					            	if (enddate) {
+					            	  url += "&enddate=" + encodeURIComponent(enddate);
+					            	}
    				                
    				                	location.href = url;
     							});
