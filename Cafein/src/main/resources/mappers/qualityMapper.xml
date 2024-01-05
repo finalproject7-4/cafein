@@ -502,10 +502,14 @@
 	
 	<!-- 품질 관리 토스트 데이터 조회 (생산 + 반품) -->
 	<select id="productQualityToast" resultType="QualityVO">
-		SELECT qualityid, q.itemtype, itemname, DATE(q.registerationdate) AS 'registerationdate', q.auditstatus
+		SELECT qualityid, q.itemtype, i.itemname, DATE(q.registerationdate) AS 'registerationdate', q.auditstatus
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
+		LEFT JOIN produce p
+		ON q.produceid = p.produceid
+		LEFT JOIN roastedbean r
+		ON q.produceid = r.produceid
 		WHERE (q.itemtype = '생산' OR q.itemtype = '반품') AND q.auditstatus != '검수완료'
 		ORDER BY registerationdate
 		LIMIT 0, 1
@@ -518,6 +522,8 @@
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
+		JOIN receive r
+		ON q.receiveid = r.receiveid
 		WHERE q.itemtype = '자재' AND q.auditstatus != '검수완료'
 		ORDER BY registerationdate
 		LIMIT 0, 1
