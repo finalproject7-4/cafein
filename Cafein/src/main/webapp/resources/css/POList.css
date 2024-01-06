@@ -21,3 +21,12 @@ input#regist {
 #ListExcel {
 	float:right;
 }
+
+.rectipt-body {
+	left: -5em;
+    top: -13em;
+    width: 50em;
+    height: 60em;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}

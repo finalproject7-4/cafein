@@ -21,7 +21,7 @@
 
 	<br>원산지  <input type="text" name="origin" id="rOrigin" >
 	<br>중량 <input type="text" name="itemweight" id="rWeight" >
-	<br>중량 <input type="text" name="itemprice" id="rPrice" >
+	<br>단가 <input type="text" name="itemprice" id="rPrice" >
 	<br>수주총액  <input type="text" id="rSum" > 
 	<br>수주세액  <input type="text" id="rTax" > 
 	<br>수주합계금액  <input type="text" id="rTotal" > 

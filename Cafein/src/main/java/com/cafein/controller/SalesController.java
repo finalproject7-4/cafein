@@ -41,7 +41,7 @@ public class SalesController {
 	private SalesService sService;
 
 	// 수주조회 - GET
-	// http://localhost:8088/sales/POList
+	// http://localhost:8080/sales/POList
 	@RequestMapping(value = "/POList", method = RequestMethod.GET)
 	public String AllPOListGET(Model model, HttpSession session, SalesVO svo,Criteria cri
 			) throws Exception{

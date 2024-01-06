@@ -32,20 +32,13 @@
 				</form>
 		</div>
 	</div>
-	
-	
-	
 	<br>
-	
-
-	
-		
 		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" id="ListID">
 		<form action="POListPrint" method="GET">
-			<input id="ListExcel" type="submit" value="리스트 출력(.xlsx)" class="btn btn-sm btn-success">
-		</form>
+			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+		</form><br>
 			<form role="form" action="/sales/cancelUpdate" method="post">
 				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
 				<!-- 수주 상태에 따라 필터링하는 버튼 -->
@@ -86,6 +79,15 @@
 								<th scope="col">관리</th>
 								<th scope="col">진행</th>
 								<th scope="col">납품서발행</th>
+								
+								<th scope="col" style="display: none;">원산지</th>
+								<th scope="col" style="display: none;">중량</th>
+								<th scope="col" style="display: none;">단가</th>
+								<th scope="col" style="display: none;">주소</th>
+								<th scope="col" style="display: none;">대표자</th>
+								<th scope="col" style="display: none;">사업자번호</th>
+								<th scope="col" style="display: none;">전화번호</th>
+								<th scope="col" style="display: none;">팩스번호</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -119,16 +121,25 @@
 											<td>
 												<button type="button" class="btn btn-outline-dark"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
-													수정</button> <input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
+													수정</button> 
+													<input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
 											</td>
 											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<input value="불러오기" type="button" class="btn btn-outline-dark" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
-												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
-
-												 
+												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}')">
 											</td>
+											
+											<td style="display: none;">${po.origin}</td>
+											<td style="display: none;">${po.itemweight}</td>
+											<td style="display: none;">${po.itemprice}</td>
+											<td style="display: none;">${po.clientaddress}</td>
+											<td style="display: none;">${po.representative}</td>
+											<td style="display: none;">${po.businessnumber}</td>
+											<td style="display: none;">${po.clientphone}</td>
+											<td style="display: none;">${po.clientfax}</td>
+											
 										</tr>
 										<c:set var="counter" value="${counter+1 }" />
 									</c:forEach>
@@ -274,121 +285,8 @@
 		</div>
 	</div>
 
-	<!-- 진행 동작(수주상태 진행으로 변경) -->
-	<script>
-		$(".ingUpdate").click(function() {
-			event.preventDefault();
-
-			var poid = $(this).data("poid");
-			var postate = $(this).closest('tr').find('td:nth-child(3)').text(); // 주문 상태 가져오기
-
-			console.log('poid 값:', poid);
-			console.log('postate 값:', postate);
-
-			// 주문 상태가 '대기'인 경우만 진행 가능
-			if (postate !== '대기') {
-				Swal.fire({
-					title : '이 주문은 진행할 수 없는 상태입니다.',
-					text : '수주상태를 확인해주세요.',
-					icon : 'error',
-				});
-				return;
-			}
-
-			Swal.fire({
-				title : '수주를 진행하시겠습니까?',
-				text : '수주가 진행상태로 업데이트 됩니다.',
-				icon : 'warning',
-				showCancelButton : true,
-				confirmButtonColor : '#3085d6',
-				cancelButtonColor : '#d33',
-				confirmButtonText : '승인',
-				cancelButtonText : '취소',
-				reverseButtons : false,
-			}).then(function(result) {
-				if (result.value) { //승인시
-					// Ajax 요청 실행
-					$.ajax({
-						type : 'POST',
-						url : '/sales/ingUpdate',
-						data : {
-							poid : poid
-						},
-						success : function(response) {
-							console.log('Ajax success:', response);
-							location.reload();
-						},
-						error : function(error) {
-							console.error('Error during cancellation:', error);
-							Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
-						}
-					});
-				}
-			});
-		});
-	</script>
-	<!-- 진행 동작(수주상태 취소로 변경) -->
-	<script>
-		$(".cancelUpdate").click(function() {
-			event.preventDefault();
-
-			var poid = $(this).data("poid");
-			var postate = $(this).closest('tr').find('td:nth-child(3)').text(); // 주문 상태 가져오기
-
-			console.log('poid 값:', poid);
-			console.log('postate 값:', postate);
-
-			// 주문 상태가 '완료'인 경우 취소 불가
-			if (postate === '완료') {
-				Swal.fire({
-					title : '이미 완료된 주문입니다.',
-					text : '완료된 상태는 취소할 수 없습니다.',
-					icon : 'error',
-				});
-				return;
-			}
-			// 주문 상태가 '완료'인 경우 취소 불가
-			if (postate === '취소') {
-				Swal.fire({
-					title : '이미 취소된 주문입니다.',
-					icon : 'error',
-				});
-				return; // 취소할 수 없는 상태이므로 함수 종료
-			}
-
-			Swal.fire({
-				title : '수주를 취소하시겠습니까?',
-				text : '수주가 취소상태로 업데이트 됩니다.',
-				icon : 'warning',
-				showCancelButton : true,
-				confirmButtonColor : '#3085d6',
-				cancelButtonColor : '#d33',
-				confirmButtonText : '승인',
-				cancelButtonText : '취소',
-				reverseButtons : false,
-			}).then(function(result) {
-				if (result.value) { //승인시
-					// Ajax 요청 실행
-					$.ajax({
-						type : 'POST',
-						url : '/sales/cancelUpdate',
-						data : {
-							poid : poid
-						},
-						success : function(response) {
-							console.log('Ajax success:', response);
-							location.reload();
-						},
-						error : function(error) {
-							console.error('Error during cancellation:', error);
-							Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
-						}
-					});
-				}
-			});
-		});
-	</script>
-
+	
+	
 	<!-- 품목 등록 모달 -->
 	<jsp:include page="registPO.jsp" />
 	<!-- 품목 수정 모달 -->
@@ -476,7 +374,7 @@
 <!--납품서 모달창 -->
 	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content rectipt-body">
 			
 				<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">납품서 미리보기</h5>
@@ -521,59 +419,26 @@
 					<input name="ordersduedate" type="date" id="rdate" class="form-control" value="" readonly>
 					</div>
 					</div><br>
-					
 					담당자코드
 					<input autocomplete="off" id="rmembercode" name="membercode" class="form-control mb-3" type="number" value="" readonly>
+					원산지
+					<input autocomplete="off" id="rorigin" name="origin" class="form-control mb-3" type="text" value="" readonly>
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">확인</button>
-					<input type="button" class="btn btn-primary" id="receiptBtn" value="엑셀파일다운">
+					<input type="button" class="btn btn-sm btn-success" id="receiptBtn" value="엑셀파일 다운">
 				</div>
 				</form>
 			</div>
 		</div>
 	</div>
-
-
-<script type="text/javascript">
-$(document).ready(function() {
 	
-	$("#receiptBtn").submit(function (event) {
-	    event.preventDefault(); // 기본 동작 중지
-
-	$.ajax({
-        type: "GET",
-        url: "/sales/receipt",
-        data: {
-            clientname: modifiedClientName,
-            itemname: modifiedItemName,
-            postate: modifiedPostate,
-            pocnt: modifiedPocnt,
-            ordersdate: modifiedOrdersDate,
-            updatedate: modifiedUpdatedate,
-            ordersduedate: modifiedOrdersDueDate,
-            membercode: modifiedMemberCode
-        },
-        
-        success: function(response) {
-            console.log("Modification success:", response);
-            $("#receiptModal").modal('hide');
-        },
-        error: function(error) {
-        }
-    });
-   });
-	
-	
-	
-	});
-</script>
 
 <script>
 	/* 리스트 값 납품서 모달로 값 전달 */
 	function openReceiptModal(poid, clientid, itemid, clientname, itemname,
-			postate, pocnt, ordersdate, ordersduedate, membercode) {
+			postate, pocnt, ordersdate, ordersduedate, membercode, origin) {
 		console.log('poid:', poid);
 		console.log('clientid:', clientid);
 		console.log('itemid:', itemid);
@@ -584,6 +449,7 @@ $(document).ready(function() {
 		console.log('ordersdate:', ordersdate);
 		console.log('ordersduedate:', ordersduedate);
 		console.log('membercode:', membercode);
+		console.log('origin:', origin);
 
 		// 가져온 값들을 모달에 설정
 		$("#rpoid").val(poid);
@@ -596,6 +462,7 @@ $(document).ready(function() {
 		$("#rordersdate").val(ordersdate);
 		$("#rdate").val(ordersduedate);
 		$("#rmembercode").val(membercode);
+		$("#rorigin").val(origin);
 
 		// 모달 열기
 $("#openReceiptModal").modal('show');
