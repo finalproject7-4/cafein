@@ -88,9 +88,11 @@ public interface ProductionDAO {
 	// 당월 총 생산량
 	public Integer getProduceAmountThisMonth() throws Exception;
 	
-	// 당행 총 생산량
+	// 당해 총 생산량
 	public Integer getProduceAmountThisYear() throws Exception;
 	
+	// 생산지시리스트 출력(메인용)
+	public List<ProduceVO> getProduceList() throws Exception;
 	
 }
 

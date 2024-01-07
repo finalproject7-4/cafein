@@ -11,7 +11,7 @@
 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
 <i class="fa fa-chart-line fa-3x text-primary"></i>
 <div class="ms-3">
-<p class="mb-2">오늘의 생산량</p>
+<p class="mb-2">오늘 생산량</p>
 <h6 class="mb-0" style="color: red;"><fmt:formatNumber value="${today }"/> g</h6>
 </div>
 </div>

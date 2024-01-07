@@ -424,7 +424,7 @@ public class ProductionController {
 	
 	
 	// 메인페이지
-	// http://localhost:8088/main/main
+	// http://localhost:8088/production/main
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public void cafeinMain(Model model, ProduceVO vo) throws Exception {
 		logger.debug("컨트롤러 - 메인페이지 호출!");
@@ -432,7 +432,7 @@ public class ProductionController {
 		model.addAttribute("today", pService.getProduceAmountToday());
 		model.addAttribute("thisMonth", pService.getProduceAmountThisMonth());
 		model.addAttribute("thisYear", pService.getProduceAmountThisYear());
-		model.addAttribute("produceList", pService.getProduceListAJAX(vo));
+		model.addAttribute("produceList", pService.getProduceList());
 		
 		
 	}

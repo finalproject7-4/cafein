@@ -361,6 +361,13 @@ public class ProductionServiceImpl implements ProductionService{
 		logger.debug("Service - 이번년도 총 생산량 구하는 getProduceAmountThisYear() 호출!");
 		return pdao.getProduceAmountThisYear();
 	}
+
+	// 생산지시리스트 출력(메인용)
+	@Override
+	public List<ProduceVO> getProduceList() throws Exception {
+		logger.debug("Service - 생산지시리스트 메인용 getProduceList() 호출!");
+		return pdao.getProduceList();
+	}
 	
 	
 	

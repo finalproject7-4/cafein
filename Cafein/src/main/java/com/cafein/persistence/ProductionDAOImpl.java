@@ -260,6 +260,16 @@ public class ProductionDAOImpl implements ProductionDAO {
 		logger.debug("DAO - 이번년도 총 생산량 구하는 getProduceAmountThisYear() 호출!");
 		return sqlSession.selectOne(NAMESPACE+".getProduceAmountThisYear");
 	}
+
+
+	// 생산지시리스트 출력 (메인용)
+	@Override
+	public List<ProduceVO> getProduceList() throws Exception {
+		logger.debug("DAO - 생산지시리스트 출력(메인용)");
+		return sqlSession.selectList(NAMESPACE+".getProduceList");
+	}
+	
+	
 	
 	
 	

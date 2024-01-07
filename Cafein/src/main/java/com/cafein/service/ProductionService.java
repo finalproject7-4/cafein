@@ -94,5 +94,8 @@ public interface ProductionService {
 		
 	// 당행 총 생산량
 	public Integer getProduceAmountThisYear() throws Exception;
+	
+	// 생산지시리스트 출력(메인용)
+	public List<ProduceVO> getProduceList() throws Exception;
 
 }
