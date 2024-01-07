@@ -56,7 +56,7 @@
 		AND cli.clientname = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and startDate != null and endDate != null">
-		AND DATE(ordersdate) BETWEEN #{startDate} AND #{endDate}
+		AND DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
 	</where>
 	ORDER BY ordersdate DESC, poid DESC
