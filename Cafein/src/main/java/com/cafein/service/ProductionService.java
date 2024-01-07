@@ -86,5 +86,13 @@ public interface ProductionService {
 	// 재고리스트 업데이트
 	public void updateStockList(ProduceVO vo) throws Exception;
 	
+	// 당일 총 생산량
+	public Integer getProduceAmountToday() throws Exception;
+		
+	// 당월 총 생산량
+	public Integer getProduceAmountThisMonth() throws Exception;
+		
+	// 당행 총 생산량
+	public Integer getProduceAmountThisYear() throws Exception;
 
 }

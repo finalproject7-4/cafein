@@ -1,6 +1,6 @@
 package com.cafein.service;
 
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -20,14 +20,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.cafein.domain.BomVO;
-import com.cafein.domain.Criteria;
+
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.QualityVO;
 import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
 import com.cafein.persistence.ProductionDAO;
-import com.mysql.cj.result.Row;
+
 
 @Service
 public class ProductionServiceImpl implements ProductionService{
@@ -333,11 +333,33 @@ public class ProductionServiceImpl implements ProductionService{
 		
 	}
 
+	// 블렌딩 대기 -> 생산중, 출고리스트 대기 -> 완료로 변경될때 재고리스트 재고 차감
 	@Override
 	public void updateStockList(ProduceVO vo) throws Exception {
 		logger.debug("Service - 재고리스트 업데이트");
 		
 		pdao.updateStockList(vo);
+	}
+
+	// 당일 총 생산량
+	@Override
+	public Integer getProduceAmountToday() throws Exception {
+		logger.debug("Service - 당일 총 생산량 구하는 getProduceAmountToday() 호출!");
+		return pdao.getProduceAmountToday();
+	}
+
+	// 당월 총 생산량
+	@Override
+	public Integer getProduceAmountThisMonth() throws Exception {
+		logger.debug("Service - 이번달 총 생산량 구하는 getProduceAmountThisMonth() 호출!");
+		return pdao.getProduceAmountThisMonth();
+	}
+
+	// 당해 총 생산량
+	@Override
+	public Integer getProduceAmountThisYear() throws Exception {
+		logger.debug("Service - 이번년도 총 생산량 구하는 getProduceAmountThisYear() 호출!");
+		return pdao.getProduceAmountThisYear();
 	}
 	
 	

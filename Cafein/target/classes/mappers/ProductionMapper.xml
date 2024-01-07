@@ -9,7 +9,7 @@
 	
 	<!-- AJAX 생산지시 목록 조회 -->
 	<select id="getProduceListAJAX" resultType="com.cafein.domain.ProduceVO">
-		<![CDATA[
+		
 		select produceid, producecode, submitdate, producedate, produceline, producetime, p.itemid, p.itemname as itemname, 
 		process, temper, p.itemid1 as itemid1, p.itemid2 as itemid2, p.itemid3 as itemid3, amount, membercode, qualitycheck, state, packagevol, 
 		i1.stockid AS stockid1, i2.stockid AS stockid2, i3.stockid AS stockid3
@@ -17,43 +17,9 @@
 		LEFT JOIN stock i1 ON p.itemid1 = i1.itemid
 		LEFT JOIN stock i2 ON p.itemid2 = i2.itemid
 		LEFT JOIN stock i3 ON p.itemid3 = i3.itemid
-		]]>
+		
 		<where>
-		
-		<if test="itemname != null and !itemname.equals('')">
-		<![CDATA[
-			AND itemname like concat('%',#{itemname},'%')
-			]]>
-		</if>
-		
-		<if test="startDate != null and endDate != null">
-		 	AND producedate between #{startDate} and #{endDate}
-		</if>
-		
-		<if test="process != null and !process.equals('')">
-			AND process like concat('%',#{process},'%')
-		</if>
-			
-		<if test="searchBtn != null and searchBtn !='검사전'">
-			AND state = #{searchBtn}
-		</if>
-
-		<if test="searchBtn != null and searchBtn=='검사전'">
-			<![CDATA[
-			AND qualitycheck = #{searchBtn}
-			]]>
-		</if>	
-		
-		</where>
-		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
-		
-	</select>
-	
-	<!-- 엑셀파일 다운로드용 생산지시 리스트 조회 -->
-	<select id="getExcelDownProduceList" resultType="com.cafein.domain.ProduceVO">
-		select * from produce 
-		<where>
-		
+		true
 		<if test="startDate != null and endDate != null">
 		 	AND producedate between #{startDate} and #{endDate}
 		</if>
@@ -75,7 +41,44 @@
 		</if>	
 		
 		</where>
-		order by produceid desc
+		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
+		
+	</select>
+	
+	<!-- 엑셀파일 다운로드용 생산지시 리스트 조회 -->
+	<select id="getExcelDownProduceList" resultType="com.cafein.domain.ProduceVO">
+		select produceid, producecode, submitdate, producedate, produceline, producetime, p.itemid, p.itemname as itemname, 
+		process, temper, p.itemid1 as itemid1, p.itemid2 as itemid2, p.itemid3 as itemid3, amount, membercode, qualitycheck, state, packagevol, 
+		i1.stockid AS stockid1, i2.stockid AS stockid2, i3.stockid AS stockid3
+		from produce p
+		LEFT JOIN stock i1 ON p.itemid1 = i1.itemid
+		LEFT JOIN stock i2 ON p.itemid2 = i2.itemid
+		LEFT JOIN stock i3 ON p.itemid3 = i3.itemid
+		
+		<where>
+			true
+		<if test="startDate != null and endDate != null">
+		 	producedate between #{startDate} and #{endDate}
+		</if>
+		
+		<if test="process != null and !process.equals('')">
+			AND process like concat('%',#{process},'%')
+		</if>
+		
+		<if test="itemname != null and !itemname.equals('')">
+			AND itemname = #{itemname}
+		</if>
+			
+		<if test="searchBtn != null and searchBtn !='검사전'">
+			AND state = #{searchBtn}
+		</if>
+
+		<if test="searchBtn != null and searchBtn=='검사전'">
+			AND qualitycheck = #{searchBtn}
+		</if>	
+		
+		</where>
+		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
 	</select>
 
 	
@@ -183,37 +186,39 @@
 	</select>
 	
 	<!-- 로스팅 완제품 리스트 출력 -->
-	<select id="getRoastedbeanList" resultType="com.cafein.domain.RoastedbeanVO">
-		
-		<![CDATA[
+	<select id="getRoastedbeanList" resultType="com.cafein.domain.RoastedbeanVO">	
 		select * from roastedbean 
-		]]>
 		<where>
-			<if test="searchDate != null">
-				roasteddate like concat ('%', #{searchDate},'%')
+			true
+			<if test="searchDate == null and searchLot != null and !searchLot.equals('')">
+				and lotnumber like concat ('%',#{searchLot},'%')		
 			</if>
 			
-			<if test="searchDate == null and searchLot != null and !searchLot.equals('')">
-			<![CDATA[
-				and lotnumber like concat ('%',#{searchLot},'%')	
-				]]>	
+			<if test="searchDate != null and searchLot == null">
+				<![CDATA[
+				and roasteddate like concat ('%',#{searchDate},'%')
+				]]>
 			</if>
+			
 		</where> 
 
 		order by productid desc limit #{cri.startPage}, #{cri.pageSize}
+
 	
 	</select>
 	<!-- 로스팅 목록 개수 전체글 개수 조회 -->
 	<select id="countRoastedbean" resultType="Integer">
 		select count(*) from roastedbean
 		<where>
-			<if test="searchDate != null">
-				roasteddate like concat ('%', #{searchDate},'%')
-			</if>
-			
-			<if test="searchDate == null and lotnumber != null and !lotnumber.equals('')">
-				and lotnumber like concat ('%',#{lotnumber},'%')		
-			</if>
+		 	true
+			<if test="searchDate == null and searchLot != null and !searchLot.equals('')">
+				and lotnumber like concat ('%',#{searchLot},'%')		
+			</if>			
+			<if test="searchDate != null and !searchDate.equals('')">
+				<![CDATA[
+				and roasteddate like concat ('%',#{searchDate},'%')
+				]]>
+			</if>			
 		</where> 
 	</select>
 	
@@ -245,7 +250,7 @@
 	</insert>
 	
 	<!-- 생산코드 개수 계산 -->
-	<select id="getProducecodeCount" resultType="integer">
+	<select id="getProducecodeCount" resultType="Integer">
 		select count(*) from produce
 		where producecode like concat('%', #{datePart}, '%')
 	</select>	
@@ -264,6 +269,32 @@
 		where stockid = #{stockid}
 
 	</update>
+	
+	<!-- main페이지용 오늘의 생산량과 총 당해, 당월 생산량 구하는 함수 -->
+	<select id="getProduceAmountToday" resultType="Integer">
+	<![CDATA[
+		SELECT sum(amount) as todayAmount
+		from produce
+		where DATE(producedate) = CURDATE() and process = '로스팅' and state = '완료'
+	]]>
+	</select>
+	
+	<select id="getProduceAmountThisYear" resultType="Integer">
+	<![CDATA[
+		SELECT SUM(amount) AS thisYearAmount
+		FROM produce
+		WHERE YEAR(producedate) = YEAR(CURDATE()) and process = '로스팅' and state = '완료'
+	]]>
+	</select>
+	
+	<select id="getProduceAmountThisMonth" resultType="Integer">
+	<![CDATA[
+		SELECT SUM(amount) AS thisMonthAmount
+		FROM produce
+		WHERE YEAR(producedate) = YEAR(CURDATE()) AND MONTH(producedate) = MONTH(CURDATE()) and process = '로스팅' and state = '완료'
+	]]>
+	</select>
+	
 	
 </mapper>
 

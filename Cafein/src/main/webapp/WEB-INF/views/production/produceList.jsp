@@ -98,7 +98,7 @@ function getList(pageNumber) {
 <!-- 페이지 Ajax 동적 이동 (2) -->
 <script>
 $(document).ready(function() {
-    // 기간조회 검색폼의 submit 이벤트 감지
+    // 검색폼의 submit 이벤트 감지
     $("form[name='dateSearch']").submit(function(event) {
         event.preventDefault(); // 기본 폼 제출 동작 방지
 

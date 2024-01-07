@@ -47,6 +47,11 @@ public class ProduceVO {
 	// stockVO
 	private int stockquantity;
 	
+	// main 페이지 출력용
+	private Integer todayAmount;
+	private Integer thisYearAmount;
+	private Integer thisMonthAmount;
+	
 	
 	
 }

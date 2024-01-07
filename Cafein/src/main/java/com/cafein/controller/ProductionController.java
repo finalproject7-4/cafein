@@ -5,6 +5,7 @@ package com.cafein.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -423,9 +424,16 @@ public class ProductionController {
 	
 	
 	// 메인페이지
-	// http://localhost:8088/production/main
+	// http://localhost:8088/main/main
 	@RequestMapping(value="/main", method=RequestMethod.GET)
-	public void cafeinMain() {
+	public void cafeinMain(Model model, ProduceVO vo) throws Exception {
+		logger.debug("컨트롤러 - 메인페이지 호출!");
+			
+		model.addAttribute("today", pService.getProduceAmountToday());
+		model.addAttribute("thisMonth", pService.getProduceAmountThisMonth());
+		model.addAttribute("thisYear", pService.getProduceAmountThisYear());
+		model.addAttribute("produceList", pService.getProduceListAJAX(vo));
+		
 		
 	}
 	

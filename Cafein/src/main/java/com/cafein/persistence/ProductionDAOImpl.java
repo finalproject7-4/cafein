@@ -238,6 +238,28 @@ public class ProductionDAOImpl implements ProductionDAO {
 		
 		sqlSession.update(NAMESPACE + ".updateStockList", vo);
 	}
+
+
+	// 당일 총 생산량
+	@Override
+	public Integer getProduceAmountToday() throws Exception {
+		logger.debug("DAO - 오늘의 총 생산량 구하는 getProduceAmountToday() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountToday");
+	}
+
+	// 당월 총 생산량
+	@Override
+	public Integer getProduceAmountThisMonth() throws Exception {
+		logger.debug("DAO - 이번달 총 생산량 구하는 getProduceAmountThisMonth() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountThisMonth");
+	}
+
+	// 당해 총 생산량
+	@Override
+	public Integer getProduceAmountThisYear() throws Exception {
+		logger.debug("DAO - 이번년도 총 생산량 구하는 getProduceAmountThisYear() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountThisYear");
+	}
 	
 	
 	

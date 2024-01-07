@@ -95,7 +95,7 @@
 							</div>
 							</div>
 							<!-- 출고대기등록할 때 쓸 stockid -->
-							<div class="row">
+							<div class="row" style="display: none;">
 							<div class="col">
 								<label for="stockid1" class="col-form-label">재고ID1</label>
 								<input name="stockid1" type="text" class="form-control" id="stockid1" readonly>
@@ -126,8 +126,8 @@
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode">
 							</div>
-							<div class="col">
-								<label for="itemid" class="col-form-label">아이템ID</label>
+							<div class="col" style="display:none;">
+								<label for="itemid" class="col-form-label" >아이템ID</label>
 								<input name="itemid" class="form-control" id="itemidPro">
 							</div>
 							</div>

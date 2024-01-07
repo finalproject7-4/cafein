@@ -234,7 +234,7 @@ function fetchData(searchBtnValue) {
 <td>${plist.produceid }</td>
 <td><fmt:formatDate value="${plist.submitdate }" pattern="yyyy-MM-dd" /> </td>
 <td><fmt:formatDate value="${plist.producedate }" pattern="yyyy-MM-dd" /></td>
-<td>${plist.itemname }</td>
+<td> ${plist.itemname }</td>
 <td>${plist.produceline }</td>
 <td>${plist.process }</td>
 <td>${plist.qualitycheck }</td>
@@ -256,6 +256,7 @@ function fetchData(searchBtnValue) {
 	<c:if test="${plist.state == '생산중' && plist.process !='포장'}">
 	<input id="completBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="완료">
 	</c:if>
+	<!-- 포장이 생산중에서 완료되었을때, 누를 '완료' 버튼 -->
 	<c:if test="${plist.state == '생산중'&& plist.process =='포장' }">
 	<input id="packageBtn" type="button" onclick="openPackageModal('${plist.produceid}', '${plist.producedate}', '${plist.producetime }', '${plist.produceline}',  '${plist.itemname }', '${plist.itemid }', '${plist.packagevol }', '${plist.amount }')" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료"> 
 	</c:if>
