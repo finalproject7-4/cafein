@@ -21,3 +21,74 @@ input#regist {
 #ListExcel {
 	float:right;
 }
+
+.rectipt-body {
+	left: -40em;
+    top: -14em;
+    width: 110em;
+    height: 60em;
+    overflow-y: auto;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.recript-title {
+    font-size: 30px;
+}
+.receiptTitle {
+	text-align: center;
+    font-size: 35px;
+     letter-spacing: 10px;
+}
+#rordersdate {
+    width: 150px;
+    margin-top: -7px;
+    font-size: 20px;
+}
+
+.odate {
+	margin-bottom: 15px;
+	float:right;
+	display:flex;
+	margin-top: 30px;
+	font-size: 20px;
+}
+
+.form-control-sm {
+    font-size: 18px !important;
+    border: none !important;
+    text-align: center !important;
+    background: none !important;
+}
+
+.pt15 {
+	padding-top: 15px !important;
+   	width: 10em;	
+}
+
+.rowspan6 {
+	width: 5em;
+	font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 24px;
+    padding-right: 30px !important;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: nowrap;
+}
+
+.tdempty {
+	height:3.2em;
+}
+
+.rem13 {
+	width:13rem;
+	padding-top: 15px !important;
+}
+
+.thirdtable {
+    width: 38.7rem;
+}
+.bgray {
+	background: #F8F9FA;
+}

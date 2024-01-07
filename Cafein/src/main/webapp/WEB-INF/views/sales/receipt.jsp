@@ -8,7 +8,7 @@
 <h2>납품서 미리보기</h2>
 
 
-	    번호<input type="text" name="poid" id="rPOid" value="${poid}">
+	<%--     번호<input type="text" name="poid" id="rPOid" value="${poid}">
 	<br>수주상태<input type="text" name="state" id="rState" >
 	<br>납품처코드  <input type="text" name="clientid" id="rClientid" >
 	<br>납품처  <input type="text" name="clientname" id="rClientname" >
@@ -21,7 +21,7 @@
 
 	<br>원산지  <input type="text" name="origin" id="rOrigin" >
 	<br>중량 <input type="text" name="itemweight" id="rWeight" >
-	<br>중량 <input type="text" name="itemprice" id="rPrice" >
+	<br>단가 <input type="text" name="itemprice" id="rPrice" >
 	<br>수주총액  <input type="text" id="rSum" > 
 	<br>수주세액  <input type="text" id="rTax" > 
 	<br>수주합계금액  <input type="text" id="rTotal" > 
@@ -32,7 +32,18 @@
 	<br>주소<input type="text" name="clientaddress" id="rADD" >
 	<br>전화번호<input type="text" name="clientphone" id="rPhone" >
 	<br>팩스번호<input type="text" name="clientfax" id="rFax" >
-	<br>LOT번호<input type="text" name="lotnumber" id="rLOT" >
+	<br>LOT번호<input type="text" name="lotnumber" id="rLOT" > --%>
+	
+<!--납품서 모달창 -->
+	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content rectipt-body">
+			
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">납품서 미리보기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
 
 
 <%@ include file="../include/footer.jsp"%>
