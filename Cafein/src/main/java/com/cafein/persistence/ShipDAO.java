@@ -11,7 +11,10 @@ import com.cafein.domain.WorkVO;
 public interface ShipDAO {
 	
 	// 출하 조회
-	public List<ShipVO> getSHList() throws Exception;
+	public List<ShipVO> getSHList(ShipVO svo) throws Exception;
+	
+	// 총개수
+	public int countSH(ShipVO svo) throws Exception;
 	
 	// 출하 등록
 	public void registSH(ShipVO svo) throws Exception;
@@ -33,7 +36,10 @@ public interface ShipDAO {
 		
 	
 	// 작업 지시 조회
-	public List<WorkVO> getWKList() throws Exception;
+	public List<WorkVO> getWKList(WorkVO wvo) throws Exception;
+	
+	// 총개수
+	public int countWK(WorkVO wvo) throws Exception;
 	
 	// 작업 지시 등록
 	public void registWK(WorkVO wvo) throws Exception;
@@ -53,7 +59,10 @@ public interface ShipDAO {
 	
 	
 	// 실적 조회
-	public List<WorkVO> getPFList() throws Exception;
+	public List<WorkVO> getPFList(WorkVO wvo) throws Exception;
+	
+	// 총개수
+	public int countPF(WorkVO wvo) throws Exception;
 	
 	// 실적 수정
 	public int updatePF(WorkVO wvo) throws Exception;

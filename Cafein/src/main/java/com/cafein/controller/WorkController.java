@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
 import com.cafein.domain.ReceiveVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.WorkVO;
@@ -36,13 +39,23 @@ public class WorkController {
 	// 작업지시 조회
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public String AllWKListGET(Model model, WorkVO wvo) throws Exception {
+	public String AllWKListGET(Model model, WorkVO wvo, HttpSession session, Criteria cri) throws Exception {
 		logger.debug("AllWKListGET() 실행");
 		
-		List<WorkVO> WKList = shService.AllWKList();
+		// SalesVO의 Criteria 설정
+		wvo.setCri(cri);
 		
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(shService.countWK(wvo));
+		logger.debug("총 개수: " + pageVO.getTotalCount());
+		
+		List<WorkVO> WKList = shService.AllWKList(wvo);
+		
+		model.addAttribute("countWK",shService.countWK(wvo));
 		model.addAttribute("WKList", WKList );
-		
+		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("pcList", shService.registPC()); 
 		
 		logger.debug("작업지시 리스트 출력!");

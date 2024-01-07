@@ -8,13 +8,28 @@
 <fieldset>
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/sales/SHList" method="get" onsubmit="return filterRows(event)">
-				검색 <input class="shipSearch" type="text" name="keyword" placeholder="출하코드, 작업지시코드, 납품처, 제품명, LOT으로 검색">
-				작업지시일자 <input type="date" id="startDate"
-					name="shipdate1"> ~ <input type="date" id="endDate" name="shipsdate2">
-				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
+			<form name="dateSearch" action="/sales/SHList" method="get">
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="검색">
+				</c:if>
+				검색 <input class="shipSearch" type="text" name="searchText" placeholder="검색">
+				출하일자 
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
 				<br>
 			</form>
+			<form action="SHList" method="GET">
+					<c:if test="${!empty param.searchBtn }">
+						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+					</c:if>
+					<c:if test="${!empty param.startDate }">
+						<input type="hidden" value="${param.startDate }" name="startDate">
+					</c:if>
+					<c:if test="${!empty param.endDate }">
+						<input type="hidden" value="${param.endDate }" name="endDate">
+					</c:if>
+				</form>
 
 		</div>
 	</div>
@@ -23,30 +38,61 @@
 	<!-- 작업지시 조회 -->
 	<div class="col-12" style="margin-top: 20px;">
 		<div class="bg-light rounded h-100 p-4">
-			<h6 class="mb-4">출하 관리  <span class="mb-5">[총 ${fn:length(AllSHList)}건]</span> </h6>
+			<h6 class="mb-4">출하 관리  <span class="settingSH">[총 ${countSH}건]</span> </h6>
 
 		<div class="col-12">
-			<div class="btn-group" role="group">
-			<form role="form1">
-				<input type="hidden" name="state" value="전체">
-				<button type="button" class="btn btn-outline-dark"
-					id="allwk">전체</button>
-			</form>
-			<form role="form2">
-				<input type="hidden" name="state" value="대기">
-				<button type="button" class="btn btn-outline-dark"
-					id="stop">접수</button>
-			</form>
-			<form role="form3">
-				<input type="hidden" name="state" value="진행">
-				<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
-			</form>
-			<form role="form4">
-				<input type="hidden" name="state" value="완료">
-				<button type="button" class="btn btn-outline-dark"
-					id="complete">완료</button>
-			</form>
+		<div class="btn-group" role="group">
+			<input type="hidden" name="state" value="전체">
+			<button type="button" class="btn btn-outline-dark" id="allsh">전체</button>
+			<input type="hidden" name="state" value="대기">
+			<button type="button" class="btn btn-outline-dark" id="stop">접수</button>
+			<input type="hidden" name="state" value="접수">
+			<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
+			<input type="hidden" name="state" value="완료">
+			<button type="button" class="btn btn-outline-dark" id="complete">완료</button>
 		</div>
+		
+		<script>
+		$("#allsh").click(function() {
+		   location.href="/sales/SHList";
+		});
+
+		$("#stop").click(function () {
+		 	console.log("접수 버튼 클릭됨");
+			event.preventDefault();
+		    location.href="/sales/SHList?shipsts=접수";
+		});
+
+		$("#ing").click(function() {
+		 console.log("진행 버튼 클릭됨");
+		 event.preventDefault();
+		 location.href="/sales/SHList?shipsts=진행";
+		});
+
+		$("#complete").click(function() {
+			console.log("완료 버튼 클릭됨");
+			 event.preventDefault();
+			 location.href="/sales/SHList?shipsts=완료";
+		});
+
+		function updateTotalCount() {
+			var totalCount = $(".table tbody tr:visible").length;
+			$(".settingSH").text("총 " + totalCount + "건");
+		}
+
+		// 필터링할 때마다 호출하여 업데이트
+		function updateRowNumbers() {
+			var counter = 1;
+			$(".table tbody tr:visible").each(function() {
+				$(this).find('td:nth-child(2)').text(counter);
+				counter++;
+			});
+
+			// 총 건수 업데이트 호출
+			updateTotalCount();
+		}
+		</script>
+		
 			<span id="buttonset1"><button type="button"
 					class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
@@ -72,7 +118,13 @@
 							</tr>
 						</thead>
 						<tbody>
-
+						<c:set var="counter" value="1" />
+							<c:choose>
+								<c:when test="${empty AllSHList}">
+									<p>No data available.</p>
+								</c:when>
+								<c:otherwise>
+									<c:set var="counter" value="1" />
 							<c:forEach items="${AllSHList}" var="sh">
 						<tr>
 							<td>${sh.shipid }</td>
@@ -84,8 +136,14 @@
 							<td>${sh.itemname }</td>
 							<td>${sh.pocnt }</td>
 							<td>${sh.shipsts }</td>
-							<td><fmt:formatDate value="${sh.shipdate2 }"
-									pattern="yyyy-MM-dd" /></td>
+							<c:choose>
+									<c:when test="${empty sh.shipdate2}">
+										<td>업데이트 날짜 없음</td>
+									</c:when>
+									<c:otherwise>
+										<td><fmt:formatDate value="${sh.shipdate2}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									</c:otherwise>
+									</c:choose>
 							<td>${sh.membercode }</td>
 							<td>
 								<!-- 버튼 수정 -->
@@ -95,227 +153,295 @@
 									</button>
 									</td>
 								</tr>
+								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>
-
+							</c:otherwise>
+						</c:choose>
 						</tbody>
 					</table>
 				</div>
 			</div>
 			</form>
 			</div>
+		
+
+				<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO.prev }">
+      						<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        						<span aria-hidden="true">&laquo;</span>
+      						</a>
+      						
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+							<script>
+								$(document).ready(function(){
+   									$('.pageBlockPrev').click(function(e) {
+   										e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            	let prevPage = $(this).data('page');
+   									
+   						            	let searchBtn = "${param.searchBtn}";
+   						            	let searchText = "${param.searchText}";
+   						            	let startdate = "${param.startdate}";
+   						            	let enddate = "${param.enddate}";
+
+   						            	url = "/sales/SHList?page=" + nextPage;
+
+   						            	if (searchBtn) {
+   						            	  url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   						            	}
+
+   						            	if (searchText) {
+   						            	  url += "&searchText=" + encodeURIComponent(searchText);
+   						            	}
+
+   						            	if (startdate) {
+   						            	  url += "&startdate=" + encodeURIComponent(startdate);
+   						            	}
+
+   						            	if (enddate) {
+   						            	  url += "&enddate=" + encodeURIComponent(enddate);
+   						            	}
+
+   				                		location.href = url;
+    								});
+								});
+							</script>
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+      						
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+					
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					<script>
+					$(document).ready(function(){
+			            $('.pageBlockNum[data-page="${i}"]').click(function (e) {
+			                e.preventDefault(); // 기본 이벤트 방지
+			                
+			               	let searchText = "${param.searchText}";	
+			                let searchBtn = "${param.searchBtn}";
+			                let startdate = "${param.startdate}";
+			            	let enddate = "${param.enddate}";
+
+			                let pageValue = $(this).data('page');
+		                	url = "/sales/SHList?page=" + pageValue;
+			                
+			                if (searchBtn) {
+			                    url += "&searchBtn=" + encodeURIComponent(searchBtn);
+			                }
+			                
+			                if (searchText) {
+			                    url += "&searchText=" + encodeURIComponent(searchText);
+			                }
+			                if (startdate) {
+			            	  url += "&startdate=" + encodeURIComponent(startdate);
+			            	}
+
+			            	if (enddate) {
+			            	  url += "&enddate=" + encodeURIComponent(enddate);
+			            	}
+			                
+			                location.href = url;
+			            });
+					});	
+					</script>
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO.next }">
+      						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        						<span aria-hidden="true">&raquo;</span>
+      						</a>	
+      					<!-- 버튼에 파라미터 추가 이동 (이후) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            let nextPage = $(this).data('page');
+   									
+   									let searchBtn = "${param.searchBtn}";
+   									let searchText = "${param.searchText}";
+   									let startdate = "${param.startdate}";
+					            	let enddate = "${param.enddate}";
+
+   				                	url = "/sales/SHList?page=" + nextPage;
+   				                
+   				                	if (searchBtn) {
+   				                    	url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                	}
+   				                
+   				                	if (searchText) {
+   				                    	url += "&searchText=" + encodeURIComponent(searchText);
+   				                	}
+   				                	if (startdate) {
+					            	  url += "&startdate=" + encodeURIComponent(startdate);
+					            	}
+
+					            	if (enddate) {
+					            	  url += "&enddate=" + encodeURIComponent(enddate);
+					            	}
+   				                
+   				                	location.href = url;
+    							});
+							});
+						</script>
+						<!-- 버튼에 파라미터 추가 이동 (이전) -->  					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
+			</div>
 		</div>
-	</div>
 	</fieldset>
 		
  		<jsp:include page="registSH.jsp"/> 
 		<jsp:include page="modifySH.jsp"/>
 
 <!-- 검색 -->
-<script>
 
-// $('.shipSearch').on('input', function(event) {
-//     filterRows(event);
-// });
-    
-// function filterRows(event) {
-// 	// 기본 폼 제출 동작 방지
-// 	event.preventDefault();
-
-// 	// 입력된 키워드 가져오기
-// 	var keyword = $('.shipSearch').val().toLowerCase();
-
-// 	// 시작일자와 종료일자 가져오기
-// 	var startDate = $('#startDate').val() ? new Date($('#startDate').val())
-// 			: null;
-// 	var endDate = $('#endDate').val() ? new Date($('#endDate').val())
-// 			: null;
-
-// 	// 테이블의 모든 행 가져오기
-// 	var rows = $('.table tbody tr');
-
-// 	// 각 행에 대해 키워드 및 날짜 포함 여부 확인
-// 	rows.each(function() {
-// 		var clientName = $(this).find('td:nth-child(5)').text()
-// 				.toLowerCase();
-// 		var itemName = $(this).find('td:nth-child(6)').text()
-// 		.toLowerCase();
-// 		var lotNumber = $(this).find('td:nth-child(7)').text()
-// 		.toLowerCase();
-// 		var shipCode = $(this).find('td:nth-child(3)').text().toLowerCase();
-//         var workCode = $(this).find('td:nth-child(4)').text().toLowerCase();
-// 		var workDateStr = $(this).find('td:nth-child(2)').text();
-// 		var workDate = workDateStr ? new Date(workDateStr) : null;
-
-// 		var keywordMatch = keyword === '' || clientName.includes(keyword) || itemName.includes(keyword) || lotNumber.includes(keyword) || shipCode.includes(keyword) || workCode.includes(keyword);
-// 		var dateMatch = (startDate === null || (workDate !== null
-// 				&& workDate >= startDate && workDate <= endDate));
-
-// 		if (keywordMatch && dateMatch) {
-// 			$(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
-// 		} else {
-// 			$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
-// 		}
-// 		console.log('거래처명:', clientName, '품목명:', itemName, '출하코드:', shipCode, '작업코드:', workCode, '작업일자:', workDate,
-// 	            '키워드 일치:', keywordMatch, '날짜 일치:', dateMatch);
-// 	});
-
-// 	// 번호 업뎃
-// 	updateRowNumbers();
-// 	// 총 건수 업뎃
-// 	updateTotalCount();
-// 	// 폼이 실제로 제출되지 않도록 false 반환
-// 	return false;
-// }
-
-// // 테이블에 표시되는 행의 번호를 업데이트하는 함수
-// function updateRowNumbers() {
-// 	// 표시된 행만 선택하여 번호 업데이트
-// 	var visibleRows = $('.table tbody tr:visible');
-// 	visibleRows.each(function(index) {
-// 		// 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-// 		$(this).find('td:first').text(index + 1);
-// 	});
-// }
-// // 총 건수 업데이트 함수
-// function updateTotalCount() {
-// 	var totalCount = $('.table tbody tr:visible').length;
-// 	$('.mb-5').text('[총 ' + totalCount + '건]');
-// }
+<!-- <script> -->
 
 
-$('.shipSearch').on('input', function(event) {
-    filterRows(event);
-});
+<!-- // $('.shipSearch').on('input', function(event) { -->
+<!-- //     filterRows(event); -->
+<!-- // }); -->
 
-function filterRows(event) {
-    event.preventDefault();
+<!-- // function filterRows(event) { -->
+<!-- //     event.preventDefault(); -->
 
-    var keyword = $('.shipSearch').val().toLowerCase();
-    var startDate = $("#shipdate1").val();
-    var endDate = $("#shipdate2").val();
+<!-- //     var keyword = $('.shipSearch').val().toLowerCase(); -->
+<!-- //     var startDate = $("#shipdate1").val(); -->
+<!-- //     var endDate = $("#shipdate2").val(); -->
 
     
-    var modifiedShipid = $("#shipid").val();
-    var modifiedShipcode = $("#shipcode").val();
-    var modifiedClientName = $("#clientcname").val();
-    var modifiedItemName = $("#itemname").val();
-    var modifiedShipsts = $("#shipsts").val();
-    var modifiedPocnt = $("#pocnt").val();
-    var modifiedShipdate1 = $("#shipdate1").val();
-    var modifiedShipdate2 = $("#shipdate2").val();
-    var modifiedMemberCode = $("#membercode").val();
+<!-- //     var modifiedShipid = $("#shipid").val(); -->
+<!-- //     var modifiedShipcode = $("#shipcode").val(); -->
+<!-- //     var modifiedClientName = $("#clientcname").val(); -->
+<!-- //     var modifiedItemName = $("#itemname").val(); -->
+<!-- //     var modifiedShipsts = $("#shipsts").val(); -->
+<!-- //     var modifiedPocnt = $("#pocnt").val(); -->
+<!-- //     var modifiedShipdate1 = $("#shipdate1").val(); -->
+<!-- //     var modifiedShipdate2 = $("#shipdate2").val(); -->
+<!-- //     var modifiedMemberCode = $("#membercode").val(); -->
 
-    // AJAX 요청 보내기
-    $.ajax({
-        type: 'POST', // 또는 'GET', 요청 방식에 따라 변경
-        url: '/sales/SHList', // 실제 서버의 엔드포인트 URL로 변경해야 합니다.
-        data: JSON.stringify({
-        keyword: keyword,
-        shipdate1: startDate,
-        shipdate2: endDate,
-        shipid: modifiedShipid,
-        shipdate1: modifiedShipdate1,
-        shipcode: modifiedShipcode,
-        clientname: modifiedClientName,
-        itemname: modifiedItemName,
-        pocnt: modifiedPocnt,
-        shipsts: modifiedShipsts,
-        shipdate2: modifiedShipdate2,
-        membercode: modifiedMemberCode
-   		 }),
-   		  contentType: 'application/x-www-form-urlencoded',
-   		  success: function(response) {
-   			 console.log("keyword:", keyword)
-            updateTable(response);
-        },
-        error: function(error) {
-            console.error('Error fetching data:', error);
-        }
-    });
+<!-- //     // AJAX 요청 보내기 -->
+<!-- //     $.ajax({ -->
+<!-- //         type: 'POST', // 또는 'GET', 요청 방식에 따라 변경 -->
+<!-- //         url: '/sales/SHList', // 실제 서버의 엔드포인트 URL로 변경해야 합니다. -->
+<!-- //         data: JSON.stringify({ -->
+<!-- //         keyword: keyword, -->
+<!-- //         shipdate1: startDate, -->
+<!-- //         shipdate2: endDate, -->
+<!-- //         shipid: modifiedShipid, -->
+<!-- //         shipdate1: modifiedShipdate1, -->
+<!-- //         shipcode: modifiedShipcode, -->
+<!-- //         clientname: modifiedClientName, -->
+<!-- //         itemname: modifiedItemName, -->
+<!-- //         pocnt: modifiedPocnt, -->
+<!-- //         shipsts: modifiedShipsts, -->
+<!-- //         shipdate2: modifiedShipdate2, -->
+<!-- //         membercode: modifiedMemberCode -->
+<!-- //    		 }), -->
+<!-- //    		  contentType: 'application/x-www-form-urlencoded', -->
+<!-- //    		  success: function(response) { -->
+<!-- //    			 console.log("keyword:", keyword) -->
+<!-- //             updateTable(response); -->
+<!-- //         }, -->
+<!-- //         error: function(error) { -->
+<!-- //             console.error('Error fetching data:', error); -->
+<!-- //         } -->
+<!-- //     }); -->
 
-    return false;
-}
+<!-- //     return false; -->
+<!-- // } -->
 
-function updateTable(data) {
-    // 서버에서 받아온 데이터를 이용하여 테이블 업데이트
+<!-- // function updateTable(data) { -->
+<!-- //     // 서버에서 받아온 데이터를 이용하여 테이블 업데이트 -->
 
-    // 표시된 행만 선택하여 번호 업데이트
-    var visibleRows = $('.workTable tbody tr:visible');
-    visibleRows.each(function(index) {
-        // 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-        $(this).find('td:first').text(index + 1);
-    });
+<!-- //     // 표시된 행만 선택하여 번호 업데이트 -->
+<!-- //     var visibleRows = $('.workTable tbody tr:visible'); -->
+<!-- //     visibleRows.each(function(index) { -->
+<!-- //         // 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트 -->
+<!-- //         $(this).find('td:first').text(index + 1); -->
+<!-- //     }); -->
 
-    // 테이블의 tbody를 비워주고 서버에서 받아온 데이터로 다시 채우기
-    var tbody = $('.workTable tbody');
-    tbody.empty();
+<!-- //     // 테이블의 tbody를 비워주고 서버에서 받아온 데이터로 다시 채우기 -->
+<!-- //     var tbody = $('.workTable tbody'); -->
+<!-- //     tbody.empty(); -->
 
-    // 서버에서 받아온 데이터를 이용하여 새로운 행 추가
-    for (var i = 0; i < data.length; i++) {
-        var sh = data[i];
-        var newRow = $('<tr>');
-        newRow.append('<td>' + sh.shipid + '</td>');
-        newRow.append('<td>' + sh.shipdate1 + '</td>');
-        newRow.append('<td>' + sh.shipcode + '</td>');
-        newRow.append('<td>' + sh.workcode + '</td>');
-        newRow.append('<td>' + sh.clientname + '</td>');
-        newRow.append('<td>' + sh.itemname + '</td>');
-        newRow.append('<td>' + sh.pocnt + '</td>');
-        newRow.append('<td>' + sh.shipsts + '</td>');
-        newRow.append('<td>' + sh.shipdate2 + '</td>');
-        newRow.append('<td>' + sh.membercode + '</td>');
-        newRow.append('<td><button type="button" class="btn btn-outline-dark" onclick="openModifyModal(' +
-            sh.workid + ', \'' + sh.pocode + '\', \'' + sh.clientname + '\', \'' + sh.itemname + '\', \'' +
-            sh.worksts + '\', \'' + sh.pocnt + '\', \'' + sh.workdate1 + '\', \'' + sh.workupdate + '\', \'' +
-            sh.membercode + '\')">수정</button></td>');
+<!-- //     // 서버에서 받아온 데이터를 이용하여 새로운 행 추가 -->
+<!-- //     for (var i = 0; i < data.length; i++) { -->
+<!-- //         var sh = data[i]; -->
+<!-- //         var newRow = $('<tr>'); -->
+<!-- //         newRow.append('<td>' + sh.shipid + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.shipdate1 + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.shipcode + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.workcode + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.clientname + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.itemname + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.pocnt + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.shipsts + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.shipdate2 + '</td>'); -->
+<!-- //         newRow.append('<td>' + sh.membercode + '</td>'); -->
+<!-- //         newRow.append('<td><button type="button" class="btn btn-outline-dark" onclick="openModifyModal(' + -->
+<!-- //             sh.workid + ', \'' + sh.pocode + '\', \'' + sh.clientname + '\', \'' + sh.itemname + '\', \'' + -->
+<!-- //             sh.worksts + '\', \'' + sh.pocnt + '\', \'' + sh.workdate1 + '\', \'' + sh.workupdate + '\', \'' + -->
+<!-- //             sh.membercode + '\')">수정</button></td>'); -->
 
-        tbody.append(newRow);
-    }
+<!-- //         tbody.append(newRow); -->
+<!-- //     } -->
 
-    // 번호 업데이트
-    updateRowNumbers();
-    // 총 건수 업데이트
-    updateTotalCount();
-}
-
-
-// 이하 생략
+<!-- //     // 번호 업데이트 -->
+<!-- //     updateRowNumbers(); -->
+<!-- //     // 총 건수 업데이트 -->
+<!-- //     updateTotalCount(); -->
+<!-- // } -->
 
 
-
-
-$("#allwk").click(function() {
-	$(".table tbody tr").show();
-	updateTotalCount();
-});
-
-$("#stop").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('접수'))").show();
-	updateTotalCount();
-});
-
-$("#ing").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('진행'))").show();
-	updateTotalCount();
-});
-
-$("#complete").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('완료'))").show();
-	updateTotalCount();
-});
+<!-- // // 이하 생략 -->
 
 
 
-function updateTotalCount() {
-	var totalCount = $(".table tbody tr:visible").length;
-	$(".mb-5").text("[총 " + totalCount + "건]");
-}
+
+<!-- // $("#allwk").click(function() { -->
+<!-- // 	$(".table tbody tr").show(); -->
+<!-- // 	updateTotalCount(); -->
+<!-- // }); -->
+
+<!-- // $("#stop").click(function() { -->
+<!-- // 	$(".table tbody tr").hide(); -->
+<!-- // 	$(".table tbody tr:has(td:nth-child(7):contains('접수'))").show(); -->
+<!-- // 	updateTotalCount(); -->
+<!-- // }); -->
+
+<!-- // $("#ing").click(function() { -->
+<!-- // 	$(".table tbody tr").hide(); -->
+<!-- // 	$(".table tbody tr:has(td:nth-child(7):contains('진행'))").show(); -->
+<!-- // 	updateTotalCount(); -->
+<!-- // }); -->
+
+<!-- // $("#complete").click(function() { -->
+<!-- // 	$(".table tbody tr").hide(); -->
+<!-- // 	$(".table tbody tr:has(td:nth-child(7):contains('완료'))").show(); -->
+<!-- // 	updateTotalCount(); -->
+<!-- // }); -->
 
 
-</script>
+
+<!-- // function updateTotalCount() { -->
+<!-- // 	var totalCount = $(".table tbody tr:visible").length; -->
+<!-- // 	$(".mb-5").text("[총 " + totalCount + "건]"); -->
+<!-- // } -->
+
+
+<!-- </script> -->
 
 <script>
 // 수정된 값을 서버로 전송
@@ -412,7 +538,8 @@ $("#modifyButton").click(function() {
 	        // 상태 변경 시 완료일자 필드 업데이트
 	        updateShipdateField();
 	    });
-	   </script>
+	    
+ </script>
 	   
 
 
