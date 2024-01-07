@@ -23,7 +23,7 @@ public class RoastedbeanVO {
 		private Criteria cri;
 		
 	// 검색용 객체
-		private Date searchDate;
+		private String searchDate;
 		private String searchLot;
 	
 }

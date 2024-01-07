@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class ProduceVO {
 	private Integer produceid;		// 생산 등록시 만들어지는 id 번호
+	private String producecode;		// 생산등록시 만들 코드
 	private Timestamp submitdate;	// 등록날짜
 	private Date producedate;		// 생산날짜
 	private Integer producetime;		// 생산시간대
@@ -37,11 +38,19 @@ public class ProduceVO {
 
 
 	// 출고등록에 필요한 변수
+		private Integer stockid;
 		private Integer stockid1;
 		private Integer stockid2;
 		private Integer stockid3;
 		private String rate;
 	
+	// stockVO
+	private int stockquantity;
+	
+	// main 페이지 출력용
+	private Integer todayAmount;
+	private Integer thisYearAmount;
+	private Integer thisMonthAmount;
 	
 	
 	

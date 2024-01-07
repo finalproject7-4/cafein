@@ -221,6 +221,10 @@ function fetchData(searchBtnValue) {
 <th scope="col" style="display: none;">생산량</th>
 <th scope="col">상태변경</th>
 <th scope="col">공정관리</th>
+<th scope="col" style="display: none;">생산코드</th>
+<th scope="col" style="display: none;">재고ID1</th>
+<th scope="col" style="display: none;">재고ID2</th>
+<th scope="col" style="display: none;">재고ID3</th>
 </tr>
 </thead>
 <tbody>
@@ -230,7 +234,7 @@ function fetchData(searchBtnValue) {
 <td>${plist.produceid }</td>
 <td><fmt:formatDate value="${plist.submitdate }" pattern="yyyy-MM-dd" /> </td>
 <td><fmt:formatDate value="${plist.producedate }" pattern="yyyy-MM-dd" /></td>
-<td>${plist.itemname }</td>
+<td> ${plist.itemname }</td>
 <td>${plist.produceline }</td>
 <td>${plist.process }</td>
 <td>${plist.qualitycheck }</td>
@@ -252,6 +256,7 @@ function fetchData(searchBtnValue) {
 	<c:if test="${plist.state == '생산중' && plist.process !='포장'}">
 	<input id="completBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="완료">
 	</c:if>
+	<!-- 포장이 생산중에서 완료되었을때, 누를 '완료' 버튼 -->
 	<c:if test="${plist.state == '생산중'&& plist.process =='포장' }">
 	<input id="packageBtn" type="button" onclick="openPackageModal('${plist.produceid}', '${plist.producedate}', '${plist.producetime }', '${plist.produceline}',  '${plist.itemname }', '${plist.itemid }', '${plist.packagevol }', '${plist.amount }')" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료"> 
 	</c:if>
@@ -268,6 +273,10 @@ function fetchData(searchBtnValue) {
 	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }','${plist.amount }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
 		</c:if>
 </td>
+<td style="display: none;">${plist.producecode }</td>
+<td style="display: none;">${plist.stockid1 }</td>
+<td style="display: none;">${plist.stockid2 }</td>
+<td style="display: none;">${plist.stockid3 }</td>
 </tr>
 </c:forEach>
 </tbody>
@@ -526,7 +535,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					Swal.fire('못한다. 못간다.');
+					Swal.fire("변경할 수 없습니다.");
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -539,6 +548,10 @@ function fetchData(searchBtnValue) {
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
+			var producecode = $(this).closest("tr").find("td:eq(14)").text(); // 생산코드 값
+			var stockId1 = $(this).closest("tr").find("td:eq(15)").text(); // 재고ID1 값
+			var stockId2 = $(this).closest("tr").find("td:eq(16)").text(); // 재고ID2 값
+			var stockId3 = $(this).closest("tr").find("td:eq(17)").text(); // 재고ID3 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
 
 			// AJAX 요청 수행
@@ -549,7 +562,12 @@ function fetchData(searchBtnValue) {
 					state : stateValue,
 					produceid : produceId,
 					itemid : itemID,
-					amount : amount
+					amount : amount,
+					producecode : producecode,
+					stockid1 : stockId1,
+					stockid2 : stockId2,
+					stockid3 : stockId3
+						
 				},
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
@@ -562,7 +580,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					Swal.fire('못한다. 못간다.');
+					Swal.fire("변경할 수 없습니다.");
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -602,7 +620,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					Swal.fire('못한다. 못간다.');
+					Swal.fire("삭제할 수 없습니다.");
 					console.error("상태 업데이트 실패:", error);
 				}
 			});
@@ -638,7 +656,7 @@ function fetchData(searchBtnValue) {
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
-					Swal.fire('못한다. 못간다.');
+					Swal.fire("변경 할 수 없습니다.");
 					console.error("상태 업데이트 실패:", error);
 				}
 			});

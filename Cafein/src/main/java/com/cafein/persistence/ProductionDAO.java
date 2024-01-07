@@ -73,6 +73,26 @@ public interface ProductionDAO {
 	// 생산지시 등록시 출고 등록(대기)
 	public void insertReleasesList(ReleasesVO vo) throws Exception;
 	
+	// 생산코드 생성 
+	public Integer getProducecodeCount(String datePart) throws Exception;
+	
+	// 출고지시 리스트 상태 대기 -> 완료로 업데이트
+	public void updateCompletRelease(ProduceVO vo) throws Exception;
+
+	// 재고리스트 업데이트
+	public void updateStockList(ProduceVO vo) throws Exception;
+	
+	// 당일 총 생산량
+	public Integer getProduceAmountToday() throws Exception;
+	
+	// 당월 총 생산량
+	public Integer getProduceAmountThisMonth() throws Exception;
+	
+	// 당해 총 생산량
+	public Integer getProduceAmountThisYear() throws Exception;
+	
+	// 생산지시리스트 출력(메인용)
+	public List<ProduceVO> getProduceList() throws Exception;
 	
 }
 
