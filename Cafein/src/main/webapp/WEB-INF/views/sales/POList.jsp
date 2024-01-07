@@ -358,13 +358,13 @@
 											<th>합계총액</th>
 										</tr>
 										<tr>
-											<td><input   id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
-											<td><input   id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
-											<td><input   id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input   id="ritemprice" name="itemprice" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input   id="rpocnt" name="pocnt" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input   id="rsum" name="sum" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input   id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
+											<td><input id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
+											<td><input id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="ritemprice" name="itemprice" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rpocnt" name="pocnt" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rsum" name="sum" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
 											<td><input  name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
 										</tr>
 										<tr class="tdempty">
