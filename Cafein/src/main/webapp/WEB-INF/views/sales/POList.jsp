@@ -128,7 +128,8 @@
 											<td>
 												<input value="불러오기" type="button" class="btn btn-outline-dark" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
-												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}')">
+												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
+												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}' )">
 											</td>
 											
 											<td style="display: none;">${po.origin}</td>
@@ -148,7 +149,6 @@
 						</tbody>
 					</table>
 				</div>
-				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
@@ -284,8 +284,216 @@
 			</form>
 		</div>
 	</div>
-
 	
+	<!--납품서 모달창 -->
+	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content rectipt-body">
+			
+				<div class="modal-header">
+				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서</h5>
+					<div class="odate">
+				수주일자<input name="ordersdate" id="rordersdate"  type="text"  class="form-control form-control-sm"  readonly></div>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				
+				<form role="form" action="/sales/receipt" method="get">
+				
+				<div class="modal-body">
+				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
+				
+				<div class="col-12">
+						<div class="bg-light rounded h-100 p-4">
+							<table class="table">
+							<thead>
+									<tr>
+										<td class="pt15 rowspan6" rowspan="6">공급처</td>
+										<td class="pt15"><b>등록번호(사업자번호)</b></td>
+										<td><input   id="r사업자번호" name="사업자번호" class="form-control form-control-sm" type="text"  readonly value="12345-54321"></td>
+										<td class="pt15 rowspan6" rowspan="6">납품처</td>
+										<td class="pt15"><b>상호</b></td>
+										<td><input   id="rclientname" name="clientname" class="form-control form-control-sm" type="text"  readonly></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>상호</b></td>
+										<td><input  id="rcafein" name="cafein" class="form-control form-control-sm" type="text"  readonly value="cafein"></td>
+										<td class="pt15"><b>성명</b></td>
+										<td><input   id="rrepresentative" name="representative" class="form-control form-control-sm" type="text" value="" readonly></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>대표자</b></td>
+										<td><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
+										<td class="pt15"><b>주소</b></td>
+										<td><input   id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>주소</b></td>
+										<td><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="부산광역시 부산진구 동천로 109 삼한골든게이트 7층" readonly></td>
+										<td class="pt15"></td>
+										<td class="pt15"></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>전화번호</b></td>
+										<td><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="051-803-0909" readonly></td>
+										<td class="pt15"></td>
+										<td class="pt15"></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>팩스번호</b></td>
+										<td><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="0504-456-2580" readonly></td>
+										<td class="pt15"></td>
+										<td class="pt15"></td>
+									</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>품명</th>
+											<th>원산지</th>
+											<th>중량</th>
+											<th>단가</th>
+											<th>수량</th>
+											<th>공급가액</th>
+											<th>공급세액</th>
+											<th>합계총액</th>
+										</tr>
+										<tr>
+											<td><input   id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
+											<td><input   id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
+											<td><input   id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input   id="ritemprice" name="itemprice" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input   id="rpocnt" name="pocnt" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input   id="rsum" name="sum" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input   id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input  name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+										</tr>
+										<tr class="tdempty">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr class="tdempty">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr class="tdempty">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr class="tdempty">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr class="tdempty">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="pt15">합계총액</td>
+											<td><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+										</tr>
+										<tr>
+											<td class="pt15">납품예정일</td>
+											<td><input name="ordersduedate" type="date" id="rdate" class="form-control form-control-sm" value="" readonly></td>
+										</tr>
+										<tr>
+											<td class="pt15">대표자</td>
+											<td><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
+										</tr>
+										
+									</tbody>
+							</table>
+						</div>
+						<div class="modal-footer"></div>
+					</div>
+				</div><br>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">확인</button>
+				<input type="button" class="btn btn-sm btn-success" id="receiptBtn" value="엑셀파일 다운">
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+	
+
+<script>
+	/* 리스트 값 납품서 모달로 값 전달 */
+	function openReceiptModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, 
+			origin, itemweight, itemprice, representative, clientaddress, businessnumber, clientphone, clientfax) {
+		console.log('poid:', poid);
+		console.log('clientid:', clientid);
+		console.log('itemid:', itemid);
+		console.log('clientname:', clientname);
+		console.log('itemname:', itemname);
+		console.log('postate:', postate);
+		console.log('pocnt:', pocnt);
+		console.log('ordersdate:', ordersdate);
+		console.log('ordersduedate:', ordersduedate);
+		console.log('membercode:', membercode);
+		console.log('origin:', origin);
+		console.log('ritemweight:', itemweight);
+		console.log('ritemprice:', itemprice);
+
+		var sum = pocnt * itemprice; //공급가액
+		var tax = sum*0.1; //공급세액
+		var total = sum+tax; //합계금액
+		
+		// 가져온 값들을 모달에 설정
+		$("#rpoid").val(poid);
+		$("#rclientid").val(clientid);
+		$("#ritemid").val(itemid);
+		$("#rclientname").val(clientname);
+		$("#ritemname").val(itemname);
+		$("#rfloatingSelect").val(postate);
+		$("#rpocnt").val(pocnt);
+		$("#rordersdate").val(ordersdate);
+		$("#rdate").val(ordersduedate);
+		$("#rmembercode").val(membercode);
+		
+		$("#rorigin").val(origin);
+		$("#ritemweight").val(itemweight);
+		$("#ritemprice").val(itemprice);
+		$("#rsum").val(sum);
+		$("#rtax").val(tax);
+		$(".rtotal").val(total);
+		
+		$("#rrepresentative").val(representative);
+		$("#rclientaddress").val(clientaddress);
+		$("#rbusinessnumber").val(businessnumber);
+		$("#rclientphone").val(clientphone);
+		$("#rclientfax").val(clientfax);
+
+		// 모달 열기
+$("#openReceiptModal").modal('show');
+		console.log("납품서 모달 열기");
+	}
+</script>
 	
 	<!-- 품목 등록 모달 -->
 	<jsp:include page="registPO.jsp" />
@@ -370,106 +578,6 @@
 		</div>
 	</div>
 </fieldset>
-
-<!--납품서 모달창 -->
-	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content rectipt-body">
-			
-				<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">납품서 미리보기</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				
-				<form role="form" action="/sales/receipt" method="get">
-				<div class="modal-body">
-				poid
-				<input id="rpoid" name="poid" class="form-control mb-3" type="number" value="" readonly>
-				clientid
-				<input id="rclientid" name="clientid" class="form-control mb-3" type="number" value="" readonly>
-				itemid
-				<input id="ritemid" name="itemid" class="form-control mb-3" type="number" value="" readonly>
-				납품처/코드
-				<input autocomplete="off" id="rclientname" name="clientname" class="form-control mb-3" type="text"  readonly>				
-				품목명/코드
-				<input autocomplete="off" id="ritemname" name="itemname" class="form-control mb-3" type="text" readonly >
-					<div class="mb-3">
-						<label for="postate" class="col-form-label"><b>수주상태</b></label>
-						<select class="form-select" id="rfloatingSelect" name="postate" disabled>
-						    <optgroup label="수주상태" >
-						        <option value="대기">대기</option>
-						        <option value="진행">진행</option>
-						        <option value="완료">완료</option>
-						        <option value="취소">취소</option>
-						    </optgroup>
-						</select>
-					</div>	
-					수량
-					<input autocomplete="off" id="rpocnt" name="pocnt" class="form-control mb-3" type="number" value="" readonly>
-					
-					<div class="row">
-					<div class="col">
-					수주일자
-					<input name="ordersdate" id="rordersdate"  type="text"  class="form-control"  readonly>
-					</div>
-					
-					<div class="col">
-					완납예정일
-					<input name="ordersduedate" type="date" id="rdate" class="form-control" value="" readonly>
-					</div>
-					</div><br>
-					담당자코드
-					<input autocomplete="off" id="rmembercode" name="membercode" class="form-control mb-3" type="number" value="" readonly>
-					원산지
-					<input autocomplete="off" id="rorigin" name="origin" class="form-control mb-3" type="text" value="" readonly>
-					</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">확인</button>
-					<input type="button" class="btn btn-sm btn-success" id="receiptBtn" value="엑셀파일 다운">
-				</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-
-<script>
-	/* 리스트 값 납품서 모달로 값 전달 */
-	function openReceiptModal(poid, clientid, itemid, clientname, itemname,
-			postate, pocnt, ordersdate, ordersduedate, membercode, origin) {
-		console.log('poid:', poid);
-		console.log('clientid:', clientid);
-		console.log('itemid:', itemid);
-		console.log('clientname:', clientname);
-		console.log('itemname:', itemname);
-		console.log('postate:', postate);
-		console.log('pocnt:', pocnt);
-		console.log('ordersdate:', ordersdate);
-		console.log('ordersduedate:', ordersduedate);
-		console.log('membercode:', membercode);
-		console.log('origin:', origin);
-
-		// 가져온 값들을 모달에 설정
-		$("#rpoid").val(poid);
-		$("#rclientid").val(clientid);
-		$("#ritemid").val(itemid);
-		$("#rclientname").val(clientname);
-		$("#ritemname").val(itemname);
-		$("#rfloatingSelect").val(postate);
-		$("#rpocnt").val(pocnt);
-		$("#rordersdate").val(ordersdate);
-		$("#rdate").val(ordersduedate);
-		$("#rmembercode").val(membercode);
-		$("#rorigin").val(origin);
-
-		// 모달 열기
-$("#openReceiptModal").modal('show');
-		console.log("납품서 모달 열기");
-	}
-</script>
-
 
 
 <%@ include file="../sales/POListJS.jsp"%>

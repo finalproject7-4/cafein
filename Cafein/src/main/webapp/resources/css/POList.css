@@ -23,10 +23,51 @@ input#regist {
 }
 
 .rectipt-body {
-	left: -5em;
+	left: -40em;
     top: -13em;
-    width: 50em;
+    width: 110em;
     height: 60em;
     overflow-y: auto;
+    overflow-x: auto;
     scroll-behavior: smooth;
+}
+
+.recript-title {
+	margin-left: 24em;
+    letter-spacing: 5em;
+    font-size: 30px;
+}
+
+#rordersdate {
+    width: 150px;
+}
+
+.odate {
+	margin-left: 15em;
+}
+
+.form-control-sm {
+    font-size: 18px !important;
+    border: none !important;
+    text-align: center !important;
+    background: none !important;
+}
+
+.pt15 {
+	padding-top: 15px !important;
+}
+
+.rowspan6 {
+	font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 24px;
+    text-align: center;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: nowrap;
+    padding-right: 95px !important;
+}
+
+.tdempty {
+	height:3.2em;
 }
