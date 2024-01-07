@@ -291,71 +291,74 @@
 			<div class="modal-content rectipt-body">
 			
 				<div class="modal-header">
-				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서</h5>
-					<div class="odate">
-				수주일자<input name="ordersdate" id="rordersdate"  type="text"  class="form-control form-control-sm"  readonly></div>
+				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서 미리보기</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				
 				<form role="form" action="/sales/receipt" method="get">
-				
 				<div class="modal-body">
 				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
 				
 				<div class="col-12">
-						<div class="bg-light rounded h-100 p-4">
-							<table class="table">
+				<div class="rounded h-100 p-4 bgray">
+				<h6 class="modal-title receiptTitle" id="exampleModalLabel">납품서</h6>
+				<div class="odate">
+				주문일자<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
+				
+							<table class="table table-bordered">
 							<thead>
 									<tr>
 										<td class="pt15 rowspan6" rowspan="6">공급처</td>
-										<td class="pt15"><b>등록번호(사업자번호)</b></td>
-										<td><input   id="r사업자번호" name="사업자번호" class="form-control form-control-sm" type="text"  readonly value="12345-54321"></td>
+										<td class="pt15"><b>등록번호</b></td>
+										<td colspan="2"><input id="r사업자번호" name="사업자번호" class="form-control form-control-sm" type="text"  readonly value="12345-54321"></td>
 										<td class="pt15 rowspan6" rowspan="6">납품처</td>
 										<td class="pt15"><b>상호</b></td>
-										<td><input   id="rclientname" name="clientname" class="form-control form-control-sm" type="text"  readonly></td>
+										<td colspan="2"><input id="rclientname" name="clientname" class="form-control form-control-sm" type="text"  readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>상호</b></td>
-										<td><input  id="rcafein" name="cafein" class="form-control form-control-sm" type="text"  readonly value="cafein"></td>
+										<td colspan="2"><input  id="rcafein" name="cafein" class="form-control form-control-sm" type="text"  readonly value="cafein"></td>
 										<td class="pt15"><b>성명</b></td>
-										<td><input   id="rrepresentative" name="representative" class="form-control form-control-sm" type="text" value="" readonly></td>
+										<td colspan="2"><input id="rrepresentative" name="representative" class="form-control form-control-sm" type="text" value="" readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>대표자</b></td>
-										<td><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
+										<td colspan="2"><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
 										<td class="pt15"><b>주소</b></td>
-										<td><input   id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
+										<td colspan="2"><input id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>주소</b></td>
-										<td><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="부산광역시 부산진구 동천로 109 삼한골든게이트 7층" readonly></td>
+										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="부산광역시 부산진구 동천로 109 삼한골든게이트 7층" readonly></td>
 										<td class="pt15"></td>
-										<td class="pt15"></td>
+										<td class="pt15" colspan="2"></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>전화번호</b></td>
-										<td><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="051-803-0909" readonly></td>
+										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="051-803-0909" readonly></td>
 										<td class="pt15"></td>
-										<td class="pt15"></td>
+										<td class="pt15" colspan="2"></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>팩스번호</b></td>
-										<td><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="0504-456-2580" readonly></td>
+										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="0504-456-2580" readonly></td>
 										<td class="pt15"></td>
-										<td class="pt15"></td>
+										<td class="pt15" colspan="2"></td>
 									</tr>
 									</thead>
-									<tbody>
+							</table>
+							<table class="table table-bordered">
+								<tbody>
 										<tr>
 											<th>품명</th>
 											<th>원산지</th>
-											<th>중량</th>
-											<th>단가</th>
-											<th>수량</th>
-											<th>공급가액</th>
-											<th>공급세액</th>
-											<th>합계총액</th>
+											<th>중량(g)</th>
+											<th>단가(원)</th>
+											<th>수량(개)</th>
+											<th>공급가액(원)</th>
+											<th>공급세액(원)</th>
+											<th>합계총액(원)</th>
 										</tr>
 										<tr>
 											<td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
@@ -375,60 +378,30 @@
 											<td></td>
 											<td></td>
 											<td></td>
-										</tr>
-										<tr class="tdempty">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
 											<td></td>
 										</tr>
-										<tr class="tdempty">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr class="tdempty">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr class="tdempty">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr>
+									</table>
+							<table class="table table-bordered thirdtable">
+										<tr>
+											<td class="rem13"><b>합계총액(원)</b></td>
+											<td ><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
 										</tr>
 										<tr>
-											<td class="pt15">합계총액</td>
-											<td><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+											<td class="rem13"><b>납품예정일</b></td>
+											<td ><input name="ordersduedate" type="date" id="rdate" class="form-control form-control-sm" value="" readonly></td>
 										</tr>
 										<tr>
-											<td class="pt15">납품예정일</td>
-											<td><input name="ordersduedate" type="date" id="rdate" class="form-control form-control-sm" value="" readonly></td>
+											<td class="rem13"><b>대표자</b></td>
+											<td ><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
 										</tr>
-										<tr>
-											<td class="pt15">대표자</td>
-											<td><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
-										</tr>
-										
 									</tbody>
 							</table>
 						</div>
-						<div class="modal-footer"></div>
 					</div>
 				</div><br>
 			<div class="modal-footer">

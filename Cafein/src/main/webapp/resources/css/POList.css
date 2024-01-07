@@ -24,7 +24,7 @@ input#regist {
 
 .rectipt-body {
 	left: -40em;
-    top: -13em;
+    top: -14em;
     width: 110em;
     height: 60em;
     overflow-y: auto;
@@ -33,17 +33,25 @@ input#regist {
 }
 
 .recript-title {
-	margin-left: 24em;
-    letter-spacing: 5em;
     font-size: 30px;
 }
-
+.receiptTitle {
+	text-align: center;
+    font-size: 35px;
+     letter-spacing: 10px;
+}
 #rordersdate {
     width: 150px;
+    margin-top: -7px;
+    font-size: 20px;
 }
 
 .odate {
-	margin-left: 15em;
+	margin-bottom: 15px;
+	float:right;
+	display:flex;
+	margin-top: 30px;
+	font-size: 20px;
 }
 
 .form-control-sm {
@@ -55,19 +63,32 @@ input#regist {
 
 .pt15 {
 	padding-top: 15px !important;
+   	width: 10em;	
 }
 
 .rowspan6 {
+	width: 5em;
 	font-size: 17px;
     font-weight: bold;
     letter-spacing: 24px;
-    text-align: center;
+    padding-right: 30px !important;
     writing-mode: vertical-rl;
     text-orientation: upright;
     white-space: nowrap;
-    padding-right: 95px !important;
 }
 
 .tdempty {
 	height:3.2em;
+}
+
+.rem13 {
+	width:13rem;
+	padding-top: 15px !important;
+}
+
+.thirdtable {
+    width: 38.7rem;
+}
+.bgray {
+	background: #F8F9FA;
 }
