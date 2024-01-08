@@ -61,6 +61,7 @@
 <th scope="col">생산타임</th>
 <th scope="col">제품명</th>
 <th scope="col">생산량</th>
+<th scope="col">상태</th>
 <th scope="col">Action</th>
 </tr>
 </thead>
@@ -72,6 +73,7 @@
 <td>${pList.producetime }</td>
 <td>${pList.itemname }</td>
 <td>${pList.amount }</td>
+<td>${pList.state }</td>
 <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
 </tr>
 </c:forEach>

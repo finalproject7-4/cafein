@@ -70,8 +70,6 @@ public class ProductionController {
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(pService.AJAXcountProduceList(vo));
 
-		session.setAttribute("viewcntCheck", true);
-
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("produceList", pService.getProduceListAJAX(vo));
 		model.addAttribute("itemList", pService.getItemList());
@@ -410,7 +408,7 @@ public class ProductionController {
 				PageVO pageVO = new PageVO();
 				pageVO.setCri(cri);
 				pageVO.setTotalCount(pService.countRoastedbean(vo));
-				session.setAttribute("viewcntCheck", true);
+
 				model.addAttribute("pageVO", pageVO);
 				
 		
