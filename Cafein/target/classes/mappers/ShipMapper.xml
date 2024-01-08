@@ -177,7 +177,7 @@
 		AND wk.clientname = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and startDate != null and endDate != null">
-		AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
+		AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
 		</if>
 	</where>
 	</select>
@@ -194,6 +194,7 @@
 		FROM purchaseorder po
 		JOIN client cli ON po.clientid = cli.clientid
 		JOIN item it ON po.itemid = it.itemid
+		WHERE postate = '진행'
 	</select>
 	
 	<!-- 작업지시 코드 생성 -->

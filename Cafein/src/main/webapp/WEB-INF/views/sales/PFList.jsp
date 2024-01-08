@@ -55,7 +55,7 @@
 		$("#stop").click(function () {
 		 	console.log("불량 버튼 클릭됨");
 			event.preventDefault();
-		    location.href="/sales/PFList=접수";
+		    location.href="/sales/PFList=불량";
 		});
 
 		function updateTotalCount() {

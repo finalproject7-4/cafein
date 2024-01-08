@@ -152,7 +152,7 @@ public class ShipDAOImpl implements ShipDAO {
 	@Override
 	public List<WorkVO> getPFList(WorkVO wvo) throws Exception {
 		logger.debug("실적 조회 성공");
-		return sqlSession.selectList(NAMESPACE+".getPFList");
+		return sqlSession.selectList(NAMESPACE+".getPFList",wvo);
 	}
 	
 	// 총 개수

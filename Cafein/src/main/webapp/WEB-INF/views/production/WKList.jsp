@@ -46,7 +46,7 @@
 			<button type="button" class="btn btn-outline-dark" id="allwk">전체</button>
 			<input type="hidden" name="state" value="접수">
 			<button type="button" class="btn btn-outline-dark" id="stop">접수</button>
-			<input type="hidden" name="state" value="접수">
+			<input type="hidden" name="state" value="진행">
 			<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
 			<button type="button" class="btn btn-outline-dark" id="complete">완료</button>
@@ -145,10 +145,15 @@
 										<td><fmt:formatDate value="${wk.workupdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 									</c:otherwise>
 									</c:choose>
-									<td><fmt:formatDate value="${wk.workdate2 }"
-											pattern="yyyy-MM-dd" /></td>
+									<c:choose>
+									<c:when test="${empty wk.workdate2}">
+										<td>업데이트 날짜 없음</td>
+									</c:when>
+									<c:otherwise>
+										<td><fmt:formatDate value="${wk.workdate2}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
+									</c:otherwise>
+									</c:choose>
 									<td>${wk.membercode }</td>
-									<td>
 									<!-- 버튼 수정 -->
 									<td>
 									<button type="button" class="btn btn-outline-dark"
@@ -306,110 +311,7 @@
 		<jsp:include page="registWK.jsp"/>
 		<jsp:include page="modifyWK.jsp"/>
 
-<!-- 검색 -->
-<script>
 
-$('.workSearch').on('input', function(event) {
-    filterRows(event);
-});
-    
-function filterRows(event) {
-	// 기본 폼 제출 동작 방지
-	event.preventDefault();
-
-	// 입력된 키워드 가져오기
-	var keyword = $('.workSearch').val().toLowerCase();
-
-	// 시작일자와 종료일자 가져오기
-	var startDate = $('#startDate').val() ? new Date($('#startDate').val())
-			: null;
-	var endDate = $('#endDate').val() ? new Date($('#endDate').val())
-			: null;
-
-	// 테이블의 모든 행 가져오기
-	var rows = $('.table tbody tr');
-
-	// 각 행에 대해 키워드 및 날짜 포함 여부 확인
-	rows.each(function() {
-		var clientName = $(this).find('td:nth-child(5)').text()
-				.toLowerCase();
-		var itemName = $(this).find('td:nth-child(6)').text()
-		.toLowerCase();
-		var workCode = $(this).find('td:nth-child(3)').text().toLowerCase(); // 필요에 따라 열 위치 조절
-        var poCode = $(this).find('td:nth-child(4)').text().toLowerCase(); // 필요에 따라 열 위치 조절
-		var workDateStr = $(this).find('td:nth-child(2)').text();
-		var workDate = workDateStr ? new Date(workDateStr) : null;
-
-		var keywordMatch = keyword === '' || clientName.includes(keyword) || itemName.includes(keyword)|| workCode.includes(keyword) || poCode.includes(keyword);
-		var dateMatch = (startDate === null || (workDate !== null
-				&& workDate >= startDate && workDate <= endDate));
-
-		if (keywordMatch && dateMatch) {
-			$(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
-		} else {
-			$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
-		}
-		console.log('거래처명:', clientName, '품목명:', itemName, '작업코드:', workCode, 'PO코드:', poCode, '작업일자:', workDate,
-	            '키워드 일치:', keywordMatch, '날짜 일치:', dateMatch);
-	});
-
-	// 번호 업뎃
-	updateRowNumbers();
-	// 총 건수 업뎃
-	updateTotalCount();
-	// 폼이 실제로 제출되지 않도록 false 반환
-	return false;
-}
-
-// 테이블에 표시되는 행의 번호를 업데이트하는 함수
-function updateRowNumbers() {
-	// 표시된 행만 선택하여 번호 업데이트
-	var visibleRows = $('.table tbody tr:visible');
-	visibleRows.each(function(index) {
-		// 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-		$(this).find('td:first').text(index + 1);
-	});
-}
-// 총 건수 업데이트 함수
-function updateTotalCount() {
-	var totalCount = $('.table tbody tr:visible').length;
-	$('.mb-5').text('[총 ' + totalCount + '건]');
-}
-
-
-
-$("#allwk").click(function() {
-	$(".table tbody tr").show();
-	updateTotalCount();
-});
-
-$("#stop").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('대기'))").show();
-	updateTotalCount();
-});
-
-$("#ing").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('진행'))").show();
-	updateTotalCount();
-});
-
-$("#complete").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('완료'))").show();
-	updateTotalCount();
-});
-
-
-
-function updateTotalCount() {
-	var totalCount = $(".table tbody tr:visible").length;
-	$(".mb-5").text("[총 " + totalCount + "건]");
-}
-
-
-</script>
 
 <script>
 // 수정된 값을 서버로 전송
