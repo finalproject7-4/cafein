@@ -22,7 +22,7 @@
 						<select class="form-select" id="floatingSelect" name="worksts"
 							aria-label="Floating label select example">
 							<optgroup label="작업지시상태">
-								<option value="대기">대기</option>
+								<option value="접수">접수</option>
 								<option value="진행">진행</option>
 								<option value="완료">완료</option>
 							</optgroup>
@@ -111,6 +111,47 @@
 	</div>
 </div>
 
+<!-- 작업지시-멤버불러오기 -->
+<div class="modal fade" id="mccodeModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">직원 목록</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-12">
+					<div class="bg-light rounded h-100 p-4">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">No.</th>
+									<th scope="col">직원 이름</th>
+									<th scope="col">직원 코드</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:set var="counter" value="1" />
+								<c:forEach items="${mcList}" var="mc" varStatus="status">
+									<tr class="mccodeset">
+										<td>${counter }</td>
+										<td>${mc.membername }</td>
+										<td>${mc.membercode }</td>
+									</tr>
+									<c:set var="counter" value="${counter+1 }" />
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script type="text/javascript">
 	$(document).ready(
@@ -127,7 +168,7 @@
 					var pocode = $(this).find('td:eq(1)').text(); // 수주코드
 					var clientcode = $(this).find('td:eq(2)').text(); // 거래처
 					var itemcode = $(this).find('td:eq(3)').text(); // 품명
-					var workcount = $(this).find('td:eq(4)').text();
+					var workcount = $(this).find('td:eq(4)').text(); // 
 
 					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
 					$('#pocode').val(pocode);
@@ -136,6 +177,24 @@
 					$('#workcount').val(workcount);
 
 					$('#pocodeModal').modal('hide');
+				});
+				
+				// 직원 불러오기
+				$(document).on('click', '#membercode', function() {
+					$('#mccodeModal').modal('show');
+				});
+
+				// 선택한 행 불러오기
+				$('.mccodeset').click(function() {
+					// 선택한 행의 데이터를 가져오기
+					var membername = $(this).find('td:eq(1)').text(); // 직원이름
+					var membercode = $(this).find('td:eq(2)').text(); // 직원코드
+
+					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
+					$('#membername').val(membername);
+					$('#membercode').val(membercode);
+
+					$('#mccodeModal').modal('hide');
 				});
 
 

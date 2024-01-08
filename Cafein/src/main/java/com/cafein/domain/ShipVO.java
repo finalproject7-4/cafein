@@ -42,6 +42,7 @@ public class ShipVO {
 	private String nowstorage;
 	
 	private String membercode;
+	private String membername;
 	private String lotnumber;
 	
 	// item 테이블

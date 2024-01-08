@@ -41,10 +41,15 @@
 			<h6 class="mb-4">실적 관리  <span class="settingPF">[총 ${countPF}건]</span> </h6>
 
 		<div class="col-12">
+		<div class="buttonarea1" style="margin-bottom: 10px;">
 			<input type="hidden" name="state" value="전체">
-			<button type="button" class="btn btn-outline-dark" id="allpf">전체</button>
+			<button type="button" class="btn btn-sm btn-primary" id="allpf">전체</button>
 			<input type="hidden" name="state" value="불량">
-			<button type="button" class="btn btn-outline-dark" id="stop">불량</button>
+			<button type="button" class="btn btn-sm btn-danger" id="stop">불량</button>
+			<span id="buttonset1"><button type="button"
+					class="btn btn-dark m-2" data-bs-toggle="modal"
+					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
+					등록</button></span>
 		</div>
 		
 						<script>
@@ -55,7 +60,7 @@
 		$("#stop").click(function () {
 		 	console.log("불량 버튼 클릭됨");
 			event.preventDefault();
-		    location.href="/sales/PFList=접수";
+		    location.href="/sales/PFList=불량";
 		});
 
 		function updateTotalCount() {
@@ -258,6 +263,7 @@
   				</ul>
 			</nav>
 			<!-- 페이지 블럭 생성 -->
+			</div>
 		</div>
 </fiedset>
 

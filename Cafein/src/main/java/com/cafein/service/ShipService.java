@@ -3,6 +3,7 @@ package com.cafein.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cafein.domain.MemberVO;
 import com.cafein.domain.ReceiveVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
@@ -24,6 +25,9 @@ public interface ShipService {
 	
 	// 출하 등록 - 재고량
 	public List<WorkVO> registST() throws Exception;
+	
+	// 출하 등록 - 멤버 코드
+	public List<ShipVO> registMC() throws Exception;
 	
 	// 출하 코드 생성
 	public int shCount(ShipVO svo) throws Exception;
