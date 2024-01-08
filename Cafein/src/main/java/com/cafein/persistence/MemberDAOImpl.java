@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.cafein.domain.Criteria;
 import com.cafein.domain.MemberVO;
 
 @Repository
@@ -29,23 +28,27 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	@Override
-	public List<MemberVO> getMemberList(int page) throws Exception {
-		logger.debug(" DAO : 직원 목록 조회 getMemberList(int page) ");
+	public int getMaxMemberCode(MemberVO vo) throws Exception {
+		logger.debug(" DAO : 최신 등록된 직원의 직원 코드 확인 getMaxMemberCode(int membercode) ");
+		return sqlSession.selectOne(NAMESPACE + ".getMaxMemberCode", vo);
+	}
 
-		page = (page - 1) *10;
-		return sqlSession.selectList(NAMESPACE + ".getMemberList", page);
+	@Override
+	public List<MemberVO> getMemberPageList(MemberVO vo) throws Exception {
+		logger.debug(" DAO : 직원 목록 조회 getMembePagerList(MemberVO vo) ");
+		return sqlSession.selectList(NAMESPACE + ".getmemberPageList", vo);
+	}
+
+	@Override
+	public Integer getMemberCount(MemberVO vo) throws Exception {
+		logger.debug(" DAO : 총 직원 수 조회 getMemberCount(MemberVO vo) ");
+		return sqlSession.selectOne(NAMESPACE + ".getMemberCount", vo);
 	}
 	
 	@Override
-	public List<MemberVO> getMemberList(Criteria cri) throws Exception {
-		logger.debug(" DAO : 직원 목록 조회 getMemberList(Criteria cri) ");
-		return sqlSession.selectList(NAMESPACE + ".getMemberList", cri);
-	}
-	
-	@Override
-	public int getMemberCount() throws Exception {
-		logger.debug(" DAO : 총 직원 수 조회 getMemberCount() ");
-		return sqlSession.selectOne(NAMESPACE + ".countMember");
+	public List<MemberVO> getMemberList() throws Exception {
+		logger.debug(" DAO : 직원 정보를 list에 담아오는 동작 getMemberList() ");
+		return sqlSession.selectList(NAMESPACE + ".getMemberList");
 	}
 	
 	@Override
@@ -66,39 +69,4 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.update(NAMESPACE + ".deleteMember", vo);
 	}
 	
-
-	
-	
-	
-
-
-	
-	
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

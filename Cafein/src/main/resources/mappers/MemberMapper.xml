@@ -32,21 +32,42 @@
 	#{departmentname},#{memberposition},#{memberemail},#{memberdeptphone},#{memberphone})
 </insert>
 
-<!-- 직원 목록 조회 -->
-<select id="getMemberList" resultType="MemberVO" resultMap="member">
+<!-- 최신 등록된 직원의 직원 코드 확인 -->
+<select id="getMaxMemberCode" resultType="int" parameterType="MemberVO">
+	select max(membercode) from member;
+</select>
+
+<!-- 직원 목록 (페이징) -->
+<select id="getmemberPageList" resultType="MemberVO">
 	select * from member 
-	order by memberid desc 
-	limit #{startPage}, #{pageSize}
+	where available = 'Y'
+	<if test="option == 'membername'">
+		and membername LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'departmentname'">
+		and departmentname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	order by memberid desc		
+	limit #{cri.startPage}, #{cri.pageSize}
 </select>
 
-<!-- 전체 직원 수 조회 -->
-<select id="countMember" resultType="int">
-	<![CDATA[
- 	select count(*) from member 
- 	where memberid > 0
-	]]>
+<!-- 직원 목록 총 개수 -->
+<select id="getMemberCount" resultType="integer">
+	select count(*) from member
+	where available = 'Y'
+	<if test="option == 'membername'">
+		and membername LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'departmentname'">
+		and departmentname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
 </select>
 
+<!-- 직원 정보를 LIst에 담기 -->
+<select id="getMemberList" resultType="MemberVO">
+	select * from member
+</select>
+	
 <!-- 직원 정보 조회 -->
 <select id="getMember" resultType="MemberVO">
 	select * from member 
@@ -57,7 +78,8 @@
 <update id="updateMember">
 	update member 
 	set membername=#{membername}, memberpw=#{memberpw}, memberbirth=#{memberbirth}, memberhire=#{memberhire}, memberupdate=now(), 
-	departmentname=#{departmentname}, memberposition=#{memberposition}, memberemail=#{memberemail}, memberdeptphone=#{memberdeptphone}, memberphone=#{memberphone} 
+	departmentname=#{departmentname}, memberposition=#{memberposition}, memberemail=#{memberemail}, memberdeptphone=#{memberdeptphone}, 
+	memberphone=#{memberphone}, available=#{available}  
 	where memberid=#{memberid}
 </update>
 

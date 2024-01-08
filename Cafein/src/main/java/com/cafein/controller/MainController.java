@@ -1,13 +1,10 @@
 package com.cafein.controller;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +21,7 @@ public class MainController {
 	@Inject
 	private MainService mainService;
 	
+	// 로그인 - GET
 	// http://localhost:8088/main/login
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public void loginGET() throws Exception {
@@ -31,6 +29,7 @@ public class MainController {
 		logger.debug(" /views/main/login.jsp 페이지로 이동 ");
 	}
 	
+	// 로그인 - POST
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPOST(MemberVO vo, HttpSession session) throws Exception {
 		logger.debug(" loginPOST() 호출 ");
@@ -49,6 +48,7 @@ public class MainController {
 		return "redirect:/main/login";
 	}
 	
+	// 메인 - GET
 	// http://localhost:8088/main/main
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void mainGET() throws Exception {
@@ -56,27 +56,12 @@ public class MainController {
 		logger.debug("/views/main/main.jsp 페이지로 이동 ");
 	}
 	
+	// 로그아웃 - GET
 	// http://localhost:8088/main/logout
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public void myLogoutPageGET() throws Exception {
 		logger.debug(" myLogoutPageGET() 실행 ");
 	}
 	
-	@RequestMapping(value = "/accessErr",method = RequestMethod.GET)
-	public void accessErrGET(Authentication auth ) throws Exception{
-		logger.debug(" accessErrGET()  호출 - 접근 권한 문제 발생!!! ");
-		logger.debug(" /accessErr.jsp 뷰페이지 연결 ");
-		
-		logger.debug(" auth : "+auth);
-		logger.debug(" auth : "+auth.getAuthorities());
-		
-		List authList = (List)auth.getAuthorities();
-		//logger.debug(" "+authList.get(0).toString().equals("ROLE_MEMBER"));
-		
-		if( authList.get(0).toString().equals("ROLE_MEMBER") ) {
-			logger.debug(" 사용자 권한!!! -> 접근 권한에 따른 페이지 이동");
-		}
-		
-	}
-	
 }
+

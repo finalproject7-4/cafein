@@ -64,10 +64,6 @@
 							</div>
 						</div>
 						<div class="col-4 mx-auto">
-							<!-- csrf 토큰정보 : 사이트간 위조방지 토큰 설정 -->
-						    <input type="hidden" name="${_csrf.parameterName}" 
-						                        value="${_csrf.token }">
-						                        
 							<button type="submit" class="btn btn-lg btn-dark m-2">로그인</button>
 						</div>
 					</form>

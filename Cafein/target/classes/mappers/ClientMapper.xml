@@ -32,25 +32,62 @@
 	#{manager},#{clientaddress},#{clientphone},#{clientfax},#{clientemail})
 </insert>
 
-<!-- 거래처 목록 조회 -->
-<select id="getClientListPage" resultType="ClientVO">
+<!-- 최신 등록된 거래처의 거래처 코드 확인(GPT) -->
+<select id="getMaxClientCode" resultType="int" parameterType="ClientVO">
+	select count(*) from client 
+		<where>
+		  <choose>
+			<when test="categoryofclient == '납품'">
+				and clientcode like '%D%';
+			</when>
+			<when test="categoryofclient == '공급'">
+				and clientcode like '%S%';
+			</when>
+		  </choose>
+		</where>
+</select>
+
+<!-- 거래처 목록 (페이징) -->
+<select id="getClientPageList" resultType="ClientVO">
 	select * from client 
-	order by clientid desc 
-	limit #{startPage}, #{pageSize}
+	where available = 'Y'
+	<if test="option == 'clientname'">
+		and clientname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'categoryofclient'">
+		and categoryofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'typeofclient'">
+		and typeofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'manager'">
+		and manager LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	order by clientid desc		
+	limit #{cri.startPage}, #{cri.pageSize}
+</select>
+
+<!-- 거래처 목록 총 개수 -->
+<select id="getClientCount" resultType="integer">
+	select count(*) from client
+	where available = 'Y'
+	<if test="option == 'clientname'">
+		and clientname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'categoryofclient'">
+		and categoryofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'typeofclient'">
+		and typeofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'manager'">
+		and manager LIKE CONCAT('%', #{keyword}, '%')
+	</if>
 </select>
 
 <!-- 거래처 정보를 list에 담기 -->
 <select id="getClientList" resultType="ClientVO">
 	select * from client 
-	order by clientid desc 
-</select>
-
-<!-- 전체 직원 수 조회 -->
-<select id="countClient" resultType="int">
-	<![CDATA[
- 	select count(*) from client 
- 	where clientid > 0
-	]]>
 </select>
 
 <!-- 거래처 정보 조회 -->
@@ -61,10 +98,15 @@
 
 <!-- 거래처 정보 수정 -->
 <update id="updateClient">
-	update client 
-	set clientname=#{clientname}, categoryofclient=#{categoryofclient}, typeofclient=#{typeofclient}, businessnumber=#{businessnumber}, representative=#{representative}, 
-	manager=#{manager}, clientaddress=#{clientaddress}, clientphone=#{clientphone}, clientfax=#{clientfax}, clientemail=#{clientemail} 
-	where clientid=#{clientid}
+    update client 
+    set clientname=#{clientname}, categoryofclient=#{categoryofclient}, 
+        typeofclient=case
+            when categoryofclient = '납품' then null
+            else #{typeofclient}
+        end,
+        businessnumber=#{businessnumber}, representative=#{representative}, manager=#{manager}, clientaddress=#{clientaddress}, 
+        clientphone=#{clientphone}, clientfax=#{clientfax}, clientemail=#{clientemail}, available=#{available} 
+    where clientid=#{clientid}
 </update>
 
 <!-- 거래처 정보 삭제(비활성화) -->

@@ -18,5 +18,12 @@ public class ClientVO {
 	private String clientfax;
 	private String clientemail;
 	private String available;
+	
+	// 검색용 객체
+	private String option;
+	private String keyword;
+	
+	// Criteria 객체
+	private Criteria cri;
 
 }

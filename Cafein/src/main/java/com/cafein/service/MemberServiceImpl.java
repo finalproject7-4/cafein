@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.cafein.domain.Criteria;
 import com.cafein.domain.MemberVO;
 import com.cafein.persistence.MemberDAO;
 
@@ -26,17 +25,29 @@ public class MemberServiceImpl implements MemberService {
 		logger.debug(" Service : 직원 등록 memberJoin(MemberVO vo) ");
 		mdao.insertMember(vo);
 	}
+	
+	@Override
+	public int maxMemberCode(MemberVO vo) throws Exception {
+		logger.debug(" Service : 최신 등록된 직원의 직원 코드 확인 maxMemberCode(int membercode) ");
+		return mdao.getMaxMemberCode(vo);
+	}
 
 	@Override
-	public List<MemberVO> memberList(Criteria cri) throws Exception {
-		logger.debug(" Service : 직원 목록 조회 memberList(Criteria cri) ");
-		return mdao.getMemberList(cri);
+	public List<MemberVO> memberPageList(MemberVO vo) throws Exception {
+		logger.debug(" Service : 직원 목록 조회 memberPageList(MemberVO vo) ");
+		return mdao.getMemberPageList(vo);
 	}
-		
+
 	@Override
-	public int totalMemberCount() throws Exception {
-		logger.debug(" Service : 총 직원 수 조회 totalMemberCount() ");
-		return mdao.getMemberCount();
+	public Integer totalMemberCount(MemberVO vo) throws Exception {
+		logger.debug(" Service : 총 직원 수 조회 totalMemberCount(MemberVO vo) ");
+		return mdao.getMemberCount(vo);
+	}
+
+	@Override
+	public List<MemberVO> memberList() throws Exception {
+		logger.debug(" Service : 직원 정보를 list에 담아오는 동작 memberList() ");
+		return mdao.getMemberList();
 	}
 
 	@Override
@@ -56,14 +67,6 @@ public class MemberServiceImpl implements MemberService {
 		logger.debug(" Service : 직원 정보 비활성화 memberDelete(MemberVo vo) ");
 		return mdao.deleteMember(vo);
 	}
-	
-
-	
-	
-	
-	
-	
-	
 	
 
 }
