@@ -65,7 +65,6 @@
 <th scope="col">생산량</th>
 <th scope="col">공정</th>
 <th scope="col">상태</th>
-<th scope="col">Action</th>
 </tr>
 </thead>
 <tbody>
@@ -78,7 +77,6 @@
 <td>${pList.amount }</td>
 <td>${pList.process }</td>
 <td>${pList.state }</td>
-<td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
 </tr>
 </c:forEach>
 </tbody>
