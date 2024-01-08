@@ -292,7 +292,7 @@ function fetchData(searchBtnValue) {
 <!-- 엑셀파일 다운로드 -->
 <div style="float: right">
 	<form action="/production/excelPrint" method="post">
-		<input class="btn btn-sm btn-primary" type="submit" value="리스트출력">
+		<input class="btn btn-sm btn-success" type="submit" value="리스트출력">
 	</form>
 </div>
 
