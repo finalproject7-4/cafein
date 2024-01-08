@@ -40,7 +40,12 @@
 
 		<if test="searchBtn != null and searchBtn=='검사전'">
 			AND qualitycheck = #{searchBtn}
-		</if>	
+		</if>
+		
+		<if test="searchBtn != null and searchBtn=='오늘'">
+			AND DATE(producedate) = CURDATE()
+		</if>
+			
 		
 		</where>
 		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
@@ -276,7 +281,7 @@
 
 	</update>
 	
-	<!-- main페이지용 오늘의 생산량과 총 당해, 당월 생산량 구하는 함수 -->
+	<!-- main페이지용 오늘의 생산량과 총 당해, 당월 생산량 구하는 함수들 -->
 	<select id="getProduceAmountToday" resultType="Integer">
 	<![CDATA[
 		SELECT sum(amount) as todayAmount

@@ -74,7 +74,7 @@ function getList(pageNumber) {
 
 <div >
 <form name="dateSearch" action="/production/produceList3" method="get">
-<select id="itemnameSelSearch" name="itemname">
+<select class="form-control" id="itemnameSelSearch" name="itemname">
 			<option value="">제품명</option>
 	<c:forEach var="iList" items="${itemList }" >
 			<option value="${iList.itemname }">${iList.itemname}</option>

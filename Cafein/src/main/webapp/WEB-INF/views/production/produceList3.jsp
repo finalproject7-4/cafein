@@ -134,6 +134,7 @@
 <!-- 생산 상태에 따른 페이지 출력 (버튼) 시작 -->
 <div class="buttonarea1" style="margin-bottom: 10px;">
 				<input type="button" class="btn btn-sm btn-primary" value="전체" id="allList">
+				<input type="button" class="btn btn-sm btn-primary" value="오늘" id="todayList">
 				<input type="button" class="btn btn-sm btn-success" value="대기" id="proWait">
 				<input type="button" class="btn btn-sm btn-danger" value="생산중" id="proIng">
 				<input type="button" class="btn btn-sm btn-warning" value="검사대기" id="qccWait">
@@ -160,6 +161,10 @@ $(document).ready(function() {
     // 검사대기 버튼 클릭
     $("#qccWait").click(function() {
         fetchData("검사전");
+    });
+    // 오늘 버튼 클릭
+    $("#todayList").click(function() {
+        fetchData("오늘");
     });
     
  // 전체 버튼 클릭
