@@ -1,7 +1,13 @@
 @charset "UTF-8";
 
-input#regist {
+table {
+	border: 1px solid black;
+}
+#regist {
+	margin-right: 26px;
 	float:right;
+	margin-top: -31px;
+	margin-bottom: 23px;
 }
 
 .modal-content {
@@ -19,6 +25,8 @@ input#regist {
  }
  
 #ListExcel {
+	margin-right: 26px;
+	margin-top: -48px;
 	float:right;
 }
 
@@ -46,6 +54,7 @@ input#regist {
 }
 
 .odate {
+	color:black;
 	margin-bottom: 15px;
 	float:right;
 	display:flex;
@@ -71,7 +80,10 @@ input#regist {
 	color: black;
     background: #DDDEDF;
 	font-size: 19px;
-	
+}
+
+.inputWidth input {
+	width:109px;
 }
 
 .rowspan6 {
@@ -100,7 +112,7 @@ input#regist {
 }
 
 .thirdtable {
-    width: 38.7rem;
+    width: 470px;
 }
 .bgray {
 	background: #F8F9FA;
@@ -120,6 +132,10 @@ input#regist {
   
 }
 
+.thirdtable input{
+	margin-left: auto;
+    margin-right: auto;
+}
 .ReceiptPDF {
 	float:right;
 }
@@ -157,4 +173,11 @@ input#regist {
 .form-control {
    border-radius: 5px; 
    width:220px;
+}
+
+#cafeinPng {
+	display:flex;
+    width: 200px;
+    margin-left: 25.4rem;
+    margin-top: -5px;
 }

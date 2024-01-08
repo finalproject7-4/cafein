@@ -5,6 +5,7 @@
 <%@ include file="../include/header.jsp"%>
 <br>
 <fieldset>
+
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 				<form action="/sales/POList" method="GET" style="margin-bottom: 10px;">
@@ -37,9 +38,6 @@
 		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" id="ListID">
-		<form action="POListPrint" method="GET">
-			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
-		</form><br>
 			<form role="form" action="/sales/cancelUpdate" method="post">
 				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
 				<!-- 수주 상태에 따라 필터링하는 버튼 -->
@@ -116,7 +114,7 @@
 										<tr>
 											<td id="poidCancel" style="display: none;">${po.poid }</td>
 											<td>${counter }</td>
-											<td>${po.postate }</td>
+											<td><b>${po.postate }</b></td>
 											<td>${po.pocode }</td>
 											<td>${po.clientname}</td>
 											<td>${po.itemname}</td>
@@ -134,13 +132,13 @@
 											<td>${po.membername}</td>
 											<td><input value="진행" type="submit" class="btn btn-sm btn-info ingUpdate" data-poid="${po.poid}"></td>
 											<td>
-												<button type="button" class="btn btn-sm btn-secondary"
+												<button type="button" class="btn btn-sm btn-warning updateInfo"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 													수정</button> 
-													<input value="취소" type="submit" class="btn btn-sm btn-danger cancelUpdate" data-poid="${po.poid}">
+													<input value="취소" type="submit" class="btn btn-sm btn-secondary cancelUpdate" data-poid="${po.poid}">
 											</td>
 											<td>
-												<input value="불러오기" type="button" class="btn btn-sm btn-dark" 
+												<input value="PDF" type="button" class="btn btn-sm btn-danger" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
 												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
 												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}',
@@ -178,6 +176,8 @@
 						</tbody>
 					</table>
 				</div>
+				
+				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
@@ -311,8 +311,66 @@
 			</nav>
 			<!-- 페이지 블럭 생성 -->
 			</form>
+			<form action="POListPrint" method="GET">
+			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+		</form><br>
 		</div>
 	</div>
+	
+	<!-- 버튼 표시처리 -->
+	<script>
+	  $(document).ready(function() {
+		    // 각각의 버튼에 대해 처리
+		    $('.ingUpdate').each(function() {
+		      // 해당 버튼이 속한 행에서 '상태' 열의 텍스트 가져오기
+		      var status = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+		      // '상태'가 '대기'인 경우에만 버튼을 표시
+		      if (status === '대기') {
+		        $(this).show();
+		      } else {
+		        $(this).hide();
+		      }
+		    });
+		    $('.updateInfo').each(function() {
+		        // 해당 버튼이 속한 행에서 '상태' 열의 텍스트 가져오기
+		        var status = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+		        // '상태'가 '대기'/'진행'인 경우에만 버튼을 표시
+		        if (status === '대기' ||status === '진행') {
+		          $(this).show();
+		        } else {
+		          $(this).hide();
+		        }
+		      });
+		    $('.cancelUpdate').each(function() {
+		        // 해당 버튼이 속한 행에서 '상태' 열의 텍스트 가져오기
+		        var status = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+		        // '상태'가 '대기'/'진행'인 경우에만 버튼을 표시
+		        if (status === '대기' ||status === '진행') {
+		          $(this).show();
+		        } else {
+		          $(this).hide();
+		        }
+		      });
+		  });
+	  
+	  $('table tbody tr').each(function () {
+		    var status = $(this).find('td:nth-child(3)').text().trim();
+		    if (status === '완료') {
+		        $(this).find('td:nth-child(3)').css('color', 'blue');
+		    }
+		    if (status === '취소') {
+		        $(this).find('td:nth-child(3)').css('color', ' red');
+		    }
+		});
+
+
+	</script>
+	
+	
+	
 	
 	<!--납품서 모달창 -->
 	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -335,8 +393,7 @@
 						aria-label="Close" onclick="location.href='/sales/POList';"></button>
 				<h6 class="modal-title receiptTitle" >납품서</h6>
 				<div class="odate">
-				주문일자&nbsp;&nbsp;&nbsp;<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
-<!-- 				<img src="../resources/img/cafein_crop.png" id="cafeinPng"> -->
+				<label style="color:black;">주문일자</label>&nbsp;&nbsp;&nbsp;<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
 							<table class="table table-bordered">
 							<thead>
 									<tr>
@@ -391,7 +448,7 @@
 											<th>공급세액(원)</th>
 											<th>합계총액(원)</th>
 										</tr>
-										<tr>
+										<tr class="inputWidth">
 											<td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
 											<td><input id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
 											<td><input id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
@@ -408,7 +465,7 @@
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 										<tr>
 									</table>
-							<table class="table table-bordered thirdtable">
+										<table class="table table-bordered thirdtable">
 										<tr>
 											<td class="rem13"><b>합계총액(원)</b></td>
 											<td ><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
@@ -424,6 +481,7 @@
 							</table><br><br><br>
 					<div class="refooter">담당자 &nbsp;&nbsp;&nbsp;<input type="text" class="refooter1" placeholder="담당자를 입력하세요"></div>
 					<div class="retoday"></div>
+				<img src="../resources/img/cafein_crop.png" id="cafeinPng">
 					
 					<script>
 				    // JavaScript 코드 시작
@@ -439,46 +497,52 @@
 				    todayElement.textContent = currentDate.toLocaleDateString('ko-KR', dateFormatOptions);
 				    // JavaScript 코드 끝
 				    
-					 function printModalContent() {
-				            var refooter1Value = document.querySelector('.refooter1').value;
+function printModalContent() {
+    var refooter1Value = document.querySelector('.refooter1').value;
 
-				            // 값이 null 또는 빈 문자열인 경우 alert 창 표시
-				            if (refooter1Value === null || refooter1Value.trim() === '') {
-				            	const Toast = Swal.mixin({
-				            	    toast: true,
-				            	    position: 'center-center',
-				            	    showConfirmButton: false,
-				            	    timer: 2500,
-				            	    timerProgressBar: true,
-				            	    didOpen: (toast) => {
-				            	        toast.addEventListener('mouseenter', Swal.stopTimer)
-				            	        toast.addEventListener('mouseleave', Swal.resumeTimer)
-				            	    }
-				            	})
+    // 값이 null 또는 빈 문자열인 경우 alert 창 표시
+    if (refooter1Value === null || refooter1Value.trim() === '') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center-center',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
 
-				            	Toast.fire({
-				            	    icon: 'warning',
-				            	    title: '담당자를 입력하세요.'
-				            	})
-				            } else {
-				                var printContents = document.getElementById('pdf').cloneNode(true);
+        Toast.fire({
+            icon: 'warning',
+            title: '담당자를 입력하세요.'
+        });
+    } else {
+        var printContents = document.getElementById('pdf').cloneNode(true);
 
-				                // input 요소에 대한 처리 (시각적인 표현으로 대체)
-				                var inputElements = printContents.querySelectorAll('input');
-				                inputElements.forEach(function(input) {
-				                    var replacementDiv = document.createElement('div');
-				                    replacementDiv.textContent = input.value;
-				                    replacementDiv.style.border = 'none';
-				                    replacementDiv.style.padding = '5px';
-				                    input.parentNode.replaceChild(replacementDiv, input);
-				                });
+        // input 요소에 대한 처리 (시각적인 표현으로 대체)
+        var inputElements = printContents.querySelectorAll('input');
+        inputElements.forEach(input => {
+            var replacementDiv = document.createElement('div');
+            replacementDiv.textContent = input.value;
+            replacementDiv.style.border = 'none';
+            replacementDiv.style.padding = '5px';
 
-				                var originalContents = document.body.innerHTML;
-				                document.body.innerHTML = printContents.innerHTML;
+            // 원본 input의 스타일을 대체 Div에 복사
+            replacementDiv.style.color = window.getComputedStyle(input).color;
+            replacementDiv.style.backgroundColor = window.getComputedStyle(input).backgroundColor;
 
-				                window.print();
-				            }
-				        }
+            input.parentNode.replaceChild(replacementDiv, input);
+        });
+
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents.innerHTML;
+
+        window.print();
+    }
+}
+
 
 					</script>
 				</div><br>
