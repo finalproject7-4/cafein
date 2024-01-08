@@ -14,6 +14,7 @@
 	<logger name="com.cafein.controller">
 		<level value="debug" />
 	</logger>
+	
 	<logger name="com.cafein.persistence">
 		<level value="debug" />
 	</logger>
@@ -24,6 +25,10 @@
 
 	<logger name="com.cafein.service">
 	<level value="debug" />
+	</logger>
+	
+	<logger name="com.cafein.security">
+		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

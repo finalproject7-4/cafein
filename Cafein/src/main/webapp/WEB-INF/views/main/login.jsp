@@ -47,25 +47,25 @@
 					<div class="d-flex align-items-center justify-content-between mb-3">
 						<h3>Cafe In</h3>
 					</div>
-					<form method="post">
-					<div class="form-group m-2">
-						<input class="form-control" type="text" name="membercode"
-							placeholder="사원번호" aria-label="default input example">
-					</div>
-					<div class="form-group m-2">
-						<input class="form-control" type="password" name="memberpw"
-							placeholder="비밀번호" aria-label="default input example">
-					</div>
-					<div class="d-flex align-items-center justify-content-between m-2">
-						<div class="form-check">
-							<input type="checkbox" class="form-check-input"
-								id="exampleCheck1"> <label class="form-check-label"
-								for="exampleCheck1">사원번호 기억하기</label>
+					<form action="/main/login" method="post">
+						<div class="form-group m-2">
+							<input class="form-control" type="text" name="membercode"
+								placeholder="사원번호" aria-label="default input example">
 						</div>
-					</div>
-					<div class="col-4 mx-auto">
-						<button type="submit" class="btn btn-lg btn-dark m-2">로그인</button>
-					</div>
+						<div class="form-group m-2">
+							<input class="form-control" type="password" name="memberpw"
+								placeholder="비밀번호" aria-label="default input example">
+						</div>
+						<div class="d-flex align-items-center justify-content-between m-2">
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input"
+									id="exampleCheck1"> <label class="form-check-label"
+									for="exampleCheck1">사원번호 기억하기</label>
+							</div>
+						</div>
+						<div class="col-4 mx-auto">
+							<button type="submit" class="btn btn-lg btn-dark m-2">로그인</button>
+						</div>
 					</form>
 				</div>
 			</div>

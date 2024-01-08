@@ -28,14 +28,32 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	@Override
-	public List<MemberVO> getMemberList() throws Exception {
-		logger.debug(" DAO : 직원 목록 조회 getMemberList() ");
-		return sqlSession.selectList(NAMESPACE + ".getMemberList");
+	public int getMaxMemberCode(MemberVO vo) throws Exception {
+		logger.debug(" DAO : 최신 등록된 직원의 직원 코드 확인 getMaxMemberCode(int membercode) ");
+		return sqlSession.selectOne(NAMESPACE + ".getMaxMemberCode", vo);
 	}
 
 	@Override
+	public List<MemberVO> getMemberPageList(MemberVO vo) throws Exception {
+		logger.debug(" DAO : 직원 목록 조회 getMembePagerList(MemberVO vo) ");
+		return sqlSession.selectList(NAMESPACE + ".getmemberPageList", vo);
+	}
+
+	@Override
+	public Integer getMemberCount(MemberVO vo) throws Exception {
+		logger.debug(" DAO : 총 직원 수 조회 getMemberCount(MemberVO vo) ");
+		return sqlSession.selectOne(NAMESPACE + ".getMemberCount", vo);
+	}
+	
+	@Override
+	public List<MemberVO> getMemberList() throws Exception {
+		logger.debug(" DAO : 직원 정보를 list에 담아오는 동작 getMemberList() ");
+		return sqlSession.selectList(NAMESPACE + ".getMemberList");
+	}
+	
+	@Override
 	public MemberVO getMember(int memberid) throws Exception {
-		logger.debug(" DAO : 직원 정보 조회 getMember(String memberid) ");
+		logger.debug(" DAO : 직원 정보 조회 getMember(int memberid) ");
 		return sqlSession.selectOne(NAMESPACE + ".getMember", memberid);
 	}
 
@@ -50,39 +68,5 @@ public class MemberDAOImpl implements MemberDAO {
 		logger.debug(" DAO : 직원 정보 삭제(비활성화) deleteMember(MemberVO vo) ");
 		return sqlSession.update(NAMESPACE + ".deleteMember", vo);
 	}
-
 	
-	
-	
-
-
-	
-	
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

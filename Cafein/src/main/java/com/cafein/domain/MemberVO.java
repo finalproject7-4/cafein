@@ -9,7 +9,7 @@ import lombok.Data;
 public class MemberVO {
 	
 	private int memberid;
-	private String membercode;
+	private int membercode;
 	private String membername;
 	private String memberpw;
 	private Date memberbirth;
@@ -21,5 +21,12 @@ public class MemberVO {
 	private String memberdeptphone;
 	private String memberphone;
 	private String available;
-
+	
+	// 검색용 객체
+	private String option;
+	private String keyword;
+	
+	// Criteria 객체
+	private Criteria cri;
+	
 }
