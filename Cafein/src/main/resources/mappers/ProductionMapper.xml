@@ -34,7 +34,11 @@
 			]]>
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+			AND state = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
 			AND state = #{searchBtn}
 		</if>
 
@@ -76,12 +80,20 @@
 			AND p.itemname = #{itemname}
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+			AND state = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
 			AND state = #{searchBtn}
 		</if>
 
 		<if test="searchBtn != null and searchBtn=='검사전'">
 			AND qualitycheck = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn=='오늘'">
+			AND DATE(producedate) = CURDATE()
 		</if>	
 		
 		</where>
@@ -97,12 +109,20 @@
 		 AND producedate between #{startDate} and #{endDate}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn !='검사전'">
-		AND state = #{searchBtn}
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+			AND state = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
+			AND state = #{searchBtn}
 		</if>
 
 		<if test="searchBtn != null and searchBtn=='검사전'">
-		AND qualitycheck = #{searchBtn}
+			AND qualitycheck = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn=='오늘'">
+			AND DATE(producedate) = CURDATE()
 		</if>
 		
 		<if test="produceline != null and !produceline.equals(0)">
@@ -116,6 +136,7 @@
 		<if test="itemname != null and !itemname.equals('')">
 			AND itemname like concat('%',#{itemname},'%')
 		</if>
+		
 		</where>
 	</select>
 	

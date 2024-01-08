@@ -69,23 +69,35 @@ function getList(pageNumber) {
 <div class="bg-light rounded h-100 p-4">
 <h6 class="mb-4">생산지시조회</h6>
 
-<!-- 기타 조회 -->
-
-
+<!-- 제품명 조회 -->
 <div >
 <form name="dateSearch" action="/production/produceList3" method="get">
-<select class="form-control" id="itemnameSelSearch" name="itemname">
+<div class="row">
+<div class="col">
+<select class="form-control" style="background: white;" id="itemnameSelSearch" name="itemname">
 			<option value="">제품명</option>
 	<c:forEach var="iList" items="${itemList }" >
 			<option value="${iList.itemname }">${iList.itemname}</option>
 	</c:forEach>
 </select>
+</div>
+<!-- 기간 조회 달력 -->
+<div class="col">
+<div class="input-group">
+<input type="date" class="form-control" id="startDate" name="startDate"> 
+<label>&nbsp;~&nbsp;</label>
+<input class="form-control" type="date" id="endDate" name="endDate">
+</div>
+</div>
+<!-- 기간 조회 달력 -->
 
-<!-- 조회 달력 -->
-<input type="date" id="startDate" name="startDate"> ~ <input type="date" id="endDate" name="endDate">
-<!-- 조회 달력 -->
-<button type="submit" class="btn btn-dark m-2" id="datesubmitbtn">조회</button>
-<button type="reset" class="btn btn-dark m-2" id="dateresetbtn">취소</button>
+<div class="col" >
+<div class="input-group" >
+<button type="submit" class="btn btn-sm btn-dark m-2" id="datesubmitbtn">조회</button>
+<button type="reset" class="btn btn-sm btn-dark m-2" id="dateresetbtn">취소</button>
+</div>
+</div>
+</div>
 </form>
 </div>
 </div>

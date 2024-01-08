@@ -65,7 +65,7 @@
 							<div class="row">
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
-								<input name="membercode" class="form-control" id="membercode" required="required">
+								<input name="membercode" class="form-control" id="membercode" required="required" value="1004">
 							</div>
 							</div>
 					<div class="modal-footer">

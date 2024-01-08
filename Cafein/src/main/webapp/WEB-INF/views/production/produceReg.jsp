@@ -124,7 +124,7 @@
 							</div>
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
-								<input name="membercode" class="form-control" id="membercode">
+								<input name="membercode" class="form-control" id="membercode" value="1004">
 							</div>
 							<div class="col" style="display:none;">
 								<label for="itemid" class="col-form-label" >아이템ID</label>
@@ -198,7 +198,7 @@
 					<div class="row">
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
-								<input name="membercode" class="form-control" id="membercode2">
+								<input name="membercode" class="form-control" id="membercode2" value="1004">
 							</div>
 					</div>
 					<div class="modal-footer">
@@ -248,8 +248,7 @@
 	            error: function(error) {
 	            	 console.error('생산지시 등록 실패:', error);
 		                Swal.fire("이미 작업 지시가 등록된 시간대입니다.");
-	                 $('#exampleModal form')[0].reset(); // 폼에 입력한 것 초기화. 사용자 실수 줄이기 위해서.
-	            }
+	  	            }
 	        });
 	    });
 	             
