@@ -64,7 +64,7 @@ public class ShipServiceImpl implements ShipService {
 	
 	// 출하 등록 - 멤버 코드
 	@Override
-	public List<ShipVO> registMC() throws Exception {
+	public List<MemberVO> registMC() throws Exception {
 		logger.debug("S :registMC()");
 		return shdao.registMC();
 	}
@@ -90,6 +90,7 @@ public class ShipServiceImpl implements ShipService {
 		return shdao.updateSH(svo);
 	}
 	
+
 	
 	
 
@@ -150,6 +151,20 @@ public class ShipServiceImpl implements ShipService {
 	public void WKDelete(WorkVO wvo) throws Exception {
 		logger.debug("Service - WKDelete(WorkVO wvo)");
 		shdao.deleteWK(wvo);
+	}
+	
+	// 
+	@Override
+	public void insertShipList(ShipVO svo) throws Exception {
+		logger.debug("Service - 작업 지시 접수화 함께 출하 접수!");
+		shdao.insertShipList(svo);
+	}
+
+	// 작업 지시 진행 = 출하 진행
+	@Override
+	public void updateCompletShip(WorkVO wvo) throws Exception {
+		logger.debug("Service - 출하 진행으로 변경!");
+		shdao.updateCompletShip(wvo);
 	}
 	
 	
