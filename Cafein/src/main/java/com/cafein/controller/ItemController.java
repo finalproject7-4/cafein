@@ -1,7 +1,18 @@
 package com.cafein.controller;
 
-import javax.inject.Inject;
+import java.io.OutputStream;
+import java.util.List;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -102,5 +113,70 @@ public class ItemController {
 		
 		return "redirect:/information/items";
 	}
+	
+	// 품목 목록 (엑셀 파일 다운로드)
+	@RequestMapping(value = "/itemListExcelDownload", method = RequestMethod.GET)
+	public void itemListExcelDownload(HttpServletResponse response, ItemVO vo) throws Exception { 
+		// 1. 테이블 데이터를 가져옴
+		List<ItemVO> list = iService.itemListExcel(vo);
+		logger.debug("list: " + list);
+
+		// 2. 엑셀 데이터로 변환
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("sheet");
+		
+	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가)
+	    Row headerRow = sheet.createRow(0);
+	    String[] headers = {"번호", "품목유형", "품목코드", "품명", "원산지", "중량(g)", "단가(원)"};
+	    
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);	    
+	    
+	    for (int i = 0; i < headers.length; i++) {
+	        Cell cell = headerRow.createCell(i);
+	        cell.setCellValue(headers[i]);
+	        cell.setCellStyle(headerStyle);	        
+	    }
+
+		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작
+		for (ItemVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+			Row row = sheet.createRow(rowNum++);
+
+			int colNum = 0;
+			// 컬럼 내용 추가 (vo의 Getter를 사용)
+			row.createCell(colNum++).setCellValue(vo2.getItemid());
+			row.createCell(colNum++).setCellValue(vo2.getItemtype());
+			row.createCell(colNum++).setCellValue(vo2.getItemcode());
+			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			row.createCell(colNum++).setCellValue(vo2.getOrigin());
+			
+			if(vo2.getItemweight() != null) {
+				row.createCell(colNum++).setCellValue(vo2.getItemweight());
+			}
+			if(vo2.getItemweight() == null) {
+				row.createCell(colNum++).setCellValue("");
+			}
+			
+			row.createCell(colNum++).setCellValue(vo2.getItemprice());
+			
+			// 셀 크기 조정
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+		}
+		
+		String fileName = "ItemList.xlsx"; // 저장하는 파일명
+
+		// 3. 엑셀 파일을 저장합니다.
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행
+		
+        OutputStream out = response.getOutputStream();
+        workbook.write(out);
+        out.flush();
+        
+        out.close();
+        workbook.close();
+	}
+
 	
 } // Controller 끝

@@ -40,13 +40,20 @@ function getList(){
 <!-- LOT 조회 -->
 <div >
 <form name="searchForm" action="" method="get">
-	<input type="text" id="searchLot" name="searchLot" placeholder="lot번호 검색">
-
+<div class="row">
+<div class="col">
+	<input class="form-control" type="text" id="searchLot" name="searchLot" placeholder="lot번호 검색">
+</div>
 <!-- 조회 달력 -->
-<input type="date" id="searchDate" name="searchDate">
+<div class="col">
+<input class="form-control" type="date" id="searchDate" name="searchDate">
+</div>
 <!-- 조회 달력 -->
-<button type="submit" class="btn btn-dark m-2" id="datesubmitbtn">조회</button>
-<button type="reset" class="btn btn-dark m-2" id="dateresetbtn">취소</button>
+<div class="col">
+<button type="submit" class="btn btn-sm btn-dark m-2" id="datesubmitbtn">조회</button>
+<button type="reset" class="btn btn-sm btn-dark m-2" id="dateresetbtn">취소</button>
+</div>
+</div>
 </form>
 </div>
 </div>

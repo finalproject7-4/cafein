@@ -9,59 +9,66 @@ import com.cafein.domain.ReleasesVO;
 public interface MaterialDAO {
 
 	// 발주 목록 (페이징)
-	public List<OrdersVO> getOrdersList(OrdersVO vo) throws Exception;
+	public List<OrdersVO> selectOrdersList(OrdersVO vo) throws Exception;
 
 	// 발주 목록 (모달)
-	public List<OrdersVO> getOrdersList() throws Exception;
+	public List<OrdersVO> selectOrdersList() throws Exception;
 
 	// 발주 목록 총 개수
-	public Integer gerOrdersCount(OrdersVO vo) throws Exception;
+	public Integer selectOrdersCount(OrdersVO vo) throws Exception;
 
 	// 발주 등록
 	public void insertOrder(OrdersVO vo) throws Exception;
 
 	// 발주코드 개수 계산 (중복코드 생성 방지)
-	public Integer getOrderscodeCount(String datePart) throws Exception;
+	public Integer selectOrderscodeCount(String datePart) throws Exception;
 
 	// 발주 수정
 	public int updateOrder(OrdersVO vo) throws Exception;
 	
 	// 발주 삭제
 	public void deleteOrder(OrdersVO vo) throws Exception;	
+	
+	// 발주 목록 (엑셀 파일 다운로드)
+	public List<OrdersVO> selectOrderListExcel(OrdersVO vo) throws Exception;
 
 	// 입고 목록 (페이징)
-	public List<ReceiveVO> getReceiveList(ReceiveVO vo) throws Exception;
+	public List<ReceiveVO> selectReceiveList(ReceiveVO vo) throws Exception;
 
 	// 입고 목록 총 개수
-	public Integer getReceiveCount(ReceiveVO vo) throws Exception;
+	public Integer selectReceiveCount(ReceiveVO vo) throws Exception;
 
 	// 창고 목록 (모달)
-	public List<ReceiveVO> getStorageList() throws Exception;
+	public List<ReceiveVO> selectStorageList() throws Exception;
 
 	// 입고코드 개수 계산 (중복코드 생성 방지)
-	public Integer getReceivecodeCount(String datePart) throws Exception;
+	public Integer selectReceivecodeCount(String datePart) throws Exception;
 
 	// 입고 등록
 	public void insertReceive(ReceiveVO vo) throws Exception;
 
-	// 입고 완료 -> 품질관리로 이동
-	public void insertQuality(ReceiveVO vo) throws Exception;
-
 	// 입고 수정
 	public int updateReceive(ReceiveVO vo) throws Exception;
 
+	// 입고 완료 -> 품질관리로 이동
+	public void insertQuality(ReceiveVO vo) throws Exception;
+	
 	// 입고 삭제
 	public void deleteReceive(ReceiveVO vo) throws Exception;
 
+	// 입고 목록 목록 (엑셀 파일 다운로드)
+	public List<ReceiveVO> selectReceiveListExcel(ReceiveVO vo) throws Exception;
+
 	// 출고 목록 (페이징)
-	public List<ReleasesVO> getReleasesList(ReleasesVO vo) throws Exception;
+	public List<ReleasesVO> selectReleasesList(ReleasesVO vo) throws Exception;
 
 	// 출고 목록 총 개수
-	public Integer getReleasesCount(ReleasesVO vo) throws Exception;
+	public Integer selectReleasesCount(ReleasesVO vo) throws Exception;
 
 	// 출고코드 개수 계산 (중복코드 생성 방지)
-	public Integer getreleasecodeCount(String datePart) throws Exception;
+	public Integer selectReleasecodeCount(String datePart) throws Exception;
 
-
+	// 출고 목록 목록 (엑셀 파일 다운로드)
+	public List<ReleasesVO> selectReleaseListExcel(ReleasesVO vo) throws Exception;
 
 }

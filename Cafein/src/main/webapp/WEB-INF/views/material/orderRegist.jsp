@@ -27,32 +27,32 @@
 				<div class="row">
 					<div class="col">
 						<label for="ordersdate" class="col-form-label"><b>발주일자</b></label>
-						<input type="text" name="ordersdate" id="todayod" class="form-control mb-2" placeholder="발주일자(클릭)">
+						<input type="text" name="ordersdate" id="todayod" class="form-control mb-2" placeholder="발주일자(클릭)" required>
 					</div>
 					<div class="col">
 						<label for="deliverydate" class="col-form-label"><b>납기일자</b></label>
-						<input type="date" name="deliverydate" id="deliverydate" class="form-control mb-2" placeholder="납기일자">
+						<input type="date" name="deliverydate" id="deliverydate" class="form-control mb-2" placeholder="납기일자" required>
 					</div>
 				</div>				
 				<div class="row">
 					<div class="col">
 						<label for="clientname" class="col-form-label"><b>공급처</b></label>
-						<input id="clientname" class="form-control mb-2">
+						<input id="clientname" class="form-control mb-2" required>
 					</div>
 					<div class="col">
 						<label for="itemname" class="col-form-label"><b>품명</b></label>
-						<input id="itemname" class="form-control mb-2">
+						<input id="itemname" class="form-control mb-2" required>
 						<input type="hidden" name="itemcode" id="itemcode" class="form-control mb-2">
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<label for="ordersquantity" class="col-form-label"><b>수량</b></label>
-						<input type="number" name="ordersquantity" id="ordersquantity" class="form-control mb-2" min="0">
+						<input type="number" name="ordersquantity" id="ordersquantity" class="form-control mb-2" min="0" required>
 					</div>
 					<div class="col">
 						<label for="itemprice" class="col-form-label"><b>단가(원)</b></label>
-						<input type="text" name="itemprice" id="itemprice" class="form-control mb-2">
+						<input type="text" name="itemprice" id="itemprice" class="form-control mb-2" required>
 					</div>
 				</div>
 				<div class="row">
@@ -64,7 +64,7 @@
 				<div class="row">
 					<div class="col">
 						<label for="membercode" class="col-form-label"><b>담당자</b></label>
-						<input type="text" name="membercode" id="orderprice" class="form-control mb-2">
+						<input type="text" name="membercode" id="orderprice" class="form-control mb-2" required>
 					</div>
 				</div>										
 			</div>

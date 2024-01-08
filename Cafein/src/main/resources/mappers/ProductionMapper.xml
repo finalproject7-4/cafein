@@ -34,13 +34,22 @@
 			]]>
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+			AND state = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
 			AND state = #{searchBtn}
 		</if>
 
 		<if test="searchBtn != null and searchBtn=='검사전'">
 			AND qualitycheck = #{searchBtn}
-		</if>	
+		</if>
+		
+		<if test="searchBtn != null and searchBtn=='오늘'">
+			AND DATE(producedate) = CURDATE()
+		</if>
+			
 		
 		</where>
 		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
@@ -71,12 +80,20 @@
 			AND p.itemname = #{itemname}
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+			AND state = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
 			AND state = #{searchBtn}
 		</if>
 
 		<if test="searchBtn != null and searchBtn=='검사전'">
 			AND qualitycheck = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn=='오늘'">
+			AND DATE(producedate) = CURDATE()
 		</if>	
 		
 		</where>
@@ -92,12 +109,20 @@
 		 AND producedate between #{startDate} and #{endDate}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn !='검사전'">
-		AND state = #{searchBtn}
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+			AND state = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
+			AND state = #{searchBtn}
 		</if>
 
 		<if test="searchBtn != null and searchBtn=='검사전'">
-		AND qualitycheck = #{searchBtn}
+			AND qualitycheck = #{searchBtn}
+		</if>
+		
+		<if test="searchBtn != null and searchBtn=='오늘'">
+			AND DATE(producedate) = CURDATE()
 		</if>
 		
 		<if test="produceline != null and !produceline.equals(0)">
@@ -111,6 +136,7 @@
 		<if test="itemname != null and !itemname.equals('')">
 			AND itemname like concat('%',#{itemname},'%')
 		</if>
+		
 		</where>
 	</select>
 	
@@ -276,7 +302,7 @@
 
 	</update>
 	
-	<!-- main페이지용 오늘의 생산량과 총 당해, 당월 생산량 구하는 함수 -->
+	<!-- main페이지용 오늘의 생산량과 총 당해, 당월 생산량 구하는 함수들 -->
 	<select id="getProduceAmountToday" resultType="Integer">
 	<![CDATA[
 		SELECT sum(amount) as todayAmount
@@ -285,6 +311,7 @@
 	]]>
 	</select>
 	
+	<!-- 당해 생산량 구하는 쿼리 -->
 	<select id="getProduceAmountThisYear" resultType="Integer">
 	<![CDATA[
 		SELECT SUM(amount) AS thisYearAmount
@@ -293,6 +320,7 @@
 	]]>
 	</select>
 	
+	<!-- 당월 생산량 구하는 쿼리 -->
 	<select id="getProduceAmountThisMonth" resultType="Integer">
 	<![CDATA[
 		SELECT SUM(amount) AS thisMonthAmount
@@ -300,6 +328,18 @@
 		WHERE YEAR(producedate) = YEAR(CURDATE()) AND MONTH(producedate) = MONTH(CURDATE()) and process = '로스팅' and state = '완료'
 	]]>
 	</select>
+	
+	<!-- 금주 생산량 구하는 쿼리 -->
+	<select id="getProduceAmountThisWeek" resultType="Integer">
+		<![CDATA[
+		 SELECT SUM(amount) AS thisWeekAmount
+        FROM produce
+        WHERE producedate >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY
+        AND producedate < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY + INTERVAL 1 WEEK
+        AND process = '로스팅' AND state = '완료'
+        ]]>
+	</select>
+	
 	
 	<!-- 메인페이지용 생산지시 리스트 출력 -->
 	<select id="getProduceList" resultType="com.cafein.domain.ProduceVO">

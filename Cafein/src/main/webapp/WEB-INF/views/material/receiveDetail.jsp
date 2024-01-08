@@ -58,7 +58,7 @@
 				<div class="row">
 					<div class="col">
 						<label for="membercode" class="col-form-label"><b>담당자</b></label>
-						<input type="text" name="membercode" id="membercode3" class="form-control mb-2" readonly>
+						<input type="text" name="membercode" id="membername3" class="form-control mb-2" readonly>
 					</div>
 				</div>										
 			</div>

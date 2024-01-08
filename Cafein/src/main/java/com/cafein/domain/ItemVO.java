@@ -13,7 +13,7 @@ public class ItemVO {
 	private String clientcode;
 	private String origin;
 	private Integer itemweight;
-	private int itemprice;
+	private Integer itemprice;
 	private String available;
 	
 	// client 테이블

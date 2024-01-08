@@ -8,28 +8,42 @@
 
 	<!-- 출고 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" method="get">
-		<span>
-			품명 <input type="text" class="m-2" name="keyword">
-		</span>
-		<span style="margin-left: 300px">
-			출고일자 <input type="date" class="m-2" name="releaseStartDate"> ~ <input type="date" class="m-2" name="releaseEndDate">			
-		</span>			
-		<span style="margin-left: 225px;">
+	<form name="search" method="get">
+		<div class="row align-items-stretch">
+		  <div class="form-group col">
+		    <div class="input-group" style="width: 220px;">
+				<label style="margin: 5px 10px 0 0;">품명</label>
+				<input type="text" name="keyword" placeholder="검색어를 입력하세요" class="form-control" style="border-radius: 5px;">
+			</div>
+		  </div>
+		  <div class="form-group col">
+		    <div class="input-group">
+				<label style="margin: 5px 10px 0 0;">출고일자</label>
+				<input type="date" name="releaseStartDate" class="form-control" style="border-radius: 5px;">
+				<label>&nbsp;~&nbsp;</label>
+				<input type="date" name="releaseEndDate" class="form-control" style="border-radius: 5px;">	
+		  	</div>
+		  </div>
+		  <div class="col-1 align-items-stretch">			
 			<input type="submit" class="btn btn-sm btn-dark" value="조회">
-		</span>
-		</form>
+		  </div>	
+		</div>
+	</form>
 	</div>
 	<!-- 출고 조회 끝 -->
 
 	<!-- 출고 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<span class="mb-4">총 ${fn:length(releasesList)} 건</span>
-		<span style="margin-left: 95%;">
-<!-- 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button> -->
-<!-- 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseModifyModal" data-bs-whatever="@getbootstrap" value="수정"> -->
-<!-- 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseDetailModal" data-bs-whatever="@getbootstrap" value="상세내역"> -->
+		<span class="mb-4">총 ${releasesCount } 건</span>
+		
+		<form action="releaseListExcelDownload" method="GET">
+		<span style="margin-left: 1050px;">
+			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+			<!-- <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button> -->
+			<!-- <input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseModifyModal" data-bs-whatever="@getbootstrap" value="수정"> -->
+			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
 		</span>
+		</form>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 20px;">
@@ -37,7 +51,7 @@
 					<tr style="text-align: center;">
 						<th scope="col">번호</th>
 						<th scope="col">출고코드</th>
-						<th scope="col">생산지시번호</th>
+						<th scope="col">생산지시코드</th>
 						<th scope="col">품명</th>
 						<th scope="col">재고수량</th>
 						<th scope="col">출고수량</th>
@@ -54,7 +68,7 @@
 							<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
 						</td>
 						<td>${rl.releasecode }</td>
-						<td></td>
+						<td>${rl.producecode }</td>
 						<td>${rl.itemname }</td>
 						<td>${rl.stockquantity }</td>
 						<td>${rl.releasequantity }</td>
@@ -62,25 +76,17 @@
 							<fmt:formatDate value="${rl.releasedate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
 						<td>${rl.membername }</td>
-						<c:choose>
-							<c:when test="${rl.releasestate == '완료'}">
-								<td><b>${rl.releasestate }</b></td>
-								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1"
-										onclick="<%-- releaseDetailModal('${rl.releaseid }', '${rl.itemid }', '${rl.orderscode }', '${rl.itemname }', '${rl.ordersquantity }', '${rl.receivestate }', '${rl.receivedate }', '${rl.receivequantity }', '${rl.storagecode }', '${rl.lotnumber }', '${rl.membercode }') --%>">상세내역
-									</button>
-								</td>
-							</c:when>
-							<c:otherwise>
-								<td>${rl.releasestate }</td>
-								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1"
-										onclick="<%-- releaseModifyModal('${rl.releaseid }', '${rl.itemid }', '${rl.orderscode }', '${rl.itemname }', '${rl.ordersquantity }', '${rl.receivestate }', '${rl.receivedate }', '${rl.receivequantity }', '${rl.storagecode }', '${rl.lotnumber }', '${rl.membercode }') --%>">수정
-									</button>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1">삭제</button>
-								</td>
-							</c:otherwise>
-						</c:choose>	
+						<c:if test="${rl.releasestate == '완료'}">						
+							<td><b>${rl.releasestate }</b></td>
+						</c:if>
+						<c:if test="${rl.releasestate == '대기'}">						
+							<td>${rl.releasestate }</td>
+						</c:if>
+						<td>
+							<button type="button" class="btn btn-sm btn-outline-dark m-1"
+								onclick="releaseDetailModal('${rl.releaseid }', '${rl.releasecode }', '${rl.producecode }', '${rl.itemname }', '${rl.stockquantity }', '${rl.releasequantity }', '${rl.releasedate }', '${rl.membername }')">상세내역
+							</button>
+						</td>
 					</tr>
 				</c:forEach>	
 				</tbody>
@@ -204,10 +210,10 @@
 	<!-- 출고 목록 끝 -->
 	
 	<!-- 출고 등록 모달 -->
-	<jsp:include page="releaseRegist.jsp"/>
+	<%-- <jsp:include page="releaseRegist.jsp"/> --%>
 	
 	<!-- 출고 수정 모달 -->
-	<jsp:include page="releaseModify.jsp"/>
+	<%-- <jsp:include page="releaseModify.jsp"/> --%>
 	
 	<!-- 출고 상세내역 모달 -->
 	<jsp:include page="releaseDetail.jsp"/>	
@@ -216,13 +222,21 @@
 <!-- 출고관리 페이지 시작 -->
 
 <script>
-	var releaseRegistModal = document.getElementById('releaseRegistModal')
-	releaseRegistModal.addEventListener('show.bs.modal', function (event) {
-		var button = event.relatedTarget
-		var recipient = button.getAttribute('data-bs-whatever')
-		var modalTitle = releaseRegistModal.querySelector('.modal-title')
-	 	var modalBodyInput = releaseRegistModal.querySelector('.modal-body input')
-	})
+// 출고 상세내역
+function releaseDetailModal(releaseid, releasecode, producecode, itemname, stockquantity, releasequantity, releasedate, membername) {
+	// 가져온 값들을 모달에 설정
+	$("#releaseid3").val(releaseid);
+	$("#releasecode3").val(releasecode);
+	$("#producecode3").val(producecode);
+	$("#itemname3").val(itemname);
+	$("#stockquantity3").val(stockquantity);
+	$("#releasequantity3").val(releasequantity);
+	$("#releasedate3").val(releasedate);
+	$("#membername3").val(membername);
+	
+    // 출고 상세내역 모달 띄우기
+    $('#releaseDetailModal').modal('show');
+}
 </script>
 
 
