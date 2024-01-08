@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.cafein.domain.MemberVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
@@ -62,6 +63,13 @@ public class ShipDAOImpl implements ShipDAO {
 	public List<WorkVO> registST() throws Exception {
 		logger.debug("DAO : 출하 조회/작업지시코드");
 		return sqlSession.selectList(NAMESPACE+".stList");
+	}
+	
+	// 출하 등록 - 멤버 코드
+	@Override
+	public List<ShipVO> registMC() throws Exception {
+		logger.debug("DAO : 출하 멤버코드");
+		return sqlSession.selectList(NAMESPACE+".mcList");
 	}
 
 	// 출하 코드생성

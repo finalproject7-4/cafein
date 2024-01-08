@@ -41,15 +41,19 @@
 			<h6 class="mb-4">작업지시 관리  <span class="settingWK">[총 ${countWK}건]</span> </h6>
 
 		<div class="col-12">
-		<div class="btn-group" role="group">
+		<div class="buttonarea1" style="margin-bottom: 10px;">
 			<input type="hidden" name="state" value="전체">
-			<button type="button" class="btn btn-outline-dark" id="allwk">전체</button>
+			<button type="button" class="btn btn-sm btn-primary"  id="allwk">전체</button>
 			<input type="hidden" name="state" value="접수">
-			<button type="button" class="btn btn-outline-dark" id="stop">접수</button>
+			<button type="button" class="btn btn-sm btn-success" id="stop">접수</button>
 			<input type="hidden" name="state" value="진행">
-			<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
+			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
-			<button type="button" class="btn btn-outline-dark" id="complete">완료</button>
+			<button type="button" class="btn btn-sm btn-warning" id="complete">완료</button>
+						<span id="buttonset1"><button type="button"
+					class="btn btn-dark m-2" data-bs-toggle="modal"
+					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
+					등록</button></span>
 		</div>
 		
 				<script>
@@ -60,19 +64,19 @@
 		$("#stop").click(function () {
 		 	console.log("접수 버튼 클릭됨");
 			event.preventDefault();
-		    location.href="/production/WKList=접수";
+		    location.href="/production/WKList?worksts=접수";
 		});
 
 		$("#ing").click(function() {
 		 console.log("진행 버튼 클릭됨");
 		 event.preventDefault();
-		 location.href="/production/WKList=진행";
+		 location.href="/production/WKList?worksts=진행";
 		});
 
 		$("#complete").click(function() {
 			console.log("완료 버튼 클릭됨");
 			 event.preventDefault();
-			 location.href="/production/WKList=완료";
+			 location.href="/production/WKList?worksts=완료";
 		});
 
 		function updateTotalCount() {
@@ -93,10 +97,7 @@
 		}
 		</script>
 		
-			<span id="buttonset1"><button type="button"
-					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
-					등록</button></span>
+
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<form role="form" action="/production/WKList" method="post">
 			<div class="table-responsive">

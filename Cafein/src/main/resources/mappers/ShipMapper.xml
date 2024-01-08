@@ -64,8 +64,6 @@
 	</where>
 	</select>
 	
-	
-	
 	<!-- 출하 등록 -->
 	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
 		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode)
@@ -83,6 +81,12 @@
 		SELECT it.itemname, st.stockquantity
 		FROM stock st
         JOIN item it ON st.itemid = it.itemid
+	</select>
+	
+	<!-- 출하 등록 멤버코드 -->
+	<select id="mcList" resultType="com.cafein.domain.ShipVO">
+		SELECT mb.membercode, mb.membername
+		FROM member mb
 	</select>
 	
 	<!-- 출하 코드 생성 -->
