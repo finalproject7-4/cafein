@@ -76,8 +76,8 @@
 								<th scope="col">수정일자</th>
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
-								<th scope="col">관리</th>
 								<th scope="col">진행</th>
+								<th scope="col">관리</th>
 								<th scope="col">납품서발행</th>
 								
 								<th scope="col" style="display: none;">원산지</th>
@@ -118,13 +118,13 @@
 											</c:choose>
 											<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 											<td>${po.membercode}</td>
+											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<button type="button" class="btn btn-outline-dark"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 													수정</button> 
 													<input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
 											</td>
-											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<input value="불러오기" type="button" class="btn btn-outline-dark" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
@@ -311,26 +311,26 @@
 									<tr>
 										<td class="pt15 rowspan6" rowspan="6">공급처</td>
 										<td class="pt15"><b>등록번호</b></td>
-										<td colspan="2"><input id="r사업자번호" name="사업자번호" class="form-control form-control-sm" type="text"  readonly value="12345-54321"></td>
+										<td colspan="2"><input id="rcafeinNumber" name="cafeinNumber" class="form-control form-control-sm" type="text"  readonly ></td>
 										<td class="pt15 rowspan6" rowspan="6">납품처</td>
 										<td class="pt15"><b>상호</b></td>
 										<td colspan="2"><input id="rclientname" name="clientname" class="form-control form-control-sm" type="text"  readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>상호</b></td>
-										<td colspan="2"><input  id="rcafein" name="cafein" class="form-control form-control-sm" type="text"  readonly value="cafein"></td>
+										<td colspan="2"><input  id="rcafeinName" name="cafeinName" class="form-control form-control-sm" type="text"  readonly></td>
 										<td class="pt15"><b>성명</b></td>
 										<td colspan="2"><input id="rrepresentative" name="representative" class="form-control form-control-sm" type="text" value="" readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>대표자</b></td>
-										<td colspan="2"><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
+										<td colspan="2"><input id="rcafeinRepresent" name="cafeinRepresent" class="form-control form-control-sm" type="text" readonly></td>
 										<td class="pt15"><b>주소</b></td>
 										<td colspan="2"><input id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>주소</b></td>
-										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="부산광역시 부산진구 동천로 109 삼한골든게이트 7층" readonly></td>
+										<td colspan="2"><input id="rcafeinAddr" name="cafeinAddr" class="form-control form-control-sm" type="text" readonly></td>
 										<td class="pt15"></td>
 										<td class="pt15" colspan="2"></td>
 									</tr>
@@ -342,7 +342,7 @@
 									</tr>
 									<tr>
 										<td class="pt15"><b>팩스번호</b></td>
-										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="0504-456-2580" readonly></td>
+										<td colspan="2"><input id="rcafeinFax" name="cafeinFax" class="form-control form-control-sm" type="text" readonly></td>
 										<td class="pt15"></td>
 										<td class="pt15" colspan="2"></td>
 									</tr>
