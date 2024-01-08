@@ -23,12 +23,21 @@ public class ShipServiceImpl implements ShipService {
 	@Inject
 	private ShipDAO shdao;
 	
-	// 출하 조회
+	// 출하 조회 페이징
 	@Override
-	public List<ShipVO> AllSHList() throws Exception{
+	public List<ShipVO> AllSHList(ShipVO svo) throws Exception{
 		logger.debug("AllSHList()");
-		return shdao.getSHList();
+		return shdao.getSHList(svo);
 	}
+	
+	// 총 개수
+	@Override
+	public int countSH(ShipVO svo) throws Exception {
+		logger.debug("S : countSH(ShipVO svo)");
+		return shdao.countSH(svo);
+	}
+
+
 
 	// 출하 등록
 	@Override
@@ -78,10 +87,18 @@ public class ShipServiceImpl implements ShipService {
 
 	// 작업 지시 조회
 	@Override
-	public List<WorkVO> AllWKList() throws Exception {
+	public List<WorkVO> AllWKList(WorkVO wvo) throws Exception {
 		logger.debug("AllWKList()");
-		return shdao.getWKList();
+		return shdao.getWKList(wvo);
 	}
+	
+	// 총 개수
+	@Override
+	public int countWK(WorkVO wvo) throws Exception {
+		logger.debug("S : countWK(WorkVO wvo)");
+		return shdao.countWK(wvo);
+	}
+	
 	
 //	// 작업 지시 검색
 //	@Override
@@ -89,6 +106,7 @@ public class ShipServiceImpl implements ShipService {
 //		    logger.debug("searchWKList()");
 //		    return shdao.searchWKList(keyword);
 //		}
+
 
 
 	// 작업 지시 등록
@@ -118,12 +136,30 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : WKModify(int workid)");
 		return shdao.updateWK(wvo);
 	}
+	
+	// 작업 지시 삭제
+	@Override
+	public void WKDelete(WorkVO wvo) throws Exception {
+		logger.debug("Service - WKDelete(WorkVO wvo)");
+		shdao.deleteWK(wvo);
+	}
+	
+	
+	
+	
 
 	// 실적 조회
 	@Override
-	public List<WorkVO> AllPFList() throws Exception {
+	public List<WorkVO> AllPFList(WorkVO wvo) throws Exception {
 		logger.debug("AllPFList()");
-		return shdao.getPFList();
+		return shdao.getPFList(wvo);
+	}
+	
+	// 총 개수
+	@Override
+	public int countPF(WorkVO wvo) throws Exception {
+		logger.debug("S : countPF(WorkVO wvo)");
+		return shdao.countPF(wvo);
 	}
 
 	// 실적 수정

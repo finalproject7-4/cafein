@@ -32,93 +32,13 @@
 				</form>
 		</div>
 	</div>
-	
-	
-	
 	<br>
-	<script>
-	$(".search").click(function (searchBtnValue) {
-	    $.ajax({
-	        url: "/sales/POList",
-	        type: "GET",
-	        data: {
-	            searchBtn: searchBtnValue
-	        },
-	        success: function (data) {
-	            $(".table-responsive").html(data);
-	        },
-	        error: function (error) {
-	            console.error("Error fetching data:", error);
-	        }
-	    });
-
-	    $("form[action='/sales/POList']").submit(function (event) {
-	        event.preventDefault(); // 기본 폼 제출 동작 방지
-
-	        // 폼 데이터 수집
-	        let formData = {
-	            startDate: $("input[name='startDate']").val(),
-	            endDate: $("input[name='endDate']").val()
-	        };
-
-	        // 선택된 검색 버튼 값이 있으면 추가
-	        if ($("input[name='searchBtn']").length > 0) {
-	            formData.searchBtn = $("input[name='searchBtn']").val();
-	        }
-
-	        // AJAX 요청 수행
-	        $.ajax({
-	            url: "/sales/POList",
-	            type: "GET",
-	            data: formData,
-	            success: function (data) {
-	                // 성공적으로 데이터를 받아왔을 때 처리할 코드
-	                $(".table-responsive").html(data);
-	            },
-	            error: function (error) {
-	                console.error("Error fetching data:", error);
-	            }
-	        });
-	    });
-
-	    /* 날짜비교 */
-	    const checkDates = function () {
-	        const startDateStr = document.getElementById("startDate").value;
-	        const endDateStr = document.getElementById("endDate").value;
-
-	        // 둘 다 유효한 날짜 문자열인지 확인
-	        if (startDateStr && endDateStr) {
-	            const startDate = new Date(startDateStr);
-	            const endDate = new Date(endDateStr);
-
-	            if (startDate > endDate) {
-	                Swal.fire("종료일은 시작일과 같거나 이후여야 합니다.");
-	                document.getElementById("endDate").value = "";
-	            }
-	        }
-	    };
-
-	    // 페이지 로드 시 한 번 실행
-	    checkDates();
-
-	    // 날짜 입력 값에서 포커스가 빠져나갈 때 실행
-	    $("#startDate, #endDate").on("blur", checkDates);
-
-	    // 툴팁
-	    $('[data-toggle="tooltip"]').tooltip();
-	});
-
-	
-	</script>
-
-	
-		
 		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" id="ListID">
 		<form action="POListPrint" method="GET">
-			<input id="ListExcel" type="submit" value="리스트 출력(.xlsx)" class="btn btn-sm btn-success">
-		</form>
+			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+		</form><br>
 			<form role="form" action="/sales/cancelUpdate" method="post">
 				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
 				<!-- 수주 상태에 따라 필터링하는 버튼 -->
@@ -134,57 +54,14 @@
 			<input type="hidden" name="state" value="취소">
 			<button type="button" class="btn btn-outline-dark" id="cancel">취소</button>
 		</div>
-		<script>
-		$("#allpo").click(function() {
-		   location.href="/sales/POList";
-		});
 
-		$("#stop").click(function () {
-		 	console.log("대기 버튼 클릭됨");
-			event.preventDefault();
-		    location.href="/sales/POList?postate=대기";
-		});
-
-		$("#ing").click(function() {
-		 console.log("진행 버튼 클릭됨");
-		 event.preventDefault();
-		 location.href="/sales/POList?postate=진행";
-		});
-
-		$("#complete").click(function() {
-			console.log("완료 버튼 클릭됨");
-			 event.preventDefault();
-			 location.href="/sales/POList?postate=완료";
-		});
-
-		$("#cancel").click(function() {
-			console.log("취소 버튼 클릭됨");
-			 event.preventDefault();
-			 location.href="/sales/POList?postate=취소";
-		});
-
-		function updateTotalCount() {
-			var totalCount = $(".table tbody tr:visible").length;
-			$(".settingPO").text("총 " + totalCount + "건");
-		}
-
-		// 필터링할 때마다 호출하여 업데이트
-		function updateRowNumbers() {
-			var counter = 1;
-			$(".table tbody tr:visible").each(function() {
-				$(this).find('td:nth-child(2)').text(counter);
-				counter++;
-			});
-
-			// 총 건수 업데이트 호출
-			updateTotalCount();
-		}
-		</script>
 		
 				 <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#registModal" id="regist" value="등록"> 
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
+					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
+					data-bs-target="#openReceiptModal" data-bs-whatever="@getbootstrap" value="납품서">
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
@@ -202,6 +79,15 @@
 								<th scope="col">관리</th>
 								<th scope="col">진행</th>
 								<th scope="col">납품서발행</th>
+								
+								<th scope="col" style="display: none;">원산지</th>
+								<th scope="col" style="display: none;">중량</th>
+								<th scope="col" style="display: none;">단가</th>
+								<th scope="col" style="display: none;">주소</th>
+								<th scope="col" style="display: none;">대표자</th>
+								<th scope="col" style="display: none;">사업자번호</th>
+								<th scope="col" style="display: none;">전화번호</th>
+								<th scope="col" style="display: none;">팩스번호</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -235,14 +121,26 @@
 											<td>
 												<button type="button" class="btn btn-outline-dark"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
-													수정</button> <input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
+													수정</button> 
+													<input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
 											</td>
 											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
 											<td>
-												<input value="불러오기" type="button" class="btn btn-outline-dark" onclick="receiptSend(`${po.poid}`)">
-
-												 
+												<input value="불러오기" type="button" class="btn btn-outline-dark" 
+												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
+												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
+												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}' )">
 											</td>
+											
+											<td style="display: none;">${po.origin}</td>
+											<td style="display: none;">${po.itemweight}</td>
+											<td style="display: none;">${po.itemprice}</td>
+											<td style="display: none;">${po.clientaddress}</td>
+											<td style="display: none;">${po.representative}</td>
+											<td style="display: none;">${po.businessnumber}</td>
+											<td style="display: none;">${po.clientphone}</td>
+											<td style="display: none;">${po.clientfax}</td>
+											
 										</tr>
 										<c:set var="counter" value="${counter+1 }" />
 									</c:forEach>
@@ -251,25 +149,6 @@
 						</tbody>
 					</table>
 				</div>
-<script>
-function receiptSend(poid) {
-    $.ajax({
-        url: '/sales/receipt',  // 서버에서 데이터를 가져올 URL
-        type: 'GET',
-        data: { poid: poid },  // poid 값을 서버에 전달
-        success: function() {
-
-            // 예시: 새로운 페이지로 이동
-            location.href = "/sales/receipt?poid=" + encodeURIComponent(poid);
-        },
-        error: function() {
-            console.error('Error fetching receipt information');
-        }
-    });
-}
-
-</script>
-				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
@@ -405,126 +284,190 @@ function receiptSend(poid) {
 			</form>
 		</div>
 	</div>
+	
+	<!--납품서 모달창 -->
+	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content rectipt-body">
+			
+				<div class="modal-header">
+				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서 미리보기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				
+				<form role="form" action="/sales/receipt" method="get">
+				<div class="modal-body">
+				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
+				
+				<div class="col-12">
+				<div class="rounded h-100 p-4 bgray">
+				<h6 class="modal-title receiptTitle" id="exampleModalLabel">납품서</h6>
+				<div class="odate">
+				주문일자<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
+				
+							<table class="table table-bordered">
+							<thead>
+									<tr>
+										<td class="pt15 rowspan6" rowspan="6">공급처</td>
+										<td class="pt15"><b>등록번호</b></td>
+										<td colspan="2"><input id="r사업자번호" name="사업자번호" class="form-control form-control-sm" type="text"  readonly value="12345-54321"></td>
+										<td class="pt15 rowspan6" rowspan="6">납품처</td>
+										<td class="pt15"><b>상호</b></td>
+										<td colspan="2"><input id="rclientname" name="clientname" class="form-control form-control-sm" type="text"  readonly></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>상호</b></td>
+										<td colspan="2"><input  id="rcafein" name="cafein" class="form-control form-control-sm" type="text"  readonly value="cafein"></td>
+										<td class="pt15"><b>성명</b></td>
+										<td colspan="2"><input id="rrepresentative" name="representative" class="form-control form-control-sm" type="text" value="" readonly></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>대표자</b></td>
+										<td colspan="2"><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
+										<td class="pt15"><b>주소</b></td>
+										<td colspan="2"><input id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>주소</b></td>
+										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="부산광역시 부산진구 동천로 109 삼한골든게이트 7층" readonly></td>
+										<td class="pt15"></td>
+										<td class="pt15" colspan="2"></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>전화번호</b></td>
+										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="051-803-0909" readonly></td>
+										<td class="pt15"></td>
+										<td class="pt15" colspan="2"></td>
+									</tr>
+									<tr>
+										<td class="pt15"><b>팩스번호</b></td>
+										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="0504-456-2580" readonly></td>
+										<td class="pt15"></td>
+										<td class="pt15" colspan="2"></td>
+									</tr>
+									</thead>
+							</table>
+							<table class="table table-bordered">
+								<tbody>
+										<tr>
+											<th>품명</th>
+											<th>원산지</th>
+											<th>중량(g)</th>
+											<th>단가(원)</th>
+											<th>수량(개)</th>
+											<th>공급가액(원)</th>
+											<th>공급세액(원)</th>
+											<th>합계총액(원)</th>
+										</tr>
+										<tr>
+											<td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
+											<td><input id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
+											<td><input id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="ritemprice" name="itemprice" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rpocnt" name="pocnt" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rsum" name="sum" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
+											<td><input  name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+										</tr>
+										<tr class="tdempty">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+										<tr>
+									</table>
+							<table class="table table-bordered thirdtable">
+										<tr>
+											<td class="rem13"><b>합계총액(원)</b></td>
+											<td ><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+										</tr>
+										<tr>
+											<td class="rem13"><b>납품예정일</b></td>
+											<td ><input name="ordersduedate" type="date" id="rdate" class="form-control form-control-sm" value="" readonly></td>
+										</tr>
+										<tr>
+											<td class="rem13"><b>대표자</b></td>
+											<td ><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
+										</tr>
+									</tbody>
+							</table>
+						</div>
+					</div>
+				</div><br>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">확인</button>
+				<input type="button" class="btn btn-sm btn-success" id="receiptBtn" value="엑셀파일 다운">
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+	
 
-	<!-- 진행 동작(수주상태 진행으로 변경) -->
-	<script>
-		$(".ingUpdate").click(function() {
-			event.preventDefault();
+<script>
+	/* 리스트 값 납품서 모달로 값 전달 */
+	function openReceiptModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, 
+			origin, itemweight, itemprice, representative, clientaddress, businessnumber, clientphone, clientfax) {
+		console.log('poid:', poid);
+		console.log('clientid:', clientid);
+		console.log('itemid:', itemid);
+		console.log('clientname:', clientname);
+		console.log('itemname:', itemname);
+		console.log('postate:', postate);
+		console.log('pocnt:', pocnt);
+		console.log('ordersdate:', ordersdate);
+		console.log('ordersduedate:', ordersduedate);
+		console.log('membercode:', membercode);
+		console.log('origin:', origin);
+		console.log('ritemweight:', itemweight);
+		console.log('ritemprice:', itemprice);
 
-			var poid = $(this).data("poid");
-			var postate = $(this).closest('tr').find('td:nth-child(3)').text(); // 주문 상태 가져오기
+		var sum = pocnt * itemprice; //공급가액
+		var tax = sum*0.1; //공급세액
+		var total = sum+tax; //합계금액
+		
+		// 가져온 값들을 모달에 설정
+		$("#rpoid").val(poid);
+		$("#rclientid").val(clientid);
+		$("#ritemid").val(itemid);
+		$("#rclientname").val(clientname);
+		$("#ritemname").val(itemname);
+		$("#rfloatingSelect").val(postate);
+		$("#rpocnt").val(pocnt);
+		$("#rordersdate").val(ordersdate);
+		$("#rdate").val(ordersduedate);
+		$("#rmembercode").val(membercode);
+		
+		$("#rorigin").val(origin);
+		$("#ritemweight").val(itemweight);
+		$("#ritemprice").val(itemprice);
+		$("#rsum").val(sum);
+		$("#rtax").val(tax);
+		$(".rtotal").val(total);
+		
+		$("#rrepresentative").val(representative);
+		$("#rclientaddress").val(clientaddress);
+		$("#rbusinessnumber").val(businessnumber);
+		$("#rclientphone").val(clientphone);
+		$("#rclientfax").val(clientfax);
 
-			console.log('poid 값:', poid);
-			console.log('postate 값:', postate);
-
-			// 주문 상태가 '대기'인 경우만 진행 가능
-			if (postate !== '대기') {
-				Swal.fire({
-					title : '이 주문은 진행할 수 없는 상태입니다.',
-					text : '수주상태를 확인해주세요.',
-					icon : 'error',
-				});
-				return;
-			}
-
-			Swal.fire({
-				title : '수주를 진행하시겠습니까?',
-				text : '수주가 진행상태로 업데이트 됩니다.',
-				icon : 'warning',
-				showCancelButton : true,
-				confirmButtonColor : '#3085d6',
-				cancelButtonColor : '#d33',
-				confirmButtonText : '승인',
-				cancelButtonText : '취소',
-				reverseButtons : false,
-			}).then(function(result) {
-				if (result.value) { //승인시
-					// Ajax 요청 실행
-					$.ajax({
-						type : 'POST',
-						url : '/sales/ingUpdate',
-						data : {
-							poid : poid
-						},
-						success : function(response) {
-							console.log('Ajax success:', response);
-							location.reload();
-						},
-						error : function(error) {
-							console.error('Error during cancellation:', error);
-							Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
-						}
-					});
-				}
-			});
-		});
-	</script>
-	<!-- 진행 동작(수주상태 취소로 변경) -->
-	<script>
-		$(".cancelUpdate").click(function() {
-			event.preventDefault();
-
-			var poid = $(this).data("poid");
-			var postate = $(this).closest('tr').find('td:nth-child(3)').text(); // 주문 상태 가져오기
-
-			console.log('poid 값:', poid);
-			console.log('postate 값:', postate);
-
-			// 주문 상태가 '완료'인 경우 취소 불가
-			if (postate === '완료') {
-				Swal.fire({
-					title : '이미 완료된 주문입니다.',
-					text : '완료된 상태는 취소할 수 없습니다.',
-					icon : 'error',
-				});
-				return;
-			}
-			// 주문 상태가 '완료'인 경우 취소 불가
-			if (postate === '취소') {
-				Swal.fire({
-					title : '이미 취소된 주문입니다.',
-					icon : 'error',
-				});
-				return; // 취소할 수 없는 상태이므로 함수 종료
-			}
-
-			Swal.fire({
-				title : '수주를 취소하시겠습니까?',
-				text : '수주가 취소상태로 업데이트 됩니다.',
-				icon : 'warning',
-				showCancelButton : true,
-				confirmButtonColor : '#3085d6',
-				cancelButtonColor : '#d33',
-				confirmButtonText : '승인',
-				cancelButtonText : '취소',
-				reverseButtons : false,
-			}).then(function(result) {
-				if (result.value) { //승인시
-					// Ajax 요청 실행
-					$.ajax({
-						type : 'POST',
-						url : '/sales/cancelUpdate',
-						data : {
-							poid : poid
-						},
-						success : function(response) {
-							console.log('Ajax success:', response);
-							location.reload();
-						},
-						error : function(error) {
-							console.error('Error during cancellation:', error);
-							Swal.fire('취소에 실패했습니다.', '다시 시도해주세요.', 'error');
-						}
-					});
-				}
-			});
-		});
-	</script>
-
-
-
-
-
+		// 모달 열기
+$("#openReceiptModal").modal('show');
+		console.log("납품서 모달 열기");
+	}
+</script>
+	
 	<!-- 품목 등록 모달 -->
 	<jsp:include page="registPO.jsp" />
 	<!-- 품목 수정 모달 -->
@@ -610,158 +553,5 @@ function receiptSend(poid) {
 </fieldset>
 
 
-<script>
-	/* 리스트 값 수정 모달로 값 전달 */
-	function openModifyModal(poid, clientid, itemid, clientname, itemname,
-			postate, pocnt, ordersdate, ordersduedate, membercode) {
-		console.log('poid:', poid);
-		console.log('clientid:', clientid);
-		console.log('itemid:', itemid);
-		console.log('clientname:', clientname);
-		console.log('itemname:', itemname);
-		console.log('postate:', postate);
-		console.log('pocnt:', pocnt);
-		console.log('ordersdate:', ordersdate);
-		console.log('ordersduedate:', ordersduedate);
-		console.log('membercode:', membercode);
-
-		// 가져온 값들을 모달에 설정
-		$("#poid3").val(poid);
-		$("#clientid3").val(clientid);
-		$("#itemid3").val(itemid);
-		$("#clientid2").val(clientname);
-		$("#itemid2").val(itemname);
-		$("#floatingSelect2").val(postate);
-		$("#pocnt2").val(pocnt);
-		$("#ordersdate2").val(ordersdate);
-		$("#date2").val(ordersduedate);
-		$("#membercode2").val(membercode);
-
-		// 모달 열기
-		$("#openModifyModal").modal('show');
-	}
-
-	/*달력 이전날짜 비활성화*/
-	var now_utc = Date.now(); // 현재 날짜를 밀리초로
-	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
-	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
-
-	var clientSM = document.getElementById('clientSM');
-	clientSM.addEventListener('show.bs.modal', function(event) {
-		var button = event.relatedTarget;
-		var recipient = button.getAttribute('data-bs-whatever');
-		var modalTitle = clientSM.querySelector('.modal-title');
-		var modalBodyInput = clientSM.querySelector('.modal-body input');
-	});
-
-	// 납품처 조회 모달
-	$(".clientSearch1, .clientSearch2").click(function() {
-		$("#clientSM").modal('show');
-	});
-
-	// 품목 조회 모달
-	$(".itemSearch1, .itemSearch2").click(function() {
-		$("#itemSM").modal('show');
-	});
-
-	// 클릭한 행의 정보를 가져와서 clientNS와 clientCS에 입력
-	$(".clientset").click(function() {
-		var clientName = $(this).find('td:eq(0)').text();
-		var clientCode = $(this).find('td:eq(1)').text();
-
-		$(".clientNS").val(clientName);
-		$(".clientCS").val(clientCode);
-	});
-
-	$(".itemset").click(function() {
-		var itemName = $(this).find('td:eq(0)').text();
-		var itemCode = $(this).find('td:eq(1)').text();
-
-		$(".itemNS").val(itemName);
-		$(".itemCS").val(itemCode);
-	});
-
-	$("#clibtn").click(function() {
-		$(".clientSearch1").val($(".clientNS").val());
-		$(".clientSearch2").val($(".clientCS").val());
-		$("#clientSM").modal('hide');
-	});
-	$("#itembtn").click(function() {
-		$(".itemSearch1").val($(".itemNS").val());
-		$(".itemSearch2").val($(".itemCS").val());
-		$("#itemSM").modal('hide');
-	});
-
-	$('#todaypo').click(
-			function() {
-				var today = new Date();
-				// 날짜를 YYYY-MM-DD 형식으로 포맷팅
-				var formattedDate = today.getFullYear() + '-'
-						+ ('0' + (today.getMonth() + 1)).slice(-2) + '-'
-						+ ('0' + today.getDate()).slice(-2);
-				$('#todaypo').val(formattedDate);
-			});
-
-	$("#searchbtn").click(function() {
-		// 수주일자
-		var podateStart = $("input[name='podateStart']").val();
-		var podateEnd = $("input[name='podateEnd']").val();
-
-		// 납품처조회
-		var clientCode = $(".clientSearch1").val();
-		var clientName = $(".clientSearch2").val();
-
-		// 납품예정일
-		var ordersDueDateStart = $("input[name='ordersDueDateStart']").val();
-		var ordersDueDateEnd = $("input[name='ordersDueDateEnd']").val();
-
-		// 품목조회
-		var itemCode = $(".itemSearch1").val();
-		var itemName = $(".itemSearch2").val();
-
-		// Ajax를 사용해 서버로 데이터 전송 및 조회
-		$.ajax({
-			type : "GET",
-			url : "/sales/POList",
-			data : {
-				podateStart : podateStart,
-				podateEnd : podateEnd,
-				clientCode : clientCode,
-				clientName : clientName,
-				ordersDueDateStart : ordersDueDateStart,
-				ordersDueDateEnd : ordersDueDateEnd,
-				itemCode : itemCode,
-				itemName : itemName
-			},
-			success : function(POList) {
-				// 성공 시에 테이블을 생성하고 화면에 표시
-				var tableHtml = '<table>';
-				for (var i = 0; i < POList.length; i++) {
-					tableHtml += '<tr>';
-					tableHtml += '<td>' + POList[i].poid + '</td>';
-					tableHtml += '<td>' + POList[i].postate + '</td>';
-					tableHtml += '<td>' + POList[i].pocode + '</td>';
-					tableHtml += '<td>' + POList[i].clientname + '</td>';
-					tableHtml += '<td>' + POList[i].itemname + '</td>';
-					tableHtml += '<td>' + POList[i].pocnt + '</td>';
-					tableHtml += '<td>' + POList[i].ordersdate + '</td>';
-					tableHtml += '<td>' + POList[i].updatedate + '</td>';
-					tableHtml += '<td>' + POList[i].ordersduedate + '</td>';
-					tableHtml += '<td>' + POList[i].membercode + '</td>';
-					tableHtml += '</tr>';
-				}
-				tableHtml += '</table>';
-
-				$("#result").html(tableHtml);
-			},
-			error : function(error) {
-				console.error("Error during search:", error);
-			}
-		});
-
-	});
-</script>
-
-
-
+<%@ include file="../sales/POListJS.jsp"%>
 <%@ include file="../include/footer.jsp"%>

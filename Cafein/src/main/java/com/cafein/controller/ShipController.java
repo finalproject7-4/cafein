@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -39,20 +42,35 @@ public class ShipController {
 	// 출하 조회
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/SHList", method = RequestMethod.GET)
-	public void AllSHListGET(Model model) throws Exception {
+	public String AllSHListGET(Model model,ShipVO svo, HttpSession session, Criteria cri) throws Exception {
 		logger.debug("AllSHListGET() 실행");
 		
-		model.addAttribute("AllSHList", shService.AllSHList());
+		// ShoipVO의 Criteria 설정
+		svo.setCri(cri);
+		
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(shService.countSH(svo));
+		logger.debug("총 개수: " + pageVO.getTotalCount());
+		
+		model.addAttribute("countSH",shService.countSH(svo));
+		model.addAttribute("AllSHList", shService.AllSHList(svo));
 		model.addAttribute("wcList", shService.registWC());
 		model.addAttribute("stList", shService.registST()); 
+		model.addAttribute("pageVO", pageVO);
+		
 		logger.debug("출하 리스트 출력!");
+		
+		return "/sales/SHList";
 	}
 	
 	// 출하 등록 - POST
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
 	public String registSH(ShipVO svo,
-							@RequestParam(value = "shipdate1") String shipdate1
+							@RequestParam(value = "shipdate1") String shipdate1,
+							RedirectAttributes rttr
 							) throws Exception {
 		
 		logger.debug("regist() 호출 ");                                 
@@ -109,10 +127,21 @@ public class ShipController {
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
 	@RequestMapping(value = "/PFList", method = RequestMethod.GET)
-	public void AllPFListGET(Model model, WorkVO wvo) throws Exception {
+	public void AllPFListGET(Model model, WorkVO wvo, HttpSession session, Criteria cri) throws Exception {
 		logger.debug("AllPFListGET() 실행");
 		
-		model.addAttribute("AllPFList", shService.AllPFList());
+		// SalesVO의 Criteria 설정
+		wvo.setCri(cri);
+				
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(shService.countPF(wvo));
+		logger.debug("총 개수: " + pageVO.getTotalCount());
+		
+		model.addAttribute("AllPFList", shService.AllPFList(wvo));
+		model.addAttribute("countPF",shService.countPF(wvo));
+		model.addAttribute("pageVO", pageVO);
 		logger.debug("실적 리스트 출력!");
 	}
 	

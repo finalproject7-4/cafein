@@ -13,8 +13,58 @@
 		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
 		FROM ship sh
 		LEFT JOIN stock st ON sh.stockid = st.stockid
-		ORDER BY shipdate1 DESC, shipid DESC;
+		<where>
+		<if test="shipsts != null" >
+			shipsts=#{shipsts}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND sh.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND sh.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+		ORDER BY shipdate1 DESC, shipid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
 	</select>
+	
+	<!-- 총 개수 -->
+	<select id="countSH" resultType="int" parameterType="com.cafein.domain.ShipVO">
+   SELECT count(*)
+	FROM ship sh
+	LEFT JOIN stock st ON sh.stockid = st.stockid
+	<where>
+		<if test="shipsts != null" >
+			shipsts=#{shipsts}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND sh.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND sh.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
+	</select>
+	
+	
 	
 	<!-- 출하 등록 -->
 	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
@@ -32,14 +82,14 @@
 	<select id="stList" resultType="com.cafein.domain.WorkVO">
 		SELECT it.itemname, st.stockquantity
 		FROM stock st
-        JOIN item it ON st.itemid = it.itemid;
+        JOIN item it ON st.itemid = it.itemid
 	</select>
 	
 	<!-- 출하 코드 생성 -->
 	<select id="getSHCount" resultType="int" parameterType="com.cafein.domain.ShipVO">
     select count(*) from ship
 	<where>
-    and shipcode like 'SH%';
+    and shipcode like 'SH%'
 	</where>
 	</select>
 
@@ -55,7 +105,7 @@
             clientname LIKE '%' || #{keyword} || '%' OR
             itemname LIKE '%' || #{keyword} || '%' OR
             shipcode LIKE '%' || #{keyword} || '%'
-        ORDER BY shipdate1 DESC, shipid DESC;
+        ORDER BY shipdate1 DESC, shipid DESC
     ]]>
 	</select>
 
@@ -78,11 +128,58 @@
        wk.membercode
 		FROM work wk
 		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
+         <where>
+		<if test="worksts != null" >
+			worksts=#{worksts}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
 		GROUP BY wk.workid, wk.workdate1, wk.workcode,
          wk.pocode, wk.itemname, wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
          wk.membercode
-		ORDER BY workdate1 DESC, workid DESC;
-
+		ORDER BY workdate1 DESC, workid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+	<!-- 총 개수 -->
+	<select id="countWK" resultType="int" parameterType="com.cafein.domain.WorkVO">
+   SELECT count(*)
+	FROM work wk
+	LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
+	<where>
+		<if test="worksts != null" >
+			worksts=#{worksts}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
 	</select>
 	
 	<!-- 작업 지시 등록 -->
@@ -96,14 +193,14 @@
 		SELECT po.pocode, po.clientid, cli.clientname, po.itemid, it.itemname, po.pocnt
 		FROM purchaseorder po
 		JOIN client cli ON po.clientid = cli.clientid
-		JOIN item it ON po.itemid = it.itemid;
+		JOIN item it ON po.itemid = it.itemid
 	</select>
 	
 	<!-- 작업지시 코드 생성 -->
 	<select id="getWKCount" resultType="int" parameterType="com.cafein.domain.WorkVO">
     select count(*) from work
 	<where>
-    and workcode like 'WK%';
+    and workcode like concat ('%','WK','%')
 	</where>
 	</select>
 	
@@ -114,18 +211,68 @@
 	 	where workid=#{workid}
 	 </update>
 	 
+	 <!-- 작업지시 삭제 -->
+	<delete id="deleteWK">
+		delete from work
+		where workid=#{workid}
+	</delete>
+	 
 	 
 	 
 	
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
-	<![CDATA[
     SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
            wk.pocnt, wk.membercode, wk.returncount, wk.returnreason
     FROM work wk
-    WHERE wk.worksts = '완료'
-    ORDER BY workid DESC;
-    ]]>
+      
+  	    <where>
+  	    wk.worksts = '완료'
+<!--   	    <if test="worksts != null and !worksts.equals('')" >
+			AND worksts=#{worksts}
+		</if> -->
+		<if test="searchBtn != null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+			AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+			AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+    ORDER BY workid DESC 
+    LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+ 	<!-- 총 개수 -->
+	<select id="countPF" resultType="int" parameterType="com.cafein.domain.WorkVO">
+   SELECT count(*)
+	FROM work wk
+	<where>
+	wk.worksts = '완료'
+		<!-- <if test="worksts != null and !worksts.equals('')" >
+			and worksts=#{worksts}
+		</if> -->
+		<if test="searchBtn != null and searchText == null">
+			AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND wk.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
 	</select>
 	
 	<!-- 실적 수정 -->
