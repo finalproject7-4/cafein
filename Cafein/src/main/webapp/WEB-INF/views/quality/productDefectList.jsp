@@ -13,18 +13,29 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			
 			<div class="buttonarea2" style="margin-bottom: 10px;">
 				<input type="button" class="btn btn-sm btn-primary" value="블렌딩" id="blending2nd">
-				<input type="button" class="btn btn-sm btn-danger" value="냉각" id="cooling2nd">
+				<input type="button" class="btn btn-sm btn-danger" value="로스팅" id="cooling2nd">
 				<input type="button" class="btn btn-sm btn-warning" value="포장" id="packaging2nd">
 				<input type="button" class="btn btn-sm btn-secondary" value="반품" id="return2nd">
 				<input type="button" class="btn btn-sm btn-success" value="전체" id="all2nd">
 			</div>
 			
+			<div class="buttonarea4" style="margin-bottom: 10px;">
 			<form action="/quality/productDefectList" method="GET">
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
-				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+				<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
 				<input type="submit" value="검색">
+			</form>
+			</div>
+			<form action="/productDefectPrint" method="GET">
+				<c:if test="${!empty param.searchBtn }">
+					<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+				</c:if>
+				<c:if test="${!empty param.searchText }">
+					<input type="hidden" name="searchText" value="${param.searchText }">
+				</c:if>
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
 			</form>
 			<br>						
 				<div class="table-responsive">
@@ -36,6 +47,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
+								<th scope="col">중량</th>				
 								<th scope="col">불량</th>
 								<th scope="col">불량사유</th>
 								<th scope="col">처리방식</th>
@@ -48,23 +60,29 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<th>${dlist.defectid }</th>
 									<td>${dlist.qualityid }</td>
 									<!-- 상품 구분 출력 -->
-									<c:if test="${empty dlist.process }"> <!-- 반품인 경우 (process == null) -->
+									<c:if test="${empty dlist.produceprocess }"> <!-- 반품인 경우 (produceprocess == null) -->
 										<td>${dlist.itemtype }</td>									
 									</c:if>
-									<c:if test="${!empty dlist.process }"> <!-- 생산인 경우 (process != null) -->
-										<td>${dlist.itemtype }-${dlist.process }</td>									
+									<c:if test="${!empty dlist.produceprocess }"> <!-- 생산인 경우 (produceprocess != null) -->
+										<td>${dlist.itemtype } - ${dlist.produceprocess }</td>									
 									</c:if>
 									<td>${dlist.itemcode }</td>
 									<td>${dlist.itemname }</td>
+									<c:if test="${dlist.weight != 0 }">
+									<td>${dlist.weight }(g)</td>
+									</c:if>
+									<c:if test="${dlist.weight == 0 }">
+									<td></td>
+									</c:if>
 									<!-- 불량 출력 -->
 									<td>
 									<c:if test="${!empty dlist.itemtype && dlist.itemtype.equals('반품')}">
 										<b style="color: red;">${dlist.defectquantity }</b>(개)
 									</c:if>
-									<c:if test="${!empty dlist.process && dlist.process.equals('포장')}">
-										<b style="color: red;">${dlist.defectquantity }</b>(개)
+									<c:if test="${!empty dlist.produceprocess && dlist.produceprocess.equals('포장')}">
+										<b style="color: red;">${dlist.defectquantity }</b>(g)
 									</c:if>
-									<c:if test="${!empty dlist.process && !dlist.process.equals('포장') }">
+									<c:if test="${!empty dlist.produceprocess && !dlist.produceprocess.equals('포장') }">
 										<b style="color: red;">${dlist.defectquantity }</b>(g)
 									</c:if>
 									</td>
@@ -77,7 +95,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</table>
 			</div>
 			
-						<!-- 페이지 블럭 생성 -->
+			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
     				<li class="page-item">
@@ -94,7 +112,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            var prevPage = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
 
    									var dataObject = {
    										"page" : prevPage	
@@ -103,8 +121,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!", prevPage);
@@ -138,7 +156,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            var pageNum = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
    									
    									var dataObject = {
    										"page" : pageNum	
@@ -147,8 +165,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!");
@@ -184,7 +202,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    						            var nextPage = $(this).data('page');
    									
    									var searchBtn = "${param.searchBtn}";
-   									var searchTxt = "${param.searchTxt}";
+   									var searchText = "${param.searchText}";
    									
    									var dataObject = {
    										"page" : nextPage	
@@ -193,8 +211,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
    									if (searchBtn) {
    									    dataObject.searchBtn = searchBtn;
    									}
-   									if (searchTxt) {
-   									    dataObject.searchTxt = searchTxt;
+   									if (searchText) {
+   									    dataObject.searchText = searchText;
    									}
    									
    									console.log("Page Block clicked!", nextPage);
@@ -231,9 +249,9 @@ $(document).ready(function() {
         fetchData2("블렌딩");
     });
 
-    // 냉각 버튼 클릭
+    // 로스팅 버튼 클릭
     $("#cooling2nd").click(function() {
-        fetchData2("냉각");
+        fetchData2("로스팅");
     });
 
     // 포장 버튼 클릭

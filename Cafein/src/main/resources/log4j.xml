@@ -15,16 +15,17 @@
 		<level value="debug" />
 	</logger>
 	
+	<logger name="org.apache.ibatis">
+    <level value="DEBUG"/>
+</logger>
+	
+	
 	<logger name="com.cafein.persistence">
 		<level value="debug" />
 	</logger>
 	
 	<logger name="com.cafein.service">
 	<level value="debug" />
-	</logger>
-	
-	<logger name="com.cafein.security">
-		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -46,7 +47,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
 	

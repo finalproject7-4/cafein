@@ -8,21 +8,64 @@
 
 	<!-- 수주 등록 -->
 	<insert id="registPO" parameterType="com.cafein.domain.SalesVO">
-		INSERT INTO purchaseorder (postate, pocode, pocnt, ordersdate, ordersduedate, clientid, itemid, membercode)
-		VALUES ( #{postate}, #{pocode}, #{pocnt}, #{ordersdate}, #{ordersduedate}, #{clientid}, #{itemid}, #{membercode} )
+		INSERT INTO purchaseorder (postate, pocode, pocnt, ordersdate, updatedate, ordersduedate, clientid, itemid, membercode)
+		VALUES ( #{postate}, #{pocode}, #{pocnt}, #{ordersdate},#{updatedate}, #{ordersduedate}, #{clientid}, #{itemid}, #{membercode} )
 	</insert>
 
 	<!-- 수주 조회 -->
 	<select id="getPOList" resultType="com.cafein.domain.SalesVO">
-		SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
-		cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
-		po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
-		FROM purchaseorder po
-		JOIN item ON po.itemid = item.itemid
-		JOIN client cli ON po.clientid = cli.clientid
-		ORDER BY ordersdate desc, poid desc;
-		</select>
+	   SELECT re.receiptid, cli.clientname, cli.businessnumber, cli.representative, cli.clientaddress, 
+	cli.clientphone, cli.clientfax, ship.lotnumber, item.itemname, item.origin, item.itemweight, 
+	item.itemprice, po.ordersduedate, re.etc, re.sign
+		FROM receipt re
+		JOIN client cli ON re.clientid = cli.clientid
+		JOIN ship ON re.shipid = ship.shipid
+		JOIN item ON re.itemid = item.itemid
+		JOIN purchaseorder po ON re.poid = po.poid
+		where poid=#{poid}
+	</select>
+	
+	
+	<!-- 품목 목록 (페이징) -->
+<select id="POListPage" resultType="com.cafein.domain.SalesVO">
+	SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
+	po.ordersdate, po.updatedate, po.ordersduedate, po.membercode,
+	re.receiptid,  cli.businessnumber, cli.representative, cli.clientaddress, 
+	cli.clientphone, cli.clientfax, item.origin, item.itemweight,
+	item.itemprice,re.sign, mem.cafeinNumber, mem.cafeinName,mem.cafeinRepresent,
+    mem.cafeinAddr, mem.cafeinFax, mem.cafeinCall, mem.membername
+	FROM purchaseorder po
+	JOIN item ON po.itemid = item.itemid
+	JOIN client cli ON po.clientid = cli.clientid
+	left JOIN receipt re ON po.receiptid = re.receiptid
+    left join member mem on po.membercode = mem.membercode
+	<where>
+		<if test="postate != null" >
+			postate=#{postate}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND item.itemtype = #{searchBtn} 
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
+	ORDER BY ordersdate DESC, poid DESC
+	LIMIT #{cri.startPage}, #{cri.pageSize}
+</select>
 
+	
 	<!-- 수주등록-납품처 -->
 	<select id="cliList" resultType="com.cafein.domain.SalesVO">
 		select * from client
@@ -31,6 +74,7 @@
 	<!-- 수주등록-품목 -->
 	<select id="iList" resultType="com.cafein.domain.SalesVO">
 		select * from item
+		where itemcode like '%P%'
 	</select>
 
 	<!-- 수주코드 생성 -->
@@ -39,20 +83,110 @@
 		<where>
 		  <choose>
 			<when test="postate == '대기'">
-				and pocode like '%AL%';
+				and pocode like '%PO%';
 			</when>
-			<when test="postate == '진행'">
-				and pocode like '%SK%';
-			</when>
-			<when test="postate == '완료'">
-				and pocode like '%FJ%';
-			</when>
-			<otherwise>
-				and pocode like '%GH%';
-			</otherwise>
 		  </choose>
 		</where>
 	</select>
 
+	<!-- 수주수정 -->
+	 <update id="updatePO">
+	 	update purchaseorder set clientid=#{clientid}, itemid=#{itemid}, postate=#{postate}, pocnt=#{pocnt},
+	 	ordersdate=#{ordersdate}, ordersduedate=#{ordersduedate}, updatedate=#{updatedate}, membercode=#{membercode}
+	 	where poid=#{poid}
+	 </update>
+	 
+	 <!-- 수주상태 취소 -->
+	 <update id="cancelPOState">
+	    UPDATE purchaseorder SET postate = 
+	    CASE 
+	        WHEN postate != '완료' THEN '취소'
+	        ELSE postate
+	    END
+	    WHERE poid = #{poid}
+	</update>
+	 <!-- 수주상태 진행 -->
+	 <update id="ingPOState">
+	 	update purchaseorder set postate='진행' 
+	 	where poid=#{poid}
+	 </update>
+	 
+	<!-- 납품서 조회 -->
+	<select id="getReceiptList" resultType="com.cafein.domain.SalesVO">
+		SELECT re.receiptid, cli.clientname, cli.businessnumber, cli.representative, cli.clientaddress, cli.clientphone, cli.clientfax, 
+		ship.lotnumber, item.itemname, item.origin, item.itemweight, item.itemprice, po.ordersduedate, re.etc, re.sign
+		FROM receipt re
+		JOIN client cli ON re.clientid = cli.clientid
+		JOIN ship ON re.shipid = ship.shipid
+		JOIN item ON re.itemid = item.itemid
+		JOIN purchaseorder po ON re.poid = po.poid
+	</select>
+	
+	<!-- 수주조회 총개수 -->
+	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
+   SELECT count(*)
+	FROM purchaseorder po
+	JOIN item ON po.itemid = item.itemid
+	JOIN client cli ON po.clientid = cli.clientid
+	<where>
+		<if test="postate != null" >
+			postate=#{postate}
+		</if>
+		<if test="searchBtn != null and searchText == null">
+			AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn != null and searchText != null">
+			AND item.itemtype = #{searchBtn} 
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn == null and searchText != null">
+			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="searchBtn != null and startDate == null and endDate == null">
+		AND cli.clientname = #{searchBtn}
+		</if>
+		<if test="searchBtn == null and startDate != null and endDate != null">
+		AND DATE(ordersdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</where>
+</select>
 
+ <!-- 수주상태 대기 -->
+ <select id="stop" resultType="com.cafein.domain.SalesVO">
+ select * from purchaseorder
+ where postate='대기'
+ </select>
+	
+	<!-- 리스트 출력 -->
+ 	<select id="selectPOListExcel" resultType="SalesVO">
+ 		SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	    cli.clientid, cli.clientname, cli.clientcode, 
+	    item.itemid, item.itemname, item.itemcode, 
+	    po.ordersdate, po.updatedate, po.ordersduedate, po.membercode
+ 		FROM purchaseorder po
+ 		JOIN client cli
+ 		ON po.clientid = cli.clientid
+ 		JOIN item item
+ 		ON po.itemid = item.itemid
+ 		ORDER BY poid DESC
+ 	</select>
+ 	
+	<!-- 납품서 출력 -->
+ 	<select id="receipt" resultType="SalesVO">
+	SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
+	cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
+	po.ordersdate, po.updatedate, po.ordersduedate, po.membercode,
+	re.receiptid,  cli.businessnumber, cli.representative, cli.clientaddress, 
+	cli.clientphone, cli.clientfax, item.origin, item.itemweight,
+	item.itemprice,re.sign, mem.cafeinNumber, mem.cafeinName,mem.cafeinRepresent,
+    mem.cafeinAddr, mem.cafeinFax, mem.cafeinCall, mem.membername
+	FROM purchaseorder po
+	JOIN item ON po.itemid = item.itemid
+	JOIN client cli ON po.clientid = cli.clientid
+	left JOIN receipt re ON po.receiptid = re.receiptid
+    left join member mem on po.membercode = mem.membercode
+    where poid=#{poid}
+ 	</select>
+ 	
+	 
 </mapper>

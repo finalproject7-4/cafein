@@ -47,14 +47,14 @@ public class StockController {
 		List<QualityVO> resultList = sService.stockList(vo); // 생산 + 반품 재고 목록
 		List<QualityVO> storageList = sService.storageList(); // 생산 + 반품 창고 목록
 		
-		model.addAttribute("list", resultList);
-		model.addAttribute("slist", storageList);
-		
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(sService.stockListCount(vo));
 		
 		model.addAttribute("pageVO", pageVO);
+		
+		model.addAttribute("list", resultList);
+		model.addAttribute("slist", storageList);
 	}
 
 	// http://localhost:8088/material/stockProduct
@@ -71,15 +71,15 @@ public class StockController {
 		logger.debug(" rawStorageList : " + rawStorageList);
 		logger.debug(" subStorageList : " + subStorageList);
 		
-		model.addAttribute("list", resultList);
-		model.addAttribute("rlist", rawStorageList);
-		model.addAttribute("slist", subStorageList);
-		
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(sService.materialStockListCount(vo));
 		
 		model.addAttribute("pageVO", pageVO);
+		
+		model.addAttribute("list", resultList);
+		model.addAttribute("rlist", rawStorageList);
+		model.addAttribute("slist", subStorageList);
 	}
 
 	// 재고 입력 (생산 [포장] + 반품)
@@ -95,9 +95,15 @@ public class StockController {
 		}else {
 		
 		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
-		
 		vo.setWorkerbycode(workerbycode);
-		vo.setLotnumber(sService.roastedbeanLotNum(vo)); // 생산 LOT 번호 조회
+		
+		int produceid = vo.getProduceid();
+		// sService.normalRoastedBeanLot(produceid);
+		
+		if(vo.getItemtype() != null && vo.getItemtype().equals("생산")) {
+			int stockquantity = vo.getStockquantity() / vo.getWeight();
+			vo.setStockquantity(stockquantity);
+		}
 		
 		int result = sService.newStock(vo);
 		if(result == 0) {
@@ -105,6 +111,7 @@ public class StockController {
 			logger.debug(" 재고 등록 실패! ");
 			return "redirect:/quality/qualities";
 		}else {
+			sService.normalRoastedBeanLot(produceid);
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");
 		}
@@ -129,7 +136,7 @@ public class StockController {
 		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		
 		vo.setWorkerbycode(workerbycode);
-		vo.setLotnumber(sService.receiveLotNum(vo)); // 입고 LOT 번호 조회
+		int receiveid = vo.getReceiveid();
 		
 		int result = sService.newStock(vo);
 		if(result == 0) {
@@ -137,6 +144,7 @@ public class StockController {
 			logger.debug(" 재고 등록 실패! ");
 			return "redirect:/quality/qualitiesMaterial";
 		}else {
+			sService.normalRoastedBeanLotMat(receiveid);
 			rttr.addFlashAttribute("result", "STOCKYES");
 			logger.debug(" 재고 등록 성공! ");
 		}
@@ -265,4 +273,5 @@ public class StockController {
 	public void materialStockToast(Model model) throws Exception{
 		model.addAttribute("materialToast", sService.materialStockToast());
 	}
+	
 }

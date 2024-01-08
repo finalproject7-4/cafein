@@ -134,6 +134,66 @@ public class StockDAOImpl implements StockDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".materialStockToast");
 	}
+
+	// 재고 엑셀용 출력 목록 조회 (생산 [포장] + 반품)
+	@Override
+	public List<QualityVO> selectStockListExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectStockListExcel", vo);
+	}
+
+	// 재고 엑셀용 출력 목록 조회 (자재)
+	@Override
+	public List<QualityVO> selectMaterialStockListExcel(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectMaterialStockListExcel", vo);
+	}
+	
+	// roastedBean 테이블 조회
+	@Override
+	public QualityVO selectRoastedBean(String lotnumber) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectRoastedBean", lotnumber);
+	}
+
+	// roastedBean - lotnumber 테이블 조회
+	@Override
+	public List<QualityVO> selectRoastedBeanLot(String produceid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectRoastedBeanLot", produceid);
+	}
+	
+	// receive 테이블 조회
+	@Override
+	public QualityVO selectReceiveInfo(String receiveid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectReceiveInfo", receiveid);
+	}
+
+	// produceid로 roastedBean LOT 조회 후 입력 (포장)
+	@Override
+	public void insertNormalRoastedBeanLot(int produceid) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertNormalRoastedBeanLot", produceid);
+	}
+
+	// receiveid로 receive LOT 조회 후 입력 (자재)
+	@Override
+	public void insertNormalRoastedBeanLotMat(int receiveid) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertNormalRoastedBeanLotMat", receiveid);
+	}
+	
+	// 정상 LOT 번호 조회
+	@Override
+	public List<QualityVO> selectNormalLot(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectNormalLot", vo);
+	}
+
+
+	
+	
 	
 	
 	

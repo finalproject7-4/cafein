@@ -20,14 +20,14 @@
 
 				<div class="modal-body">
 				납품처/코드
-				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example">
+				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example" required="required">
 				
 				품목명/코드
-				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example">
+				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example" required="required">
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
 						<select class="form-select" id="floatingSelect" name="postate"
-							aria-label="Floating label select example">
+							aria-label="Floating label select example" required="required">
 							<optgroup label="수주상태">
 								<option value="대기">대기</option>
 								<option value="진행">진행</option>
@@ -37,21 +37,21 @@
 						</select>
 					</div>	
 					수량
-					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example">
+					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example" required="required">
 					<div class="row">
 					<div class="col">
 					수주일자
-					<input name="ordersdate" id="todaypo" autocomplete="off" type="text" class="form-control" placeholder="수주일자(클릭)">
+					<input name="ordersdate" id="todaypo" autocomplete="off" type="text" class="form-control" placeholder="수주일자(클릭)" required="required">
 					</div>
 					<div class="col">
-					완납예정일
-					<input name="ordersduedate" type="date" id="date" class="form-control" placeholder="완납예정일">
+					완납예정일 
+					<input name="ordersduedate" type="date" id="date" class="form-control" placeholder="완납예정일" required="required">
 					</div>
 					</div>
 					<br>
 					
 					담당자
-					<input autocomplete="off"  id="membercode" name="membercode" class="form-control mb-3" type="number" placeholder="담당자" autocomplete="off">
+					<input autocomplete="off"  id="membercode" name="membercode" class="form-control mb-3" type="number" placeholder="담당자" autocomplete="off"  required="required">
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -85,12 +85,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${cliList}" var="cli">
+							<c:set var="counter" value="1" />
+								<c:forEach items="${cliList}" var="cli" varStatus="status">
 									<tr class="clientset">
-										<td>${cli.clientid }</td>
+										<td>${counter }</td>
 										<td>${cli.clientname }</td>
 										<td>${cli.clientcode }</td>
 									</tr>
+									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>
@@ -124,12 +126,14 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${iList}" var="item">
+							<c:set var="counter" value="1" />
+								<c:forEach items="${iList}" var="item" varStatus="status">
 									<tr class="itemset">
-										<td>${item.itemid }</td>
+										<td>${counter }</td>
 										<td>${item.itemname }</td>
 										<td>${item.itemcode }</td>
 									</tr>
+									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>
@@ -151,14 +155,12 @@ $(document).ready(function() {
 	});
 	
 	$(".clientset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var clientid = $(this).find('td:first-child').text();
+	    var clientid = $(this).find('td:eq(0)').text();
 	    console.log("clientid:", clientid);
 	    $("#clientidd").val(clientid);
 	});
 	$(".itemset").click(function() {
-	    console.log("클릭 이벤트 발생");
-	    var itemid = $(this).find('td:first-child').text();
+	    var itemid = $(this).find('td:eq(0)').text();
 	    console.log("itemid:", itemid);
 	    $("#itemidd").val(itemid);
 	});
@@ -206,13 +208,17 @@ $(document).ready(function() {
         $('#todaypo').val(formattedDate);
     });
     
-    /*달력 이전날짜 비활성화*/
+    /*달력 이전||+5일 이후 날짜 비활성화*/
 	var now_utc = Date.now(); // 현재 날짜를 밀리초로
 	var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
 	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
 	
+	var fiveDaysLater = new Date(now_utc + 5 * 24 * 60 * 60 * 1000 - timeOff).toISOString().split("T")[0];
+	
 	//id="date"
-	document.getElementById("date").setAttribute("min", today);
+	var dateInput = document.getElementById("date");
+	dateInput.setAttribute("min", today);
+	dateInput.setAttribute("max", fiveDaysLater);
 
 	});
 </script>

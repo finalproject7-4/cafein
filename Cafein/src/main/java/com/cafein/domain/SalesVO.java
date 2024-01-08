@@ -8,6 +8,15 @@ import lombok.Data;
 @Data
 public class SalesVO {
 	
+	// Criteria 객체
+	private Criteria cri;
+	
+	// 검색용 변수
+	private String startDate;
+	private String endDate;
+	private String searchText;
+	private String searchBtn;
+	
 	//po 테이블
 	private int poid;
 	private String postate;
@@ -23,7 +32,6 @@ public class SalesVO {
 	//client 테이블
 	private String clientcode; // 거래처코드
 	private String clientname; // 거래처명
-	private String categoryofclient; // 거래처구분
 	private String businessnumber; // 사업자번호
 	private String representative; //대표자
 	private String clientaddress; //주소
@@ -37,6 +45,15 @@ public class SalesVO {
 	private int itemweight;//중량
 	private int itemprice; //단가
 	
+	//member
+	private String membername;
+	private String cafeinNumber;
+	private String cafeinName;
+	private String cafeinRepresent;
+	private String cafeinAddr;
+	private String cafeinFax;
+	private String cafeinCall;
+	
 	// ship 테이블
 	private String lotnumber; //LOT번호
 	
@@ -47,5 +64,7 @@ public class SalesVO {
 				+ updatedate + ", ordersduedate=" + ordersduedate + ", membercode=" + membercode + "]";
 	}
 
+
+	
 
 }

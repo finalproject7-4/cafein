@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!-- 품목 등록 모달창 -->
+	<!-- 품목 수정 모달 시작 -->
 	<div class="modal fade" id="itemModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -12,39 +12,35 @@
 						aria-label="Close"></button>
 				</div>
 				
-				<form role="form" action="/information/itemRegist" method="post">
+				<form action="itemModify" method="post">
+				<input type="hidden" id="itemid" name="itemid">
 				<div class="modal-body">
-<%-- 				${itemList } --%>
-					<div class="mb-3">
-						<label for="itemtype" class="col-form-label"><b>품목유형</b></label>
-						<select class="form-select" id="floatingSelect" name="itemtype"
-							aria-label="Floating label select example">
-							<optgroup label="품목유형">
-								<option value="원자재">원자재</option>
-								<option value="부자재">부자재</option>
-								<option value="완제품">완제품</option>
-							</optgroup>
-						</select>
-					</div>	
+					<label for="itemtype" class="col-form-label"><b>품목유형</b></label>
+					<input autocomplete="off" id="itemtype2" name="itemtype" class="form-control mb-3" type="text" readonly="readonly">
 					<div class="row">
 						<div class="col">
-							<b>품명</b><input id="modalItemCode" name="itemname" class="form-control" id="floatingInput">
+							<label for="itemname" class="col-form-label"><b>품명</b></label>
+							<input type="text" id="itemname2" name="itemname" class="form-control mb-3" value="">
 						</div>
-					</div><br>
+					</div>
 					<div class="row">
 						<div class="col">
-							<b>공급처 코드</b><input id="clientcode" name="clientcode" class="form-control" id="floatingInput">
+							<label for="clientname" class="col-form-label"><b>공급처</b></label>
+							<input autocomplete="off" id="clientname2" name="clientname" class="form-control mb-3" readonly="readonly">
 						</div>
 						<div class="col">
-							<b>원산지</b><input id="origin" name="origin" class="form-control" id="floatingInput">
+							<label for="origin" class="col-form-label"><b>원산지</b></label>
+							<input autocomplete="off" id="origin2" name="origin" class="form-control mb-3" readonly="readonly">
 						</div>
-					</div><br>
+					</div>
 					<div class="row">
 						<div class="col">
-							<b>중량(g)</b><input id="itemweight" name="itemweight" class="form-control" id="floatingInput">
+							<label for="itemweight" class="col-form-label"><b>중량(g)</b></label>
+							<input type="text" id="itemweight2" name="itemweight" class="form-control mb-3" value="">
 						</div>
 						<div class="col">
-							<b>단가(원)</b><input id="itemprice" name="itemprice" class="form-control" id="floatingInput">
+							<label for="itemprice" class="col-form-label"><b>단가(원)</b></label>
+							<input type="text" id="itemprice2" name="itemprice" class="form-control mb-3" value="">
 						</div>
 					</div>
 				</div>
@@ -52,12 +48,10 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" id="itemRegistBtn">등록</button>
+					<input type="submit" class="btn btn-primary" value="등록">
 				</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	
-<script>
-</script>
+	<!-- 품목 수정 모달 끝 -->
