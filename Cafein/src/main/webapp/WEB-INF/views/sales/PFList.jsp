@@ -9,13 +9,28 @@
 	<!-- 검색 폼 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/sales/PFList" method="get" onsubmit="return filterRows(event)">
-				검색 <input class="workSearch" type="text" name="workSearch" placeholder="수주코드, 작업지시코드, 납품처, 제품명으로 검색">
-				작업지시일자 <input type="date" id="startDate"
-					name="worksdate"> ~ <input type="date" id="endDate" name="worksdate">
-				<button type="submit" class="datesubmitbtn btn btn-dark m-2">조회</button>
+			<form name="dateSearch" action="/sales/PFList" method="get">
+				<c:if test="${!empty param.searchBtn }">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="검색">
+				</c:if>
+				검색 <input class="pfSearch" type="text" name="searchText" placeholder="검색">
+				작업지시일자 
+				<input type="date" id="startDate" name="startDate" required> ~
+				<input type="date" id="endDate" name="endDate" required>
+				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
 				<br>
 			</form>
+				<form action="PFList" method="GET">
+					<c:if test="${!empty param.searchBtn }">
+						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
+					</c:if>
+					<c:if test="${!empty param.startDate }">
+						<input type="hidden" value="${param.startDate }" name="startDate">
+					</c:if>
+					<c:if test="${!empty param.endDate }">
+						<input type="hidden" value="${param.endDate }" name="endDate">
+					</c:if>
+				</form>
 
 		</div>
 	</div>
@@ -23,21 +38,43 @@
 	<!-- 작업지시 조회 -->
 	<div class="col-12" style="margin-top: 20px;">
 		<div class="bg-light rounded h-100 p-4">
-			<h6 class="mb-4">실적 관리  <span class="mb-5">[총 ${fn:length(AllPFList)}건]</span> </h6>
+			<h6 class="mb-4">실적 관리  <span class="settingPF">[총 ${countPF}건]</span> </h6>
 
 		<div class="col-12">
-			<div class="btn-group" role="group">
-			<form role="form1">
-				<input type="hidden" name="state" value="전체">
-				<button type="button" class="btn btn-outline-dark"
-					id="allwk">전체</button>
-			</form>
-			<form role="form2">
-				<input type="hidden" name="state" value="대기">
-				<button type="button" class="btn btn-outline-dark"
-					id="stop">불량</button>
-			</form>
+			<input type="hidden" name="state" value="전체">
+			<button type="button" class="btn btn-outline-dark" id="allpf">전체</button>
+			<input type="hidden" name="state" value="불량">
+			<button type="button" class="btn btn-outline-dark" id="stop">불량</button>
 		</div>
+		
+						<script>
+		$("#allpf").click(function() {
+		   location.href="/sales/PFList";
+		});
+
+		$("#stop").click(function () {
+		 	console.log("불량 버튼 클릭됨");
+			event.preventDefault();
+		    location.href="/sales/PFList=접수";
+		});
+
+		function updateTotalCount() {
+			var totalCount = $(".table tbody tr:visible").length;
+			$(".settingPF").text("총 " + totalCount + "건");
+		}
+
+		// 필터링할 때마다 호출하여 업데이트
+		function updateRowNumbers() {
+			var counter = 1;
+			$(".table tbody tr:visible").each(function() {
+				$(this).find('td:nth-child(2)').text(counter);
+				counter++;
+			});
+
+			// 총 건수 업데이트 호출
+			updateTotalCount();
+		}
+		</script>
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<form role="form" action="/sales/PFList" method="post">
 			<div class="table-responsive">
@@ -58,7 +95,7 @@
 							</tr>
 						</thead>
 						<tbody>
-
+							<c:set var="counter" value="1" />
 							<c:forEach items="${ AllPFList }" var="pf">
 								<tr>
 									<td>${pf.workid }</td>
@@ -87,8 +124,141 @@
 			</div>
 			</form>
 			</div>
+			
+			
+			<!-- 페이지 블럭 생성 -->
+			<nav aria-label="Page navigation example">
+  				<ul class="pagination justify-content-center">
+    				<li class="page-item">
+    					<c:if test="${pageVO.prev }">
+      						<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+        						<span aria-hidden="true">&laquo;</span>
+      						</a>
+      						
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+							<script>
+								$(document).ready(function(){
+   									$('.pageBlockPrev').click(function(e) {
+   										e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            	let prevPage = $(this).data('page');
+   									
+   						            	let searchBtn = "${param.searchBtn}";
+   						            	let searchText = "${param.searchText}";
+   						            	let startdate = "${param.startdate}";
+   						            	let enddate = "${param.enddate}";
+
+   						            	url = "/sales/PFList?page=" + nextPage;
+
+   						            	if (searchBtn) {
+   						            	  url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   						            	}
+
+   						            	if (searchText) {
+   						            	  url += "&searchText=" + encodeURIComponent(searchText);
+   						            	}
+
+   						            	if (startdate) {
+   						            	  url += "&startdate=" + encodeURIComponent(startdate);
+   						            	}
+
+   						            	if (enddate) {
+   						            	  url += "&enddate=" + encodeURIComponent(enddate);
+   						            	}
+
+   				                		location.href = url;
+    								});
+								});
+							</script>
+							<!-- 버튼에 파라미터 추가 이동 (이전) -->
+      						
+    					</c:if>
+    				</li>
+					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+    				<li class="page-item ${pageVO.cri.page == i? 'active' : ''}"><a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a></li>
+					
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					<script>
+					$(document).ready(function(){
+			            $('.pageBlockNum[data-page="${i}"]').click(function (e) {
+			                e.preventDefault(); // 기본 이벤트 방지
+			                
+			               	let searchText = "${param.searchText}";	
+			                let searchBtn = "${param.searchBtn}";
+			                let startdate = "${param.startdate}";
+			            	let enddate = "${param.enddate}";
+
+			                let pageValue = $(this).data('page');
+		                	url = "/sales/PFList?page=" + pageValue;
+			                
+			                if (searchBtn) {
+			                    url += "&searchBtn=" + encodeURIComponent(searchBtn);
+			                }
+			                
+			                if (searchText) {
+			                    url += "&searchText=" + encodeURIComponent(searchText);
+			                }
+			                if (startdate) {
+			            	  url += "&startdate=" + encodeURIComponent(startdate);
+			            	}
+
+			            	if (enddate) {
+			            	  url += "&enddate=" + encodeURIComponent(enddate);
+			            	}
+			                
+			                location.href = url;
+			            });
+					});	
+					</script>
+					<!-- 버튼에 파라미터 추가 이동 (번호) -->
+					
+					</c:forEach>
+    				<li class="page-item">
+    					<c:if test="${pageVO.next }">
+      						<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+        						<span aria-hidden="true">&raquo;</span>
+      						</a>	
+      					<!-- 버튼에 파라미터 추가 이동 (이후) -->
+						<script>
+							$(document).ready(function(){
+   								$('.pageBlockNext').click(function(e) {
+   									e.preventDefault(); // 기본 이벤트 제거
+   									
+   						            let nextPage = $(this).data('page');
+   									
+   									let searchBtn = "${param.searchBtn}";
+   									let searchText = "${param.searchText}";
+   									let startdate = "${param.startdate}";
+					            	let enddate = "${param.enddate}";
+
+   				                	url = "/sales/PFList?page=" + nextPage;
+   				                
+   				                	if (searchBtn) {
+   				                    	url += "&searchBtn=" + encodeURIComponent(searchBtn);
+   				                	}
+   				                
+   				                	if (searchText) {
+   				                    	url += "&searchText=" + encodeURIComponent(searchText);
+   				                	}
+   				                	if (startdate) {
+					            	  url += "&startdate=" + encodeURIComponent(startdate);
+					            	}
+
+					            	if (enddate) {
+					            	  url += "&enddate=" + encodeURIComponent(enddate);
+					            	}
+   				                
+   				                	location.href = url;
+    							});
+							});
+						</script>
+						<!-- 버튼에 파라미터 추가 이동 (이전) -->  					
+    					</c:if>
+    				</li>
+  				</ul>
+			</nav>
+			<!-- 페이지 블럭 생성 -->
 		</div>
-	</div>
 </fiedset>
 
 		<jsp:include page="modifyPF.jsp"/>

@@ -27,12 +27,21 @@ public class ShipDAOImpl implements ShipDAO {
 	// mapper
 	private static final String NAMESPACE ="com.cafein.mapper.ShipMapper";
 
-	// 출하 조회
+	// 출하 조회 (페이징)
 	@Override
-	public List<ShipVO> getSHList() throws Exception{
+	public List<ShipVO> getSHList(ShipVO svo) throws Exception{
 		logger.debug("출하 조회 성공");
-		return sqlSession.selectList(NAMESPACE+".getSHList");
+		return sqlSession.selectList(NAMESPACE+".getSHList",svo);
 	}
+	
+	// 총 개수
+	@Override
+	public int countSH(ShipVO svo) throws Exception {
+		logger.debug("DAO : countSH(svo)");
+		return sqlSession.selectOne(NAMESPACE+".countSH",svo);
+	}
+
+
 
 	// 출하 등록
 	@Override
@@ -62,7 +71,7 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.selectOne(NAMESPACE + ".getSHCount", svo);
 	}
 	
-	// 출하 검색
+	// 출하 검색 
 	@Override
 	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
 		return sqlSession.selectList(NAMESPACE + ".searchSHList", searchParams);
@@ -81,9 +90,16 @@ public class ShipDAOImpl implements ShipDAO {
 
 	// 작업 지시 조회
 	@Override
-	public List<WorkVO> getWKList() throws Exception {
+	public List<WorkVO> getWKList(WorkVO wvo) throws Exception {
 		logger.debug("작업 지시 조회 성공");
-		return sqlSession.selectList(NAMESPACE+".getWKList");
+		return sqlSession.selectList(NAMESPACE+".getWKList",wvo);
+	}
+	
+	// 총 개수
+	@Override
+	public int countWK(WorkVO wvo) throws Exception {
+		logger.debug("DAO : countWK(wvo)");
+		return sqlSession.selectOne(NAMESPACE+".countWK",wvo);
 	}
 	
 //	// 작업 지시 검색
@@ -91,6 +107,7 @@ public class ShipDAOImpl implements ShipDAO {
 //	public List<WorkVO> searchWKList(String keyword) throws Exception {
 //	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
 //	}
+
 
 
 	// 작업 지시 등록
@@ -121,11 +138,28 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.update(NAMESPACE + ".updateWK", wvo);
 	}
 
+	// 작업 지시 삭제
+	@Override
+	public void deleteWK(WorkVO wvo) throws Exception {
+		logger.debug("DAO - deleteWK(WorkVO wvo)");
+		sqlSession.delete(NAMESPACE + ".deleteWK", wvo);
+	}
+
+	
+	
+	
 	// 실적 조회
 	@Override
-	public List<WorkVO> getPFList() throws Exception {
+	public List<WorkVO> getPFList(WorkVO wvo) throws Exception {
 		logger.debug("실적 조회 성공");
 		return sqlSession.selectList(NAMESPACE+".getPFList");
+	}
+	
+	// 총 개수
+	@Override
+	public int countPF(WorkVO wvo) throws Exception {
+		logger.debug("DAO : countPF(wvo)");
+		return sqlSession.selectOne(NAMESPACE+".countPF",wvo);
 	}
 
 	// 실적 수정

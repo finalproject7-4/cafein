@@ -3,13 +3,18 @@ package com.cafein.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cafein.domain.ReceiveVO;
+import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 
 public interface ShipService {
 	
 	// 출하 조회
-	public List<ShipVO> AllSHList() throws Exception;
+	public List<ShipVO> AllSHList(ShipVO svo) throws Exception;
+	
+	// 총 개수
+	public int countSH(ShipVO svo) throws Exception;
 	
 	// 출하 등록
 	public void registSH(ShipVO svo) throws Exception;
@@ -32,7 +37,10 @@ public interface ShipService {
 		
 	
 	// 작업 지시 조회
-	public List<WorkVO> AllWKList() throws Exception;
+	public List<WorkVO> AllWKList(WorkVO wvo) throws Exception;
+	
+	// 총 개수
+	public int countWK(WorkVO wvo) throws Exception;
 	
 //	// 작업 지시 검색
 //	public List<WorkVO> searchWKList(String keyword) throws Exception;
@@ -49,8 +57,17 @@ public interface ShipService {
 	// 작업 지시 수정
 	public int WKModify(WorkVO wvo) throws Exception;
 	
+	// 작업 지시 삭제
+	public void WKDelete(WorkVO wvo) throws Exception;
+	
+	
+	
+	
 	// 실적 조회
-	public List<WorkVO> AllPFList() throws Exception;
+	public List<WorkVO> AllPFList(WorkVO wvo) throws Exception;
+	
+	// 총 개수
+	public int countPF(WorkVO wvo) throws Exception;
 	
 	// 실적 수정
 	public int PFModify(WorkVO wvo) throws Exception;
