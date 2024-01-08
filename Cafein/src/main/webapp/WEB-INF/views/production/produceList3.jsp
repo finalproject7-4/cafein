@@ -242,8 +242,8 @@ function fetchData(searchBtnValue) {
 <td> ${plist.itemname }</td>
 <td>${plist.produceline }</td>
 <td>${plist.process }</td>
-<td>${plist.qualitycheck }</td>
-<td>${plist.state }</td>
+<td style="${plist.qualitycheck == '정상'? 'style=color:red; font-weight: bold;' : ''}">${plist.qualitycheck }</td>
+<td style="font-weight: bold; ${plist.state == '완료'? 'color:red;' : ''} ${plist.state == '생산중'? 'color:blue;' : ''}">${plist.state }</td>
 <td style="display: none;">${plist.producetime }</td>
 <td style="display: none;">${plist.itemid }</td>
 <td style="display: none;">${plist.packagevol }</td>
