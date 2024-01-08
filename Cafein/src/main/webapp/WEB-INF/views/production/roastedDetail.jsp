@@ -213,7 +213,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> 제품 바코드 출력 </h5>
-						<button type="button" class="btn-close" aria-label="Close" ></button>
+						<button type="button" onclick="location.href='/production/roastedList';" class="btn-close" aria-label="Close" ></button>
 					</div>
 					<div class="modal-body">
 						<form action="" >
