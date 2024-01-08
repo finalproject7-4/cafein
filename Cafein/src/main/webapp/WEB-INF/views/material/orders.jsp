@@ -26,17 +26,17 @@
 		  <div class="form-group col">
     		<div class="input-group">
     		<label for="orderDate" style="margin: 5px 5px 0 10px;">발주일자</label>
-        		<input type="date" class="form-control" name="orderStartDate"> 
+        		<input type="date" name="orderStartDate" class="form-control" style="border-radius: 5px;"> 
         		<label>&nbsp;~&nbsp;</label>
-        		<input type="date" class="form-control" name="orderEndDate">
+        		<input type="date" name="orderEndDate" class="form-control" style="border-radius: 5px;">
     		</div>
 		  </div> 
 		  <div class="form-group col">
     		<div class="input-group">
     		<label for="deliveryDate" style="margin: 5px 5px 0 0;">납기일자</label>
-        		<input type="date" class="form-control" name="deliveryStartDate"> 
+        		<input type="date" name="deliveryStartDate" class="form-control" style="border-radius: 5px;"> 
         		<label>&nbsp;~&nbsp;</label>
-        		<input type="date" class="form-control" name="deliveryEndDate">
+        		<input type="date" name="deliveryEndDate" class="form-control" style="border-radius: 5px;">
     		</div>
 		  </div>
 		  <div class="col-1 align-items-stretch">

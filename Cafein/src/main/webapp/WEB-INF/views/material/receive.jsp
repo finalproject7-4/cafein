@@ -15,15 +15,15 @@
 		  <div class="form-group col">
 		    <div class="input-group" style="width: 220px;">
 				<label style="margin: 5px 10px 0 0;">품명</label>
-				<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+				<input type="text" name="keyword" placeholder="검색어를 입력하세요" class="form-control" style="border-radius: 5px;">
 			</div>
 		  </div>
 		  <div class="form-group col">
 		    <div class="input-group">
 				<label style="margin: 5px 10px 0 0;">입고일자</label>
-				<input type="date" class="form-control" name="receiveStartDate">
+				<input type="date" name="receiveStartDate" class="form-control" style="border-radius: 5px;">
 				<label>&nbsp;~&nbsp;</label>
-				<input type="date" class="form-control" name="receiveEndDate">	
+				<input type="date" name="receiveEndDate" class="form-control" style="border-radius: 5px;">	
 		  	</div>
 		  </div>
 		  <div class="col-1 align-items-stretch">			
@@ -56,9 +56,10 @@
 						<th scope="col">입고코드</th>
 						<th scope="col">발주코드</th>
 						<th scope="col">품명</th>
-						<th scope="col">수량</th>
+						<th scope="col">발주수량</th>
+						<th scope="col">미입고수량</th>
+						<th scope="col">입고수량</th>
 						<th scope="col">입고일자</th>
-						<th scope="col">LOT번호</th>
 						<th scope="col">담당자</th>
 						<th scope="col">입고상태</th>
 						<th scope="col">관리</th>
@@ -74,11 +75,17 @@
 						<td>${rcl.receivecode }</td>
 						<td>${rcl.orderscode }</td>
 						<td>${rcl.itemname }</td>
-						<td>${rcl.receivequantity }</td>
+						<td>${rcl.ordersquantity }</td>
+						<c:if test="${rcl.ordersquantity - rcl.receivequantity == 0}">
+							<td>-</td>
+						</c:if>
+						<c:if test="${rcl.ordersquantity - rcl.receivequantity != 0}">
+							<td style="color: red;">${rcl.ordersquantity - rcl.receivequantity }</td>
+						</c:if>
+						<td><b>${rcl.receivequantity }</b></td>
 						<td>
 							<fmt:formatDate value="${rcl.receivedate }" dateStyle="short" pattern="yyyy-MM-dd"/>
 						</td>
-						<td>${rcl.lotnumber }</td>
 						<td>${rcl.membername }</td>
 						<c:choose>
 							<c:when test="${rcl.receivestate == '완료'}">
@@ -249,7 +256,7 @@
                                 	   <th style="display: none;"></th>
                                        <th scope="col">발주코드</th>
                                        <th scope="col">품명</th>
-                                       <th scope="col">발주수량</th>
+                                       <th scope="col">수량</th>
                                     </tr>
                                  </thead>
                                  <tbody>

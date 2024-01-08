@@ -13,15 +13,15 @@
 		  <div class="form-group col">
 		    <div class="input-group" style="width: 220px;">
 				<label style="margin: 5px 10px 0 0;">품명</label>
-				<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+				<input type="text" name="keyword" placeholder="검색어를 입력하세요" class="form-control" style="border-radius: 5px;">
 			</div>
 		  </div>
 		  <div class="form-group col">
 		    <div class="input-group">
 				<label style="margin: 5px 10px 0 0;">출고일자</label>
-				<input type="date" class="form-control" name="releaseStartDate">
+				<input type="date" name="releaseStartDate" class="form-control" style="border-radius: 5px;">
 				<label>&nbsp;~&nbsp;</label>
-				<input type="date" class="form-control" name="releaseEndDate">	
+				<input type="date" name="releaseEndDate" class="form-control" style="border-radius: 5px;">	
 		  	</div>
 		  </div>
 		  <div class="col-1 align-items-stretch">			
