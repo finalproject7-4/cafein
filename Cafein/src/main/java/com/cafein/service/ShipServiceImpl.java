@@ -23,12 +23,21 @@ public class ShipServiceImpl implements ShipService {
 	@Inject
 	private ShipDAO shdao;
 	
-	// 출하 조회
+	// 출하 조회 페이징
 	@Override
-	public List<ShipVO> AllSHList() throws Exception{
+	public List<ShipVO> AllSHList(ShipVO svo) throws Exception{
 		logger.debug("AllSHList()");
-		return shdao.getSHList();
+		return shdao.getSHList(svo);
 	}
+	
+	// 총 개수
+	@Override
+	public int countSH(ShipVO svo) throws Exception {
+		logger.debug("S : countSH(ShipVO svo)");
+		return shdao.countSH(svo);
+	}
+
+
 
 	// 출하 등록
 	@Override
@@ -58,13 +67,38 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : shCount(ShipVO svo)");
 		return shdao.getSHCount(svo);
 	}
+	
+	// 출하 검색
+	@Override
+	public List<ShipVO> searchSHList(Map<String, Object> searchParams) throws Exception {
+		logger.debug("searchSHList()");
+	    return shdao.searchSHList(searchParams);
+	}
+	
+	// 출하 수정
+	@Override
+	public int SHModify(ShipVO svo) throws Exception {
+		logger.debug("S : SHModify(int shipid)");
+		return shdao.updateSH(svo);
+	}
+	
+	
+	
 
 	// 작업 지시 조회
 	@Override
-	public List<WorkVO> AllWKList() throws Exception {
+	public List<WorkVO> AllWKList(WorkVO wvo) throws Exception {
 		logger.debug("AllWKList()");
-		return shdao.getWKList();
+		return shdao.getWKList(wvo);
 	}
+	
+	// 총 개수
+	@Override
+	public int countWK(WorkVO wvo) throws Exception {
+		logger.debug("S : countWK(WorkVO wvo)");
+		return shdao.countWK(wvo);
+	}
+	
 	
 //	// 작업 지시 검색
 //	@Override
@@ -72,6 +106,8 @@ public class ShipServiceImpl implements ShipService {
 //		    logger.debug("searchWKList()");
 //		    return shdao.searchWKList(keyword);
 //		}
+
+
 
 	// 작업 지시 등록
 	@Override
@@ -100,19 +136,37 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : WKModify(int workid)");
 		return shdao.updateWK(wvo);
 	}
+	
+	// 작업 지시 삭제
+	@Override
+	public void WKDelete(WorkVO wvo) throws Exception {
+		logger.debug("Service - WKDelete(WorkVO wvo)");
+		shdao.deleteWK(wvo);
+	}
+	
+	
+	
+	
 
 	// 실적 조회
 	@Override
-	public List<WorkVO> AllPFList() throws Exception {
+	public List<WorkVO> AllPFList(WorkVO wvo) throws Exception {
 		logger.debug("AllPFList()");
-		return shdao.getPFList();
+		return shdao.getPFList(wvo);
+	}
+	
+	// 총 개수
+	@Override
+	public int countPF(WorkVO wvo) throws Exception {
+		logger.debug("S : countPF(WorkVO wvo)");
+		return shdao.countPF(wvo);
 	}
 
-	// 실적 등록
+	// 실적 수정
 	@Override
-	public void registPF(WorkVO wvo) throws Exception {
-		logger.debug("registPFList 메서드 호출");
-		shdao.registWK(wvo);
+	public int PFModify(WorkVO wvo) throws Exception {
+		logger.debug("S : PFModify(int workid)");
+		return shdao.updatePF(wvo);
 	}
 
 

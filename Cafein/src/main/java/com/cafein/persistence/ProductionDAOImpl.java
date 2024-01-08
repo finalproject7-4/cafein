@@ -14,6 +14,7 @@ import com.cafein.domain.BomVO;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.QualityVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.RoastedbeanVO;
 
 @Repository
@@ -200,6 +201,79 @@ public class ProductionDAOImpl implements ProductionDAO {
 		
 		sqlSession.insert(NAMESPACE+".regPackingQualityList", vo);
 	}
+
+
+	// 생산지시 등록과 동시에 출고 등록
+	@Override
+	public void insertReleasesList(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - 생산등록해서 출고등록도 한다!");
+		
+		sqlSession.insert(NAMESPACE+".insertReleasesList",vo);
+		
+	}
+
+
+	// 생산코드 생성 메서드
+	@Override
+	public Integer getProducecodeCount(String datePart) throws Exception {
+		logger.debug("DAO - 생산 코드 생성!");
+		return sqlSession.insert(NAMESPACE+".getProducecodeCount", datePart);
+	}
+
+
+	// 출고지시리스트 대기 -> 완료로 변경
+	@Override
+	public void updateCompletRelease(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 출고상태 완료로 변경!");
+		
+		sqlSession.update(NAMESPACE+".updateCompletRelease", vo);
+		
+	}
+
+
+	// 재고리스트 업데이트 (사용 수량 차감)
+	@Override
+	public void updateStockList(ProduceVO vo) throws Exception {
+		logger.debug("DAO - 재고리스트 업데이트");
+		
+		sqlSession.update(NAMESPACE + ".updateStockList", vo);
+	}
+
+
+	// 당일 총 생산량
+	@Override
+	public Integer getProduceAmountToday() throws Exception {
+		logger.debug("DAO - 오늘의 총 생산량 구하는 getProduceAmountToday() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountToday");
+	}
+
+	// 당월 총 생산량
+	@Override
+	public Integer getProduceAmountThisMonth() throws Exception {
+		logger.debug("DAO - 이번달 총 생산량 구하는 getProduceAmountThisMonth() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountThisMonth");
+	}
+
+	// 당해 총 생산량
+	@Override
+	public Integer getProduceAmountThisYear() throws Exception {
+		logger.debug("DAO - 이번년도 총 생산량 구하는 getProduceAmountThisYear() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountThisYear");
+	}
+
+
+	// 생산지시리스트 출력 (메인용)
+	@Override
+	public List<ProduceVO> getProduceList() throws Exception {
+		logger.debug("DAO - 생산지시리스트 출력(메인용)");
+		return sqlSession.selectList(NAMESPACE+".getProduceList");
+	}
+	
+	
+	
+	
+	
+	
 
 	
 	

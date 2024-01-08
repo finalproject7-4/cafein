@@ -46,11 +46,11 @@ public class ReturnServiceImpl implements ReturnService {
 		rdao.insertReturn(rvo);
 	}
 
-	@Override
-	public List<ProduceVO> prList() throws Exception {
-
-		return rdao.prList();
-	}
+	/*
+	 * @Override public List<ProduceVO> prList() throws Exception {
+	 * 
+	 * return rdao.prList(); }
+	 */
 
 	@Override
 	public List<ItemVO> itList() throws Exception {
@@ -63,6 +63,19 @@ public class ReturnServiceImpl implements ReturnService {
 		return rdao.updateReturn(rvo);
 	}
 
+	@Override
+	public void returnDelete(int rvo) throws Exception {
+		
+		rdao.deleteReturn(rvo);
+	}
+
+	@Override
+	public void addReturn(int rvo) throws Exception {
+		
+		rdao.addReturn(rvo);
+	}
+
+	
 
 	
 	

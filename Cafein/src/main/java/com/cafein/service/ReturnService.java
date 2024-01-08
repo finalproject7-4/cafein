@@ -20,22 +20,22 @@ public interface ReturnService {
 	public void returnRegist(ReturnVO rvo) throws Exception;
 	
 	// 완제품 목록
-	public List<ProduceVO> prList() throws Exception;
+	//public List<ProduceVO> prList() throws Exception;
 	
 	// 아이템 목록
 	public List<ItemVO> itList() throws Exception;
 	
 	// 반품 수정
 	public int returnModify(ReturnVO rvo) throws Exception;
-
-
 	
-
+	// 반품 삭제
+	public void returnDelete(int rvo) throws Exception;
+	
+	// 품질 관리 등록
+	public void addReturn(int rvo) throws Exception;
 	
 	
-
-
-
+	
 
 
 

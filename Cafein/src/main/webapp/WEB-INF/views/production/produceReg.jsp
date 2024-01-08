@@ -80,7 +80,7 @@
 							</div>
 							<!-- 아래가 실제 등록될 itemid1~3 값 -->
 							</div>
-							<div class="row">
+							<div class="row" style="display:none;">
 							<div class="col">
 								<label for="itemid1" class="col-form-label">원재료1</label>
 								<input name="itemid1" type="text" class="form-control" id="itemidOri1" readonly>
@@ -92,6 +92,21 @@
 							<div class="col">
 								<label for="itemid3" class="col-form-label">원재료3</label>
 								<input type="text" name="itemid3" class="form-control" id="itemidOri3" readonly>
+							</div>
+							</div>
+							<!-- 출고대기등록할 때 쓸 stockid -->
+							<div class="row" style="display: none;">
+							<div class="col">
+								<label for="stockid1" class="col-form-label">재고ID1</label>
+								<input name="stockid1" type="text" class="form-control" id="stockid1" readonly>
+							</div>
+							<div class="col">
+								<label for="stockid2" class="col-form-label">재고ID2</label>
+								<input type="text" name="stockid2" class="form-control" id="stockid2" readonly>
+							</div>
+							<div class="col">
+								<label for="stockid3" class="col-form-label">재고ID3</label>
+								<input type="text" name="stockid3" class="form-control" id="stockid3" readonly>
 							</div>
 							</div>
 							<div class="row">
@@ -111,8 +126,8 @@
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode">
 							</div>
-							<div class="col" >
-								<label for="itemid" class="col-form-label">아이템ID</label>
+							<div class="col" style="display:none;">
+								<label for="itemid" class="col-form-label" >아이템ID</label>
 								<input name="itemid" class="form-control" id="itemidPro">
 							</div>
 							</div>

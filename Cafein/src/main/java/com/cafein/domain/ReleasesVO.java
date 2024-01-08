@@ -17,9 +17,11 @@ public class ReleasesVO {
 	private String releasestate;
 	private Date releasedate;
 	private int releasequantity;
+	private int produceid;
 	
 	// item 테이블
 	private String itemname;
+	private int itemid;
 	
 	// stock 테이블
 	private int stockquantity;

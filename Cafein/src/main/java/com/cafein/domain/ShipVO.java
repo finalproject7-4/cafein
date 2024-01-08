@@ -8,6 +8,15 @@ import lombok.Data;
 @Data
 public class ShipVO {
 	
+	// Criteria 객체
+	private Criteria cri;
+	
+	// 검색용 변수
+	private String startDate;
+	private String endDate;
+	private String searchText;
+	private String searchBtn;
+	
 	// 출하
 	private int shipid;
 	private String shipcode;

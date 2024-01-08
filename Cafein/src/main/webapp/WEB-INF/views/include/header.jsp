@@ -69,7 +69,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3" style="background-color: #FBF8EF;">
             <nav class="navbar bg-light navbar-light">
-                <a href="#" style="margin-top: -45px;">
+                <a href="/production/main" style="margin-top: -45px;">
                     <img width="194px" height="160px" src="../resources/img/cafein.png" alt="cafein_logo">
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">

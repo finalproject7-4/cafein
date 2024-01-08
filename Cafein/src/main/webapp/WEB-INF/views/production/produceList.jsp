@@ -23,7 +23,7 @@ function getList(){
             $("#produceListAll").html(data);
         },
         error: function(error) {
-            console.error("Error fetching quality list:", error);
+            console.error("Error fetching produce list:", error);
         }
     });
 }
@@ -56,7 +56,7 @@ function getList(pageNumber) {
   		  $("#produceListAll").html(data);
 		 },
 		error: function(error) {
-			Swal.fire("못한다");
+			Swal.fire("페이지를 찾을 수 없습니다.");
     		console.error("Error fetching quality list:", error);
 		}
 	});
@@ -98,7 +98,7 @@ function getList(pageNumber) {
 <!-- 페이지 Ajax 동적 이동 (2) -->
 <script>
 $(document).ready(function() {
-    // 기간조회 검색폼의 submit 이벤트 감지
+    // 검색폼의 submit 이벤트 감지
     $("form[name='dateSearch']").submit(function(event) {
         event.preventDefault(); // 기본 폼 제출 동작 방지
 
@@ -120,10 +120,7 @@ $(document).ready(function() {
                 $("#produceListAll").html(data); // 결과를 화면에 표시
             },
             error: function(error) {
-            	Swal.fire('못간다 :'+$("select[name='produceline']").val()+'/ '+$("select[name='process']").val()
-            			+' /'+$("input[name='startDate']").val()+' /'+$("input[name='endDate']").val()+
-            			'/ '+ $("select[name='itemname']").val());
-            	Swal.fire(formData+' / '+error);
+            	Swal.fire("검색하신 조건으로 만족하는 결과가 없습니다.");
                 console.error("Error fetching data:", error);
             	console.log(formData);
             }

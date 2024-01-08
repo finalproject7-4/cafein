@@ -7,6 +7,15 @@ import lombok.Data;
 @Data
 public class WorkVO {
 	
+	// Criteria 객체
+	private Criteria cri;
+	
+	// 검색용 변수
+	private String startDate;
+	private String endDate;
+	private String searchText;
+	private String searchBtn;
+	
 	// 작업지시+실적
 	private int workid;
 	private String membercode;
@@ -20,8 +29,8 @@ public class WorkVO {
 	private int receiptid;
 
 //	private String clientcode;
-	private int recordcount;
-	private String returncode;
+	private int returncount;
+	private String returnreason;
 	
 	// produce 테이블
 	private Integer produceid;

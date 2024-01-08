@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
+import com.cafein.domain.ReceiveVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -35,13 +39,23 @@ public class WorkController {
 	// 작업지시 조회
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public String AllWKListGET(Model model, WorkVO wvo) throws Exception {
+	public String AllWKListGET(Model model, WorkVO wvo, HttpSession session, Criteria cri) throws Exception {
 		logger.debug("AllWKListGET() 실행");
 		
-		List<WorkVO> WKList = shService.AllWKList();
+		// SalesVO의 Criteria 설정
+		wvo.setCri(cri);
 		
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(shService.countWK(wvo));
+		logger.debug("총 개수: " + pageVO.getTotalCount());
+		
+		List<WorkVO> WKList = shService.AllWKList(wvo);
+		
+		model.addAttribute("countWK",shService.countWK(wvo));
 		model.addAttribute("WKList", WKList );
-		
+		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("pcList", shService.registPC()); 
 		
 		logger.debug("작업지시 리스트 출력!");
@@ -53,13 +67,15 @@ public class WorkController {
 	// 작업지시 등록 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
-	public String registWK(WorkVO wvo,@RequestParam(value = "workdate1") String workdate1) throws Exception {
+	public String registWK(WorkVO wvo,@RequestParam(value = "workdate1") String workdate1,
+			@RequestParam(value = "workdate2") String workdate2) throws Exception {
 		
 		logger.debug("registWK() 호출 ");                                 
 		logger.debug(" wvo : " + wvo);  
 		
 		wvo.setWorkcode(makeWKcode(wvo));
 		wvo.setWorkdate1(Date.valueOf(workdate1));
+		wvo.setWorkdate1(Date.valueOf(workdate2));
 		
 		shService.registWK(wvo);                                                      
 		logger.debug(" 작업지시 등록 완료! ");     
@@ -96,5 +112,16 @@ public class WorkController {
 		logger.debug("result", result);
 		return "redirect:/production/WKList";
 	}
+	
+	// 작업지시 삭제 - POST
+		@RequestMapping(value = "/WKDelete", method = RequestMethod.POST)
+		public String WKDelete(WorkVO wvo) throws Exception {
+			logger.debug("WKdelete() 호출");
+			
+			// 서비스
+			shService.WKDelete(wvo);
+			
+			return "redirect:/production/WKList";
+		}
 	
 }

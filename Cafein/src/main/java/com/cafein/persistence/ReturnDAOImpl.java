@@ -48,11 +48,11 @@ public class ReturnDAOImpl implements ReturnDAO {
 		sqlSession.insert(NAMESPACE + ".insertReturn", rvo);
 	}
 
-	@Override
-	public List<ProduceVO> prList() throws Exception {
-
-		return sqlSession.selectList(NAMESPACE + ".prList");
-	}
+	/*
+	 * @Override public List<ProduceVO> prList() throws Exception {
+	 * 
+	 * return sqlSession.selectList(NAMESPACE + ".prList"); }
+	 */
 
 	@Override
 	public List<ItemVO> itList() throws Exception {
@@ -62,10 +62,25 @@ public class ReturnDAOImpl implements ReturnDAO {
 	
 	@Override
 	public int updateReturn(ReturnVO rvo) throws Exception {
+		
+		System.out.println("DAO : 수정");
 
 		return sqlSession.update(NAMESPACE + ".updateReturn", rvo);
 	}
 
+	@Override
+	public void deleteReturn(int rvo) throws Exception {
+		
+		sqlSession.delete(NAMESPACE + ".deleteReturn", rvo);
+	}
+
+	@Override
+	public void addReturn(int rvo) throws Exception {
+		
+		sqlSession.insert(NAMESPACE + ".addReturn", rvo);
+	}
+
+	
 	
 	
 	

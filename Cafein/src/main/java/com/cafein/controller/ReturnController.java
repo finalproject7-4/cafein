@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
@@ -27,9 +28,6 @@ public class ReturnController {
 	@Inject
 	private ReturnService rService;
 	
-	@Inject
-	private ItemService iService;
-	
 	// 반품 목록
 	// http://localhost:8088/quality/returns
 	@RequestMapping(value = "/returns", method = RequestMethod.GET)
@@ -37,8 +35,6 @@ public class ReturnController {
 
 		logger.debug("returnsGET() 호출");
 		
-		// 완제품 목록
-		model.addAttribute("prList", rService.prList());
 		
 		// 원자재,부자재 목록
 		model.addAttribute("itList", rService.itList());
@@ -71,8 +67,9 @@ public class ReturnController {
 		  rvo.setReturncode(generateReturnCode(rvo));
 		  
 		  // 등록시 기본 설정
-		  rvo.setReturnstatus("대기중");
+		  rvo.setReturnstatus("대기");
 		  rvo.setReprocessmethod("검수중");
+		  
 		  
 		 rService.returnRegist(rvo); 
 		  
@@ -126,7 +123,7 @@ public class ReturnController {
 	@PostMapping(value = "/returnModify")
 	public String returnModify(ReturnVO rvo) throws Exception{
 		
-		logger.debug("returnModify(ReturnVO rvo) 호출"); 
+		logger.debug(" returnModify(ReturnVO rvo) 호출@@@@@@@@@@@@@@@@@@@@@@"); 
 		logger.debug("returnVO : "+rvo);
 		
 		
@@ -136,6 +133,37 @@ public class ReturnController {
 		
 		
 		return "redirect:/quality/returns"; 
+	}
+	
+	
+	// 반품 삭제
+	@PostMapping(value = "/returnDelete")
+	public String returnDelete(@RequestParam("returnid") String returnid) throws Exception{
+		
+		logger.debug(" returnDelete(ReturnVO rvo) 호출 @@@@@@@@");
+		logger.debug("returnid  : {}", returnid);
+		
+		int rvo = Integer.parseInt(returnid);
+		
+		rService.returnDelete(rvo);
+		
+		return "redirect:/quality/returns";
+	}
+	
+	
+	
+	// 품질 관리 등록
+	@PostMapping(value = "/addReturn")
+	public String addReturn(@RequestParam("returnid") String returnid) throws Exception{
+	
+		logger.debug(" addReturn(returnid) 호출 @@@@@@@@");
+		logger.debug("returnid  : {}", returnid);
+		
+		int rvo = Integer.parseInt(returnid);
+		
+		rService.addReturn(rvo);
+		
+		return "redirect:/quality/returns";
 	}
 	
 	
