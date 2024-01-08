@@ -23,113 +23,151 @@ public class MaterialDAOImpl implements MaterialDAO {
 	
 	private static final String NAMESPACE="com.cafein.mapper.MaterialMapper";
 	
+	// 발주 목록 (페이징)
 	@Override
-	public List<OrdersVO> getOrdersList(OrdersVO vo) throws Exception {
-		logger.debug("DAO - getOrdersList(OrdersVO vo)");
-		return sqlSession.selectList(NAMESPACE + ".ordersList", vo);
+	public List<OrdersVO> selectOrdersList(OrdersVO vo) throws Exception {
+		logger.debug("DAO - selectOrdersList(OrdersVO vo)");
+		return sqlSession.selectList(NAMESPACE + ".selectOrdersList", vo);
 	}
 	
+	// 발주 목록 (모달)
 	@Override
-	public List<OrdersVO> getOrdersList() throws Exception {
-		logger.debug("DAO - getOrdersList()");
-		return sqlSession.selectList(NAMESPACE + ".getOrdersList");
+	public List<OrdersVO> selectOrdersList() throws Exception {
+		logger.debug("DAO - selectOrdersList()");
+		return sqlSession.selectList(NAMESPACE + ".selectOrdersListModal");
 	}	
 
+	// 발주 목록 총 개수
 	@Override
-	public Integer gerOrdersCount(OrdersVO vo) throws Exception {
-		logger.debug("DAO - gerOrdersCount(OrdersVO vo)");
-		return sqlSession.selectOne(NAMESPACE + ".getOrdersCount", vo);
+	public Integer selectOrdersCount(OrdersVO vo) throws Exception {
+		logger.debug("DAO - selectOrdersCount(OrdersVO vo)");
+		return sqlSession.selectOne(NAMESPACE + ".selectOrdersCount", vo);
 	}
 
+	// 발주 등록
 	@Override
 	public void insertOrder(OrdersVO vo) throws Exception {
 		logger.debug("DAO - insertOrder(OrdersVO vo)");
 		sqlSession.insert(NAMESPACE + ".insertOrder", vo);
 	}
 
+	// 발주코드 개수 계산 (중복코드 생성 방지)
 	@Override
-	public Integer getOrderscodeCount(String datePart) throws Exception {
-		logger.debug("DAO - getOrderscodeCount(String datePart)");
-		return sqlSession.selectOne(NAMESPACE + ".getOrderscodeCount", datePart);
+	public Integer selectOrderscodeCount(String datePart) throws Exception {
+		logger.debug("DAO - selectOrderscodeCount(String datePart)");
+		return sqlSession.selectOne(NAMESPACE + ".selectOrderscodeCount", datePart);
 	}
 
+	// 발주 수정
 	@Override
 	public int updateOrder(OrdersVO vo) throws Exception {
 		logger.debug("DAO - updateOrder(OrdersVO vo)");
 		return sqlSession.update(NAMESPACE + ".updateOrder", vo);
 	}
 	
+	// 발주 삭제
 	@Override
 	public void deleteOrder(OrdersVO vo) throws Exception {
 		logger.debug("DAO - deleteOrder(OrdersVO vo)");
 		sqlSession.delete(NAMESPACE + ".deleteOrder", vo);
+	}
+	
+	// 발주 목록 (엑셀 파일 다운로드)
+	@Override
+	public List<OrdersVO> selectOrderListExcel(OrdersVO vo) throws Exception {
+		logger.debug("DAO - selectOrderListExcel(OrdersVO vo)");
+		return sqlSession.selectList(NAMESPACE + ".selectOrderListExcel", vo);
 	}	
 
+	// 입고 목록 (페이징)
 	@Override
-	public List<ReceiveVO> getReceiveList(ReceiveVO vo) throws Exception {
-		logger.debug("DAO - getReceiveList(ReceiveVO vo)");
-		return sqlSession.selectList(NAMESPACE + ".getReceiveList", vo);
+	public List<ReceiveVO> selectReceiveList(ReceiveVO vo) throws Exception {
+		logger.debug("DAO - selectReceiveList(ReceiveVO vo)");
+		return sqlSession.selectList(NAMESPACE + ".selectReceiveList", vo);
 	}
 
+	// 입고 목록 총 개수
 	@Override
-	public Integer getReceiveCount(ReceiveVO vo) throws Exception {
-		logger.debug("DAO - getReceiveCount(ReceiveVO vo)");
-		return sqlSession.selectOne(NAMESPACE + ".getReceiveCount", vo);
+	public Integer selectReceiveCount(ReceiveVO vo) throws Exception {
+		logger.debug("DAO - selectReceiveCount(ReceiveVO vo)");
+		return sqlSession.selectOne(NAMESPACE + ".selectReceiveCount", vo);
 	}
 
+	// 창고 목록 (모달)
 	@Override
-	public List<ReceiveVO> getStorageList() throws Exception {
-		logger.debug("DAO - getStorageList()");
-		return sqlSession.selectList(NAMESPACE + ".getStorageList");
+	public List<ReceiveVO> selectStorageList() throws Exception {
+		logger.debug("DAO - selectStorageList()");
+		return sqlSession.selectList(NAMESPACE + ".selectStorageList");
 	}
 
+	// 입고코드 개수 계산 (중복코드 생성 방지)
 	@Override
-	public Integer getReceivecodeCount(String datePart) throws Exception {
-		logger.debug("DAO - getReceivecodeCount(String datePart)");
-		return sqlSession.selectOne(NAMESPACE + ".getReceivecodeCount", datePart);
+	public Integer selectReceivecodeCount(String datePart) throws Exception {
+		logger.debug("DAO - selectReceivecodeCount(String datePart)");
+		return sqlSession.selectOne(NAMESPACE + ".selectReceivecodeCount", datePart);
 	}
 
+	// 입고 등록
 	@Override
 	public void insertReceive(ReceiveVO vo) throws Exception {
 		logger.debug("DAO - insertReceive(ReceiveVO vo)");
 		sqlSession.insert(NAMESPACE + ".insertReceive", vo);
 	}
 
+	// 입고 수정
 	@Override
 	public int updateReceive(ReceiveVO vo) throws Exception {
 		logger.debug("DAO - updateReceive(ReceiveVO vo)");
 		return sqlSession.update(NAMESPACE + ".updateReceive", vo);
 	}
+
+	// 입고상태 완료 -> 품질관리로 입고수량 처리
+	@Override
+	public void insertQuality(ReceiveVO vo) throws Exception {
+		logger.debug("DAO - insertQuality(ReceiveVO vo)");
+		sqlSession.insert(NAMESPACE + ".insertQuality", vo);
+	}
 	
+	// 입고 삭제
 	@Override
 	public void deleteReceive(ReceiveVO vo) throws Exception {
 		logger.debug("DAO - deleteReceive(ReceiveVO vo)");
 		sqlSession.delete(NAMESPACE + ".deleteReceive", vo);
 	}	
 
+	// 입고 목록 (엑셀 파일 다운로드)
 	@Override
-	public List<ReleasesVO> getReleasesList(ReleasesVO vo) throws Exception {
-		logger.debug("DAO - getReleasesList(ReleasesVO vo");
-		return sqlSession.selectList(NAMESPACE + ".getReleasesList", vo);
-	}
-
-	@Override
-	public Integer getReleasesCount(ReleasesVO vo) throws Exception {
-		logger.debug("DAO - getReleasesCount(ReleasesVO vo)");
-		return sqlSession.selectOne(NAMESPACE + ".getReleasesCount", vo);
-	}
-
-	@Override
-	public void insertQuality(ReceiveVO vo) throws Exception {
-		logger.debug("DAO - insertQuality(ReceiveVO vo)");
-		sqlSession.insert(NAMESPACE + ".insertQuality", vo);
-	}
-
-	@Override
-	public Integer getreleasecodeCount(String datePart) throws Exception {
-		logger.debug("DAO - getreleasecodeCount(String datePart)");
-		return sqlSession.selectOne(NAMESPACE + ".getreleasecodeCount", datePart);
-	}
+	public List<ReceiveVO> selectReceiveListExcel(ReceiveVO vo) throws Exception {
+		logger.debug("DAO - selectReceiveListExcel(ReceiveVO vo)");
+		return sqlSession.selectList(NAMESPACE + ".selectReceiveListExcel", vo);
+	}	
 	
+	// 출고 목록 (페이징)
+	@Override
+	public List<ReleasesVO> selectReleasesList(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - selectReleasesList(ReleasesVO vo");
+		return sqlSession.selectList(NAMESPACE + ".selectReleasesList", vo);
+	}
+
+	// 출고 목록 총 개수
+	@Override
+	public Integer selectReleasesCount(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - selectReleasesCount(ReleasesVO vo)");
+		return sqlSession.selectOne(NAMESPACE + ".selectReleasesCount", vo);
+	}
+
+	// 출고코드 개수 계산 (중복코드 생성 방지)
+	@Override
+	public Integer selectReleasecodeCount(String datePart) throws Exception {
+		logger.debug("DAO - selectReleasecodeCount(String datePart)");
+		return sqlSession.selectOne(NAMESPACE + ".selectReleasecodeCount", datePart);
+	}
+
+	// 출고 목록 (엑셀 파일 다운로드)
+	@Override
+	public List<ReleasesVO> selectReleaseListExcel(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - selectReleaseListExcel(ReleasesVO vo)");
+		return sqlSession.selectList(NAMESPACE + ".selectReleaseListExcel", vo);
+	}
 	
 }

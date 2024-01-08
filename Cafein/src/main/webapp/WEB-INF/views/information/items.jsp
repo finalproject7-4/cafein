@@ -11,13 +11,22 @@
 	<!-- 품목 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<form name="search" action="items">
-		<select name="option">
-			<option value="">선택</option>
-			<option value="itemtype">품목유형</option>
-			<option value="itemname">품명</option>
-		</select>
-			<input type="text" name="keyword">
-			<input type="submit" class="btn btn-sm btn-dark m-2" value="조회">
+			<div class="d-flex align-items-center">
+				<div class="me-2">
+					<select name="option" class="form-select" style="width: 120px;">
+						<option value="">선택</option>
+						<option value="itemtype">품목유형</option>
+						<option value="itemname">품명</option>
+					</select>
+				</div>
+				<div class="me-2">
+					<input type="text" name="keyword" class="form-control"
+						style="width: 200px;" placeholder="검색어를 입력하세요">
+				</div>
+				<div>
+					<input type="submit" class="btn btn-sm btn-dark" value="조회">
+				</div>
+			</div>
 		</form>
 	</div>
 	<!-- 품목 조회 끝 -->
@@ -25,10 +34,14 @@
 	<!-- 품목 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
-		<span style="margin-left: 95%;">
+		
+		<form action="itemListExcelDownload" method="GET">
+		<span style="margin-left: 990px;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 		</span>
+		</form>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
@@ -36,9 +49,10 @@
 					<tr style="text-align: center;">
 						<th scope="col" style="display: none;"></th>
 						<th scope="col">번호</th>
-						<th scope="col">품목코드</th>
 						<th scope="col">품목유형</th>
+						<th scope="col">품목코드</th>
 						<th scope="col">품명</th>
+						<th scope="col">거래처</th>
 						<th scope="col">원산지</th>
 						<th scope="col">중량(g)</th>
 						<th scope="col">단가(원)</th>
@@ -52,9 +66,10 @@
 							<td>
 								<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
 							</td>
-							<td>${il.itemcode }</td>
 							<td>${il.itemtype }</td>
+							<td>${il.itemcode }</td>
 							<td>${il.itemname }</td>
+							<td>${il.clientname }</td>
 							<td>${il.origin }</td>
 							<td>${il.itemweight }</td>
 							<td>${il.itemprice }</td>
@@ -234,6 +249,7 @@
  	 	var modalBodyInput = itemRegistModal.querySelector('.modal-body input')
 	})
 	
+	// 품목 수정
 	function itemModifyModal(itemid, itemcode, itemtype, itemname, clientname, origin, itemweight, itemprice) {
 		console.log('itemid:', itemid);
 		console.log('itemcode:', itemcode);
@@ -274,7 +290,8 @@
 
     });
     
-    $("td").on("click", "#deleteBtn", function() {
+    // 품목 삭제
+	$("td").on("click", "#deleteBtn", function() {
     	
     	Swal.fire({
   		  title: '삭제하시겠습니까?',
@@ -312,7 +329,7 @@
   		  }
   		})
         	
-     });
+	});
 
 </script>
 

@@ -10,23 +10,41 @@
 
 	<!-- 발주 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" action="/material/orders">
-		<select name="option">
-			<option value="">선택</option>
-			<option value="clientname">거래처명</option>
-			<option value="itemname">품명</option>
-		</select>
-		<input type="text" name="keyword">
-		<span style="margin-left: 20px">
-			발주일자 <input type="date" class="m-2" name="orderStartDate"> ~ <input type="date" class="m-2" name="orderEndDate">			
-		</span>
-		<span style="margin-left: 20px;">
-			납기일자 <input type="date" class="m-2" name="deliveryStartDate"> ~ <input type="date" class="m-2" name="deliveryEndDate">			
-		</span>
-		<span style="margin-left: 65px;">
+    <form name="search" action="/material/orders">
+       <div class="d-flex align-items-center align-items-stretch">
+            <div class="me-2">
+                <select name="option" class="form-select" style="width: 120px;">
+                    <option value="">선택</option>
+                    <option value="clientname">거래처명</option>
+                    <option value="itemname">품명</option>
+                </select>
+            </div>
+            <div class="me-2">
+                <input type="text" name="keyword" class="form-control" style="width: 180px;" placeholder="검색어를 입력하세요">
+            </div>
+        <div class="row align-items-stretch">
+		  <div class="form-group col">
+    		<div class="input-group">
+    		<label for="orderDate" style="margin: 5px 5px 0 10px;">발주일자</label>
+        		<input type="date" class="form-control" name="orderStartDate"> 
+        		<label>&nbsp;~&nbsp;</label>
+        		<input type="date" class="form-control" name="orderEndDate">
+    		</div>
+		  </div> 
+		  <div class="form-group col">
+    		<div class="input-group">
+    		<label for="deliveryDate" style="margin: 5px 5px 0 0;">납기일자</label>
+        		<input type="date" class="form-control" name="deliveryStartDate"> 
+        		<label>&nbsp;~&nbsp;</label>
+        		<input type="date" class="form-control" name="deliveryEndDate">
+    		</div>
+		  </div>
+		  <div class="col-1 align-items-stretch">
 			<input type="submit" class="btn btn-sm btn-dark" value="조회">
-		</span>	
-		</form>
+		  </div>
+		</div>
+       </div>
+	</form>
 	</div>
 	<!-- 발주 조회 끝 -->
 
@@ -34,11 +52,14 @@
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(ordersList)} 건</span>
 		
-		<span style="margin-left: 95%;">
+		<form action="orderListExcelDownload" method="GET">		
+		<span style="margin-left: 990px;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
 		</span>
+		</form>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
@@ -54,7 +75,7 @@
 						<th scope="col">발주금액(원)</th>
 						<th scope="col">발주일자</th>
 						<th scope="col">납기일자</th>
-						<th scope="col">담당자명</th>
+						<th scope="col">담당자</th>
 						<th scope="col">발주상태</th>
 						<th scope="col">관리</th>
 					</tr>
@@ -86,7 +107,7 @@
 								<td><b>${ol.orderstate }</b></td>
 								<td>
 									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="orderDetailModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membercode }')">상세내역
+										onclick="orderDetailModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">상세내역
 									</button>
 								</td>
 							</c:when>
@@ -94,7 +115,7 @@
 								<td>${ol.orderstate }</td>
 								<td>
 									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="orderModifyModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membercode }')">수정
+										onclick="orderModifyModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-outline-dark m-1" value="삭제" id="deleteBtn">
 								</td>
@@ -354,7 +375,7 @@
 	})
 	
 	// 발주 수정
-	function orderModifyModal(ordersid, orderstate, ordersdate, deliverydate, clientname, itemname, ordersquantity, itemprice, orderprice, membercode) {
+	function orderModifyModal(ordersid, orderstate, ordersdate, deliverydate, clientname, itemname, ordersquantity, itemprice, orderprice, membername) {
 		console.log('ordersid:', ordersid);
 		console.log('orderstate:', orderstate);
 		console.log('ordersdate:', ordersdate);
@@ -364,7 +385,7 @@
 		console.log('ordersquantity:', ordersquantity);
 		console.log('itemprice:', itemprice);
 		console.log('orderprice:', orderprice);
-		console.log('membercode:', membercode);
+		console.log('membername:', membername);
 		   
 		// 가져온 값들을 모달에 설정
 		$("#ordersid").val(ordersid);
@@ -376,14 +397,14 @@
 		$("#ordersquantity2").val(ordersquantity);
 		$("#itemprice2").val(itemprice);		
 		$("#orderprice2").val(orderprice);
-		$("#membercode2").val(membercode);
+		$("#membername2").val(membername);
 		
         // 발주 수정 모달 띄우기
         $('#orderModifyModal').modal('show');
     }
 	
 	// 발주 상세내역
-	function orderDetailModal(ordersid, orderstate, ordersdate, deliverydate, clientname, itemname, ordersquantity, itemprice, orderprice, membercode) {
+	function orderDetailModal(ordersid, orderstate, ordersdate, deliverydate, clientname, itemname, ordersquantity, itemprice, orderprice, membername) {
 		// 가져온 값들을 모달에 설정
 		$("#ordersid3").val(ordersid);
 		$("#orderstate3").val(orderstate);
@@ -394,7 +415,7 @@
 		$("#ordersquantity3").val(ordersquantity);
 		$("#itemprice3").val(itemprice);		
 		$("#orderprice3").val(orderprice);
-		$("#membercode3").val(membercode);
+		$("#membername3").val(membername);
 		
         // 발주 상세내역 모달 띄우기
         $('#orderDetailModal').modal('show');

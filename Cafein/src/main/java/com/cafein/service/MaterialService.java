@@ -28,6 +28,9 @@ public interface MaterialService {
 
 	// 발주 삭제
 	public void orderDelete(OrdersVO vo) throws Exception;
+
+	// 발주 목록 (엑셀 파일 다운로드)
+	public List<OrdersVO> orderListExcel(OrdersVO vo) throws Exception;
 	
 	// 입고 목록 (페이징)
 	public List<ReceiveVO> receiveList(ReceiveVO vo) throws Exception;
@@ -43,15 +46,18 @@ public interface MaterialService {
 
 	// 입고 등록
 	public void receiveRegist(ReceiveVO vo) throws Exception;
-
-	// 입고 완료 -> 품질관리로 이동
-	public void moveQuality(ReceiveVO vo) throws Exception;
-
+	
 	// 입고 수정
 	public int receiveModify(ReceiveVO vo) throws Exception;
 
+	// 입고상태 완료 -> 품질관리 입고 데이터 등록
+	public void qualityRegist(ReceiveVO vo) throws Exception;
+
 	// 입고 삭제
 	public void receiveDelete(ReceiveVO vo) throws Exception;
+	
+	// 입고 목록 (엑셀 파일 다운로드)
+	public List<ReceiveVO> receiveListExcel(ReceiveVO vo) throws Exception;
 	
 	// 출고 목록 (페이징)
 	public List<ReleasesVO> releasesList(ReleasesVO vo) throws Exception;
@@ -61,5 +67,8 @@ public interface MaterialService {
 	
 	// 출고코드 개수 계산 (중복코드 생성 방지)
 	public Integer releasecodeCount(String datePart) throws Exception;
-	
+
+	// 출고 목록 (엑셀 파일 다운로드)
+	public List<ReleasesVO> releaseListExcel(ReleasesVO vo) throws Exception;
+
 }

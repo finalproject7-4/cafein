@@ -10,28 +10,42 @@
 
 	<!-- 입고 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<form name="search" method="get">
-		<span>
-			품명 <input type="text" class="m-2" name="keyword">
-		</span>
-		<span style="margin-left: 300px">
-			입고일자 <input type="date" class="m-2" name="receiveStartDate"> ~ <input type="date" class="m-2" name="receiveEndDate">			
-		</span>			
-		<span style="margin-left: 225px;">
+	<form name="search" method="get">
+		<div class="row align-items-stretch">
+		  <div class="form-group col">
+		    <div class="input-group" style="width: 220px;">
+				<label style="margin: 5px 10px 0 0;">품명</label>
+				<input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+			</div>
+		  </div>
+		  <div class="form-group col">
+		    <div class="input-group">
+				<label style="margin: 5px 10px 0 0;">입고일자</label>
+				<input type="date" class="form-control" name="receiveStartDate">
+				<label>&nbsp;~&nbsp;</label>
+				<input type="date" class="form-control" name="receiveEndDate">	
+		  	</div>
+		  </div>
+		  <div class="col-1 align-items-stretch">			
 			<input type="submit" class="btn btn-sm btn-dark" value="조회">
-		</span>
-		</form>
+		  </div>	
+		</div>
+	</form>
 	</div>
 	<!-- 입고 조회 끝 -->
 
 	<!-- 입고 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<span class="mb-4">총 ${fn:length(receiveList)} 건</span>
-		<span style="margin-left: 95%;">
+		
+		<form action="receiveListExcelDownload" method="GET">
+		<span style="margin-left: 990px;">
 			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
 		</span>
+		</form>
 		
 		<div class="table-responsive">
 			<table class="table" style="margin-top: 10px;">
@@ -71,7 +85,7 @@
 								<td><b>${rcl.receivestate }</b></td>
 								<td>
 									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="receiveDetailModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membercode }')">상세내역
+										onclick="receiveDetailModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">상세내역
 									</button>
 								</td>
 							</c:when>
@@ -79,7 +93,7 @@
 								<td>${rcl.receivestate }</td>
 								<td>
 									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
-										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.stockid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membercode }')">수정
+										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.stockid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-outline-dark m-1" value="삭제" id="deleteBtn">
 								</td>
@@ -312,7 +326,7 @@
 	})
 	
 	// 입고 수정
-	function receiveModifyModal(receiveid, itemid, stockid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membercode) {
+	function receiveModifyModal(receiveid, itemid, stockid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membername) {
 		console.log('receiveid:', receiveid);
 		console.log('itemid:', itemid);
 		console.log('stockid:', stockid);
@@ -324,7 +338,7 @@
 		console.log('receivequantity:', receivequantity);
 		console.log('storagecode:', storagecode);
 		console.log('lotnumber:', lotnumber);
-		console.log('membercode:', membercode);
+		console.log('membername:', membername);
 		   
 		// 가져온 값들을 모달에 설정
 		$("#receiveid2").val(receiveid);
@@ -338,14 +352,14 @@
 		$("#receivequantity2").val(receivequantity);
 		$("#storagecode2").val(storagecode);		
 		$("#lotnumber2").val(lotnumber);
-		$("#membercode2").val(membercode);
+		$("#membername2").val(membername);
 		
         // 입고 수정 모달 띄우기
         $('#receiveModifyModal').modal('show');
     }	
 	
 	// 입고 상세내역
-	function receiveDetailModal(receiveid, itemid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membercode) {
+	function receiveDetailModal(receiveid, itemid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membername) {
 		// 가져온 값들을 모달에 설정
 		$("#receiveid3").val(receiveid);
 		$("#itemid3").val(itemid);
@@ -357,7 +371,7 @@
 		$("#receivequantity3").val(receivequantity);
 		$("#storagecode3").val(storagecode);		
 		$("#lotnumber3").val(lotnumber);
-		$("#membercode3").val(membercode);
+		$("#membername3").val(membername);
 		
         // 입고 상세내역 모달 띄우기
         $('#receiveDetailModal').modal('show');
