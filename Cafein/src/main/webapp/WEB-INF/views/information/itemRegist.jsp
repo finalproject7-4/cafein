@@ -28,12 +28,12 @@
 					<div class="row">
 						<div class="col">
 							<label for="itemname" class="col-form-label"><b>품명</b></label>
-							<input id="itemname" name="itemname" class="form-control mb-3">
+							<input id="itemname" name="itemname" class="form-control mb-3" required>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col">
-							<label for="clientname" class="col-form-label"><b>공급처</b></label>
+							<label for="clientcode" class="col-form-label"><b>공급처</b></label>
 							<input id="clientcode" name="clientcode" class="form-control mb-3">
 						</div>
 						<div class="col">
@@ -48,7 +48,7 @@
 						</div>
 						<div class="col">
 							<label for="itemprice" class="col-form-label"><b>단가(원)</b></label>
-							<input id="itemprice" name="itemprice" class="form-control mb-3">
+							<input id="itemprice" name="itemprice" class="form-control mb-3" required>
 						</div>
 					</div>
 				</div>

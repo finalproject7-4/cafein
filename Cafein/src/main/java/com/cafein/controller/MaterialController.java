@@ -1,11 +1,22 @@
 package com.cafein.controller;
 
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -101,7 +112,7 @@ public class MaterialController {
 		return "redirect:/material/orders";
 	}
 	
-	// 발주 삭제
+	// 발주 삭제 - POST
 	@RequestMapping(value = "/orderDelete", method = RequestMethod.POST)
 	public String orderDelete(OrdersVO vo) throws Exception {
 		logger.debug("orderDelete() 호출");
@@ -110,6 +121,77 @@ public class MaterialController {
 		materService.orderDelete(vo);
 		
 		return "redirect:/material/orders";
+	}
+	
+	// 발주 목록 (엑셀 파일 다운로드) - GET
+	@RequestMapping(value = "/orderListExcelDownload", method = RequestMethod.GET)
+	public void orderListExcelDownload(HttpServletResponse response, OrdersVO vo) throws Exception { 
+		// 1. 테이블 데이터를 가져옴
+		List<OrdersVO> list = materService.orderListExcel(vo);
+		logger.debug("list: " + list);
+		
+		// 2. 엑셀 데이터로 변환
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("sheet");
+				
+		// 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가)
+		Row headerRow = sheet.createRow(0);
+		String[] headers = {"번호", "발주코드", "품목코드", "품명", "거래처", "발주수량", "발주금액(원)", "발주일자", "납기일자", "담당자"};
+
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);	    		
+		
+		for (int i = 0; i < headers.length; i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(headers[i]);
+			cell.setCellStyle(headerStyle);	
+		}
+
+		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작
+		for (OrdersVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+			Row row = sheet.createRow(rowNum++);
+
+			int colNum = 0;
+			// 컬럼 내용 추가 (vo의 Getter를 사용)
+			row.createCell(colNum++).setCellValue(vo2.getOrdersid());
+			row.createCell(colNum++).setCellValue(vo2.getOrderscode());
+			row.createCell(colNum++).setCellValue(vo2.getItemcode());
+			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			row.createCell(colNum++).setCellValue(vo2.getClientname());
+			row.createCell(colNum++).setCellValue(vo2.getOrdersquantity());
+			row.createCell(colNum++).setCellValue(vo2.getOrderprice());
+					
+			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환
+			CellStyle dateCellStyle = workbook.createCellStyle();
+			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+
+			Cell registrationDateCell = row.createCell(colNum++);
+			registrationDateCell.setCellValue(vo2.getOrdersdate()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
+			registrationDateCell.setCellStyle(dateCellStyle);
+					
+			// 셀 크기 조정
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+
+			Cell updateDateCell = row.createCell(colNum++);
+			updateDateCell.setCellValue(vo2.getDeliverydate()); // 위와 동일
+			updateDateCell.setCellStyle(dateCellStyle);
+			
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+		}
+				
+		String fileName = "OrderList.xlsx"; // 저장하는 파일명
+
+		// 3. 엑셀 파일을 저장
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식
+		response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행
+				
+		OutputStream out = response.getOutputStream();
+		workbook.write(out);
+		out.flush();
+		        
+		out.close();
+		workbook.close();
 	}
 	
 	// http://localhost:8088/material/receive
@@ -197,10 +279,10 @@ public class MaterialController {
 			materService.receiveModify(vo);
 		}
 		
-		// 입고상태가 완료일 경우 수정 후 품질관리로 이동
+		// 입고상태가 완료일 경우 수정 후 품질관리에 입고 데이터 등록
 		if(vo.getReceivestate().equals("완료")) {
 			materService.receiveModify(vo);
-			materService.moveQuality(vo);
+			materService.qualityRegist(vo);
 		}
 		
 		return "redirect:/material/receive";
@@ -217,6 +299,74 @@ public class MaterialController {
 		return "redirect:/material/receive";
 	}
 	
+	// 입고 목록 (엑셀 파일 다운로드) - GET
+	@RequestMapping(value = "/receiveListExcelDownload", method = RequestMethod.GET)
+	public void receiveListExcelDownload(HttpServletResponse response, ReceiveVO vo) throws Exception { 
+		// 1. 테이블 데이터를 가져옴
+		List<ReceiveVO> list = materService.receiveListExcel(vo);
+		logger.debug("list: " + list);
+		
+		// 2. 엑셀 데이터로 변환
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("sheet");
+				
+		// 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가)
+		Row headerRow = sheet.createRow(0);
+		String[] headers = {"번호", "입고코드", "발주코드", "품명", "입고수량", "입고일자", "LOT번호", "담당자"};
+
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);	    		
+		
+		for (int i = 0; i < headers.length; i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(headers[i]);
+			cell.setCellStyle(headerStyle);	
+		}
+
+		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작
+		for (ReceiveVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+			Row row = sheet.createRow(rowNum++);
+
+			int colNum = 0;
+			// 컬럼 내용 추가 (vo의 Getter를 사용)
+			row.createCell(colNum++).setCellValue(vo2.getReceiveid());
+			row.createCell(colNum++).setCellValue(vo2.getReceivecode());
+			row.createCell(colNum++).setCellValue(vo2.getOrderscode());
+			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			row.createCell(colNum++).setCellValue(vo2.getReceivequantity());
+					
+			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환
+			CellStyle dateCellStyle = workbook.createCellStyle();
+			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+
+			Cell registrationDateCell = row.createCell(colNum++);
+			registrationDateCell.setCellValue(vo2.getReceivedate()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
+			registrationDateCell.setCellStyle(dateCellStyle);
+					
+			// 셀 크기 조정
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+
+			row.createCell(colNum++).setCellValue(vo2.getLotnumber());
+			row.createCell(colNum++).setCellValue(vo2.getMembername());
+			
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+		}
+				
+		String fileName = "ReceiveList.xlsx"; // 저장하는 파일명
+
+		// 3. 엑셀 파일을 저장
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식
+		response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행
+				
+		OutputStream out = response.getOutputStream();
+		workbook.write(out);
+		out.flush();
+		        
+		out.close();
+		workbook.close();
+	}	
+	
 	// 출고 목록 - GET
 	@RequestMapping(value = "/releases", method = RequestMethod.GET)
 	public void releasesList(Model model, ReleasesVO vo, Criteria cri) throws Exception {
@@ -232,12 +382,80 @@ public class MaterialController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		// 데이터를 연결된 뷰페이지로 전달
+		model.addAttribute("releasesCount", materService.releasesCount(vo));
 		model.addAttribute("releasesList", materService.releasesList(vo));
 		model.addAttribute("pageVO", pageVO);
 				
 		// 연결된 뷰페이지로 이동
 		logger.debug("/views/material/releases.jsp 페이지로 이동");
 	}
-	
+
+	// 출고 목록 (엑셀 파일 다운로드) - GET
+	@RequestMapping(value = "/releaseListExcelDownload", method = RequestMethod.GET)
+	public void releaseListExcelDownload(HttpServletResponse response, ReleasesVO vo) throws Exception { 
+		// 1. 테이블 데이터를 가져옴
+		List<ReleasesVO> list = materService.releaseListExcel(vo);
+		logger.debug("list: " + list);
+		
+		// 2. 엑셀 데이터로 변환
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("sheet");
+				
+		// 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가)
+		Row headerRow = sheet.createRow(0);
+		String[] headers = {"번호", "출고코드", "생산지시코드", "품명", "재고수량", "출고수량", "출고일자", "담당자"};
+
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);	    		
+		
+		for (int i = 0; i < headers.length; i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellValue(headers[i]);
+			cell.setCellStyle(headerStyle);	
+		}
+
+		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작
+		for (ReleasesVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+			Row row = sheet.createRow(rowNum++);
+
+			int colNum = 0;
+			// 컬럼 내용 추가 (vo의 Getter를 사용)
+			row.createCell(colNum++).setCellValue(vo2.getReleaseid());
+			row.createCell(colNum++).setCellValue(vo2.getReleasecode());
+			row.createCell(colNum++).setCellValue(vo2.getProducecode());
+			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			row.createCell(colNum++).setCellValue(vo2.getStockquantity());
+			row.createCell(colNum++).setCellValue(vo2.getReleasequantity());
+					
+			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환
+			CellStyle dateCellStyle = workbook.createCellStyle();
+			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+
+			Cell registrationDateCell = row.createCell(colNum++);
+			registrationDateCell.setCellValue(vo2.getReleasedate()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
+			registrationDateCell.setCellStyle(dateCellStyle);
+					
+			// 셀 크기 조정
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+
+			row.createCell(colNum++).setCellValue(vo2.getMembername());
+			
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+		}
+				
+		String fileName = "ReleaseList.xlsx"; // 저장하는 파일명
+
+		// 3. 엑셀 파일을 저장
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식
+		response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행
+				
+		OutputStream out = response.getOutputStream();
+		workbook.write(out);
+		out.flush();
+		        
+		out.close();
+		workbook.close();
+	}	
 	
 }

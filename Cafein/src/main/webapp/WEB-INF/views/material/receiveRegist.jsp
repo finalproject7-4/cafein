@@ -44,21 +44,21 @@
 				<div class="row">
 					<div class="col">
 						<label for="receivedate" class="col-form-label"><b>입고일자</b></label>
-						<input type="date" name="receivedate" id="receivedate" class="form-control mb-2" placeholder="납기일자">
+						<input type="date" name="receivedate" id="receivedate" class="form-control mb-2" placeholder="납기일자" required>
 					</div>
 					<div class="col">
 						<label for="receivequantity" class="col-form-label"><b>입고수량</b></label>
-						<input type="number" name="receivequantity" id="receivequantity" class="form-control mb-2" min="0">
+						<input type="number" name="receivequantity" id="receivequantity" class="form-control mb-2" min="0" required>
 					</div>
 				</div>				
 				<div class="row">
 					<div class="col">
 						<label for="storagecode" class="col-form-label"><b>창고코드</b></label>
-						<input type="text" name="storagecode" id="storagecode" class="form-control mb-2">
+						<input type="text" name="storagecode" id="storagecode" class="form-control mb-2" required>
 					</div>
 					<div class="col">
 						<label for="membercode" class="col-form-label"><b>담당자</b></label>
-						<input type="text" name="membercode" id="membercode" class="form-control mb-2">
+						<input type="text" name="membercode" id="membercode" class="form-control mb-2" required>
 					</div>
 				</div>										
 			</div>

@@ -7,7 +7,7 @@
 <mapper namespace="com.cafein.mapper.MaterialMapper">
 	
 	<!-- 발주 목록 -->
-	<select id="ordersList" resultType="OrdersVO">
+	<select id="selectOrdersList" resultType="OrdersVO">
 		select od.ordersid, od.orderscode, od.membercode, od.ordersdate, od.deliverydate,
 	   		   od.ordersquantity, od.ordersquantity*it.itemprice orderprice, od.orderstate,
 			   it.itemcode, it.itemname, it.itemprice, cli.clientname, mem.membername
@@ -37,7 +37,7 @@
 	</select>
 	
 	<!-- 발주 목록 (모달) -->
-	<select id="getOrdersList" resultType="OrdersVO">
+	<select id="selectOrdersListModal" resultType="OrdersVO">
 		select od.ordersid, od.orderscode, it.itemid, it.itemname, od.ordersquantity
 		from orders od
 		join item it 
@@ -47,7 +47,7 @@
 	</select>
 	
 	<!-- 발주 목록 총 개수 -->
-	<select id="getOrdersCount" resultType="integer">
+	<select id="selectOrdersCount" resultType="integer">
 		select count(*) 
 		from orders od
 		join item it 
@@ -77,7 +77,7 @@
 	</insert>	
 	
 	<!-- 발주코드 개수 계산 -->
-	<select id="getOrderscodeCount" resultType="integer">
+	<select id="selectOrderscodeCount" resultType="integer">
 		select count(*) from orders 
 		where orderscode like concat('%', #{datePart}, '%')
 	</select>
@@ -94,8 +94,37 @@
 		where ordersid=#{ordersid}
 	</delete>
 	
+	<!-- 발주 목록 (엑셀 파일 다운로드) -->
+	<select id="selectOrderListExcel" resultType="OrdersVO">
+		select od.ordersid, od.orderscode, od.membercode, od.ordersdate, od.deliverydate,
+	   		   od.ordersquantity, od.ordersquantity*it.itemprice orderprice, od.orderstate,
+			   it.itemcode, it.itemname, it.itemprice, cli.clientname, mem.membername
+		from orders od
+		join item it 
+		on od.itemcode = it.itemcode
+		left outer join member mem
+		on od.membercode = mem.membercode		
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<where>
+			<if test="option == 'clientname'">
+				and clientname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="option == 'itemname'">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="orderStartDate != '' and orderStartDate != null and orderEndDate != '' and orderEndDate != null">
+		 		and date(ordersdate) between #{orderStartDate} and #{orderEndDate}
+			</if>		
+			<if test="deliveryStartDate != '' and deliveryStartDate != null and deliveryEndDate != '' and deliveryEndDate != null">
+			 	and date(deliverydate) between #{deliveryStartDate} and #{deliveryEndDate}
+			</if>
+		</where>		
+		order by od.ordersid desc	
+	</select>
+	
 	<!-- 입고 목록 -->
-	<select id="getReceiveList" resultType="ReceiveVO">
+	<select id="selectReceiveList" resultType="ReceiveVO">
 		select rc.receiveid, rc.receivecode, rc.orderscode, rc.receivequantity, rc.receivedate,
 	   		   rc.itemid, rc.storagecode, rc.lotnumber, rc.membercode, rc.receivestate,
 	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername, sto.stockid
@@ -111,7 +140,7 @@
 		left outer join client cli
 		on it.clientcode = cli.clientcode
 		<where>
-			<if test="option == 'itemname'">
+			<if test="keyword != null and keyword != ''">
 				and itemname like concat('%', #{keyword}, '%')
 			</if>
 			<if test="receiveStartDate != '' and receiveStartDate != null and receiveEndDate != '' and receiveEndDate != null">
@@ -123,7 +152,7 @@
 	</select>
 	
 	<!-- 입고 목록 총 개수 -->
-	<select id="getReceiveCount" resultType="integer">
+	<select id="selectReceiveCount" resultType="integer">
 		select count(*) 
 		from receive rc
 		join item it 
@@ -133,7 +162,7 @@
 		left outer join client cli
 		on it.clientcode = cli.clientcode
 		<where>
-			<if test="option == 'itemname'">
+			<if test="keyword != null and keyword != ''">
 				and itemname like concat('%', #{keyword}, '%')
 			</if>
 			<if test="receiveStartDate != '' and receiveStartDate != null and receiveEndDate != '' and receiveEndDate != null">
@@ -143,13 +172,13 @@
 	</select>
 	
 	<!-- 창고 목록 (모달) -->
-	<select id="getStorageList" resultType="ReceiveVO">
+	<select id="selectStorageList" resultType="ReceiveVO">
 		select sto.storageid, sto.storagename, sto.storagecode
 		from storage sto
 	</select>
 	
 	<!-- 입고코드 개수 계산 -->
-	<select id="getReceivecodeCount" resultType="integer">
+	<select id="selectReceivecodeCount" resultType="integer">
 		select count(*) from receive
 		where receivecode like concat('%', #{datePart}, '%')
 	</select>
@@ -178,10 +207,37 @@
 		where receiveid=#{receiveid}
 	</delete>
 	
+	<!-- 입고 목록 (엑셀 파일 다운로드) -->
+	<select id="selectReceiveListExcel" resultType="ReceiveVO">
+		select rc.receiveid, rc.receivecode, rc.orderscode, rc.receivequantity, rc.receivedate,
+	   		   rc.itemid, rc.storagecode, rc.lotnumber, rc.membercode, rc.receivestate,
+	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername, sto.stockid
+		from receive rc
+		join item it 
+		on rc.itemid = it.itemid
+		left outer join stock sto
+		on it.itemid = sto.itemid		
+		left outer join member mem
+		on rc.membercode = mem.membercode
+		left outer join orders od
+		on rc.orderscode = od.orderscode
+		left outer join client cli
+		on it.clientcode = cli.clientcode
+		<where>
+			<if test="keyword != null and keyword != ''">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="receiveStartDate != '' and receiveStartDate != null and receiveEndDate != '' and receiveEndDate != null">
+		 		and date(receivedate) between #{receiveStartDate} and #{receiveEndDate}
+			</if>		
+		</where>		
+		order by rc.receiveid desc			
+	</select>
+	
 	<!-- 출고 목록 -->
-	<select id="getReleasesList" resultType="ReleasesVO">
-		select rl.releaseid, rl.releasecode, rl.stockid, 
-			   rl.releasedate, rl.releasequantity, 
+	<select id="selectReleasesList" resultType="ReleasesVO">
+		select rl.releaseid, rl.releasecode, rl.producecode, rl.stockid, 
+			   rl.releasestate , rl.releasedate, rl.releasequantity, 
 			   sto.stockquantity, it.itemname, mem.membername
 		from releases rl
 		join stock sto 
@@ -191,19 +247,19 @@
 		left outer join member mem
 		on rl.membercode = mem.membercode
 		<where>
-			<if test="option == 'itemname'">
+			<if test="keyword != null and keyword != ''">
 				and itemname like concat('%', #{keyword}, '%')
 			</if>
 			<if test="releaseStartDate != '' and releaseStartDate != null and releaseEndDate != '' and releaseEndDate != null">
 		 		and date(releasedate) between #{releaseStartDate} and #{releaseEndDate}
 			</if>		
 		</where>		
-		order by rl.releaseid desc		
+		order by rl.releaseid desc
 		limit #{cri.startPage}, #{cri.pageSize}			
 	</select>
 	
 	<!-- 출고 목록 총 개수 -->
-	<select id="getReleasesCount" resultType="integer">
+	<select id="selectReleasesCount" resultType="integer">
 		select count(*) 
 		from releases rl
 		join stock sto 
@@ -213,7 +269,7 @@
 		left outer join member mem
 		on rl.membercode = mem.membercode
 		<where>
-			<if test="option == 'itemname'">
+			<if test="keyword != null and keyword != ''">
 				and itemname like concat('%', #{keyword}, '%')
 			</if>
 			<if test="releaseStartDate != '' and releaseStartDate != null and releaseEndDate != '' and releaseEndDate != null">
@@ -223,9 +279,32 @@
 	</select>
 	
 	<!-- 출고코드 개수 계산 -->
-	<select id="getreleasecodeCount" resultType="integer">
+	<select id="selectReleasecodeCount" resultType="integer">
 		select count(*) from releases
 		where releasecode like concat('%', #{datePart}, '%')
 	</select>	
+	
+	<!-- 출고 목록 (엑셀 파일 다운로드) -->
+	<select id="selectReleaseListExcel" resultType="ReleasesVO">
+		select rl.releaseid, rl.releasecode, rl.producecode, rl.stockid, 
+			   rl.releasestate , rl.releasedate, rl.releasequantity, 
+			   sto.stockquantity, it.itemname, mem.membername
+		from releases rl
+		join stock sto 
+		on rl.stockid = sto.stockid
+		left outer join item it
+		on sto.itemid = it.itemid
+		left outer join member mem
+		on rl.membercode = mem.membercode
+		<where>
+			<if test="keyword != null and keyword != ''">
+				and itemname like concat('%', #{keyword}, '%')
+			</if>
+			<if test="releaseStartDate != '' and releaseStartDate != null and releaseEndDate != '' and releaseEndDate != null">
+		 		and date(releasedate) between #{releaseStartDate} and #{releaseEndDate}
+			</if>		
+		</where>		
+		order by rl.releaseid desc	
+	</select>
 	
 </mapper>
