@@ -225,13 +225,9 @@
     SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
            wk.pocnt, wk.membercode, wk.returncount, wk.returnreason
     FROM work wk
-    WHERE wk.worksts = '완료'
-  	    <where>
+	WHERE wk.worksts = '완료'
 		<if test="worksts != null" >
 			worksts=#{worksts}
-		</if>
-		<if test="searchBtn != null and searchText == null">
-			AND wk.clientname = #{searchBtn}
 		</if>
 		<if test="searchBtn != null and searchText != null">
 			AND wk.clientname LIKE CONCAT('%', #{searchText}, '%')
@@ -245,9 +241,8 @@
 		<if test="searchBtn == null and startDate != null and endDate != null">
 			AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
 		</if>
-		</where>
-    ORDER BY workid DESC;
-    LIMIT #{cri.startPage, jdbcType=INTEGER}, #{cri.pageSize, jdbcType=INTEGER}
+    ORDER BY workid DESC
+    LIMIT #{cri.startPage}, #{cri.pageSize}
 	</select>
 	
 	<!-- 총 개수 -->
@@ -255,7 +250,6 @@
    SELECT count(*)
 	FROM work wk
 	WHERE wk.worksts = '완료'
-	<where>
 		<if test="worksts != null" >
 			worksts=#{worksts}
 		</if>
@@ -272,9 +266,8 @@
 		AND wk.clientname = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and startDate != null and endDate != null">
-		AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
+		AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
 		</if>
-	</where>
 	</select>
 	
 	<!-- 실적 수정 -->
