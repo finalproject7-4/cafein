@@ -420,7 +420,7 @@ public class ProductionController {
 	
 	
 	
-	// 메인페이지
+	// 메인페이지 (사용X, 메인컨트롤러로 다 옮김)
 	// http://localhost:8088/production/main
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public void cafeinMain(Model model, ProduceVO vo) throws Exception {
@@ -429,6 +429,7 @@ public class ProductionController {
 		model.addAttribute("today", pService.getProduceAmountToday());
 		model.addAttribute("thisMonth", pService.getProduceAmountThisMonth());
 		model.addAttribute("thisYear", pService.getProduceAmountThisYear());
+		model.addAttribute("thisWeek", pService.getProduceAmountThisWeek());
 		model.addAttribute("produceList", pService.getProduceList());
 		
 		
