@@ -3,7 +3,6 @@ package com.cafein.service;
 import java.util.List;
 
 import com.cafein.domain.ItemVO;
-import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReturnVO;
 
 public interface ReturnService {
@@ -32,7 +31,12 @@ public interface ReturnService {
 	public void returnDelete(int rvo) throws Exception;
 	
 	// 품질 관리 등록
-	public void addReturn(int rvo) throws Exception;
+	public void addReturn(int returnid) throws Exception;
+	
+	// 환불 날짜 등록
+	public void refundDate(String returnCode) throws Exception;
+	
+
 	
 	
 	

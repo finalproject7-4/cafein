@@ -75,11 +75,19 @@ public class ReturnDAOImpl implements ReturnDAO {
 	}
 
 	@Override
-	public void addReturn(int rvo) throws Exception {
+	public void addReturn(int returnid) throws Exception {
 		
-		sqlSession.insert(NAMESPACE + ".addReturn", rvo);
+		sqlSession.insert(NAMESPACE + ".addReturn",returnid);
 	}
 
+	@Override
+	public void refundDate(String returnCode) throws Exception {
+
+		sqlSession.insert(NAMESPACE + ".refundDate",returnCode); 
+	}
+
+	
+	
 	
 	
 	
