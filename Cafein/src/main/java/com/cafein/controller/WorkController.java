@@ -67,15 +67,15 @@ public class WorkController {
 	// 작업지시 등록 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
-	public String registWK(WorkVO wvo,@RequestParam(value = "workdate1") String workdate1,
-			@RequestParam(value = "workdate2") String workdate2) throws Exception {
+	public String registWK(WorkVO wvo,@RequestParam(value = "workdate1") String workdate1
+			/*@RequestParam(value = "workdate2") String workdate2*/) throws Exception {
 		
 		logger.debug("registWK() 호출 ");                                 
 		logger.debug(" wvo : " + wvo);  
 		
 		wvo.setWorkcode(makeWKcode(wvo));
 		wvo.setWorkdate1(Date.valueOf(workdate1));
-		wvo.setWorkdate1(Date.valueOf(workdate2));
+		// wvo.setWorkdate2(Date.valueOf(workdate2));
 		
 		shService.registWK(wvo);                                                      
 		logger.debug(" 작업지시 등록 완료! ");     
