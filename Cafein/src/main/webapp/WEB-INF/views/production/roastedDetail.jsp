@@ -16,7 +16,7 @@
    var prevPage = $(this).data('page');
 	
 	var searchLot = "${param.searchLot}";
-	var searchDate = "${param.startDate}";
+	var searchDate = "${param.searchDate}";
 
 	var dataObject = {
 		"page" : prevPage	
@@ -50,7 +50,7 @@
 		
 		var pageNum = $(this).data('page');
 		var searchLot = "${param.searchLot}";
-		var searchDate = "${param.satrtDate}";
+		var searchDate = "${param.searchDate}";
 		var dataObject = {
 				"page" : pageNum
 		};
@@ -82,7 +82,7 @@
 	    var nextPage = $(this).data('page');
 				
 	    var searchLot = "${param.searchLot}";
-		var searchDate = "${param.startDate}";
+		var searchDate = "${param.searchDate}";
 
 		var dataObject = {
 			"page" : nextPage	
@@ -125,6 +125,10 @@
 		 };
 		$("#barcodePrint").barcode(value, "code128", settings);
 	 }
+	 
+	 $('.btn-close').click(function() {
+		    $('#barcodeModal').modal('hide'); // 모달을 닫는 코드
+		});
 	 
 	     
 </script>
@@ -207,9 +211,9 @@
 <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header" style="display: none;">
+					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> 제품 바코드 출력 </h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"aria-label="Close" ></button>
+						<button type="button" onclick="location.href='/production/roastedList';" class="btn-close" aria-label="Close" ></button>
 					</div>
 					<div class="modal-body">
 						<form action="" >
@@ -243,7 +247,7 @@
 							</div>					
 					</div>
 					<div class="modal-footer">
-						<input type="submit" class="btn btn-primary" value="닫기" >
+						<input type="button" class="btn btn-primary" onclick="printModalContent()" value="인쇄" >
 					</div>
 						</form>
 					</div>

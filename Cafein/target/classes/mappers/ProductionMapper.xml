@@ -20,7 +20,7 @@
 		
 		<where>
 		true
-		<if test="startDate != null and endDate != null">
+		<if test="startDate != null and endDate != null and !startDate.equals('') and !endDate.equals('')">
 		 	AND producedate between #{startDate} and #{endDate}
 		</if>
 		
@@ -29,7 +29,9 @@
 		</if>
 		
 		<if test="itemname != null and !itemname.equals('')">
-			AND itemname = #{itemname}
+		<![CDATA[
+			AND p.itemname = #{itemname}
+			]]>
 		</if>
 			
 		<if test="searchBtn != null and searchBtn !='검사전'">
@@ -57,8 +59,8 @@
 		
 		<where>
 			true
-		<if test="startDate != null and endDate != null">
-		 	producedate between #{startDate} and #{endDate}
+		<if test="startDate != null and endDate != null and !startDate.equals('') and !endDate.equals('')">
+		 	p.producedate between #{startDate} and #{endDate}
 		</if>
 		
 		<if test="process != null and !process.equals('')">
@@ -66,7 +68,7 @@
 		</if>
 		
 		<if test="itemname != null and !itemname.equals('')">
-			AND itemname = #{itemname}
+			AND p.itemname = #{itemname}
 		</if>
 			
 		<if test="searchBtn != null and searchBtn !='검사전'">
@@ -86,7 +88,7 @@
 	<select id="AJAXcountProduceList" resultType="Integer">
 		select count(*) from produce
 		<where>
-		<if test="startDate != null and endDate != null">
+		<if test="startDate != null and endDate != null and !startDate.equals('') and !endDate.equals('')">
 		 AND producedate between #{startDate} and #{endDate}
 		</if>
 		
@@ -190,11 +192,13 @@
 		select * from roastedbean 
 		<where>
 			true
-			<if test="searchDate == null and searchLot != null and !searchLot.equals('')">
-				and lotnumber like concat ('%',#{searchLot},'%')		
+			<if test="searchLot != null and !searchLot.equals('')">
+				<![CDATA[
+				and lotnumber like concat ('%',#{searchLot},'%')	
+				]]>	
 			</if>
 			
-			<if test="searchDate != null and searchLot == null">
+			<if test="searchDate != null and !searchDate.equals('')">
 				<![CDATA[
 				and roasteddate like concat ('%',#{searchDate},'%')
 				]]>
@@ -211,8 +215,10 @@
 		select count(*) from roastedbean
 		<where>
 		 	true
-			<if test="searchDate == null and searchLot != null and !searchLot.equals('')">
-				and lotnumber like concat ('%',#{searchLot},'%')		
+			<if test="searchLot != null and !searchLot.equals('')">
+				<![CDATA[
+				and lotnumber like concat ('%',#{searchLot},'%')	
+				]]>	
 			</if>			
 			<if test="searchDate != null and !searchDate.equals('')">
 				<![CDATA[
@@ -298,6 +304,7 @@
 	<!-- 메인페이지용 생산지시 리스트 출력 -->
 	<select id="getProduceList" resultType="com.cafein.domain.ProduceVO">
 		select * from produce where DATE(producedate) = CURDATE()
+		order by producetime
 	</select>
 	
 </mapper>

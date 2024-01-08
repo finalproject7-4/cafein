@@ -28,8 +28,8 @@ public class ProduceVO {
 	private int packagevol;			// 포장 용량
 	
 	// 검색용 변수
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private String searchText;
 	private String searchBtn;
 

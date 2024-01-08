@@ -145,20 +145,32 @@ document.getElementById('lotnumberbar').value = lotnumber;
 document.getElementById('roasteddatebar').value = roasteddate;
 printBarcode(); //  바코드 생성 함수
 // 모달 열기
-printModalContent();
+
 $('#barcodeModal').modal('show'); 
+
+
 }
 
 
 
 //모달 내용을 인쇄하는 함수
 function printModalContent() {
+  var currentPage = getCurrentPageNumber();
   var printContents = document.getElementById('barcodeModal').innerHTML; // 모달 내용을 가져옵니다.
   var originalContents = document.body.innerHTML; // 현재 페이지의 내용을 저장합니다.
   document.body.innerHTML = printContents; // 모달 내용을 현재 페이지에 설정합니다.
   window.print(); // 모달 내용을 인쇄합니다.
   document.body.innerHTML = originalContents; // 원래 페이지의 내용으로 되돌립니다.
+
 }
+
+function close(){
+	$('#barcodeModal').modal('hide'); // 모달을 닫는 코드
+}
+// btn-close 클래스를 가진 요소를 클릭했을 때 모달을 닫음
+$('.btn-close').click(function() {
+    $('#barcodeModal').modal('hide'); // 모달을 닫는 코드
+});
 </script>
  
 

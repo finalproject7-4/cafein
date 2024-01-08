@@ -23,7 +23,7 @@ function getList(){
             $("#produceListAll").html(data);
         },
         error: function(error) {
-            console.error("Error fetching quality list:", error);
+            console.error("Error fetching produce list:", error);
         }
     });
 }
@@ -75,7 +75,7 @@ function getList(pageNumber) {
 <div >
 <form name="dateSearch" action="/production/produceList3" method="get">
 <select id="itemnameSelSearch" name="itemname">
-			<option value="itemname">제품명</option>
+			<option value="">제품명</option>
 	<c:forEach var="iList" items="${itemList }" >
 			<option value="${iList.itemname }">${iList.itemname}</option>
 	</c:forEach>
