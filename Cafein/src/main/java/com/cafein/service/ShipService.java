@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.cafein.domain.MemberVO;
+import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReceiveVO;
+import com.cafein.domain.ReleasesVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
@@ -27,7 +29,7 @@ public interface ShipService {
 	public List<WorkVO> registST() throws Exception;
 	
 	// 출하 등록 - 멤버 코드
-	public List<ShipVO> registMC() throws Exception;
+	public List<MemberVO> registMC() throws Exception;
 	
 	// 출하 코드 생성
 	public int shCount(ShipVO svo) throws Exception;
@@ -63,6 +65,12 @@ public interface ShipService {
 	
 	// 작업 지시 삭제
 	public void WKDelete(WorkVO wvo) throws Exception;
+	
+	// 작업 지시 등록과 동시에 출하 지시 등록
+	public void insertShipList(ShipVO svo) throws Exception;
+	
+	// 작업 지시 진행 = 출하 진행
+	public void updateCompletShip(WorkVO wvo) throws Exception;
 	
 	
 	
