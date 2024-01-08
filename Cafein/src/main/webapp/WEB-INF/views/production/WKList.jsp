@@ -157,12 +157,17 @@
 									<td>${wk.membercode }</td>
 									<!-- 버튼 수정 -->
 									<td>
+									<c:if test="${wk.worksts == '완료'}">
+									작업지시 완료
+									</c:if>
+									<c:if test="${wk.worksts != '완료'}">
 									<button type="button" class="btn btn-outline-dark"
-    										onclick="openModifyModal('${wk.workid}','${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
-    										수정
+									onclick="openModifyModal('${wk.workid}','${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									수정
 									</button>
 									<input type="button" class="btn btn-outline-dark" value="삭제" id="deleteBtn">
-									</td>
+									</c:if>
+								</td>
 								</tr>
 							</c:forEach>
 							</c:otherwise>

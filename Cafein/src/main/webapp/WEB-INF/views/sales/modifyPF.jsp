@@ -43,12 +43,19 @@
 					<br>
 					<div class="row">
 						<div class="col">
-							<b>불량수량</b><input name="returncount" id="returncount3" type="number" class="form-control"  placeholder="불량 수량" >
+							<b>반품수량</b><input name="returncount" id="returncount3" type="number" class="form-control"  placeholder="불량 수량" >
 						</div>
 						<br>
-						<div class="col">
-							<b>불량사유</b><input name="returnreason" id="returnreason3" class="form-control"  placeholder="불량 사유" >
-						</div>
+						<div class=col>
+						<b>반품 사유</b>
+						<select class="form-select" id="returnreason3" name="returnreason"
+							aria-label="Floating label select example">
+							<optgroup label="반품사유">
+								<option value="제품불량">제품불량</option>
+								<option value="주문오류">주문오류</option>
+							</optgroup>
+						</select>
+					</div>	
 					</div>
 					<br>
 					<div class="mb-3">
