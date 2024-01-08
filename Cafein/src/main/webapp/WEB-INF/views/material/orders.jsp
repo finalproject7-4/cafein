@@ -289,6 +289,7 @@
                             	<thead>
                                 	<tr>
                                        <th scope="col">번호</th>
+                                       <th scope="col">유형</th>
                                        <th scope="col">공급처명</th>
                                        <th scope="col">공급처코드</th>
                                     </tr>
@@ -299,6 +300,7 @@
                                    <c:if test="${clientList.categoryofclient eq '공급'}">
                                     <tr class="clientset">
                                     	<td>${counter}</td>
+                                    	<td>${clientList.typeofclient }</td>
                                     	<td>${clientList.clientname }</td> 
                                     	<td>${clientList.clientcode }</td>
                                     </tr>
@@ -333,7 +335,8 @@
 								<thead>
 									<tr style="text-align: center;">
 										<th scope="col">번호</th>
-										<th scope="col">품목코드</th>
+										<th scope="col" style="display: none;">품목코드</th>
+										<th scope="col">유형</th>
 										<th scope="col">품명</th>
 										<th scope="col">단가(원)</th>
                                     </tr>
@@ -343,7 +346,8 @@
 								  <c:forEach var="itemList" items="${itemList}" varStatus="status">
                                     <tr class="itemset" style="text-align: center;">
                                       <td>${counter }</td> 
-                                      <td>${itemList.itemcode }</td> 
+                                      <td style="display: none;">${itemList.itemcode }</td> 
+                                      <td>${itemList.itemtype }</td> 
                                       <td>${itemList.itemname }</td> 
                                       <td>${itemList.itemprice }</td> 
                                     </tr>
@@ -471,8 +475,8 @@
     	
 	    $(".clientset").click(function() {
 	        var columns = $(this).find('td');
-	        var selectedClientName = $(columns[1]).text(); // 공급처명
-	        var selectedClientCode = $(columns[2]).text(); // 공급처코드
+	        var selectedClientName = $(columns[2]).text(); // 공급처명
+	        var selectedClientCode = $(columns[3]).text(); // 공급처코드
 	        $('#clientname').val(selectedClientName);
 	        $('#clientModal').modal('hide');
 	    });	
@@ -485,8 +489,8 @@
     	$(".itemset").click(function() {
         	var columns = $(this).find('td');
         	var selectedItemCode = $(columns[1]).text(); // 품목코드
-        	var selectedItemName = $(columns[2]).text(); // 품명
-        	var selectedItemPrice = $(columns[3]).text(); // 품목가격
+        	var selectedItemName = $(columns[3]).text(); // 품명
+        	var selectedItemPrice = $(columns[4]).text(); // 품목가격
         	$('#itemcode').val(selectedItemCode);
         	$('#itemname').val(selectedItemName);
         	$('#itemprice').val(selectedItemPrice);

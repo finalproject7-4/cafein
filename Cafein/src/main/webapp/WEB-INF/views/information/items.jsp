@@ -198,7 +198,7 @@
     	<div class="modal-dialog">
         	<div class="modal-content">
             	<div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">공급처</h5>
+                <h5 class="modal-title" id="exampleModalLabel">공급처 목록</h5>
                 	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 
@@ -209,6 +209,7 @@
                             	<thead>
                                 	<tr>
                                        <th scope="col">번호</th>
+                                       <th scope="col">유형</th>
                                        <th scope="col">공급처명</th>
                                        <th scope="col">공급처코드</th>
                                     </tr>
@@ -219,6 +220,7 @@
                                   <c:if test="${clientList.categoryofclient eq '공급'}">
                                     <tr class="clientset">
                                     	<td>${counter }</td> 
+                                    	<td>${clientList.typeofclient }</td> 
                                     	<td>${clientList.clientname }</td> 
                                     	<td>${clientList.clientcode }</td>
                                     </tr>
@@ -282,8 +284,8 @@
     	
 	    $(".clientset").click(function() {
 	        var columns = $(this).find('td');
-	        var selectedClientName = $(columns[1]).text(); // 공급처명
-	        var selectedClientCode = $(columns[2]).text(); // 공급처코드
+	        var selectedClientName = $(columns[2]).text(); // 공급처명
+	        var selectedClientCode = $(columns[3]).text(); // 공급처코드
 	        $('#clientcode').val(selectedClientCode);
 	        $('#clientModal').modal('hide');
 	    });

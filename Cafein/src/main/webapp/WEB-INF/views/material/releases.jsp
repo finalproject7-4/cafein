@@ -34,7 +34,7 @@
 
 	<!-- 출고 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<span class="mb-4">총 ${fn:length(releasesList)} 건</span>
+		<span class="mb-4">총 ${releasesCount } 건</span>
 		
 		<form action="releaseListExcelDownload" method="GET">
 		<span style="margin-left: 1050px;">

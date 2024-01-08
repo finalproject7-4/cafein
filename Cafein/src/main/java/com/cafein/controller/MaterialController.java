@@ -382,6 +382,7 @@ public class MaterialController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		// 데이터를 연결된 뷰페이지로 전달
+		model.addAttribute("releasesCount", materService.releasesCount(vo));
 		model.addAttribute("releasesList", materService.releasesList(vo));
 		model.addAttribute("pageVO", pageVO);
 				

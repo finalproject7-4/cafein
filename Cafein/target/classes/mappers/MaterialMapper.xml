@@ -254,7 +254,7 @@
 		 		and date(releasedate) between #{releaseStartDate} and #{releaseEndDate}
 			</if>		
 		</where>		
-		order by rl.releaseid desc		
+		order by rl.releaseid desc
 		limit #{cri.startPage}, #{cri.pageSize}			
 	</select>
 	
