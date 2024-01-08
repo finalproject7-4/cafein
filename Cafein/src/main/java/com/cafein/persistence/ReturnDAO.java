@@ -32,7 +32,12 @@ public interface ReturnDAO {
 	// 반품 삭제
 	public void deleteReturn(int rvo) throws Exception;
 
-	public void addReturn(int rvo) throws Exception;
+	// 품질관리 등록
+	public void addReturn(int returnid) throws Exception;
+	
+	// 환불날짜 등록
+	public void refundDate(String returnCode) throws Exception;
+	
 	
 	
 }

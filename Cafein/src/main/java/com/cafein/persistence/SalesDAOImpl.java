@@ -119,6 +119,13 @@ public class SalesDAOImpl implements SalesDAO {
 		logger.debug("DAO : 수주조회");
 		return sqlSession.selectList(NAMESPACE+".stop");
 	}
+
+	//납품서출력
+	@Override
+	public SalesVO getReceiptByPoid(int poid) throws Exception {
+		logger.debug("DAO : 수주조회");
+		return sqlSession.selectOne(NAMESPACE+".receipt", poid);
+	}
 	
 	
 	

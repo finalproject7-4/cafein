@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -170,6 +171,7 @@ public class SalesController {
 		}
 		return "redirect:/sales/POList";                                             
 	}
+	/************************************************************************************************************/
 	//리스트출력
 	@GetMapping("/POListPrint") // 기호에 맞게 매핑하시면 됩니다
 	public void POPrint(HttpServletResponse response, SalesVO svo) throws Exception { 
@@ -234,11 +236,9 @@ public class SalesController {
 
 			row.createCell(colNum++).setCellValue(vo2.getMembercode());
 			sheet.autoSizeColumn(colNum - 1);
-			
-			
 		}
 		
-		String fileName = "POList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
+		String fileName = "수주 전체 리스트.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
 
 		// 3. 엑셀 파일을 저장합니다.
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식입니다
@@ -252,6 +252,7 @@ public class SalesController {
         workbook.close();
 	}
 
-	
+	/****************************************************************************************************************************************/
+
 	
 }

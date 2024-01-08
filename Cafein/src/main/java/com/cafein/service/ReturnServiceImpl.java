@@ -69,20 +69,19 @@ public class ReturnServiceImpl implements ReturnService {
 		rdao.deleteReturn(rvo);
 	}
 
-	@Override
-	public void addReturn(int rvo) throws Exception {
-		
-		rdao.addReturn(rvo);
+	
+	@Override 
+	public void addReturn(int returnid) throws Exception {
+	  
+		rdao.addReturn(returnid); 
 	}
 
-	
+	@Override
+	public void refundDate(String returnCode) throws Exception {
 
-	
-	
-	
-	
-
-	
+		rdao.refundDate(returnCode);
+	}
+	 
 	
 	
 	

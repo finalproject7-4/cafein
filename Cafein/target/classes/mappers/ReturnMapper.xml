@@ -73,12 +73,28 @@
  	DELETE FROM returns WHERE returnid = #{returnid}
  	</delete>
  	
- 	<!-- 품질 관리 등록 -->
- 	<insert id="addReturn">
- 		insert into quality (itemtype,returnid,itemid,returnquantity)
- 		values ('반품', #{returnid}, 
- 		(SELECT itemid FROM item WHERE itemcode = #{itemcode}), #{returnquantity}
- 		)
- 	</insert>
+
+ 	
+	<!-- 품질 관리 등록 -->
+	<insert id="addReturn">
+		insert into quality (itemtype, returnid, itemid, productquantity)
+		values ('반품', #{returnid}, 
+		(SELECT itemid FROM returns WHERE returnid = #{returnid}),
+		(SELECT returnquantity FROM returns WHERE returnid = #{returnid}))
+	</insert>
+	
+	<!-- 환불날짜 등록 -->
+	<update id="refundDate">
+		update returns set exchangedate= date(now())
+		where returncode= #{returncode}
+	</update>	
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
 </mapper>

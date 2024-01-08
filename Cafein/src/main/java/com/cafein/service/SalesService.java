@@ -35,6 +35,7 @@ public interface SalesService {
 
 	//수주상태 취소로 변경
 	public int updatePOstate(SalesVO svo) throws Exception;
+	
 	//수주상태 진행으로 변경
 	public int ingUpdate(SalesVO svo) throws Exception;
 
@@ -43,7 +44,11 @@ public interface SalesService {
 
 	//수주리스트출력
 	public List<SalesVO> POListExcel(SalesVO svo) throws Exception;
+
 	//수주상태 대기
 	public List<SalesVO> stopState() throws Exception;
+	
+	//납품서 출력
+	public SalesVO getReceiptByPoid(int poid) throws Exception;
 	
 }
