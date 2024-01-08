@@ -24,7 +24,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
-				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
+				<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
 				<input type="submit" value="검색">
 			</form>
 			</div>
@@ -47,6 +47,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
+								<th scope="col">중량</th>				
 								<th scope="col">불량</th>
 								<th scope="col">불량사유</th>
 								<th scope="col">처리방식</th>
@@ -67,13 +68,19 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									</c:if>
 									<td>${dlist.itemcode }</td>
 									<td>${dlist.itemname }</td>
+									<c:if test="${dlist.weight != 0 }">
+									<td>${dlist.weight }(g)</td>
+									</c:if>
+									<c:if test="${dlist.weight == 0 }">
+									<td></td>
+									</c:if>
 									<!-- 불량 출력 -->
 									<td>
 									<c:if test="${!empty dlist.itemtype && dlist.itemtype.equals('반품')}">
 										<b style="color: red;">${dlist.defectquantity }</b>(개)
 									</c:if>
 									<c:if test="${!empty dlist.produceprocess && dlist.produceprocess.equals('포장')}">
-										<b style="color: red;">${dlist.defectquantity }</b>(개)
+										<b style="color: red;">${dlist.defectquantity }</b>(g)
 									</c:if>
 									<c:if test="${!empty dlist.produceprocess && !dlist.produceprocess.equals('포장') }">
 										<b style="color: red;">${dlist.defectquantity }</b>(g)
@@ -88,7 +95,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</table>
 			</div>
 			
-						<!-- 페이지 블럭 생성 -->
+			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
     				<li class="page-item">

@@ -30,8 +30,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<c:if test="${!empty param.searchBtn }">
 			<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 		</c:if>
-		<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
-		<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
+		<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
+		<input type="submit" value="검색" data-toggle="tooltip" title="제품명이 필요합니다!">
 	</form>
 	</div>
 		<form action="/materialStockPrint" method="GET">
@@ -91,7 +91,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
  									실사 변경
 									</button>
 									</td>
-									<td>${slist.storagecode } - ${slist.storagename }
+									<td>
+									<c:if test="${!empty slist.storagecode }">
+									${slist.storagecode } - ${slist.storagename }
+									</c:if>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('원자재') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
@@ -255,11 +258,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -352,11 +355,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -422,7 +425,11 @@ $(document).ready(function() {
         linputField.value = lotNumber;
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + " - " + storageName;
+        if(storageCode != ""){
+        	stinputField.value = storageCode + " - " + storageName;        	
+        }else{
+        	stinputField.value = "입고 라인";
+        }
     });
 });
 </script>
@@ -441,11 +448,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -511,7 +518,11 @@ $(document).ready(function() {
         linputField.value = lotNumber;
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + " - " + storageName;
+        if(storageCode != ""){
+        	stinputField.value = storageCode + " - " + storageName;        	
+        }else{
+        	stinputField.value = "입고 라인";
+        }
     });
 });
 </script>
@@ -523,7 +534,7 @@ $(document).ready(function() {
   <form>
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel2">자재 정보 확인</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">자재 입고 정보 확인</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -585,13 +596,13 @@ $(document).ready(function($) {
         event.preventDefault();  // 기본 동작 (페이지 이동) 방지
 
         // 클릭된 a 태그의 data-lotnumber 값 가져오기
-        var lotnumber = $(this).data("lotnumber");
+        var receiveid = $(this).data("receiveid");
 
         // AJAX 요청
         $.ajax({
             url: "/receiveInfo",
             type: "GET",
-            data: { lotnumber: lotnumber },  // 파라미터 전송
+            data: { receiveid: receiveid },  // 파라미터 전송
             dataType: "JSON",
             success: function(data) {
             	console.log(data);
