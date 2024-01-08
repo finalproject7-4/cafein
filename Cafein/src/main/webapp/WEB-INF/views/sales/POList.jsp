@@ -316,27 +316,28 @@
 	<!--납품서 모달창 -->
 	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-				<form action="/ReceiptPrint/{poid}" method="get" id="ReceiptForm">
 			<div class="modal-content rectipt-body">
 				<div class="modal-header">
 				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서 미리보기</h5>
+				<input type="button" class="btn btn-secondary ReceiptPDF" onclick="printModalContent()" value="출력">
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
-				<input id="rupdatedate" name="updatedate" class="form-control mb-3" type="text" readonly> 
-				<input id="rclientid" name="clientid" class="form-control mb-3" type="text" readonly> 
-				<input id="ritemid" name="itemid" class="form-control mb-3" type="text" readonly> 
-				<input id="rpostate" name="postate" class="form-control mb-3" type="text" readonly> 
-				<input id="rmembercode" name="membercode" class="form-control mb-3" type="text" readonly> 
+				<input id="rupdatedate" name="updatedate" class="form-control mb-3" type="hidden" readonly> 
+				<input id="rclientid" name="clientid" class="form-control mb-3" type="hidden" readonly> 
+				<input id="ritemid" name="itemid" class="form-control mb-3" type="hidden" readonly> 
+				<input id="rpostate" name="postate" class="form-control mb-3" type="hidden" readonly> 
+				<input id="rmembercode" name="membercode" class="form-control mb-3" type="hidden" readonly> 
 				
-				<div class="col-12">
+				<div class="col-12" id="pdf">
 				<div class="rounded h-100 p-4 bgray">
-				<h6 class="modal-title receiptTitle" id="exampleModalLabel">납품서</h6>
+				<h6 class="modal-title receiptTitle" >납품서</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close" onclick="location.href='/sales/POList';"></button>
 				<div class="odate">
 				주문일자<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
-				
 							<table class="table table-bordered">
 							<thead>
 									<tr>
@@ -355,7 +356,7 @@
 									</tr>
 									<tr>
 										<td class="pt15"><b>대표자</b></td>
-										<td colspan="2"><input id="rcafeinRepresent" name="cafeinRepresent" class="form-control form-control-sm" type="text" readonly></td>
+										<td colspan="2"><input name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>
 										<td class="pt15"><b>주소</b></td>
 										<td colspan="2"><input id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
 									</tr>
@@ -419,25 +420,19 @@
 										</tr>
 										<tr>
 											<td class="rem13"><b>대표자</b></td>
-											<td ><input id="rmembername" name="membername" class="form-control form-control-sm" type="text" value="이현정" readonly></td>
-										</tr>
+											<td><input  name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>										</tr>
 									</tbody>
 							</table>
 						</div>
 					</div>
 				</div><br>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">확인</button>
-				<input type="submit" class="btn btn-sm btn-success" id="ReceiptExcel" value="엑셀파일 다운">
 			</div>
 		</div>
-		</form><br>
 	</div>
 </div>
 		
 	
-
 
 <script>
 	/* 리스트 값 납품서 모달로 값 전달 */
@@ -490,7 +485,7 @@
 		
 		$("#rcafeinNumber").val(cafeinNumber);
 		$("#rcafeinName").val(cafeinName);
-		$("#rcafeinRepresent").val(cafeinRepresent);
+		$(".rcafeinRepresent").val(cafeinRepresent);
 		$("#rcafeinAddr").val(cafeinAddr);
 		$("#rcafeinFax").val(cafeinFax);
 		$("#rcafeinCall").val(cafeinCall);
@@ -498,13 +493,32 @@
 		//hidden
 		$("#rupdatedate").val(updatedate);
 		$("#rpostate").val(postate);
-		
-		
 
 		// 모달 열기
 $("#openReceiptModal").modal('show');
 		console.log("납품서 모달 열기");
 	}
+	
+//모달 내용을 인쇄하는 함수
+function printModalContent() {
+  var printContents = document.getElementById('pdf').cloneNode(true); // 모달의 복제
+
+  // input 요소에 대해 시각적인 표현으로 대체
+  var inputElements = printContents.querySelectorAll('input');
+  inputElements.forEach(function(input) {
+    var replacementDiv = document.createElement('div');
+    replacementDiv.textContent = input.value;
+    replacementDiv.style.border = 'none'; // 테두리 제거
+    replacementDiv.style.padding = '5px'; // 패딩 유지
+    input.parentNode.replaceChild(replacementDiv, input);
+  });
+
+  var originalContents = document.body.innerHTML;
+  document.body.innerHTML = printContents.innerHTML;
+  
+  window.print();
+//   document.body.innerHTML = originalContents;
+}
 </script>
 	
 	<!-- 품목 등록 모달 -->

@@ -23,10 +23,19 @@ input#regist {
 }
 
 .rectipt-body {
-	left: -40em;
-    top: -14em;
-    width: 110em;
-    height: 60em;
+/* 	left: -40em; */
+/*     top: -14em; */
+/*     width: 110em; */
+/*     height: 60em; */
+/*     overflow-y: auto; */
+/*     overflow-x: auto; */
+/*     scroll-behavior: smooth; */
+    left: -21em;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* top: -14em; */
+    width: 70rem;
+    height: 80em;
     overflow-y: auto;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -38,7 +47,7 @@ input#regist {
 .receiptTitle {
 	text-align: center;
     font-size: 35px;
-     letter-spacing: 10px;
+    letter-spacing: 10px;
 }
 #rordersdate {
     width: 150px;
@@ -54,7 +63,7 @@ input#regist {
 	font-size: 20px;
 }
 
-.form-control-sm {
+.form-control-sm{
     font-size: 18px !important;
     border: none !important;
     text-align: center !important;
@@ -91,4 +100,14 @@ input#regist {
 }
 .bgray {
 	background: #F8F9FA;
+}
+
+@media print {
+  input {
+    border: none;
+  }
+}
+
+.ReceiptPDF {
+	float:right;
 }
