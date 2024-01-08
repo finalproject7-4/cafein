@@ -12,7 +12,7 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      
-		<form role="form" action="/information/memberJoin" method="post">
+		<form action="/information/memberJoin" method="post">
 	      <div class="modal-body">
 			직원명 <span style="color:red;">*</span>
 				<input type="text" name="membername" class="form-control" placeholder="직원명(20자 이하, 한글만 가능)" 
@@ -50,18 +50,14 @@
 			내선번호 
 				<input type="tel" name="memberdeptphone" class="form-control" placeholder="내선번호(예:1234)" 
 					   title="내선번호는 4자리 숫자만 가능합니다."><br>
-<!-- 					   pattern="[0-9]{4}" title="내선번호는 4자리 숫자만 가능합니다."><br> -->
-			전화번호 <span style="color:red;">* 다음과 같이 입력하세요:010-1234-5678</span> 
-				<input type="tel" name="memberphone" class="form-control" placeholder="전화번호(예:010-1234-5678)" 
+			전화번호 <span style="color:red;">* 다음과 같이 입력하세요:01012345678</span> 
+				<input type="tel" name="memberphone" class="form-control" placeholder="전화번호(예:01012345678)" 
 					   title="전화번호는 11자리 숫자만 가능합니다." required><br>
-<!-- 					   pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="전화번호는 11자리 숫자만 가능합니다." required><br> -->
 	      </div>
 	      
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-	        		style="color: #610B0B;background-color: #FBF8EF; border-color: #610B0B;">취소</button>
-	        <button type="submit" class="btn btn-primary" id="memberJoinModal"
-	        		style="background-color: #610B0B; border-color: #FBF8EF;">등록</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="submit" class="btn btn-primary" id="memberJoinModal">등록</button>
 	      </div>
 		</form>
 		

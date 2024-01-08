@@ -26,9 +26,25 @@
 
 <!-- 직원 등록 -->
 <insert id="insertMember">
-	insert into member(membercode,membername,memberpw,memberbirth,memberhire,
-	departmentname,memberposition,memberemail,memberdeptphone,memberphone) 
-	values(#{membercode},#{membername},#{memberpw},#{memberbirth},#{memberhire},
+	insert into member(membercode,membername,memberpw,
+	<choose>
+		<when test="memberbirth eq null or memberbirth.toString() eq ''"/>
+		<when test="memberbirth neq null and memberbirth.toString() neq ''">memberbirth,</when>
+	</choose> 
+	<choose>
+		<when test="memberhire eq null or memberhire.toString() eq ''"/>
+		<when test="memberhire neq null and memberhire.toString() neq ''">memberhire,</when>
+	</choose>
+	departmentname,memberposition,memberemail,memberdeptphone,memberphone)
+	values(${membercode},#{membername},#{memberpw},
+	<choose>
+		<when test="memberbirth eq null or memberbirth.toString() eq ''"/>
+		<when test="memberbirth neq null and memberbirth.toString() neq ''">#{memberbirth},</when>
+	</choose> 
+	<choose>
+		<when test="memberhire eq null or memberhire.toString() eq ''"/>
+		<when test="memberhire neq null and memberhire.toString() neq ''">#{memberhire},</when>
+	</choose>
 	#{departmentname},#{memberposition},#{memberemail},#{memberdeptphone},#{memberphone})
 </insert>
 

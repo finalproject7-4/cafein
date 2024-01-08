@@ -38,10 +38,8 @@ ${resultVO }
 	      </div>
 	      
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-	        		style="color: #610B0B;background-color: #FBF8EF; border-color: #610B0B;">취소</button>
-	        <button type="submit" class="btn btn-primary" id="memberDeleteModal"
-	        		style="background-color: #610B0B; border-color: #FBF8EF;">비활성화</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="submit" class="btn btn-primary" id="memberDeleteModal">비활성화</button>
 	      </div>
 		</form>
 		

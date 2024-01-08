@@ -3,15 +3,11 @@
 <%@ include file="../include/header.jsp"%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<h1>/information/cleints.jsp</h1>
-
 <!-- 본문 보기 시작 -->
-${result }
-${pageVO }
 
 	<!-- 거래처 조회 -->
 	<div class="col-12">
-		<div class="bg-light rounded h-100 p-4">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<form action="/information/clients" method="get">
 				<div class="input-group mb-3">
 					<select name="option" class="form-select mb-3" aria-label="Default select example">
@@ -44,12 +40,9 @@ ${pageVO }
 							<th scope="col">번호</th>
 							<th scope="col">코드</th>
 							<th scope="col">거래처명</th>
-							<th scope="col">거래처 구분</th>
-							<th scope="col">거래처 종류</th>
-							<th scope="col">사업자 번호</th>
-							<th scope="col">대표자</th>
+							<th scope="col">구분</th>
+							<th scope="col">종류</th>
 							<th scope="col">담당자</th>
-							<th scope="col">거래처 주소</th>
 							<th scope="col">전화번호</th>
 							<th scope="col">팩스번호</th>
 							<th scope="col">이메일</th>
@@ -64,10 +57,7 @@ ${pageVO }
 								<td>${vo.clientname }</td>
 								<td>${vo.categoryofclient }</td>
 								<td>${vo.typeofclient }</td>
-								<td>${vo.businessnumber }</td>
-								<td>${vo.representative }</td>
 								<td>${vo.manager }</td>
-								<td>${vo.clientaddress }</td>
 								<td>${vo.clientphone }</td>
 								<td>${vo.clientfax }</td>
 								<td>${vo.clientemail }</td>
@@ -88,100 +78,100 @@ ${pageVO }
 			</div>
 			
 			<!-- 거래처 목록 페이징 처리 -->
-			<!-- 페이지 블럭 생성 -->
-			<nav aria-label="Page navigation example">
-  				<ul class="pagination justify-content-center">
-    				
-        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
-    				<li class="page-item">
-    				  <c:if test="${pageVO.prev }">
-      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
-        					<span aria-hidden="true">&laquo;</span>
-      					</a>
-        					
+				<!-- 페이지 블럭 생성 -->
+				<nav aria-label="Page navigation example">
+	  				<ul class="pagination justify-content-center">
+	    				
+	        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+	    				<li class="page-item">
+	    				  <c:if test="${pageVO.prev }">
+	      					<a class="page-link pageBlockPrev" href="" aria-label="Previous" data-page="${pageVO.startPage - 1}">
+	        					<span aria-hidden="true">&laquo;</span>
+	      					</a>
+	        					
+							<script>
+								$(document).ready(function(){
+									$('.pageBlockPrev').click(function(e) {
+										e.preventDefault(); // 기본 이벤트 제거
+									
+						            	let prevPage = $(this).data('page');
+									
+										let keyword = "${param.keyword}";
+	
+				                		url = "/information/clients?page=" + prevPage;
+				                
+				                		if (keyword) {
+				                    		url += "&keyword=" + encodeURIComponent(keyword);
+				                		}
+	
+				                		location.href = url;
+									});
+								});
+							</script>
+	    				  </c:if>
+	    				</li>
+	        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
+	    		
+	    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+						<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
+	    					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
+	    						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
+	    					</li>
+	    					
 						<script>
 							$(document).ready(function(){
-								$('.pageBlockPrev').click(function(e) {
+								$('.pageBlockNum').click(function(e) {
 									e.preventDefault(); // 기본 이벤트 제거
-								
-					            	let prevPage = $(this).data('page');
-								
+						
+				            		let pageValue = $(this).data('page');
+						
 									let keyword = "${param.keyword}";
-
-			                		url = "/information/clients?page=" + prevPage;
-			                
-			                		if (keyword) {
-			                    		url += "&keyword=" + encodeURIComponent(keyword);
-			                		}
-
-			                		location.href = url;
+	
+		                			url = "/information/clients?page=" + pageValue;
+	                
+		                			if (keyword) {
+		                    			url += "&keyword=" + encodeURIComponent(keyword);
+		                			}
+	
+		                			location.href = url;
 								});
 							});
 						</script>
-    				  </c:if>
-    				</li>
-        			<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
-    		
-    				<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
-					<c:forEach begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1" var="i">
-    					<li class="page-item ${pageVO.cri.page == i? 'active' : ''}">
-    						<a class="page-link pageBlockNum" href="" data-page="${i}">${i }</a>
-    					</li>
-    					
-					<script>
-						$(document).ready(function(){
-							$('.pageBlockNum').click(function(e) {
-								e.preventDefault(); // 기본 이벤트 제거
+	    				</c:forEach>
+						<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
+	    		
+	    				<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
+	    				<li class="page-item">
+	    				  <c:if test="${pageVO.next }">
+	      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
+	        					<span aria-hidden="true">&raquo;</span>
+	      					</a>
+	      					
+							<script>
+								$(document).ready(function(){
+									$('.pageBlockNext').click(function(e) {
+										e.preventDefault(); // 기본 이벤트 제거
 					
-			            		let pageValue = $(this).data('page');
+			            				let nextPage = $(this).data('page');
 					
-								let keyword = "${param.keyword}";
-
-	                			url = "/information/clients?page=" + pageValue;
-                
-	                			if (keyword) {
-	                    			url += "&keyword=" + encodeURIComponent(keyword);
-	                			}
-
-	                			location.href = url;
-							});
-						});
-					</script>
-    				</c:forEach>
-					<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
-    		
-    				<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
-    				<li class="page-item">
-    				  <c:if test="${pageVO.next }">
-      					<a class="page-link pageBlockNext" href="" aria-label="Next" data-page="${pageVO.endPage + 1}">
-        					<span aria-hidden="true">&raquo;</span>
-      					</a>
-      					
-						<script>
-							$(document).ready(function(){
-								$('.pageBlockNext').click(function(e) {
-									e.preventDefault(); // 기본 이벤트 제거
-				
-		            				let nextPage = $(this).data('page');
-				
-									let keyword = "${param.keyword}";
-
-               					url = "/information/clients?page=" + nextPage;
-            
-               					if (keyword) {
-                   					url += "&keyword=" + encodeURIComponent(keyword);
-               					}
-
-               					location.href = url;
+										let keyword = "${param.keyword}";
+	
+	               					url = "/information/clients?page=" + nextPage;
+	            
+	               					if (keyword) {
+	                   					url += "&keyword=" + encodeURIComponent(keyword);
+	               					}
+	
+	               					location.href = url;
+									});
 								});
-							});
-						</script>
-    				</c:if>
-    				</li>
-					<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
-			  </ul>
-			</nav>
-			<!-- 페이지 블럭 생성 -->	
+							</script>
+	    				</c:if>
+	    				</li>
+						<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->					
+				  </ul>
+				</nav>
+				<!-- 페이지 블럭 생성 -->	
 			<!-- 거래처 목록 페이징 처리 -->
 			
 		</div>
@@ -284,20 +274,5 @@ ${pageVO }
 	}
 </style>
 <!-- 검색 css -->
-
-<!-- 페이징 처리 css -->
-<style>
-	.pagination .page-item a {
-	  background-color: #FBF8EF;
-	  border-color: #610B0B;
-	  color: #610B0B;
-	}
-	
-	.page-item.active .page-link {
-	  background-color: #610B0B;
-	  border-color: #610B0B;
-	}	
-</style>
-<!-- 페이징 처리 css -->
 
 <%@ include file="../include/footer.jsp"%>
