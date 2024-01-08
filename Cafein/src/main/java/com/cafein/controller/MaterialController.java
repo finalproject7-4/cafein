@@ -8,6 +8,7 @@ import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -51,9 +52,11 @@ public class MaterialController {
 	// http://localhost:8088/material/orders
 	// 발주 목록 - GET
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public void ordersList(Model model, OrdersVO vo, Criteria cri) throws Exception {
+	public void ordersList(HttpSession session, Model model, OrdersVO vo, Criteria cri) throws Exception {
 		logger.debug("ordersList() 호출");
 		logger.debug("OrdersVO: " + vo);
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)		
 		
 		// OrdersVO의 Criteria 설정
 		vo.setCri(cri);
@@ -76,8 +79,11 @@ public class MaterialController {
 	
 	// 발주 등록 - POST
 	@RequestMapping(value = "/orderRegist", method = RequestMethod.POST)
-	public String orderRegist(OrdersVO vo) throws Exception {
+	public String orderRegist(OrdersVO vo, HttpSession session) throws Exception {
 		logger.debug("orderRegist() 호출");
+		
+		// 담당자 입력
+		vo.setMembercode((String) session.getAttribute("membercode"));			
 			
 		// 생성한 발주코드 저장
 		vo.setOrderscode(generateOrdersCode());
@@ -197,8 +203,10 @@ public class MaterialController {
 	// http://localhost:8088/material/receive
 	// 입고 목록 - GET
 	@RequestMapping(value = "/receive", method = RequestMethod.GET)
-	public void receiveList(Model model, ReceiveVO vo, Criteria cri) throws Exception {
+	public void receiveList(HttpSession session, Model model, ReceiveVO vo, Criteria cri) throws Exception {
 		logger.debug("receiveList() 호출");
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
 
 		// ReceiveVO의 Criteria 설정
 		vo.setCri(cri);
@@ -221,8 +229,11 @@ public class MaterialController {
 	
 	// 입고 등록 - POST
 	@RequestMapping(value = "/receiveRegist", method = RequestMethod.POST)
-	public String receiveRegist(ReceiveVO vo) throws Exception {
+	public String receiveRegist(ReceiveVO vo, HttpSession session) throws Exception {
 		logger.debug("receiveRegist() 호출");
+
+		// 담당자 입력
+		vo.setMembercode((String) session.getAttribute("membercode"));			
 		
 		// 생성한 입고코드 저장
 		vo.setReceivecode(generateReceiveCode());
@@ -369,9 +380,11 @@ public class MaterialController {
 	
 	// 출고 목록 - GET
 	@RequestMapping(value = "/releases", method = RequestMethod.GET)
-	public void releasesList(Model model, ReleasesVO vo, Criteria cri) throws Exception {
+	public void releasesList(HttpSession session, Model model, ReleasesVO vo, Criteria cri) throws Exception {
 		logger.debug("releasesList() 호출");
 
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
+		
 		// ReleasesVO의 Criteria 설정
 		vo.setCri(cri);
 		

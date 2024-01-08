@@ -69,7 +69,12 @@
 							<td>${il.itemtype }</td>
 							<td>${il.itemcode }</td>
 							<td>${il.itemname }</td>
-							<td>${il.clientname }</td>
+							<c:if test="${il.clientname == null}">
+								<td>-</td>
+							</c:if>
+							<c:if test="${il.clientname != null}">
+								<td>${il.clientname }</td>
+							</c:if>
 							<td>${il.origin }</td>
 							<td>${il.itemweight }</td>
 							<td>${il.itemprice }</td>

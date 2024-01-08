@@ -278,7 +278,7 @@
     	<div class="modal-dialog">
         	<div class="modal-content">
             	<div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">공급처</h5>
+                <h5 class="modal-title" id="exampleModalLabel">공급처 목록</h5>
                 	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 
@@ -437,31 +437,31 @@
     		  cancelButtonColor: '#d33',
     		  confirmButtonText: '삭제',
     		  cancelButtonText: '취소'
-    		}).then((result) => {
-    			if (result.value) {
+    	}).then((result) => {
+    		if (result.value) {
     			  
-        		var ordersid = $(this).closest("tr").find("td:first").text(); // 발주id
-				console.log(ordersid);
+        	var ordersid = $(this).closest("tr").find("td:first").text(); // 발주id
+			console.log(ordersid);
         	
-        		// AJAX 요청 수행
-        		$.ajax({
-           			url : "/material/orderDelete",
-           			type : "POST",
-           			data : {
-        	   			ordersid : ordersid
-           			},
-          			success : function(response) {
-              			// 성공적으로 처리된 경우 수행할 코드
-              			console.log("삭제 성공");
-              			location.reload();
-           			},
-           			error : function(error) {
-              			// 요청 실패 시 수행할 코드
-              			console.error("삭제 실패:", error);
-           			}
-				});
+        	// AJAX 요청 수행
+        	$.ajax({
+           		url : "/material/orderDelete",
+           		type : "POST",
+           		data : {
+        	   		ordersid : ordersid
+           		},
+          		success : function(response) {
+              		// 성공적으로 처리된 경우 수행할 코드
+              		console.log("삭제 성공");
+              		location.reload();
+           		},
+           		error : function(error) {
+              		// 요청 실패 시 수행할 코드
+              		console.error("삭제 실패:", error);
+           		}
+			});
         	
-    			} 
+    		} 
         
     	 })
 

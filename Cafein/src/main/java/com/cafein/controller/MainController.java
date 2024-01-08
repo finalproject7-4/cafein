@@ -27,6 +27,7 @@ public class MainController {
 	@Inject
 	private ProductionService proService;
 	
+	// 로그인 페이지
 	// http://localhost:8088/main/login
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public void loginGET() throws Exception {
@@ -41,11 +42,12 @@ public class MainController {
 		MemberVO resultVO = mainService.memberLogin(vo);
 		
 		if(resultVO != null) {
-			logger.debug("/views/main/main.jsp 페이지로 이동");
 			
 			session.setAttribute("membercode", resultVO.getMembercode());
 			logger.debug("membercode: " + resultVO.getMembercode());
 			logger.debug("memberpw: " + resultVO.getMemberpw());
+
+			logger.debug("/views/main/main.jsp 페이지로 이동");
 			return "redirect:/main/main";
 		}
 		
@@ -53,19 +55,18 @@ public class MainController {
 	}
 	
 	// 메인페이지
-		// http://localhost:8088/main/main
-		@RequestMapping(value="/main", method=RequestMethod.GET)
-		public void cafeinMain(Model model, ProduceVO vo) throws Exception {
-			logger.debug("컨트롤러 - 메인페이지 호출!");
+	// http://localhost:8088/main/main
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public void cafeinMain(Model model, ProduceVO vo) throws Exception {
+		
+		logger.debug("컨트롤러 - 메인페이지 호출!");
 				
-			model.addAttribute("today", proService.getProduceAmountToday());
-			model.addAttribute("thisMonth", proService.getProduceAmountThisMonth());
-			model.addAttribute("thisYear", proService.getProduceAmountThisYear());
-			model.addAttribute("thisWeek", proService.getProduceAmountThisWeek());
-			model.addAttribute("produceList", proService.getProduceList());
-			
-			
-		}
-	
+		model.addAttribute("today", proService.getProduceAmountToday());
+		model.addAttribute("thisMonth", proService.getProduceAmountThisMonth());
+		model.addAttribute("thisYear", proService.getProduceAmountThisYear());
+		model.addAttribute("thisWeek", proService.getProduceAmountThisWeek());
+		model.addAttribute("produceList", proService.getProduceList());	
+		
+	}
 	
 }

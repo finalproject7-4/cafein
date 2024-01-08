@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -41,9 +42,11 @@ public class ItemController {
 	// http://localhost:8088/information/items
 	// 품목 목록 - GET
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
-	public void itemList(Model model, ItemVO vo, Criteria cri) throws Exception {
+	public void itemList(HttpSession session, Model model, ItemVO vo, Criteria cri) throws Exception {
 		logger.debug("itemList() 호출");
 		logger.debug("ItemVO: " + vo);
+		
+		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)		
 		
 		// ItemVO의 Criteria 설정
 		vo.setCri(cri);
@@ -67,7 +70,7 @@ public class ItemController {
 	@RequestMapping(value = "/itemRegist", method = RequestMethod.POST)
 	public String itemRegist(ItemVO vo) throws Exception {
 		logger.debug("itemRegist() 호출");
-			
+		
 		// 생성한 품목코드 저장
 		vo.setItemcode(generateItemCode(vo));
 		
