@@ -5,7 +5,6 @@ package com.cafein.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +63,7 @@ public class ProductionController {
 	public void produceListAJAX(Model model, HttpSession session, Criteria cri, ProduceVO vo) throws Exception {
 
 		logger.debug("컨트롤러 - AJAX produceList3() 호출");
-
+		logger.debug("검색조건은? "+vo.getItemname());
 		// 페이징 처리
 		vo.setCri(cri);
 		PageVO pageVO = new PageVO();
@@ -400,7 +399,7 @@ public class ProductionController {
 	// 완제품 리스트 목록 출력(AJAX로 호출)
 	@RequestMapping(value="/roastedDetail", method =RequestMethod.GET )
 	public void roastedBeanDetail(Model model, RoastedbeanVO vo, Criteria cri, HttpSession session) throws Exception{
-		
+		logger.debug(" 로스티드vo"+vo.getSearchDate()+", "+vo.getSearchLot());
 		logger.debug("로스팅 제품 목록 조회!");
 		logger.debug("cri : "+cri);
 		logger.debug("RoastedbeanVO : "+vo);
