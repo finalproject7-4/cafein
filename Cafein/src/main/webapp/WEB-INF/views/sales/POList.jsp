@@ -333,11 +333,12 @@
 				
 				<div class="col-12" id="pdf">
 				<div class="rounded h-100 p-4 bgray">
-				<h6 class="modal-title receiptTitle" >납품서</h6>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close" onclick="location.href='/sales/POList';"></button>
+				<h6 class="modal-title receiptTitle" >납품서</h6>
 				<div class="odate">
 				주문일자<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
+<!-- 				<img src="../resources/img/cafein_crop.png" id="cafeinPng"> -->
 							<table class="table table-bordered">
 							<thead>
 									<tr>
@@ -422,12 +423,268 @@
 											<td class="rem13"><b>대표자</b></td>
 											<td><input  name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>										</tr>
 									</tbody>
-							</table>
-						</div>
+							</table><br><br><br>
+							<div class="refooter">
+					담당자<input type="text" class="refooter1">
+				전자서명<div id = "canvas_container">
+				   <canvas id = "canvas"></canvas>
+				   </div>
+				</div>
+			</div>
+	 <script>
+
+       /*
+       [JS 요약 설명]
+       1. window.onload : 웹 브라우저 로딩 완료 상태를 확인합니다
+       2. canvas[0].getContext("2d") : 캔버스 오브젝트를 얻어옵니다
+       3. canvas[0].height = div.height(); : 부모 div 크기만큼 영역을 생성합니다
+       4. canvas.on("mousedown", pcDraw); : 이벤트를 등록합니다
+       5. 참고 : pc 에서는 마우스로 처리, 모바일에서는 터치로 처리해야합니다       
+       */
+
+
+      
+       
+
+       /* [전역 변수 선언 부분] */
+       var canvas;
+       var div;
+
+       var ctx;
+       var drawble = false; //플래그값 설정 (그리기 종료)
+
+
+
+
+
+       /* [html 최초 로드 및 이벤트 상시 대기 실시] */ 
+       $(window).load(function(){
+          console.log("");
+          console.log("[window onload] : [start]");
+          console.log("");
+
+          // [초기 전역 변수 객체 등록 실시]
+          canvas = $("#canvas");
+          div = $("#canvas_container");
+
+          ctx = canvas[0].getContext("2d"); //캔버스 오브젝트 가져온다          
+
+          // [이벤트 등록 함수 호출]
+          init();
+
+          // [화면 조절 함수 호출]
+          canvasResize();
+       });
+
+
+
+
+
+       /* [이벤트 등록 함수] */
+       function init(){
+          console.log("");
+          console.log("[init] : [start]");
+          console.log("");
+
+          //캔버스 사이즈 조절
+          $(window).on("resize", canvasResize);
+
+          //PC 이벤트 등록
+          canvas.on("mousedown", pcDraw);
+          canvas.on("mousemove", pcDraw);
+          canvas.on("mouseup", pcDraw);
+          canvas.on("mouseout", pcDraw);
+ 
+          //모바일 이벤트 등록
+          canvas.on("touchstart", mobileDraw);
+          canvas.on("touchend", mobileDraw);
+          canvas.on("touchcancel", mobileDraw);
+          canvas.on("touchmove", mobileDraw);
+
+          //버튼 클릭 및 이미지 저장 등록
+       };
+
+
+
+
+
+       /* [화면 조절 함수] */
+       function canvasResize(){
+          console.log("");
+          console.log("[canvasResize] : [start]");
+          console.log("");
+
+          //캔버스 사이즈 조절
+          canvas[0].height = div.height();
+          canvas[0].width = div.width();
+       };
+
+
+
+
+
+       /* [PC 그리기 이벤트 처리] */
+       function pcDraw(evt){
+          console.log("");
+          console.log("[pcDraw] : [start]");
+          console.log("");
+          switch(evt.type){
+            case "mousedown" : {
+               BodyScrollDisAble(); //body 스크롤 정지
+               drawble = true;
+               ctx.beginPath();
+               ctx.moveTo(getPcPosition(evt).X, getPcPosition(evt).Y);               
+            }
+            break;
+
+            case "mousemove" : {
+               if(drawble){
+                  ctx.lineTo(getPcPosition(evt).X, getPcPosition(evt).Y);
+                  ctx.stroke();
+               }
+            }
+            break;
+
+            case "mouseup" :
+            case "mouseout" : {
+               BodyScrollDisAble(); //body 스크롤 허용
+               drawble = false;
+               ctx.closePath();
+            }
+            break;
+         }
+       };
+
+       function getPcPosition(evt){          
+          var x = evt.pageX - canvas.offset().left;
+          var y = evt.pageY - canvas.offset().top;
+          return {X:x, Y:y};
+       };
+
+
+
+
+
+       /* [모바일 그리기 이벤트 처리] */
+       function mobileDraw(evt){
+          console.log("");
+          console.log("[mobileDraw] : [start]");
+          console.log("");
+
+          switch(evt.type){
+            case "touchstart" : {
+               BodyScrollDisAble(); //body 스크롤 정지
+               drawble = true;
+               ctx.beginPath();
+               ctx.moveTo(getMobilePosition(evt).X, getMobilePosition(evt).Y);
+            }
+            break;
+
+            case "touchmove" : {
+               if(drawble){
+                  // 스크롤 및 이동 이벤트 중지
+                  evt.preventDefault();
+                  ctx.lineTo(getMobilePosition(evt).X, getMobilePosition(evt).Y);
+                  ctx.stroke();
+               }
+            }
+            break;
+
+            case "touchend" :
+            case "touchcancel" : {
+               BodyScrollDisAble(); //body 스크롤 허용
+               drawble = false;
+               ctx.closePath();
+            }
+            break;
+         }
+       };
+
+       function getMobilePosition(evt){
+          var x = evt.originalEvent.changedTouches[0].pageX - canvas.offset().left;
+          var y = evt.originalEvent.changedTouches[0].pageY - canvas.offset().top;
+          return {X:x, Y:y};
+       }; 
+
+
+
+
+
+       /* [body 영역 스크롤 관리 부분] */
+       function BodyScrollDisAble(){
+          console.log("");
+          console.log("[BodyScrollDisAble] : [start]");
+          console.log("");         
+
+          document.body.style.overflow = "hidden"; //스크롤 막음
+       };
+       function BodyScrollAble(){  
+          console.log("");
+          console.log("[BodyScrollAble] : [start]");
+          console.log("");        
+
+          document.body.style.overflow = "auto"; //스크롤 허용
+       };
+
+
+
+
+
+       /* [url 저장 부분] */
+       function saveUrl(){
+          console.log("");
+          console.log("[saveUrl] : [start]");
+          console.log(""); 
+
+          console.log("");
+          console.log("[saveUrl] : [url] : " + canvas[0].toDataURL()); //데이터베이스에 저장
+          console.log("");                         
+       };
+
+
+
+
+       /* [캔버스 지우기 부분] */
+       function savePicture(){
+          console.log("");
+          console.log("[savePicture] : [start]");
+          console.log(""); 
+
+          // a 태그를 만들어서 다운로드를 만듭니다
+          var link = document.createElement("a");
+
+          // base64 데이터 링크
+          link.href = canvas[0].toDataURL("image/png"); //로컬 pc 다운로드 이미지
+
+          // 다운로드시 파일명 지정
+          link.download = "image.png";
+
+          // body에 추가
+          document.body.appendChild(link);
+          link.click();          
+
+          // 다운로드용 a 태그는 다운로드가 끝나면 삭제
+          document.body.removeChild(link);
+       };
+
+
+
+
+       /* [캔버스 지우기 부분] */
+       function deleteCanvas(){
+          console.log("");
+          console.log("[deleteCanvas] : [start]");
+          console.log(""); 
+          canvasResize(); //캔버스 새로고침       
+       }; 
+       
+    </script>
+    <div id = "delete_container" onclick = "deleteCanvas();">
+   <p id = "delete_txt">지우기</p>   
+</div>
+
 					</div>
 				</div><br>
-			<div class="modal-footer">
-			</div>
 		</div>
 	</div>
 </div>
@@ -500,6 +757,25 @@ $("#openReceiptModal").modal('show');
 	}
 	
 //모달 내용을 인쇄하는 함수
+// function printModalContent() {
+//   var printContents = document.getElementById('pdf').cloneNode(true); // 모달의 복제
+
+//   // input 요소에 대해 시각적인 표현으로 대체
+//   var inputElements = printContents.querySelectorAll('input');
+//   inputElements.forEach(function(input) {
+//     var replacementDiv = document.createElement('div');
+//     replacementDiv.textContent = input.value;
+//     replacementDiv.style.border = 'none'; // 테두리 제거
+//     replacementDiv.style.padding = '5px'; // 패딩 유지
+//     input.parentNode.replaceChild(replacementDiv, input);
+//   });
+
+//   var originalContents = document.body.innerHTML;
+//   document.body.innerHTML = printContents.innerHTML;
+  
+//   window.print();
+// //   document.body.innerHTML = originalContents;
+// }
 function printModalContent() {
   var printContents = document.getElementById('pdf').cloneNode(true); // 모달의 복제
 
@@ -513,12 +789,25 @@ function printModalContent() {
     input.parentNode.replaceChild(replacementDiv, input);
   });
 
+  // Canvas 요소를 이미지로 변환
+  var canvas = document.getElementById('canvas');
+  var imageDataUrl = canvas.toDataURL();
+
+  // 이미지 요소를 생성
+  var image = document.createElement('img');
+  image.src = imageDataUrl;
+
+  // PDF에 이미지 요소를 추가
+  printContents.appendChild(image);
+
+  // 모달 내용을 인쇄
   var originalContents = document.body.innerHTML;
   document.body.innerHTML = printContents.innerHTML;
-  
+
+  // 모달 닫기 방지
   window.print();
-//   document.body.innerHTML = originalContents;
 }
+
 </script>
 	
 	<!-- 품목 등록 모달 -->
