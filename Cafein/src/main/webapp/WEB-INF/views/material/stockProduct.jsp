@@ -31,8 +31,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 			<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 			</c:if>
-			<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
-			<input type="submit" value="검색" data-toggle="tooltip" title="제품명 또는 LOT번호가 필요합니다!">
+			<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
+			<input type="submit" value="검색" data-toggle="tooltip" title="제품명이 필요합니다!">
 		</form>
 		</div>
 			<form action="/productStockPrint" method="GET">
@@ -59,8 +59,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">생산번호</th>
 								<th scope="col">중량</th>
+								<th scope="col">생산번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
 								<th scope="col">최종 작업자</th>
@@ -76,16 +76,21 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${slist.itemtype }</td>
 									<td>${slist.itemcode }</td>
 									<td>${slist.itemname }</td>
+									<c:if test="${slist.weight != 0 }">
+									<td>${slist.weight }(g)</td>
+									</c:if>
+									<c:if test="${slist.weight == 0 }">
+									<td></td>
+									</c:if>
 									<td>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('반품') }">
-										${slist.lotnumber }
+										${slist.returnid }
 									</c:if>
 									<c:if test="${!empty slist.itemtype && slist.itemtype.equals('생산') }">
 										<a href="" class="BeanInfo" data-produceid="${slist.produceid }">${slist.produceid }
 										</a>
 									</c:if>
 									</td>
-									<td>${slist.weight }g</td>
 									<td>
 									<c:if test="${slist.stockquantity < 10 }">
 										<b style="color: red;">${slist.stockquantity }</b>개
@@ -96,16 +101,21 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<button type="button" class="btn btn-primary btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
+									data-produceid="${slist.produceid }" data-returnid="${slist.returnid}" 
 									data-stockquantity="${slist.stockquantity }" data-itemname="${slist.itemname }" 
 									data-lotnumber="${slist.lotnumber }">
  									실사 변경
 									</button>
 									</td>
-									<td>${slist.storagecode } - ${slist.storagename }
+									<td>
+									<c:if test="${!empty slist.storagecode }">
+									${slist.storagecode } - ${slist.storagename }
+									</c:if>
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
-									data-itemname="${slist.itemname }" data-lotnumber="${slist.lotnumber }" 
+									data-itemname="${slist.itemname }" data-produceid="${slist.produceid }" 
+									data-returnid="${slist.returnid }" 
 									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
 									창고 이동
 									</button>
@@ -254,11 +264,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -268,17 +278,17 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
             	<input type="text" class="form-control" id="itemname" name="itemname" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="lotnumber" class="col-form-label">LOT번호:</label>
-            	<input type="text" class="form-control" id="lotnumber" name="lotnumber" value="" readonly>
+            	<label for="produceid" class="col-form-label">생산/반품번호:</label>
+            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="nowquantity" class="col-form-label">현재 재고량:</label>
+           		<label for="nowquantity" class="col-form-label">현재 재고량 (개):</label>
             	<input type="number" class="form-control" id="nowquantity" name="nowquantity" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="stockquantity" class="col-form-label">변경 재고량:</label>
+            	<label for="stockquantity" class="col-form-label">변경 재고량 (개):</label>
             	<input type="number" class="form-control" id="qid" name="stockquantity" value="" required>
   			</div>
 		</div>
@@ -302,6 +312,8 @@ $(document).ready(function() {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let stockId = button.getAttribute('data-stockid'); // stockid
         let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let produceId = button.getAttribute('data-produceid'); // produceid
+        let returnId = button.getAttribute('data-returnid'); // returnid
         let nowQuantity = button.getAttribute('data-stockquantity'); // stockquantity
         let itemName = button.getAttribute('data-itemname'); // stockquantity
         let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
@@ -319,8 +331,12 @@ $(document).ready(function() {
         let iinputField = myModal.querySelector('input[name="itemname"]');
         iinputField.value = itemName;
         
-        let linputField = myModal.querySelector('input[name="lotnumber"]');
-        linputField.value = lotNumber;
+        let pinputField = myModal.querySelector('input[name="produceid"]');
+        if(produceId != 0){
+        	pinputField.value = produceId;
+        }else if(returnId != 0){
+        	pinputField.value = returnId;
+        }
     });
 });
 </script>
@@ -352,11 +368,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="stockid" class="col-form-label">재고ID:</label>
+           		<label for="stockid" class="col-form-label">재고번호:</label>
             	<input type="text" class="form-control" id="stockid" name="stockid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="qualityid" class="col-form-label">품질관리ID:</label>
+            	<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
   			</div>
 		</div>
@@ -366,8 +382,8 @@ $(document).ready(function() {
             	<input type="text" class="form-control" id="itemname" name="itemname" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="lotnumber" class="col-form-label">LOT번호:</label>
-            	<input type="text" class="form-control" id="lotnumber" name="lotnumber" value="" readonly>
+            	<label for="produceid" class="col-form-label">생산/반품번호:</label>
+            	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
   			</div>
 		</div>
 		<div class="row">
@@ -403,6 +419,8 @@ $(document).ready(function() {
         let button = event.relatedTarget;  // 클릭한 버튼 요소를 가져옴
         let stockId = button.getAttribute('data-stockid'); // stockid
         let qualityId = button.getAttribute('data-qualityid'); // qualityid
+        let produceId = button.getAttribute('data-produceid'); // produceid
+        let returnId = button.getAttribute('data-returnid'); // returnid
         let itemName = button.getAttribute('data-itemname'); // stockquantity
         let lotNumber = button.getAttribute('data-lotnumber'); // stockquantity
         let storageName = button.getAttribute('data-storagename'); // storagename
@@ -418,11 +436,19 @@ $(document).ready(function() {
         let iinputField = myModal.querySelector('input[name="itemname"]');
         iinputField.value = itemName;
         
-        let linputField = myModal.querySelector('input[name="lotnumber"]');
-        linputField.value = lotNumber;
+        let pinputField = myModal.querySelector('input[name="produceid"]');
+        if(produceId != 0){
+        	pinputField.value = produceId;
+        }else if(returnId != 0){
+        	pinputField.value = returnId;
+        }
         
         let stinputField = myModal.querySelector('input[name="nowstorage"]');
-        stinputField.value = storageCode + " - " + storageName;
+        if(storageCode != ""){
+        	stinputField.value = storageCode + " - " + storageName;        	
+        }else{
+        	stinputField.value = "생산 / 반품 라인";
+        }
     });
 });
 </script>
@@ -461,19 +487,15 @@ $(document).ready(function() {
 		</div>
 		<div class="row">
  			<div class="col">
-           		<label for="infoweight" class="col-form-label">중량:</label>
+           		<label for="infoweight" class="col-form-label">중량 (g):</label>
             	<input type="text" class="form-control" id="infoweight" name="weight" value="" readonly>
   			</div>
-  			<div class="col">
-           		<label for="infoitemprice" class="col-form-label">단가:</label>
-				<input type="text" class="form-control" id="infoitemprice" name="itemprice" value="" readonly>
-  			</div>
-		</div>
-		<div class="row">
  			<div class="col">
            		<label for="inforoasteddate" class="col-form-label">로스팅일:</label>
             	<input type="text" class="form-control" id="inforoasteddate" name="roasteddate" value="" readonly>
   			</div>
+		</div>
+		<div class="row">
   			<div class="col">
            		<label for="infonote" class="col-form-label">비고:</label>
 				<input type="text" class="form-control" id="infonote" name="note" value="" readonly>
@@ -594,11 +616,47 @@ $(document).ready(function($) {
             	
             	// 데이터를 테이블에 삽입
             	$.each(data, function(index, item) {
-            		var row = "<tr><td>" + item.lotnumber + "</td></tr>";
+            		var row = "<tr><td><a href='' class='lotinfo' data-lotnumber='" + item.lotnumber + "'>" + item.lotnumber + "</a></td></tr>";
             		$("#BeanInfo tbody").append(row);
             	});
             	
             	 $("#BeanInfo").modal("show");
+            	 
+                 $(".lotinfo").click(function(event) {
+                     event.preventDefault();  // 기본 동작 (페이지 이동) 방지
+                     var lotnumber = $(this).data("lotnumber");
+                     
+                     $.ajax({
+                    	 url : "/roastedBeanInfo",
+                    	 type : "GET",
+                    	 data : {
+                    		 lotnumber : lotnumber
+                    	 },
+                    	 success : function(data){
+                         	$("#infoproductid").val(data.productid);
+                        	$("#infoproduceid").val(data.produceid);
+                        	$("#infoitemname").val(data.itemname);
+                        	$("#infolotnumber").val(data.lotnumber);
+                        	$("#infoweight").val(data.weight);
+                        	$("#infoitemprice").val(data.itemprice);
+                        	
+                        	var roasteddate = new Date(data.roasteddate);
+                        	var formattedDate = roasteddate.getFullYear() + "-" + 
+                            String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
+                            String(roasteddate.getDate()).padStart(2, '0') + " " + 
+                            String(roasteddate.getHours()).padStart(2, '0') + ":" + 
+                            String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
+                            String(roasteddate.getSeconds()).padStart(2, '0');
+                        	
+                        	$("#inforoasteddate").val(formattedDate);
+                        	$("#infonote").val(data.note);
+                        	
+                    		$("#BeanInfo").modal("hide");
+                    		$("#roastedBeanInfo").modal("show");
+                    	 }
+                     });
+
+                 });
             	
             },
             error: function(error) {

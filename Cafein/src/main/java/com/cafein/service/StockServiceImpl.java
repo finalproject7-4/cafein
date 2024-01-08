@@ -143,9 +143,9 @@ public class StockServiceImpl implements StockService {
 	
 	// roastedBean 테이블 조회
 	@Override
-	public QualityVO roastedBeanInfo(String produceid) throws Exception {
+	public QualityVO roastedBeanInfo(String lotnumber) throws Exception {
 		// TODO Auto-generated method stub
-		return sdao.selectRoastedBean(produceid);
+		return sdao.selectRoastedBean(lotnumber);
 	}
 
 	// roastedBean - lotnumber 테이블 조회
@@ -157,9 +157,9 @@ public class StockServiceImpl implements StockService {
 	
 	// receive 테이블 조회
 	@Override
-	public QualityVO receiveInfo(String lotnumber) throws Exception {
+	public QualityVO receiveInfo(String receiveid) throws Exception {
 		// TODO Auto-generated method stub
-		return sdao.selectReceiveInfo(lotnumber);
+		return sdao.selectReceiveInfo(receiveid);
 	}
 
 	// produceid로 roastedBean LOT 조회 후 입력 (포장)

@@ -243,6 +243,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-produceprocess="${clist.produceprocess }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
+													data-weight="${clist.weight }"
 													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
 													data-defectquantity="${clist.defectquantity }">
  													불량
@@ -291,6 +292,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													data-produceid="${clist.produceid }" data-qualityid="${clist.qualityid}" data-itemtype="${clist.itemtype }" 
 													data-auditcode="${clist.auditcode }" data-produceprocess="${clist.produceprocess }" 
 													data-itemid="${clist.itemid }" data-itemcode="${clist.itemcode }" 
+													data-weight="${clist.weight }" 
 													data-itemname="${clist.itemname }" data-auditbycode="${clist.auditbycode }" 
 													data-defectquantity="${clist.defectquantity }">
  													불량
@@ -538,12 +540,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		<div class="row">
  			<div class="col">
            		<label for="normalquantity" class="col-form-label">정상:</label>
-            	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" readonly>
+            	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" style="margin-bottom: 10px;" readonly>
   			</div>
 		</div>
 		<div class="row">
  			<div class="col">
-				<table class="table table-hover" style="margin-top: 10px;">
+ 			<label for="lottable">LOT번호별 품질 검사:</label>
+				<table class="table table-hover" id="lottable">
 					<thead>
 						<tr>
 							<th>LOT번호</th>
@@ -1100,6 +1103,7 @@ $(document).ready(function() {
         let produceprocess = button.getAttribute('data-produceprocess'); // produceprocess
         let itemcode = button.getAttribute('data-itemcode'); // itemcode
         let itemname = button.getAttribute('data-itemname'); // itemname
+        let weight = button.getAttribute('data-weight'); // weight
         let defectquantity = button.getAttribute('data-defectquantity'); // defectquantity
         
         // 모달 내부의 입력 필드에 값을 설정
@@ -1116,7 +1120,7 @@ $(document).ready(function() {
         icinputField.value = itemcode;
         
         let ininputField = myModal.querySelector('input[name="itemname"]');
-        ininputField.value = itemname;
+        ininputField.value = itemname + " (" + weight + "g)";
 
         let dqinputField = myModal.querySelector('input[name="defectquantity"]');
         dqinputField.value = defectquantity;   

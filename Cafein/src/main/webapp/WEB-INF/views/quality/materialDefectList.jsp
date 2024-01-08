@@ -22,8 +22,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
-				<input type="text" name="searchText" placeholder="검색어를 입력하세요" required>
-				<input type="submit" value="검색" data-toggle="tooltip" title="품질 관리 번호 또는 제품명이 필요합니다!">
+				<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
+				<input type="submit" value="검색">
 			</form>	
 			</div>
 			<form action="/materialDefectPrint" method="GET">
@@ -269,11 +269,3 @@ $(document).ready(function() {
 });
 </script>
 <!-- 페이지 Ajax 동적 이동 (2) -->
-
-<!-- 툴팁 추가 -->
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
-<!-- 툴팁 추가 -->

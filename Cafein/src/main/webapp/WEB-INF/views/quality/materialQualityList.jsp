@@ -33,7 +33,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+				<input type="submit" value="검색">
 			</form>	
 			</div>
 				<form action="/materialQualityPrint" method="GET">
@@ -121,11 +121,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
  												자재검수
 											</button>
 										</c:if>
-										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0 }"> <!-- 불량 X -->
+										<c:if test="${!empty mlist.auditstatus && mlist.auditstatus.equals('검수완료') && mlist.defectquantity == 0 && !empty mlist.registerstock && mlist.registerstock.equals('N') }"> <!-- 불량 X -->
 											<form action="/material/newMaterialStock" method="POST"> <!-- 재고로 (자재) -->
 												<input type="hidden" value="${mlist.qualityid }" name="qualityid">
 												<input type="hidden" value="${mlist.itemid }" name="itemid">
 												<input type="hidden" value="${mlist.receiveid }" name="receiveid">
+												<input type="hidden" value="${mlist.storageid }" name="storageid">
 												<input type="hidden" value="${mlist.normalquantity }" name="stockquantity">
 												<input type="submit" class="btn btn-success btn-sm" value="정상">
 											</form>
@@ -136,6 +137,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													<input type="hidden" value="${mlist.qualityid }" name="qualityid">
 													<input type="hidden" value="${mlist.itemid }" name="itemid">
 													<input type="hidden" value="${mlist.receiveid }" name="receiveid">
+													<input type="hidden" value="${mlist.storageid }" name="storageid">
 													<input type="hidden" value="${mlist.normalquantity }" name="stockquantity">
 													<c:if test="${!empty mlist.registerstock && mlist.registerstock.equals('N') }">
 													<input type="submit" value="정상" class="btn btn-success btn-sm" >
@@ -778,11 +780,3 @@ $(document).ready(function(){
 });
 </script>
 <!-- 날짜 비교 -->
-
-<!-- 툴팁 추가 -->
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
-<!-- 툴팁 추가 -->

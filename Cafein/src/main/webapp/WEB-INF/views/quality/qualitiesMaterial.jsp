@@ -77,4 +77,31 @@ $(document).ready(function() {
 </script>
 <!-- 경고 메세지 출력 -->
 
+<!-- 토스트창 ajax 호출 (30초 간격) -->
+<script>
+$(document).ready(function(){
+    function fetchmaterialQualityToast() {
+        $.ajax({
+            url: "/quality/materialQualityToast",
+            type: "GET",
+            dataType: "html",
+            success: function(data) {
+                // 토스트 삽입
+                $("body").append(data);
+            },
+            error: function(error) {
+                console.error("Error fetching quality list:", error);
+            }
+        });
+    }
+
+    // 초기 호출
+    fetchmaterialQualityToast();
+
+    // 1분마다 호출
+    setInterval(fetchmaterialQualityToast, 60000); // 60,000 밀리초 = 1분
+});
+</script>
+<!-- 토스트창 ajax 호출 (60초 간격) -->
+
 <%@ include file="../include/footer.jsp" %>
