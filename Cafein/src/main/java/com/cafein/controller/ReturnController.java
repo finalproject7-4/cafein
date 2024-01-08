@@ -31,7 +31,7 @@ public class ReturnController {
 	// 반품 목록
 	// http://localhost:8088/quality/returns
 	@RequestMapping(value = "/returns", method = RequestMethod.GET)
-	public void returnsGET(Model model, ReturnVO rvo, ProduceVO pro, ItemVO ivo) throws Exception {
+	public void returnsGET(Model model, ReturnVO rvo) throws Exception {
 
 		logger.debug("returnsGET() 호출");
 		
@@ -154,17 +154,36 @@ public class ReturnController {
 	
 	// 품질 관리 등록
 	@PostMapping(value = "/addReturn")
-	public String addReturn(@RequestParam("returnid") String returnid) throws Exception{
+	public String addReturn(@RequestParam("returnid") int returnid) throws Exception{
 	
 		logger.debug(" addReturn(returnid) 호출 @@@@@@@@");
 		logger.debug("returnid  : {}", returnid);
 		
-		int rvo = Integer.parseInt(returnid);
 		
-		rService.addReturn(rvo);
+		
+		rService.addReturn(returnid);
 		
 		return "redirect:/quality/returns";
 	}
+	
+	// 환불 날짜 등록
+	@PostMapping(value = "/refund")
+	public String refundDate(@RequestParam(value = "selectedReturnId", required = false) String[] selectedReturnIds) throws Exception {
+		
+		logger.debug(" refundDate() 호출(환불날짜등록)");
+		if(selectedReturnIds != null) {
+		    for (String returnCode : selectedReturnIds) {
+		    	rService.refundDate(returnCode);
+		    }
+		}
+		
+		return "redirect:/quality/returns";
+	}
+		
+		
+	
+	
+	
 	
 	
 }
