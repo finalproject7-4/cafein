@@ -94,7 +94,20 @@
 							<c:set var="counter" value="1" />
 							<c:choose>
 								<c:when test="${empty POList}">
-									<p>No data available.</p>
+								<script>
+								    Swal.fire({
+								        title: "검색하신 조건에 해당하는 수주가 없습니다",
+								        icon: "warning",
+								        showCancelButton: false,
+								        confirmButtonColor: '#3085d6',
+								        confirmButtonText: '확인'
+								    }).then(function(result) {
+								        if (result.isConfirmed) {
+								            window.location.href = '/sales/POList';
+								        }
+								    });
+								</script>
+
 								</c:when>
 								<c:otherwise>
 									<c:set var="counter" value="1" />
@@ -117,19 +130,20 @@
 												</c:otherwise>
 											</c:choose>
 											<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-											<td>${po.membercode}</td>
-											<td><input value="진행" type="submit" class="btn btn-outline-dark ingUpdate" data-poid="${po.poid}"></td>
+											<td>${po.membername}</td>
+											<td><input value="진행" type="submit" class="btn btn-outline-info m-2 ingUpdate" data-poid="${po.poid}"></td>
 											<td>
-												<button type="button" class="btn btn-outline-dark"
+												<button type="button" class="btn btn-outline-secondary m-2"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 													수정</button> 
-													<input value="취소" type="submit" class="btn btn-outline-dark cancelUpdate" data-poid="${po.poid}">
+													<input value="취소" type="submit" class="btn btn-outline-danger m-2 cancelUpdate" data-poid="${po.poid}">
 											</td>
 											<td>
 												<input value="불러오기" type="button" class="btn btn-outline-dark" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
 												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
-												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}' )">
+												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}',
+												'${po.cafeinNumber}','${po.cafeinName}', '${po.cafeinRepresent}', '${po.cafeinAddr}','${po.cafeinFax}','${po.cafeinCall}' )">
 											</td>
 											
 											<td style="display: none;">${po.origin}</td>
@@ -140,6 +154,13 @@
 											<td style="display: none;">${po.businessnumber}</td>
 											<td style="display: none;">${po.clientphone}</td>
 											<td style="display: none;">${po.clientfax}</td>
+											
+											<td style="display: none;">${po.cafeinNumber}</td>
+											<td style="display: none;">${po.cafeinName}</td>
+											<td style="display: none;">${po.cafeinRepresent}</td>
+											<td style="display: none;">${po.cafeinAddr}</td>
+											<td style="display: none;">${po.cafeinFax}</td>
+											<td style="display: none;">${po.cafeinCall}</td>
 											
 										</tr>
 										<c:set var="counter" value="${counter+1 }" />
@@ -336,7 +357,7 @@
 									</tr>
 									<tr>
 										<td class="pt15"><b>전화번호</b></td>
-										<td colspan="2"><input id="rcafeinadress" name="cafeinadress" class="form-control form-control-sm" type="text" value="051-803-0909" readonly></td>
+										<td colspan="2"><input id="rcafeinCall" name="cafeinCall" class="form-control form-control-sm" type="text" readonly></td>
 										<td class="pt15"></td>
 										<td class="pt15" colspan="2"></td>
 									</tr>
@@ -370,16 +391,7 @@
 											<td><input id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
 											<td><input  name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
 										</tr>
-										<tr class="tdempty">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
+										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -418,7 +430,8 @@
 <script>
 	/* 리스트 값 납품서 모달로 값 전달 */
 	function openReceiptModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, 
-			origin, itemweight, itemprice, representative, clientaddress, businessnumber, clientphone, clientfax) {
+			origin, itemweight, itemprice, representative, clientaddress, businessnumber, clientphone, clientfax, 
+			cafeinNumber, cafeinName, cafeinRepresent, cafeinAddr, cafeinFax,cafeinCall) {
 		console.log('poid:', poid);
 		console.log('clientid:', clientid);
 		console.log('itemid:', itemid);
@@ -461,6 +474,14 @@
 		$("#rbusinessnumber").val(businessnumber);
 		$("#rclientphone").val(clientphone);
 		$("#rclientfax").val(clientfax);
+		
+		$("#rcafeinNumber").val(cafeinNumber);
+		$("#rcafeinName").val(cafeinName);
+		$("#rcafeinRepresent").val(cafeinRepresent);
+		$("#rcafeinAddr").val(cafeinAddr);
+		$("#rcafeinFax").val(cafeinFax);
+		$("#rcafeinCall").val(cafeinCall);
+		
 
 		// 모달 열기
 $("#openReceiptModal").modal('show');

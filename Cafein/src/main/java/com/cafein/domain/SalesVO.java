@@ -47,6 +47,12 @@ public class SalesVO {
 	
 	//member
 	private String membername;
+	private String cafeinNumber;
+	private String cafeinName;
+	private String cafeinRepresent;
+	private String cafeinAddr;
+	private String cafeinFax;
+	private String cafeinCall;
 	
 	// ship 테이블
 	private String lotnumber; //LOT번호

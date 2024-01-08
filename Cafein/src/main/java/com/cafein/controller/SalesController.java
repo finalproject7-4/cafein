@@ -234,11 +234,9 @@ public class SalesController {
 
 			row.createCell(colNum++).setCellValue(vo2.getMembercode());
 			sheet.autoSizeColumn(colNum - 1);
-			
-			
 		}
 		
-		String fileName = "POList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
+		String fileName = "수주 전체 리스트.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
 
 		// 3. 엑셀 파일을 저장합니다.
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식입니다
