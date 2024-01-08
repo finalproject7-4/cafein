@@ -41,15 +41,19 @@
 			<h6 class="mb-4">출하 관리  <span class="settingSH">[총 ${countSH}건]</span> </h6>
 
 		<div class="col-12">
-		<div class="btn-group" role="group">
+		<div class="buttonarea1" style="margin-bottom: 10px;">
 			<input type="hidden" name="state" value="전체">
-			<button type="button" class="btn btn-outline-dark" id="allsh">전체</button>
-			<input type="hidden" name="state" value="대기">
-			<button type="button" class="btn btn-outline-dark" id="stop">접수</button>
+			<button type="button" class="btn btn-sm btn-primary"  id="allsh">전체</button>
 			<input type="hidden" name="state" value="접수">
-			<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
+			<button type="button" class="btn btn-sm btn-success" id="stop">접수</button>
+			<input type="hidden" name="state" value="진행">
+			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
-			<button type="button" class="btn btn-outline-dark" id="complete">완료</button>
+			<button type="button" class="btn btn-sm btn-warning" id="complete">완료</button>
+						<span id="buttonset1"><button type="button"
+					class="btn btn-dark m-2" data-bs-toggle="modal"
+					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
+					등록</button></span>
 		</div>
 		
 		<script>
@@ -93,10 +97,6 @@
 		}
 		</script>
 		
-			<span id="buttonset1"><button type="button"
-					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
-					등록</button></span>
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<form role="form" action="/sales/SHList" method="post">
 			<div class="table-responsive">

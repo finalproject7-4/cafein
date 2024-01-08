@@ -139,7 +139,7 @@
 <div class="col-12" style="margin-top:20px;">
 <div class="bg-light rounded h-100 p-4">
 <h6 class="mb-4">로스팅 제품 목록(lot)</h6>
-<h6 class="mb-4">총 수량 : ${pageVO.totalCount }</h6>
+<h6 class="mb-4">총 ${pageVO.totalCount } 건</h6>
 
 
 

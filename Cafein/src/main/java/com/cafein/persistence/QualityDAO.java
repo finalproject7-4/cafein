@@ -77,4 +77,10 @@ public interface QualityDAO {
 
 	// roastedBean 검수, 불량 처리 (포장)
 	public void updateRoastedBeanDefect(QualityVO vo) throws Exception;
+	
+	// 품질 관리 토스트 데이터 조회 (생산 + 반품)
+	public QualityVO selectProductQualityToast() throws Exception;
+	
+	// 품질 관리 토스트 데이터 조회 (자재)
+	public QualityVO selectMaterialQualityToast() throws Exception;
 }

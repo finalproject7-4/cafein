@@ -129,7 +129,7 @@
 <div class="col-12" style="margin-top:20px;">
 <div class="bg-light rounded h-100 p-4">
 <h6 class="mb-4">생산 지시 목록</h6>
-<h6 class="mb-4">총 지시량 : ${pageVO.totalCount }</h6>
+<h6 class="mb-4">총 ${pageVO.totalCount } 건</h6>
 
 <!-- 생산 상태에 따른 페이지 출력 (버튼) 시작 -->
 <div class="buttonarea1" style="margin-bottom: 10px;">
@@ -292,7 +292,7 @@ function fetchData(searchBtnValue) {
 <!-- 엑셀파일 다운로드 -->
 <div style="float: right">
 	<form action="/production/excelPrint" method="post">
-		<input class="btn btn-sm btn-primary" type="submit" value="리스트출력">
+		<input class="btn btn-sm btn-success" type="submit" value="리스트출력">
 	</form>
 </div>
 

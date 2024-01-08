@@ -4556,7 +4556,7 @@ textarea.form-control-lg {
 .page-link {
 	position: relative;
 	display: block;
-	color: #009CFF;
+	color: rgb(97, 11, 11);
 	background-color: #fff;
 	border: 1px solid #dee2e6;
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
@@ -4578,7 +4578,7 @@ textarea.form-control-lg {
 
 .page-link:focus {
 	z-index: 3;
-	color: #007dcc;
+	color: rgb(97, 11, 11);
 	background-color: #e9ecef;
 	outline: 0;
 	box-shadow: 0 0 0 .25rem rgba(0, 156, 255, 0.25)
@@ -4591,8 +4591,8 @@ textarea.form-control-lg {
 .page-item.active .page-link {
 	z-index: 3;
 	color: #fff;
-	background-color: #009CFF;
-	border-color: #009CFF
+	background-color: rgb(97, 11, 11);
+	border-color: rgb(97, 11, 11);
 }
 
 .page-item.disabled .page-link {

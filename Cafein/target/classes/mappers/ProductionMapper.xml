@@ -97,10 +97,9 @@
 		</if>	
 		
 		</where>
-		order by produceid desc limit #{cri.startPage}, #{cri.pageSize}
-	</select>
+		order by produceid desc
 
-	
+	</select>
 	<!-- AJAX 생산지시 전체글 개수 조회 -->
 	<select id="AJAXcountProduceList" resultType="Integer">
 		select count(*) from produce
@@ -307,7 +306,7 @@
 	<![CDATA[
 		SELECT sum(amount) as todayAmount
 		from produce
-		where DATE(producedate) = CURDATE() and process = '로스팅' and state = '완료'
+		where DATE(producedate) = CURDATE() and state = '완료'
 	]]>
 	</select>
 	
@@ -316,7 +315,7 @@
 	<![CDATA[
 		SELECT SUM(amount) AS thisYearAmount
 		FROM produce
-		WHERE YEAR(producedate) = YEAR(CURDATE()) and process = '로스팅' and state = '완료'
+		WHERE YEAR(producedate) = YEAR(CURDATE()) and process = '포장' and state = '완료'
 	]]>
 	</select>
 	
@@ -325,7 +324,7 @@
 	<![CDATA[
 		SELECT SUM(amount) AS thisMonthAmount
 		FROM produce
-		WHERE YEAR(producedate) = YEAR(CURDATE()) AND MONTH(producedate) = MONTH(CURDATE()) and process = '로스팅' and state = '완료'
+		WHERE YEAR(producedate) = YEAR(CURDATE()) AND MONTH(producedate) = MONTH(CURDATE()) and process = '포장' and state = '완료'
 	]]>
 	</select>
 	
@@ -336,7 +335,7 @@
         FROM produce
         WHERE producedate >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY
         AND producedate < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY + INTERVAL 1 WEEK
-        AND process = '로스팅' AND state = '완료'
+        AND process = '포장' and state = '완료'
         ]]>
 	</select>
 	

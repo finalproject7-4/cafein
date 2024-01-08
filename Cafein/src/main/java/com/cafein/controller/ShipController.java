@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
+import com.cafein.domain.MemberVO;
 import com.cafein.domain.PageVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
@@ -58,6 +59,7 @@ public class ShipController {
 		model.addAttribute("AllSHList", shService.AllSHList(svo));
 		model.addAttribute("wcList", shService.registWC());
 		model.addAttribute("stList", shService.registST()); 
+		model.addAttribute("stList", shService.registMC()); 
 		model.addAttribute("pageVO", pageVO);
 		
 		logger.debug("출하 리스트 출력!");

@@ -209,7 +209,7 @@ public class RestController {
 		
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = sheet.createRow(0);
-	    String[] headers = {"재고번호", "상품구분", "품목코드", "품목명", "LOT 번호", "중량", "재고량", "창고명", "최종 작업자", "등록일", "변경일", "최종 변경 내역"};
+	    String[] headers = {"재고번호", "상품구분", "품목코드", "품목명", "생산번호", "중량", "재고량", "창고명", "최종 작업자", "등록일", "변경일", "최종 변경 내역"};
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);
@@ -226,7 +226,7 @@ public class RestController {
 			row.createCell(colNum++).setCellValue(vo2.getItemtype());
 			row.createCell(colNum++).setCellValue(vo2.getItemcode());
 			row.createCell(colNum++).setCellValue(vo2.getItemname());
-			row.createCell(colNum++).setCellValue(vo2.getLotnumber());
+			row.createCell(colNum++).setCellValue(vo2.getProduceid());
 			row.createCell(colNum++).setCellValue(vo2.getWeight());
 			row.createCell(colNum++).setCellValue(vo2.getStockquantity());
 			row.createCell(colNum++).setCellValue(vo2.getStoragecode() + " - " + vo2.getStoragename());
@@ -283,7 +283,7 @@ public class RestController {
 		
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = sheet.createRow(0);
-	    String[] headers = {"재고번호", "상품구분", "품목코드", "품목명", "LOT 번호", "재고량", "창고명", "최종 작업자", "등록일", "변경일", "최종 변경 내역"};
+	    String[] headers = {"재고번호", "상품구분", "품목코드", "품목명", "입고번호", "재고량", "창고명", "최종 작업자", "등록일", "변경일", "최종 변경 내역"};
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);
@@ -300,7 +300,7 @@ public class RestController {
 			row.createCell(colNum++).setCellValue(vo2.getItemtype());
 			row.createCell(colNum++).setCellValue(vo2.getItemcode());
 			row.createCell(colNum++).setCellValue(vo2.getItemname());
-			row.createCell(colNum++).setCellValue(vo2.getLotnumber());
+			row.createCell(colNum++).setCellValue(vo2.getReceiveid());
 			row.createCell(colNum++).setCellValue(vo2.getStockquantity());
 			row.createCell(colNum++).setCellValue(vo2.getStoragecode() + " - " + vo2.getStoragename());
 			row.createCell(colNum++).setCellValue(vo2.getWorkerbycode());
@@ -355,7 +355,7 @@ public class RestController {
 		
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = sheet.createRow(0);
-	    String[] headers = {"불량번호", "품질관리번호", "상품구분", "품목코드", "제품명", "불량", "불량사유", "처리방식", "등록일"};
+	    String[] headers = {"불량번호", "품질관리번호", "상품구분", "품목코드", "제품명", "중량 (g)", "불량", "불량사유", "처리방식", "등록일"};
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);
@@ -373,6 +373,7 @@ public class RestController {
 			row.createCell(colNum++).setCellValue(vo2.getItemtype());
 			row.createCell(colNum++).setCellValue(vo2.getItemcode());
 			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			row.createCell(colNum++).setCellValue(vo2.getWeight());
 			row.createCell(colNum++).setCellValue(vo2.getDefectquantity());
 			row.createCell(colNum++).setCellValue(vo2.getDefecttype());
 			row.createCell(colNum++).setCellValue(vo2.getProcessmethod());
@@ -472,9 +473,9 @@ public class RestController {
 		
 		// roastedBean AJAX 정보 호출용
 		@GetMapping(value = "/roastedBeanInfo")
-		public QualityVO roastedBeanInfoGET(@ModelAttribute("produceid") String produceid) throws Exception {
+		public QualityVO roastedBeanInfoGET(@ModelAttribute("lotnumber") String lotnumber) throws Exception {
 			logger.debug(" roastedBeanInfo() 호출 ");
-			return sService.roastedBeanInfo(produceid);
+			return sService.roastedBeanInfo(lotnumber);
 		}
 		
 		// roastedBean lotnumber AJAX 정보 호출용
@@ -486,9 +487,9 @@ public class RestController {
 		
 		// receive AJAX 정보 호출용
 		@GetMapping(value = "/receiveInfo")
-		public QualityVO receiveInfoGET(@ModelAttribute("lotnumber") String lotnumber) throws Exception {
+		public QualityVO receiveInfoGET(@ModelAttribute("receiveid") String receiveid) throws Exception {
 			logger.debug(" receiveInfo() 호출 ");
-			return sService.receiveInfo(lotnumber);
+			return sService.receiveInfo(receiveid);
 		}
 		
 		// 정상 LOT번호 AJAX 정보 호출용

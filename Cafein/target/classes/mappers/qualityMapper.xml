@@ -105,7 +105,7 @@
 	
 	<!-- 품질 관리 목록 검색 버튼 (자재) -->
 	<select id="selectMaterialQualityListSearchBtn" resultType="QualityVO">
-		SELECT q.qualityid, auditcode, i.itemtype, q.receiveid, q.itemid, i.itemcode, i.itemname, auditbycode, 
+		SELECT q.qualityid, auditcode, i.itemtype, q.receiveid, s.storageid, q.itemid, i.itemcode, i.itemname, auditbycode, 
 		productquantity, auditquantity, normalquantity, defectquantity, 
 		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
 		registerstock, registerdefect 
@@ -114,6 +114,8 @@
 		ON q.itemid = i.itemid
 		JOIN receive r
 		ON q.receiveid = r.receiveid
+		LEFT OUTER JOIN storage s
+		ON r.storagecode = s.storagecode
 		<where>
 		(q.itemtype = '자재')
 		<if test="searchBtn != null and startDate == null and endDate == null">
@@ -215,7 +217,7 @@
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
-		ON q.produceid = p.produceid 
+		ON q.produceid = p.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
@@ -224,12 +226,14 @@
 	
 	<!-- 불량 현황 목록 검색 버튼 (생산 / 반품) -->
 	<select id="selectDefectsListSearchBtn" resultType="QualityVO">
-		SELECT defectid, d.qualityid, q.itemtype, produceprocess, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
+		SELECT DISTINCT defectid, d.qualityid, q.itemtype, produceprocess, weight, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
 		FROM defects d
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid 
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		<where>
@@ -241,18 +245,15 @@
 		AND q.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn != '반품' and searchText != null">
 		AND produceprocess = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn == '반품' and searchText != null">
 		AND q.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>					
 		</where>
 		ORDER BY defectid DESC
@@ -262,11 +263,15 @@
 	<!-- 불량 현황 목록 검색 버튼 개수 확인 (생산 / 반품) -->
 	<select id="selectDefectsListSearchBtnCount" resultType="integer">
 		SELECT COUNT(*)
+		FROM
+		(SELECT DISTINCT defectid, d.qualityid, q.itemtype, produceprocess, weight, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
 		FROM defects d
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid 
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		<where>
@@ -276,22 +281,20 @@
 		</if>
 		<if test="searchBtn != null and searchBtn == '반품' and searchText == null">
 		AND q.itemtype = #{searchBtn}
-		</if>	
+		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn != '반품' and searchText != null">
 		AND produceprocess = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchBtn == '반품' and searchText != null">
 		AND q.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
-		</if>						
-		</where>	
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
+		</if>					
+		</where>
+		ORDER BY defectid DESC) AS subquery
 	</select>
 	<!-- 불량 현황 목록 개수 확인 (생산 / 반품) -->
 	
@@ -309,13 +312,11 @@
 		AND i.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchText != null">
 		AND i.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>		
 		</where>
 		ORDER BY defectid DESC
@@ -337,13 +338,11 @@
 		AND i.itemtype = #{searchBtn}
 		</if>
 		<if test="searchBtn == null and searchText != null">
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
 		<if test="searchBtn != null and searchText != null">
 		AND i.itemtype = #{searchBtn}
-		AND (d.qualityid = #{searchText} OR 
-		i.itemname LIKE CONCAT('%', #{searchText}, '%'))
+		AND i.itemname LIKE CONCAT('%', #{searchText}, '%')
 		</if>			
 		</where>
 	</select>
@@ -362,10 +361,13 @@
 	
 	<!-- 품질 관리 엑셀 출력용 목록 조회 (생산 + 반품) -->
 	<select id="selectQualityListSearchBtnExcel" resultType="QualityVO">
-		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, produceprocess, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
-		weight, productquantity, auditquantity, normalquantity, defectquantity, 
-		auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
-		registerstock, registerdefect 
+		SELECT DISTINCT q.qualityid, auditcode, q.itemtype, 
+		q.produceid, produceprocess, returnid, 
+		q.itemid, itemcode, i.itemname, 
+		auditbycode, weight, productquantity, 
+		auditquantity, normalquantity, defectquantity, 
+		q.auditstatus, DATE(registerationdate) AS 'registerationdate', DATE(completedate) AS 'completedate', 
+		registerstock, registerdefect
 		FROM quality q
 		JOIN item i
 		ON q.itemid = i.itemid
@@ -427,12 +429,14 @@
 	
 	<!-- 불량 현황 엑셀 출력용 목록 조회 (생산 + 반품) -->
 	<select id="selectDefectsListSearchBtnExcel" resultType="QualityVO">
-		SELECT defectid, d.qualityid, q.itemtype, produceprocess, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
+		SELECT DISTINCT defectid, d.qualityid, q.itemtype, produceprocess, weight, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
 		FROM defects d
 		JOIN quality q
 		ON d.qualityid = q.qualityid
 		LEFT OUTER JOIN produce p
 		ON q.produceid = p.produceid 
+		LEFT OUTER JOIN roastedbean r
+		ON q.produceid = r.produceid
 		JOIN item i
 		ON q.itemid = i.itemid
 		<where>
@@ -496,6 +500,36 @@
 		WHERE lotnumber = #{lotnumber}
 	</update>
 	<!-- roastedBean 검수, 불량 처리 (포장) -->
+	
+	<!-- 품질 관리 토스트 데이터 조회 (생산 + 반품) -->
+	<select id="productQualityToast" resultType="QualityVO">
+		SELECT qualityid, q.itemtype, i.itemname, DATE(q.registerationdate) AS 'registerationdate', q.auditstatus
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		LEFT JOIN produce p
+		ON q.produceid = p.produceid
+		LEFT JOIN roastedbean r
+		ON q.produceid = r.produceid
+		WHERE (q.itemtype = '생산' OR q.itemtype = '반품') AND q.auditstatus != '검수완료'
+		ORDER BY registerationdate
+		LIMIT 0, 1
+	</select>
+	<!-- 품질 관리 토스트 데이터 조회 (생산 + 반품) -->
+	
+	<!-- 품질 관리 토스트 데이터 조회 (자재) -->
+	<select id="materialQualityToast" resultType="QualityVO">
+		SELECT qualityid, i.itemtype, itemname, DATE(q.registerationdate) AS 'registerationdate', q.auditstatus
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		JOIN receive r
+		ON q.receiveid = r.receiveid
+		WHERE q.itemtype = '자재' AND q.auditstatus != '검수완료'
+		ORDER BY registerationdate
+		LIMIT 0, 1
+	</select>
+	<!-- 품질 관리 토스트 데이터 조회 (자재) -->
 
 	<!-- 품질 관리 목록 (생산 / 반품) 추가 : WHERE q.itemtype = '생산' OR q.itemtype = '반품' -->
 </mapper>

@@ -49,8 +49,9 @@
                 <label for="reuturntype">품목</label>
                 <select name="returntype" class="form-control" id="returntype">
                 	<option ${returnVO.returntype eq "전체" ? "selected" : "" }>전체</option>
-                	<option ${returnVO.returntype eq "MOT" ? "selected" : "" }>MOT</option>
-                	<option ${returnVO.returntype eq "PRO" ? "selected" : "" }>PRO</option>
+                	<option ${returnVO.returntype eq "원자재" ? "selected" : "" }>원자재</option>
+                	<option ${returnVO.returntype eq "부자재" ? "selected" : "" }>부자재</option>
+                	<option ${returnVO.returntype eq "완제품" ? "selected" : "" }>완제품</option>
                 </select>
             </div>
 	
@@ -200,7 +201,7 @@
 						<div class="col">
 							<label for="returnname" class="col-form-label">제품명</label> 
 							
-								<select class="form-select" id="returnname" name="itemid">
+								<select class="form-select" id="floatingSelect2" name="itemid">
 									<c:forEach var="iList" items="${itemList }" begin="0" step="1">
 										<c:if test="${iList.itemtype eq '원자재'}">
 											<option value="${iList.returnname }">${iList.returnname}</option>
@@ -218,7 +219,7 @@
 						</div>
 					</div><br>
 						<div class="col">
-							<b>교환날짜</b><input type="date" id="exchangedate2" name="exchangedate" class="form-control" id="floatingInput" value="">
+							<b>환불날짜</b><input type="date" id="exchangedate2" name="exchangedate" class="form-control" id="floatingInput" value="">
 						</div><br>
 				</div>
 					
@@ -236,6 +237,7 @@
         
 	
 	<!-- 반품조회 테이블 -->
+	<form action="/quality/refund" method="POST">
 		<div class="col-12" style="margin-top:20px;">
 		<div class="bg-light rounded h-100 p-4">
 		<h6  class="mb-4">총 ${fn:length(returnList)} 건</h6>
@@ -250,7 +252,7 @@
 		
 		<div class="d-flex align-items-center">
 		<button type="button" class="btn btn-outline-dark m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
-		<button type="button" class="btn btn-outline-dark m-2" > 교환 </button>
+		<button type="submit" class="btn btn-outline-dark m-2" > 환불 </button>
 		</div>
 		
 		</div>
@@ -266,7 +268,7 @@
                         <th scope="col">제품명</th>
                         <th scope="col">품목</th>
                         <th scope="col">반품날짜</th>
-                        <th scope="col">교환날짜</th>
+                        <th scope="col">환불날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
@@ -278,7 +280,14 @@
                 <tbody>
                     <c:forEach items="${returnList}" var="returnVO">
                         <tr>
-                        	<td><input type="checkbox" name="selectedEmpId" value="${returnVO.returncode}" class="form-check-input"></td>
+                        	<c:choose>
+	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
+	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<td><input type="checkbox" class="form-check-input" disabled hidden></td>
+	                        	</c:otherwise>
+                        	</c:choose>
                             <td>${returnVO.returnid}</td>
                             <td>${returnVO.returncode}</td>
                             <td>${returnVO.returnname}</td>
@@ -327,7 +336,7 @@
                         <th scope="col">제품명</th>
                         <th scope="col">품목</th>
                         <th scope="col">반품날짜</th>
-                        <th scope="col">교환날짜</th>
+                        <th scope="col">환불날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
@@ -340,7 +349,14 @@
 		            <c:forEach items="${returnList}" var="returnVO">
 		                <c:if test="${returnVO.returnstatus eq '대기중'}">
 	                    <tr>
-	                       <td><input type="checkbox" name="selectedEmpId" value="${returnVO.returncode}" class="form-check-input"></td>
+	                       <c:choose>
+	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
+	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
+	                        	</c:otherwise>
+                       	   </c:choose>
                            <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
                            <td>${returnVO.returnname}</td>
@@ -390,7 +406,7 @@
                         <th scope="col">반품코드</th>
                         <th scope="col">제품명</th>
                         <th scope="col">반품날짜</th>
-                        <th scope="col">교환날짜</th>
+                        <th scope="col">환불날짜</th>
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
@@ -404,7 +420,14 @@
 		            <c:forEach items="${returnList}" var="returnVO">
 		            <c:if test="${returnVO.reprocessmethod eq '검수중'}">
 		                <tr>
-		                   <td><input type="checkbox" name="selectedEmpId" value="${returnVO.returncode}" class="form-check-input"></td>
+		                   <c:choose>
+	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
+	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
+	                        	</c:otherwise>
+                           </c:choose>
 	                       <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
                            <td>${returnVO.returnname}</td>
@@ -453,7 +476,7 @@
                     <th scope="col">반품코드</th>
                     <th scope="col">제품명</th>
                     <th scope="col">반품날짜</th>
-                    <th scope="col">교환날짜</th>
+                    <th scope="col">환불날짜</th>
                     <th scope="col">수량</th>
                     <th scope="col">반품상태</th>
                     <th scope="col">검수상태</th>
@@ -468,7 +491,14 @@
 		            <c:forEach items="${returnList}" var="returnVO">
 		            <c:if test="${returnVO.reprocessmethod eq '완료'}">
 		                <tr>
-		                   <td><input type="checkbox" name="selectedEmpId" value="${returnVO.returncode}" class="form-check-input"></td>
+		                   <c:choose>
+	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
+	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
+	                        	</c:otherwise>
+                           </c:choose>
 		                   <td>${returnVO.returnid}</td>
                            <td>${returnVO.returncode}</td>
                            <td>${returnVO.returnname }</td>
@@ -506,6 +536,7 @@
     </div>
    </div>
    </div> 
+   </form>
 	<!-- 반품조회 테이블 끝-->
 	
 
