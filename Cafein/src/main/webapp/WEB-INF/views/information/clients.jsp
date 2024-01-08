@@ -30,7 +30,8 @@
 			<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 			<span style="margin-left: 82%;">
 				<button type="button" class="btn btn-sm btn-dark m-2" 
-						data-bs-toggle="modal" data-bs-target="#clientJoinModal" data-bs-whatever="@getbootstrap">거래처 등록</button>
+						data-bs-toggle="modal" data-bs-target="#clientJoinModal" 
+						data-bs-whatever="@getbootstrap">거래처 등록</button>
 			</span>
 			
 			<div class="table-responsive">

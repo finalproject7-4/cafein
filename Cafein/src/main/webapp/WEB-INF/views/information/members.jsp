@@ -34,11 +34,13 @@
 <!-- 직원 목록 -->
 <div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
-		<span class="mb-4">총 ${pageVO.totalCount} 건</span> <span
-			style="margin-left: 82%;">
+		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
+		<span style="margin-left: 82%;">
+		<c:if test="${sessionScope.membername eq '최윤지' }">
 			<button type="button" class="btn btn-sm btn-dark m-2"
 				data-bs-toggle="modal" data-bs-target="#memberJoinModal"
 				data-bs-whatever="@getbootstrap">직원 등록</button>
+		</c:if>		
 		</span>
 
 		<div class="table-responsive">
@@ -55,7 +57,11 @@
 						<th scope="col">이메일</th>
 						<th scope="col">내선 번호</th>
 						<th scope="col">전화 번호</th>
-						<th scope="col">관리</th>
+						
+						<c:if test="${sessionScope.membername eq '최윤지' }">
+							<th scope="col">관리</th>
+						</c:if>	
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -71,18 +77,22 @@
 							<td>${vo.memberemail }</td>
 							<td>${vo.memberdeptphone }</td>
 							<td>${vo.memberphone }</td>
-							<td>
-								<button type="button" class="btn btn-sm btn-dark m-2"
-									data-bs-toggle="modal" data-bs-target="#memberUpdateModal"
-									data-bs-whatever="@getbootstrap"
-									onclick="memberUpdateModal('${vo.memberid }', '${vo.membercode }', '${vo.memberpw }', '${vo.membername }', '${vo.memberbirth }', '${vo.memberhire }', 
-													'${vo.departmentname }', '${vo.memberposition }', '${vo.memberemail }', '${vo.memberdeptphone }', '${vo.memberphone }', '${vo.available }')">수정</button>
-								<button type="button" class="btn btn-sm btn-dark m-2"
-									data-bs-toggle="modal" data-bs-target="#memberDeleteModal"
-									data-bs-whatever="@getbootstrap"
-									onclick="memberDeleteModal('${vo.memberid }', '${vo.membercode }', '${vo.membername }', '${vo.memberbirth }', '${vo.memberhire }', 
-													'${vo.departmentname }', '${vo.memberposition }', '${vo.memberemail }', '${vo.memberdeptphone }', '${vo.memberphone }')">비활성화</button>
-							</td>
+							
+							<c:if test="${sessionScope.membername eq '최윤지' }">
+								<td>
+									<button type="button" class="btn btn-sm btn-dark m-2"
+										data-bs-toggle="modal" data-bs-target="#memberUpdateModal"
+										data-bs-whatever="@getbootstrap"
+										onclick="memberUpdateModal('${vo.memberid }', '${vo.membercode }', '${vo.memberpw }', '${vo.membername }', '${vo.memberbirth }', '${vo.memberhire }', 
+														'${vo.departmentname }', '${vo.memberposition }', '${vo.memberemail }', '${vo.memberdeptphone }', '${vo.memberphone }', '${vo.available }')">수정</button>
+									<button type="button" class="btn btn-sm btn-dark m-2"
+										data-bs-toggle="modal" data-bs-target="#memberDeleteModal"
+										data-bs-whatever="@getbootstrap"
+										onclick="memberDeleteModal('${vo.memberid }', '${vo.membercode }', '${vo.membername }', '${vo.memberbirth }', '${vo.memberhire }', 
+														'${vo.departmentname }', '${vo.memberposition }', '${vo.memberemail }', '${vo.memberdeptphone }', '${vo.memberphone }')">비활성화</button>
+								</td>
+							</c:if>			
+									
 						</tr>
 					</c:forEach>
 				</tbody>

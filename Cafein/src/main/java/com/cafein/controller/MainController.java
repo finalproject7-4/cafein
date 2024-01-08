@@ -35,6 +35,7 @@ public class MainController {
 		logger.debug(" /views/main/login.jsp 페이지로 이동 ");
 	}
 	
+	// 로그인 - POST
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPOST(MemberVO vo, HttpSession session) throws Exception {
 		logger.debug(" loginPOST() 호출 ");
@@ -44,9 +45,10 @@ public class MainController {
 		if(resultVO != null) {
 			logger.debug(" /views/main/main.jsp 페이지로 이동 ");
 			
+			// 로그인 할 때 세션에 필요한 정보 담아가기
 			session.setAttribute("membercode", resultVO.getMembercode());
-			logger.debug("membercode: " + resultVO.getMembercode());
-			logger.debug("memberpw: " + resultVO.getMemberpw());
+			session.setAttribute("membername", resultVO.getMembername());
+			
 			return "redirect:/main/main";
 		}
 		
@@ -71,8 +73,13 @@ public class MainController {
 	// 로그아웃 - GET
 	// http://localhost:8088/main/logout
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public void logoutGET() throws Exception {
-		logger.debug(" logoutGET() 실행 ");
+	public String logoutGET(HttpSession session) throws Exception {
+		logger.debug(" logoutGET() 호출 ");
+		
+		// 세션 정보 초기화
+		session.invalidate();
+		
+		return "redirect:/main/login";
 	}
 	
 	

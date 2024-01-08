@@ -1,8 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 
-<%-- 	<h1>${membercode }</h1> --%>
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+	<c:redirect url="/main/login" />
+</c:if>
 
 
 <div class="col-12" style="margin-top: 20px;">
