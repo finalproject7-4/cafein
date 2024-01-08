@@ -51,6 +51,9 @@ public interface SalesDAO {
 	//수주상태-대기
 	public List<SalesVO> stopState() throws Exception;
 
+	//납품서 출력
+	public SalesVO getReceiptByPoid(int poid) throws Exception;
+
 	
 	
 }

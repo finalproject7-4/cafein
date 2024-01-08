@@ -143,7 +143,8 @@
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
 												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
 												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}',
-												'${po.cafeinNumber}','${po.cafeinName}', '${po.cafeinRepresent}', '${po.cafeinAddr}','${po.cafeinFax}','${po.cafeinCall}' )">
+												'${po.cafeinNumber}','${po.cafeinName}', '${po.cafeinRepresent}', '${po.cafeinAddr}','${po.cafeinFax}','${po.cafeinCall}',
+												'${po.updatedate}')">
 											</td>
 											
 											<td style="display: none;">${po.origin}</td>
@@ -161,6 +162,12 @@
 											<td style="display: none;">${po.cafeinAddr}</td>
 											<td style="display: none;">${po.cafeinFax}</td>
 											<td style="display: none;">${po.cafeinCall}</td>
+											
+											<!-- hidden -->
+											<td style="display: none;">${po.updatedate}</td>
+											<td style="display: none;">${po.clientid}</td>
+											<td style="display: none;">${po.itemid}</td>
+											<td style="display: none;">${po.postate}</td>
 											
 										</tr>
 										<c:set var="counter" value="${counter+1 }" />
@@ -309,17 +316,20 @@
 	<!--납품서 모달창 -->
 	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
+				<form action="/ReceiptPrint/{poid}" method="get" id="ReceiptForm">
 			<div class="modal-content rectipt-body">
-			
 				<div class="modal-header">
 				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서 미리보기</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				
-				<form role="form" action="/sales/receipt" method="get">
 				<div class="modal-body">
 				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
+				<input id="rupdatedate" name="updatedate" class="form-control mb-3" type="text" readonly> 
+				<input id="rclientid" name="clientid" class="form-control mb-3" type="text" readonly> 
+				<input id="ritemid" name="itemid" class="form-control mb-3" type="text" readonly> 
+				<input id="rpostate" name="postate" class="form-control mb-3" type="text" readonly> 
+				<input id="rmembercode" name="membercode" class="form-control mb-3" type="text" readonly> 
 				
 				<div class="col-12">
 				<div class="rounded h-100 p-4 bgray">
@@ -419,19 +429,21 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal">확인</button>
-				<input type="button" class="btn btn-sm btn-success" id="receiptBtn" value="엑셀파일 다운">
+				<input type="submit" class="btn btn-sm btn-success" id="ReceiptExcel" value="엑셀파일 다운">
 			</div>
-			</form>
 		</div>
+		</form><br>
 	</div>
 </div>
+		
 	
+
 
 <script>
 	/* 리스트 값 납품서 모달로 값 전달 */
 	function openReceiptModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, 
 			origin, itemweight, itemprice, representative, clientaddress, businessnumber, clientphone, clientfax, 
-			cafeinNumber, cafeinName, cafeinRepresent, cafeinAddr, cafeinFax,cafeinCall) {
+			cafeinNumber, cafeinName, cafeinRepresent, cafeinAddr, cafeinFax,cafeinCall, updatedate) {
 		console.log('poid:', poid);
 		console.log('clientid:', clientid);
 		console.log('itemid:', itemid);
@@ -445,6 +457,7 @@
 		console.log('origin:', origin);
 		console.log('ritemweight:', itemweight);
 		console.log('ritemprice:', itemprice);
+		console.log('rupdatedate:', updatedate);
 
 		var sum = pocnt * itemprice; //공급가액
 		var tax = sum*0.1; //공급세액
@@ -481,6 +494,11 @@
 		$("#rcafeinAddr").val(cafeinAddr);
 		$("#rcafeinFax").val(cafeinFax);
 		$("#rcafeinCall").val(cafeinCall);
+		
+		//hidden
+		$("#rupdatedate").val(updatedate);
+		$("#rpostate").val(postate);
+		
 		
 
 		// 모달 열기

@@ -121,6 +121,14 @@ public class SalesServiceImpl implements SalesService {
 		logger.debug("S :stopState()");
 		return sdao.stopState();
 	}
+
+	//납품서 출력
+	@Override
+	public SalesVO getReceiptByPoid(int poid) throws Exception {
+		logger.debug("S :getReceiptByPoid(poid)");
+		return sdao.getReceiptByPoid(poid);
+	}
+	
 	
 	
 
