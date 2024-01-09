@@ -42,6 +42,7 @@ public class MainController {
 		
 		MemberVO resultVO = mainService.memberLogin(vo);
 		
+		// 사원번호와 비밀번호가 일치할 때 동작
 		if(resultVO != null) {
 			logger.debug(" /views/main/main.jsp 페이지로 이동 ");
 			
@@ -53,7 +54,8 @@ public class MainController {
 			return "redirect:/main/main";
 		}
 		
-		return "redirect:/main/login";
+		// 사원번호와 비밀번호가 일치하지 않을 때 alert을 띄우고자 페이지 이동
+		return "main/msg";
 	}
 	
 	// 메인페이지 - GET

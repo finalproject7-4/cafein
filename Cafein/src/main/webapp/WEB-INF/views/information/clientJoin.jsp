@@ -12,7 +12,7 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      
-		<form role="form" action="/information/clientJoin" method="post">
+		<form role="form" action="/information/clientJoin" method="post" id="clientJoin">
 	      <div class="modal-body">
 			거래처명 <span style="color:red;">*</span> 
 				<input type="text" name="clientname" class="form-control" required><br>
