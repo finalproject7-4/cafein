@@ -24,12 +24,13 @@ public class WorkVO {
 	private Date workdate2;
 	private String worksts;
 	private int workcount;
-	private Date workupdate;
+	private Timestamp workupdate;
 	private String workcode;
 
 	private int receiptid;
 
 //	private String clientcode;
+	private String returnyn;
 	private int returncount;
 	private String returnreason;
 	

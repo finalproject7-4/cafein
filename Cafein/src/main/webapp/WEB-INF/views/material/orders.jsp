@@ -10,6 +10,7 @@
 
 	<!-- 발주 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+	<h6 class="mb-4">발주 조회</h6>
     <form name="search" action="/material/orders">
        <div class="d-flex align-items-center align-items-stretch">
             <div class="me-2">
@@ -25,7 +26,7 @@
         <div class="row align-items-stretch">
 		  <div class="form-group col">
     		<div class="input-group">
-    		<label for="orderDate" style="margin: 5px 5px 0 10px;">발주일자</label>
+    		<label for="orderDate" style="margin: 5px 10px 0 20px;">발주일자</label>
         		<input type="date" name="orderStartDate" class="form-control" style="border-radius: 5px;"> 
         		<label>&nbsp;~&nbsp;</label>
         		<input type="date" name="orderEndDate" class="form-control" style="border-radius: 5px;">
@@ -33,10 +34,10 @@
 		  </div> 
 		  <div class="form-group col">
     		<div class="input-group">
-    		<label for="deliveryDate" style="margin: 5px 5px 0 0;">납기일자</label>
+    		<label for="deliveryDate" style="margin: 5px 10px 0 0;">납기일자</label>
         		<input type="date" name="deliveryStartDate" class="form-control" style="border-radius: 5px;"> 
         		<label>&nbsp;~&nbsp;</label>
-        		<input type="date" name="deliveryEndDate" class="form-control" style="border-radius: 5px;">
+        		<input type="date" name="deliveryEndDate" class="form-control" style="border-radius: 5px; margin-right: 10px;">
     		</div>
 		  </div>
 		  <div class="col-1 align-items-stretch">
@@ -50,15 +51,17 @@
 
 	<!-- 발주 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<span class="mb-4">총 ${fn:length(ordersList)} 건</span>
 		
-		<form action="orderListExcelDownload" method="GET">		
-		<span style="margin-left: 990px;">
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
-			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
-			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
-		</span>
+		<form action="orderListExcelDownload" method="GET">
+		<div class="buttonarea1">
+			<b>총 ${pageVO.totalCount} 건</b>				
+			<span style="float: right;">
+				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
+			</span>
+		</div>
 		</form>
 		
 		<div class="table-responsive">
@@ -106,7 +109,7 @@
 							<c:when test="${ol.orderstate == '완료'}">
 								<td><b>${ol.orderstate }</b></td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
+									<button type="button" class="btn btn-sm btn-dark m-1" 
 										onclick="orderDetailModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">상세내역
 									</button>
 								</td>
@@ -114,10 +117,10 @@
 							<c:otherwise>
 								<td>${ol.orderstate }</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
+									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="orderModifyModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">수정
 									</button>
-									<input type="button" class="btn btn-sm btn-outline-dark m-1" value="삭제" id="deleteBtn">
+									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
 							</c:otherwise>
 						</c:choose>
@@ -278,7 +281,7 @@
     	<div class="modal-dialog">
         	<div class="modal-content">
             	<div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">공급처</h5>
+                <h5 class="modal-title" id="exampleModalLabel">공급처 목록</h5>
                 	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 
@@ -324,19 +327,19 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
  				<div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLabel">품목</h5>
+                     <h5 class="modal-title" id="exampleModalLabel">품목 목록</h5>
                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				
 				<div class="modal-body">
 					<div class="col-12">
-                        <div class="bg-light rounded h-100 p-3">
+                        <div class="bg-light rounded h-100">
 							<table class="table">
 								<thead>
 									<tr style="text-align: center;">
 										<th scope="col">번호</th>
 										<th scope="col" style="display: none;">품목코드</th>
-										<th scope="col">유형</th>
+										<th scope="col">거래처</th>
 										<th scope="col">품명</th>
 										<th scope="col">단가(원)</th>
                                     </tr>
@@ -347,7 +350,7 @@
                                     <tr class="itemset" style="text-align: center;">
                                       <td>${counter }</td> 
                                       <td style="display: none;">${itemList.itemcode }</td> 
-                                      <td>${itemList.itemtype }</td> 
+                                      <td>${itemList.clientname }</td> 
                                       <td>${itemList.itemname }</td> 
                                       <td>${itemList.itemprice }</td> 
                                     </tr>
@@ -425,6 +428,17 @@
         $('#orderDetailModal').modal('show');
     }
 	
+    // 발주 등록 완료 시 뜨는 알림창
+	var result = "${result}";
+	
+	if(result == "REGISTOK"){
+		Swal.fire({
+			  title: "발주 등록 완료",
+			  text: "정상적으로 등록되었습니다.",
+			  icon: "success"
+		});
+	}	
+	
 	// 발주 삭제 (발주상태가 대기일 경우에만 삭제 가능)
     $("td").on("click", "#deleteBtn", function() {
     	
@@ -437,38 +451,38 @@
     		  cancelButtonColor: '#d33',
     		  confirmButtonText: '삭제',
     		  cancelButtonText: '취소'
-    		}).then((result) => {
-    			if (result.value) {
+    	}).then((result) => {
+    		if (result.value) {
     			  
-        		var ordersid = $(this).closest("tr").find("td:first").text(); // 발주id
-				console.log(ordersid);
+        	var ordersid = $(this).closest("tr").find("td:first").text(); // 발주id
+			console.log(ordersid);
         	
-        		// AJAX 요청 수행
-        		$.ajax({
-           			url : "/material/orderDelete",
-           			type : "POST",
-           			data : {
-        	   			ordersid : ordersid
-           			},
-          			success : function(response) {
-              			// 성공적으로 처리된 경우 수행할 코드
-              			console.log("삭제 성공");
-              			location.reload();
-           			},
-           			error : function(error) {
-              			// 요청 실패 시 수행할 코드
-              			console.error("삭제 실패:", error);
-           			}
-				});
+        	// AJAX 요청 수행
+        	$.ajax({
+           		url : "/material/orderDelete",
+           		type : "POST",
+           		data : {
+        	   		ordersid : ordersid
+           		},
+          		success : function(response) {
+              		// 성공적으로 처리된 경우 수행할 코드
+              		console.log("삭제 성공");
+              		location.reload();
+           		},
+           		error : function(error) {
+              		// 요청 실패 시 수행할 코드
+              		console.error("삭제 실패:", error);
+           		}
+			});
         	
-    			} 
+    		} 
         
     	 })
 
     });    	
 	
     $(document).ready(function() {
-	    // 공급처 모달
+	    // 공급처 목록 모달
 	    $("#clientname").click(function() {
 	        $("#clientModal").modal('show');
 	   	});
@@ -481,7 +495,7 @@
 	        $('#clientModal').modal('hide');
 	    });	
 
-		// 품목 모달
+		// 품목 목록 모달
     	$("#itemname").click(function() {
         	$("#itemModal").modal('show');
    		});

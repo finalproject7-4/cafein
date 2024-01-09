@@ -10,6 +10,7 @@
 
 	<!-- 입고 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+	<h6 class="mb-4">입고 조회</h6>
 	<form name="search" method="get">
 		<div class="row align-items-stretch">
 		  <div class="form-group col">
@@ -36,15 +37,17 @@
 
 	<!-- 입고 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<span class="mb-4">총 ${fn:length(receiveList)} 건</span>
 		
 		<form action="receiveListExcelDownload" method="GET">
-		<span style="margin-left: 990px;">
-			<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveRegistModal" data-bs-whatever="@getbootstrap">등록</button>
-			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
-			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveModifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
-		</span>
+		<div class="buttonarea1">
+			<b>총 ${pageVO.totalCount} 건</b>
+			<span style="float: right;">
+				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveModifyModal" data-bs-whatever="@getbootstrap" value="수정">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
+			</span>
+		</div>
 		</form>
 		
 		<div class="table-responsive">
@@ -91,7 +94,7 @@
 							<c:when test="${rcl.receivestate == '완료'}">
 								<td><b>${rcl.receivestate }</b></td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
+									<button type="button" class="btn btn-sm btn-dark m-1" 
 										onclick="receiveDetailModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">상세내역
 									</button>
 								</td>
@@ -99,10 +102,10 @@
 							<c:otherwise>
 								<td>${rcl.receivestate }</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-dark m-1" 
+									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.stockid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">수정
 									</button>
-									<input type="button" class="btn btn-sm btn-outline-dark m-1" value="삭제" id="deleteBtn">
+									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
 							</c:otherwise>
 						</c:choose>						
@@ -383,6 +386,17 @@
         // 입고 상세내역 모달 띄우기
         $('#receiveDetailModal').modal('show');
     }
+
+    // 입고 등록 완료 시 뜨는 알림창
+	var result = "${result}";
+	
+	if(result == "REGISTOK"){
+		Swal.fire({
+			  title: "입고 등록 완료",
+			  text: "정상적으로 등록되었습니다.",
+			  icon: "success"
+		});
+	}	
 	
 	// 입고 삭제 (입고상태가 대기일 경우에만 삭제 가능)
     $("td").on("click", "#deleteBtn", function() {

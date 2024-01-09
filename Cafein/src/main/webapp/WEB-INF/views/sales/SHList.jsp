@@ -44,8 +44,6 @@
 		<div class="buttonarea1" style="margin-bottom: 10px;">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary"  id="allsh">전체</button>
-			<input type="hidden" name="state" value="접수">
-			<button type="button" class="btn btn-sm btn-success" id="stop">접수</button>
 			<input type="hidden" name="state" value="진행">
 			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
@@ -55,12 +53,6 @@
 		<script>
 		$("#allsh").click(function() {
 		   location.href="/sales/SHList";
-		});
-
-		$("#stop").click(function () {
-		 	console.log("접수 버튼 클릭됨");
-			event.preventDefault();
-		    location.href="/sales/SHList?shipsts=접수";
 		});
 
 		$("#ing").click(function() {
@@ -145,10 +137,9 @@
 								<c:if test="${sh.shipsts == '완료'}">
 									출하 완료
 									</c:if>
-									<c:if test="${sh.shipsts != '완료'}">
-									<button type="button" class="btn btn-outline-dark"
-    										onclick="openModifyModal('${sh.shipid}','${sh.workcode}', '${sh.clientname}', '${sh.itemname}', '${sh.shipsts}', '${sh.pocnt}', '${sh.shipdate1}', '${sh.membercode}')">
-    										수정
+									<c:if test="${sh.shipsts == '진행'}">
+									<button type="button" class="btn btn-outline-dark">
+    										완료
 									</button>
 									</c:if>
 									</td>
@@ -304,146 +295,25 @@
  		<jsp:include page="registSH.jsp"/> 
 		<jsp:include page="modifySH.jsp"/>
 
-<!-- 검색 -->
-
-<!-- <script> -->
-
-
-<!-- // $('.shipSearch').on('input', function(event) { -->
-<!-- //     filterRows(event); -->
-<!-- // }); -->
-
-<!-- // function filterRows(event) { -->
-<!-- //     event.preventDefault(); -->
-
-<!-- //     var keyword = $('.shipSearch').val().toLowerCase(); -->
-<!-- //     var startDate = $("#shipdate1").val(); -->
-<!-- //     var endDate = $("#shipdate2").val(); -->
-
-    
-<!-- //     var modifiedShipid = $("#shipid").val(); -->
-<!-- //     var modifiedShipcode = $("#shipcode").val(); -->
-<!-- //     var modifiedClientName = $("#clientcname").val(); -->
-<!-- //     var modifiedItemName = $("#itemname").val(); -->
-<!-- //     var modifiedShipsts = $("#shipsts").val(); -->
-<!-- //     var modifiedPocnt = $("#pocnt").val(); -->
-<!-- //     var modifiedShipdate1 = $("#shipdate1").val(); -->
-<!-- //     var modifiedShipdate2 = $("#shipdate2").val(); -->
-<!-- //     var modifiedMemberCode = $("#membercode").val(); -->
-
-<!-- //     // AJAX 요청 보내기 -->
-<!-- //     $.ajax({ -->
-<!-- //         type: 'POST', // 또는 'GET', 요청 방식에 따라 변경 -->
-<!-- //         url: '/sales/SHList', // 실제 서버의 엔드포인트 URL로 변경해야 합니다. -->
-<!-- //         data: JSON.stringify({ -->
-<!-- //         keyword: keyword, -->
-<!-- //         shipdate1: startDate, -->
-<!-- //         shipdate2: endDate, -->
-<!-- //         shipid: modifiedShipid, -->
-<!-- //         shipdate1: modifiedShipdate1, -->
-<!-- //         shipcode: modifiedShipcode, -->
-<!-- //         clientname: modifiedClientName, -->
-<!-- //         itemname: modifiedItemName, -->
-<!-- //         pocnt: modifiedPocnt, -->
-<!-- //         shipsts: modifiedShipsts, -->
-<!-- //         shipdate2: modifiedShipdate2, -->
-<!-- //         membercode: modifiedMemberCode -->
-<!-- //    		 }), -->
-<!-- //    		  contentType: 'application/x-www-form-urlencoded', -->
-<!-- //    		  success: function(response) { -->
-<!-- //    			 console.log("keyword:", keyword) -->
-<!-- //             updateTable(response); -->
-<!-- //         }, -->
-<!-- //         error: function(error) { -->
-<!-- //             console.error('Error fetching data:', error); -->
-<!-- //         } -->
-<!-- //     }); -->
-
-<!-- //     return false; -->
-<!-- // } -->
-
-<!-- // function updateTable(data) { -->
-<!-- //     // 서버에서 받아온 데이터를 이용하여 테이블 업데이트 -->
-
-<!-- //     // 표시된 행만 선택하여 번호 업데이트 -->
-<!-- //     var visibleRows = $('.workTable tbody tr:visible'); -->
-<!-- //     visibleRows.each(function(index) { -->
-<!-- //         // 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트 -->
-<!-- //         $(this).find('td:first').text(index + 1); -->
-<!-- //     }); -->
-
-<!-- //     // 테이블의 tbody를 비워주고 서버에서 받아온 데이터로 다시 채우기 -->
-<!-- //     var tbody = $('.workTable tbody'); -->
-<!-- //     tbody.empty(); -->
-
-<!-- //     // 서버에서 받아온 데이터를 이용하여 새로운 행 추가 -->
-<!-- //     for (var i = 0; i < data.length; i++) { -->
-<!-- //         var sh = data[i]; -->
-<!-- //         var newRow = $('<tr>'); -->
-<!-- //         newRow.append('<td>' + sh.shipid + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.shipdate1 + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.shipcode + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.workcode + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.clientname + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.itemname + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.pocnt + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.shipsts + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.shipdate2 + '</td>'); -->
-<!-- //         newRow.append('<td>' + sh.membercode + '</td>'); -->
-<!-- //         newRow.append('<td><button type="button" class="btn btn-outline-dark" onclick="openModifyModal(' + -->
-<!-- //             sh.workid + ', \'' + sh.pocode + '\', \'' + sh.clientname + '\', \'' + sh.itemname + '\', \'' + -->
-<!-- //             sh.worksts + '\', \'' + sh.pocnt + '\', \'' + sh.workdate1 + '\', \'' + sh.workupdate + '\', \'' + -->
-<!-- //             sh.membercode + '\')">수정</button></td>'); -->
-
-<!-- //         tbody.append(newRow); -->
-<!-- //     } -->
-
-<!-- //     // 번호 업데이트 -->
-<!-- //     updateRowNumbers(); -->
-<!-- //     // 총 건수 업데이트 -->
-<!-- //     updateTotalCount(); -->
-<!-- // } -->
-
-
-<!-- // // 이하 생략 -->
-
-
-
-
-<!-- // $("#allwk").click(function() { -->
-<!-- // 	$(".table tbody tr").show(); -->
-<!-- // 	updateTotalCount(); -->
-<!-- // }); -->
-
-<!-- // $("#stop").click(function() { -->
-<!-- // 	$(".table tbody tr").hide(); -->
-<!-- // 	$(".table tbody tr:has(td:nth-child(7):contains('접수'))").show(); -->
-<!-- // 	updateTotalCount(); -->
-<!-- // }); -->
-
-<!-- // $("#ing").click(function() { -->
-<!-- // 	$(".table tbody tr").hide(); -->
-<!-- // 	$(".table tbody tr:has(td:nth-child(7):contains('진행'))").show(); -->
-<!-- // 	updateTotalCount(); -->
-<!-- // }); -->
-
-<!-- // $("#complete").click(function() { -->
-<!-- // 	$(".table tbody tr").hide(); -->
-<!-- // 	$(".table tbody tr:has(td:nth-child(7):contains('완료'))").show(); -->
-<!-- // 	updateTotalCount(); -->
-<!-- // }); -->
-
-
-
-<!-- // function updateTotalCount() { -->
-<!-- // 	var totalCount = $(".table tbody tr:visible").length; -->
-<!-- // 	$(".mb-5").text("[총 " + totalCount + "건]"); -->
-<!-- // } -->
-
-
-<!-- </script> -->
 
 <script>
+
+// 직원 불러오기
+$(document).on('click', '#membercode1', function() {
+	$('#mccodeModal').modal('show');
+});
+
+// 선택한 행 불러오기
+$('.mccodeset').click(function() {
+	// 선택한 행의 데이터를 가져오기
+	var membercode = $(this).find('td:eq(2)').text(); // 직원코드
+
+	// 첫 번째 모달의 각 입력 필드에 데이터를 설정
+	$('#membercode1').val(membercode);
+
+	$('#mccodeModal').modal('hide');
+});
+
 // 수정된 값을 서버로 전송
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장
