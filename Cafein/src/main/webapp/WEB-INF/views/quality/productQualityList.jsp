@@ -480,7 +480,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 <!-- 생산 검수 모달창 - LOT 선택 (포장) -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-<!--   <form action="/quality/productAudit" method="POST"> -->
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (포장)</h1>
@@ -488,14 +487,14 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       </div>
       <div class="modal-body">
       	<div class="row">
- 			<div class="col">
+      		<div class="col">
            		<label for="qualityid" class="col-form-label">품질관리ID:</label>
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
-  			</div>
-  			<div class="col">
+        	</div>
+        	<div class="col">
             	<label for="produceid" class="col-form-label">생산ID:</label>
             	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
-  			</div>
+			</div>
 		</div>
 		<div class="row">
  			<div class="col">
@@ -563,10 +562,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-<!--         <button type="button" class="btn btn-primary">검수 저장</button> -->
       </div>
     </div>
-<!--    </form> -->
   </div>
 </div>
 <!-- 생산 검수 모달창 - LOT 선택 (포장) -->
