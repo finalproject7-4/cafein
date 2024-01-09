@@ -93,9 +93,6 @@
 		</script>
 		
 				<span style="float: right;">
-			  <c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
-				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
-			  </c:if>
 				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
