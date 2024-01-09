@@ -175,7 +175,10 @@ table {
 }
 .fc {
    border-radius: 5px; 
-   width:100%;
+}
+
+.fcsearch {
+	width:12%;
 }
 
 #cafeinPng {
