@@ -148,7 +148,7 @@
 									</c:choose>
 									<c:choose>
 									<c:when test="${empty wk.workdate2}">
-										<td>업데이트 날짜 없음</td>
+										<td>진행 중</td>
 									</c:when>
 									<c:otherwise>
 										<td><fmt:formatDate value="${wk.workdate2}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
@@ -160,12 +160,18 @@
 									<c:if test="${wk.worksts == '완료'}">
 									작업지시 완료
 									</c:if>
-									<c:if test="${wk.worksts != '완료'}">
+									<c:if test="${wk.worksts == '접수'}">
 									<button type="button" class="btn btn-outline-dark"
-									onclick="openModifyModal('${wk.workid}','${wk.pocode}', '${wk.clientname}', '${wk.itemname}', '${wk.worksts}', '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
 									수정
 									</button>
 									<input type="button" class="btn btn-outline-dark" value="삭제" id="deleteBtn">
+									</c:if>
+									<c:if test="${wk.worksts == '진행'}">
+									<button type="button" class="btn btn-outline-dark"
+									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									수정
+									</button>
 									</c:if>
 								</td>
 								</tr>
@@ -321,13 +327,32 @@
 
 <script>
 // 수정된 값을 서버로 전송
+
+				// 직원 불러오기
+				$(document).on('click', '#membercode2', function() {
+					$('#mccodeModal1').modal('show');
+				});
+
+				// 선택한 행 불러오기
+				$('.mccodeset1').click(function() {
+					// 선택한 행의 데이터를 가져오기
+					var membercode = $(this).find('td:eq(2)').text(); // 직원코드
+
+					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
+					$('#membercode2').val(membercode);
+
+					$('#mccodeModal1').modal('hide');
+				});
+
+			
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장
     var modifiedWorkid = $("#workid2").val();
+    var modifiedWorksts = $("#worksts2").val();
+    var modifiedWorkcode = $("#workcode2").val();
     var modifiedPocode = $("#pocode2").val();
     var modifiedClientName = $("#clientcode2").val();
     var modifiedItemName = $("#itemcode2").val();
-    var modifiedWorksts = $("#worksts2").val();
     var modifiedPocnt = $("#pocnt2").val();
     var modifiedWorkdate1 = $("#workdate11").val();
     var modifiedWorkupdate = $("#workupdate2").val();
@@ -339,10 +364,11 @@ $("#modifyButton").click(function() {
         url: "/production/modifyWK",
         data: {
         	 workid: modifiedWorkid,
+             worksts: modifiedWorksts,
+        	 workcode: modifiedWorkcode,
         	 pocode: modifiedPocode,
         	 clientname: modifiedClientName,
              itemname: modifiedItemName,
-             worksts: modifiedWorksts,
              pocnt: modifiedPocnt,
              workdate1: modifiedworkDate1,
              workupdate: modifiedWorkupDate,
@@ -358,15 +384,16 @@ $("#modifyButton").click(function() {
     });
 });
 	   
-	   function openModifyModal(workid, pocode, clientname, itemname, worksts, pocnt, workdate1, workupdate, membercode) {
+	   function openModifyModal(workid, worksts, workcode, pocode, clientname, itemname,  pocnt, workdate1, workupdate, membercode) {
 
 		   
 		   // 가져온 값들을 모달에 설정
 		   $("#workid2").val(workid);
+		    $("#worksts2").val(worksts);
+		    $("#workcode2").val(workcode);
 		    $("#pocode2").val(pocode);
 		    $("#clientcode2").val(clientname);
 		    $("#itemcode2").val(itemname);
-		    $("#worksts2").val(worksts);
 		    $("#pocnt2").val(pocnt);
 		    $("#workdate11").val(workdate1);
 		    $("#workupdate2").val(workupdate);
