@@ -5,6 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
 <br>
 <fieldset>
 		<div class="col-12">
@@ -105,7 +108,7 @@
 								<th scope="col">출하상태</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+								<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 								<th scope="col">관리</th>
 								</c:if>
 							</tr>
@@ -138,7 +141,7 @@
 									</c:otherwise>
 									</c:choose>
 							<td>${sh.membername }</td>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+							<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 							<td style="font-weight: bold; ${sh.shipsts == '완료'? 'color:red;' : ''}">
 								<c:if test="${sh.shipsts == '완료'}">
 									출하 완료

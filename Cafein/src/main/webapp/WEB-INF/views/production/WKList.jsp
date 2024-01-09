@@ -5,6 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
+
 <br>
 <fiedset>
 	<!-- 검색 폼 -->
@@ -97,7 +103,7 @@
 		}
 		</script>
 		
-					<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+					<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 					<input type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal"
 					data-bs-target="#registModal" id="regist" value="등록">
 					</c:if>
@@ -118,7 +124,7 @@
 								<th scope="col">지시수량</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+								<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 								<th scope="col">관리</th>
 								</c:if>
 							</tr>
@@ -165,12 +171,10 @@
 									<input type="button" class="btn btn-sm btn-secondary" value="삭제" id="deleteBtn">
 									</c:if>
 									<c:if test="${wk.worksts == '진행'}">
-									<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
 									<button type="button" class="btn btn-sm btn-warning"
 									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.membercode}')">
 									수정
 									</button>
-									</c:if>
 									</c:if>
 									</c:if>
 								</tr>

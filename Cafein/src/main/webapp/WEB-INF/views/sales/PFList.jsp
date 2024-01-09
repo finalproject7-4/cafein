@@ -5,6 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
 <br>
 <fiedset>
 	<!-- 검색 폼 -->
@@ -87,7 +90,7 @@
 								<th scope="col">반품수량</th>
 								<th scope="col">반품사유</th>
 								<th scope="col">담당자</th>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}"> Model model
+								<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 								<th scope="col">관리</th>
 								</c:if>
 							</tr>
@@ -121,7 +124,7 @@
             						</c:otherwise>
         							</c:choose>
 									<td>${pf.membername }</td>
-									<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+									<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-sm btn-warning"
