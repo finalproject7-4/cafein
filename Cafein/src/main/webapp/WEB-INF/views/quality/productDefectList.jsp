@@ -35,7 +35,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<c:if test="${!empty param.searchText }">
 					<input type="hidden" name="searchText" value="${param.searchText }">
 				</c:if>
-				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 다운로드">
 			</form>
 			<br>						
 				<div class="table-responsive">
