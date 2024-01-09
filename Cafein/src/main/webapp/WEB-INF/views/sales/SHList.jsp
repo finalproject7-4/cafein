@@ -44,8 +44,6 @@
 		<div class="buttonarea1" style="margin-bottom: 10px;">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary"  id="allsh">전체</button>
-			<input type="hidden" name="state" value="접수">
-			<button type="button" class="btn btn-sm btn-success" id="stop">접수</button>
 			<input type="hidden" name="state" value="진행">
 			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
@@ -55,12 +53,6 @@
 		<script>
 		$("#allsh").click(function() {
 		   location.href="/sales/SHList";
-		});
-
-		$("#stop").click(function () {
-		 	console.log("접수 버튼 클릭됨");
-			event.preventDefault();
-		    location.href="/sales/SHList?shipsts=접수";
 		});
 
 		$("#ing").click(function() {
@@ -145,10 +137,9 @@
 								<c:if test="${sh.shipsts == '완료'}">
 									출하 완료
 									</c:if>
-									<c:if test="${sh.shipsts != '완료'}">
-									<button type="button" class="btn btn-outline-dark"
-    										onclick="openModifyModal('${sh.shipid}','${sh.workcode}', '${sh.clientname}', '${sh.itemname}', '${sh.shipsts}', '${sh.pocnt}', '${sh.shipdate1}', '${sh.membercode}')">
-    										수정
+									<c:if test="${sh.shipsts == '진행'}">
+									<button type="button" class="btn btn-outline-dark">
+    										완료
 									</button>
 									</c:if>
 									</td>
@@ -306,6 +297,23 @@
 
 
 <script>
+
+// 직원 불러오기
+$(document).on('click', '#membercode1', function() {
+	$('#mccodeModal').modal('show');
+});
+
+// 선택한 행 불러오기
+$('.mccodeset').click(function() {
+	// 선택한 행의 데이터를 가져오기
+	var membercode = $(this).find('td:eq(2)').text(); // 직원코드
+
+	// 첫 번째 모달의 각 입력 필드에 데이터를 설정
+	$('#membercode1').val(membercode);
+
+	$('#mccodeModal').modal('hide');
+});
+
 // 수정된 값을 서버로 전송
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장

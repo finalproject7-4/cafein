@@ -74,3 +74,44 @@
 		</div>
 	</div>
 </div>
+
+<!-- 멤버불러오기 -->
+<div class="modal fade" id="mccodeModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">직원 목록</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-12">
+					<div class="bg-light rounded h-100 p-4">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">No.</th>
+									<th scope="col">직원 이름</th>
+									<th scope="col">직원 코드</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:set var="counter" value="1" />
+								<c:forEach items="${mcList}" var="mc" varStatus="status">
+									<tr class="mccodeset">
+										<td>${counter }</td>
+										<td>${mc.membername }</td>
+										<td>${mc.membercode }</td>
+									</tr>
+									<c:set var="counter" value="${counter+1 }" />
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -41,7 +41,7 @@ public class WorkController {
 	// 작업지시 조회
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/WKList", method = RequestMethod.GET)
-	public String AllWKListGET(Model model, WorkVO wvo, MemberVO vo, HttpSession session, Criteria cri) throws Exception {
+	public String AllWKListGET(Model model, WorkVO wvo, HttpSession session, Criteria cri) throws Exception {
 		logger.debug("AllWKListGET() 실행");
 		
 		// SalesVO의 Criteria 설정
@@ -80,19 +80,7 @@ public class WorkController {
 		
 		shService.registWK(wvo);                                                      
 		logger.debug(" 작업지시 등록 완료! ");     
-                                       
-		
-		
-		svo.setShipdate1(wvo.getWorkdate1());
-		svo.setShipcode(makeSHcode(svo));
-		svo.setWorkcode(wvo.getWorkcode());
-		svo.setClientname(wvo.getClientname());
-		svo.setItemname(wvo.getItemname());
-		svo.setShipsts(wvo.getWorksts());
-		svo.setPocnt(wvo.getPocnt());
-		svo.setShipdate2(wvo.getWorkdate2());
-		svo.setMembercode(wvo.getMembercode());
-		shService.insertShipList(svo);	
+                                     	
 	                                                                                 
 		logger.debug("/production/registWK 이동");                                          
 		return "redirect:/production/WKList";                                             
@@ -130,12 +118,21 @@ public class WorkController {
 	// 작업지시 수정 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/modifyWK", method = RequestMethod.POST)
-	public String modifyPOST(WorkVO wvo) throws Exception {
+	public String modifyPOST(WorkVO wvo,ShipVO svo, Model model) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + wvo);
 
-		// 출하 리스트 상태 업데이트
-		shService.updateCompletShip(wvo);
+		svo.setShipdate1(wvo.getWorkdate1());
+		svo.setShipcode(makeSHcode(svo));
+		svo.setWorkcode(wvo.getWorkcode());
+		svo.setClientname(wvo.getClientname());
+		svo.setItemname(wvo.getItemname());
+		svo.setShipsts(wvo.getWorksts());
+		svo.setPocnt(wvo.getPocnt());
+		svo.setShipdate2(wvo.getWorkdate2());
+		svo.setMembercode(wvo.getMembercode());
+		shService.insertShipList(svo);
+		
 
 		// 서비스 - 정보수정 동작
 		int result = shService.WKModify(wvo);

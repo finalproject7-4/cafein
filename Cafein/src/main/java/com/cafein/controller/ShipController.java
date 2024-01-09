@@ -58,6 +58,7 @@ public class ShipController {
 		model.addAttribute("countSH",shService.countSH(svo));
 		model.addAttribute("AllSHList", shService.AllSHList(svo));
 		model.addAttribute("wcList", shService.registWC());
+		model.addAttribute("mcList", shService.registMC());
 		model.addAttribute("pageVO", pageVO);
 		
 		logger.debug("@@@"+shService.registMC());
@@ -140,6 +141,7 @@ public class ShipController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		model.addAttribute("AllPFList", shService.AllPFList(wvo));
+		model.addAttribute("mcList", shService.registMC());
 		model.addAttribute("countPF",shService.countPF(wvo));
 		model.addAttribute("pageVO", pageVO);
 		logger.debug("실적 리스트 출력!");
