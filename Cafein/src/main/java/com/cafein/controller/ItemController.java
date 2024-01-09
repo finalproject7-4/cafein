@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
@@ -68,7 +69,7 @@ public class ItemController {
 	
 	// 품목 등록 - POST
 	@RequestMapping(value = "/itemRegist", method = RequestMethod.POST)
-	public String itemRegist(ItemVO vo) throws Exception {
+	public String itemRegist(ItemVO vo, RedirectAttributes rttr) throws Exception {
 		logger.debug("itemRegist() 호출");
 		
 		// 생성한 품목코드 저장
@@ -76,6 +77,9 @@ public class ItemController {
 		
 		// 서비스
 		iService.itemRegist(vo);
+		
+		// 등록 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result", "REGISTOK");
 		
 		return "redirect:/information/items";
 	} // itemRegist() 끝

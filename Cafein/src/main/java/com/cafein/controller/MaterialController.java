@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
 import com.cafein.domain.OrdersVO;
@@ -79,10 +80,10 @@ public class MaterialController {
 	
 	// 발주 등록 - POST
 	@RequestMapping(value = "/orderRegist", method = RequestMethod.POST)
-	public String orderRegist(OrdersVO vo, HttpSession session) throws Exception {
+	public String orderRegist(OrdersVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		logger.debug("orderRegist() 호출");
 		
-		// 담당자 입력
+		// 담당자 사원번호 입력
 		vo.setMembercode((String) session.getAttribute("membercode"));			
 			
 		// 생성한 발주코드 저장
@@ -90,6 +91,9 @@ public class MaterialController {
 		
 		// 서비스
 		materService.orderRegist(vo);
+		
+		// 등록 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result", "REGISTOK");
 		
 		return "redirect:/material/orders";
 	} // orderRegist() 끝	
@@ -229,7 +233,7 @@ public class MaterialController {
 	
 	// 입고 등록 - POST
 	@RequestMapping(value = "/receiveRegist", method = RequestMethod.POST)
-	public String receiveRegist(ReceiveVO vo, HttpSession session) throws Exception {
+	public String receiveRegist(ReceiveVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		logger.debug("receiveRegist() 호출");
 
 		// 담당자 입력
@@ -241,8 +245,11 @@ public class MaterialController {
 		// 생성한 LOT번호 저장
 		vo.setLotnumber(generateLotNumber());
 		
-		// 서비스
-		materService.receiveRegist(vo); // 입고 등록
+		// 서비스 - 입고 등록
+		materService.receiveRegist(vo);
+		
+		// 등록 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result", "REGISTOK");
 		
 		return "redirect:/material/receive";
 	}
