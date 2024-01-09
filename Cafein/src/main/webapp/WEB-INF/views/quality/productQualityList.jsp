@@ -35,7 +35,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색">
+				<input type="submit" value="조회">
 			</form>
 			</div>
 				<form action="/productQualityPrint" method="GET">

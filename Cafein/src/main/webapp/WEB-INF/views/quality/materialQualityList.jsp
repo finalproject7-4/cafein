@@ -33,7 +33,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색">
+				<input type="submit" value="조회">
 			</form>	
 			</div>
 				<form action="/materialQualityPrint" method="GET">
@@ -60,10 +60,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
 								<th scope="col">검수자</th>
-								<th scope="col">생산량</th>
+								<th scope="col">입고수량</th>
 								<th scope="col">검수량</th>
-								<th scope="col">정상</th>
-								<th scope="col">불량</th>
+								<th scope="col">정상수량</th>
+								<th scope="col">불량수량</th>
 								<th scope="col">검수상태</th>
 								<th scope="col">등록일</th>
 								<th scope="col">검수완료일자</th>
