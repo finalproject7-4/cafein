@@ -10,10 +10,34 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 
 <script>
 $(document).ready(function() {
+	var page = "${page}";
+	var searchBtn = "${searchBtn}";
+	var startDate = "${startDate}";
+	var endDate =  "${endDate}";
+	
+	var dataObject = {};
+				
+	if(page){
+		dataObject.page = page;
+	}else{
+		dataObject.page = 1;
+	}
+	
+	if (searchBtn) {
+		dataObject.searchBtn = searchBtn;
+	}
+	if (startDate) {
+		dataObject.startDate = startDate;
+	}
+		if (endDate) {
+	 dataObject.endDate = endDate;
+	}
+	
     // 첫 번째 페이지 가져오기
     $.ajax({
         url: "/quality/productQualityList",
         type: "GET",
+        data: dataObject,
         dataType: "html",
         success: function(data) {
             // 성공적으로 데이터를 받아왔을 때 처리할 코드

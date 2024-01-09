@@ -9,7 +9,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
+    
     <!-- Favicon -->
     <link href="../resources/img/favicon.ico" rel="icon">
 
@@ -47,20 +47,19 @@
 					<div class="d-flex align-items-center justify-content-between mb-3">
 						<h3>Cafe In</h3>
 					</div>
-					<form action="/main/login" method="post">
+					<form action="/main/login" method="post" id="login">
 						<div class="form-group m-2">
-							<input class="form-control" type="text" name="membercode"
-								placeholder="사원번호" aria-label="default input example">
+							<input class="form-control" type="text" name="membercode" id="membercode"
+								   placeholder="사원번호" aria-label="default input example">
 						</div>
 						<div class="form-group m-2">
-							<input class="form-control" type="password" name="memberpw"
-								placeholder="비밀번호" aria-label="default input example">
+							<input class="form-control" type="password" name="memberpw" id="memberpw"
+								   placeholder="비밀번호" aria-label="default input example">
 						</div>
 						<div class="d-flex align-items-center justify-content-between m-2">
 							<div class="form-check">
-								<input type="checkbox" class="form-check-input"
-									id="exampleCheck1"> <label class="form-check-label"
-									for="exampleCheck1">사원번호 기억하기</label>
+								<input type="checkbox" class="form-check-input"	id="idSaveCheck">
+								<label class="form-check-label"	for="idSaveCheck">사원번호 기억하기</label>
 							</div>
 						</div>
 						<div class="col-4 mx-auto">
@@ -75,6 +74,66 @@
 
 	<!-- JavaScript Libraries -->
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script>
+	
+	// 사원번호 기억하기
+	$(document).ready(function() {
+		var key = getCookie("idChk"); //user1
+		if (key != "") {
+			$("#membercode").val(key);
+		}
+
+		if ($("#membercode").val() != "") {
+			$("#idSaveCheck").attr("checked", true);
+		}
+
+		$("#idSaveCheck").change(function() {
+			if ($("#idSaveCheck").is(":checked")) {
+				setCookie("idChk", $("#membercode").val(), 7);
+			} else {
+				deleteCookie("idChk");
+			}
+		});
+
+		$("#membercode").keyup(function() {
+			if ($("#idSaveCheck").is(":checked")) {
+				setCookie("idChk", $("#membercode").val(), 7);
+			}
+		});
+	});
+	
+	function setCookie(cookieName, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var cookieValue = escape(value)
+				+ ((exdays == null) ? "" : "; expires="
+						+ exdate.toGMTString());
+		document.cookie = cookieName + "=" + cookieValue;
+	}
+
+	function deleteCookie(cookieName) {
+		var expireDate = new Date();
+		expireDate.setDate(expireDate.getDate() - 1);
+		document.cookie = cookieName + "= " + "; expires="
+				+ expireDate.toGMTString();
+	}
+
+	function getCookie(cookieName) {
+		cookieName = cookieName + '=';
+		var cookieData = document.cookie;
+		var start = cookieData.indexOf(cookieName);
+		var cookieValue = '';
+		if (start != -1) {
+			start += cookieName.length;
+			var end = cookieData.indexOf(';', start);
+			if (end == -1)
+				end = cookieData.length;
+			cookieValue = cookieData.substring(start, end);
+		}
+		return unescape(cookieValue);
+	}
+	</script>
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="../resources/lib/chart/chart.min.js"></script>

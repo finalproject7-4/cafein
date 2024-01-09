@@ -5,6 +5,7 @@
 <%@ include file="../include/header.jsp"%>
 <br>
 <fieldset>
+
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 				<form action="/sales/POList" method="GET" style="margin-bottom: 10px;">
@@ -12,12 +13,13 @@
 				<c:if test="${!empty param.searchBtn }">
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="납품처명을 입력하세요">
 				</c:if>
-				납품처조회
-				<input type="text" name="searchText" placeholder="납품처명을 입력하세요">
-				수주일자				
-				<input type="date" id="startDate" name="startDate" required> ~
-				<input type="date" id="endDate" name="endDate" required>
-				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
+				<span style="display:flex;">
+				<label style="margin: 5px 10px 0 0;">납품처조회</label>
+				<input type="text" name="searchText" placeholder="납품처명을 입력하세요" class="form-control">
+				<label style="margin: 5px 10px 0 0; margin-left:10em;">수주일자</label>		
+				<input type="date" id="startDate" name="startDate" class="form-control"> &nbsp; ~ &nbsp;
+				<input type="date" id="endDate" name="endDate" class="form-control">
+				<input class="btn btn-sm btn-dark search" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
 			</form>	
 			<form action="POList" method="GET">
 					<c:if test="${!empty param.searchBtn }">
@@ -36,27 +38,24 @@
 		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" id="ListID">
-		<form action="POListPrint" method="GET">
-			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
-		</form><br>
 			<form role="form" action="/sales/cancelUpdate" method="post">
 				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
 				<!-- 수주 상태에 따라 필터링하는 버튼 -->
-		<div class="btn-group" role="group">
+		<div class="buttonarea1" role="group">
 			<input type="hidden" name="state" value="전체">
-			<button type="button" class="btn btn-outline-dark" id="allpo">전체</button>
+			<button type="button" class="btn btn-sm btn-primary" id="allpo">전체</button>
 			<input type="hidden" name="state" value="대기">
-			<button type="button" class="btn btn-outline-dark" id="stop">대기</button>
+			<button type="button" class="btn btn-sm btn-info" id="stop">대기</button>
 			<input type="hidden" name="state" value="진행">
-			<button type="button" class="btn btn-outline-dark" id="ing">진행</button>
+			<button type="button" class="btn btn-sm btn-warning" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
-			<button type="button" class="btn btn-outline-dark" id="complete">완료</button>
+			<button type="button" class="btn btn-sm btn-success" id="complete">완료</button>
 			<input type="hidden" name="state" value="취소">
-			<button type="button" class="btn btn-outline-dark" id="cancel">취소</button>
+			<button type="button" class="btn btn-sm btn-danger" id="cancel">취소</button>
 		</div>
 
 		
-				 <input type="button" class="btn btn-dark m-2" data-bs-toggle="modal"
+				 <input type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal"
 					data-bs-target="#registModal" id="regist" value="등록"> 
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
@@ -115,7 +114,7 @@
 										<tr>
 											<td id="poidCancel" style="display: none;">${po.poid }</td>
 											<td>${counter }</td>
-											<td>${po.postate }</td>
+											<td><b>${po.postate }</b></td>
 											<td>${po.pocode }</td>
 											<td>${po.clientname}</td>
 											<td>${po.itemname}</td>
@@ -131,15 +130,15 @@
 											</c:choose>
 											<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 											<td>${po.membername}</td>
-											<td><input value="진행" type="submit" class="btn btn-outline-info m-2 ingUpdate" data-poid="${po.poid}"></td>
+											<td><input value="진행" type="submit" class="btn btn-sm btn-info ingUpdate" data-poid="${po.poid}"></td>
 											<td>
-												<button type="button" class="btn btn-outline-secondary m-2"
+												<button type="button" class="btn btn-sm btn-warning updateInfo"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 													수정</button> 
-													<input value="취소" type="submit" class="btn btn-outline-danger m-2 cancelUpdate" data-poid="${po.poid}">
+													<input value="취소" type="submit" class="btn btn-sm btn-secondary cancelUpdate" data-poid="${po.poid}">
 											</td>
 											<td>
-												<input value="불러오기" type="button" class="btn btn-outline-dark" 
+												<input value="PDF" type="button" class="btn btn-sm btn-danger" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
 												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
 												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}',
@@ -177,6 +176,8 @@
 						</tbody>
 					</table>
 				</div>
+				
+				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
   				<ul class="pagination justify-content-center">
@@ -310,8 +311,66 @@
 			</nav>
 			<!-- 페이지 블럭 생성 -->
 			</form>
+			<form action="POListPrint" method="GET">
+			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+		</form><br>
 		</div>
 	</div>
+	
+	<!-- 버튼 표시처리 -->
+	<script>
+	  $(document).ready(function() {
+		    // 각각의 버튼에 대해 처리
+		    $('.ingUpdate').each(function() {
+		      // 해당 버튼이 속한 행에서 '상태' 열의 텍스트 가져오기
+		      var status = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+		      // '상태'가 '대기'인 경우에만 버튼을 표시
+		      if (status === '대기') {
+		        $(this).show();
+		      } else {
+		        $(this).hide();
+		      }
+		    });
+		    $('.updateInfo').each(function() {
+		        // 해당 버튼이 속한 행에서 '상태' 열의 텍스트 가져오기
+		        var status = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+		        // '상태'가 '대기'/'진행'인 경우에만 버튼을 표시
+		        if (status === '대기' ||status === '진행') {
+		          $(this).show();
+		        } else {
+		          $(this).hide();
+		        }
+		      });
+		    $('.cancelUpdate').each(function() {
+		        // 해당 버튼이 속한 행에서 '상태' 열의 텍스트 가져오기
+		        var status = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+		        // '상태'가 '대기'/'진행'인 경우에만 버튼을 표시
+		        if (status === '대기' ||status === '진행') {
+		          $(this).show();
+		        } else {
+		          $(this).hide();
+		        }
+		      });
+		  });
+	  
+	  $('table tbody tr').each(function () {
+		    var status = $(this).find('td:nth-child(3)').text().trim();
+		    if (status === '완료') {
+		        $(this).find('td:nth-child(3)').css('color', 'blue');
+		    }
+		    if (status === '취소') {
+		        $(this).find('td:nth-child(3)').css('color', ' red');
+		    }
+		});
+
+
+	</script>
+	
+	
+	
 	
 	<!--납품서 모달창 -->
 	<div class="modal fade" id="openReceiptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -319,9 +378,6 @@
 			<div class="modal-content rectipt-body">
 				<div class="modal-header">
 				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서 미리보기</h5>
-				<input type="button" class="btn btn-secondary ReceiptPDF" onclick="printModalContent()" value="출력">
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
@@ -333,12 +389,11 @@
 				
 				<div class="col-12" id="pdf">
 				<div class="rounded h-100 p-4 bgray">
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button type="button" class="btn-close bclose" data-bs-dismiss="modal"
 						aria-label="Close" onclick="location.href='/sales/POList';"></button>
 				<h6 class="modal-title receiptTitle" >납품서</h6>
 				<div class="odate">
-				주문일자<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
-<!-- 				<img src="../resources/img/cafein_crop.png" id="cafeinPng"> -->
+				<label style="color:black;">주문일자</label>&nbsp;&nbsp;&nbsp;<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
 							<table class="table table-bordered">
 							<thead>
 									<tr>
@@ -383,7 +438,7 @@
 							</table>
 							<table class="table table-bordered">
 								<tbody>
-										<tr>
+										<tr class="fs19">
 											<th>품명</th>
 											<th>원산지</th>
 											<th>중량(g)</th>
@@ -393,7 +448,7 @@
 											<th>공급세액(원)</th>
 											<th>합계총액(원)</th>
 										</tr>
-										<tr>
+										<tr class="inputWidth">
 											<td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
 											<td><input id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
 											<td><input id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
@@ -410,7 +465,7 @@
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 										<tr>
 									</table>
-							<table class="table table-bordered thirdtable">
+										<table class="table table-bordered thirdtable">
 										<tr>
 											<td class="rem13"><b>합계총액(원)</b></td>
 											<td ><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
@@ -424,272 +479,79 @@
 											<td><input  name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>										</tr>
 									</tbody>
 							</table><br><br><br>
-							<div class="refooter">
-					담당자<input type="text" class="refooter1">
-				전자서명<div id = "canvas_container">
-				   <canvas id = "canvas"></canvas>
-				   </div>
-				</div>
-			</div>
-	 <script>
+					<div class="refooter">담당자 &nbsp;&nbsp;&nbsp;<input type="text" class="refooter1" placeholder="담당자를 입력하세요"></div>
+					<div class="retoday"></div>
+				<img src="../resources/img/cafein_crop.png" id="cafeinPng">
+					
+					<script>
+				    // JavaScript 코드 시작
+				    var todayElement = document.querySelector('.retoday'); // retoday 클래스를 갖는 요소 선택
 
-       /*
-       [JS 요약 설명]
-       1. window.onload : 웹 브라우저 로딩 완료 상태를 확인합니다
-       2. canvas[0].getContext("2d") : 캔버스 오브젝트를 얻어옵니다
-       3. canvas[0].height = div.height(); : 부모 div 크기만큼 영역을 생성합니다
-       4. canvas.on("mousedown", pcDraw); : 이벤트를 등록합니다
-       5. 참고 : pc 에서는 마우스로 처리, 모바일에서는 터치로 처리해야합니다       
-       */
+				    // 현재 날짜 객체 생성
+				    var currentDate = new Date();
 
+				    // 날짜 포맷 설정 (예: 2024년 1월 8일)
+				    var dateFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
-      
-       
+				    // 날짜를 문자열로 변환하여 요소에 할당
+				    todayElement.textContent = currentDate.toLocaleDateString('ko-KR', dateFormatOptions);
+				    // JavaScript 코드 끝
+				    
+function printModalContent() {
+    var refooter1Value = document.querySelector('.refooter1').value;
 
-       /* [전역 변수 선언 부분] */
-       var canvas;
-       var div;
-
-       var ctx;
-       var drawble = false; //플래그값 설정 (그리기 종료)
-
-
-
-
-
-       /* [html 최초 로드 및 이벤트 상시 대기 실시] */ 
-       $(window).load(function(){
-          console.log("");
-          console.log("[window onload] : [start]");
-          console.log("");
-
-          // [초기 전역 변수 객체 등록 실시]
-          canvas = $("#canvas");
-          div = $("#canvas_container");
-
-          ctx = canvas[0].getContext("2d"); //캔버스 오브젝트 가져온다          
-
-          // [이벤트 등록 함수 호출]
-          init();
-
-          // [화면 조절 함수 호출]
-          canvasResize();
-       });
-
-
-
-
-
-       /* [이벤트 등록 함수] */
-       function init(){
-          console.log("");
-          console.log("[init] : [start]");
-          console.log("");
-
-          //캔버스 사이즈 조절
-          $(window).on("resize", canvasResize);
-
-          //PC 이벤트 등록
-          canvas.on("mousedown", pcDraw);
-          canvas.on("mousemove", pcDraw);
-          canvas.on("mouseup", pcDraw);
-          canvas.on("mouseout", pcDraw);
- 
-          //모바일 이벤트 등록
-          canvas.on("touchstart", mobileDraw);
-          canvas.on("touchend", mobileDraw);
-          canvas.on("touchcancel", mobileDraw);
-          canvas.on("touchmove", mobileDraw);
-
-          //버튼 클릭 및 이미지 저장 등록
-       };
-
-
-
-
-
-       /* [화면 조절 함수] */
-       function canvasResize(){
-          console.log("");
-          console.log("[canvasResize] : [start]");
-          console.log("");
-
-          //캔버스 사이즈 조절
-          canvas[0].height = div.height();
-          canvas[0].width = div.width();
-       };
-
-
-
-
-
-       /* [PC 그리기 이벤트 처리] */
-       function pcDraw(evt){
-          console.log("");
-          console.log("[pcDraw] : [start]");
-          console.log("");
-          switch(evt.type){
-            case "mousedown" : {
-               BodyScrollDisAble(); //body 스크롤 정지
-               drawble = true;
-               ctx.beginPath();
-               ctx.moveTo(getPcPosition(evt).X, getPcPosition(evt).Y);               
+    // 값이 null 또는 빈 문자열인 경우 alert 창 표시
+    if (refooter1Value === null || refooter1Value.trim() === '') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center-center',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-            break;
+        });
 
-            case "mousemove" : {
-               if(drawble){
-                  ctx.lineTo(getPcPosition(evt).X, getPcPosition(evt).Y);
-                  ctx.stroke();
-               }
-            }
-            break;
+        Toast.fire({
+            icon: 'warning',
+            title: '담당자를 입력하세요.'
+        });
+    } else {
+        var printContents = document.getElementById('pdf').cloneNode(true);
 
-            case "mouseup" :
-            case "mouseout" : {
-               BodyScrollDisAble(); //body 스크롤 허용
-               drawble = false;
-               ctx.closePath();
-            }
-            break;
-         }
-       };
+        // input 요소에 대한 처리 (시각적인 표현으로 대체)
+        var inputElements = printContents.querySelectorAll('input');
+        inputElements.forEach(input => {
+            var replacementDiv = document.createElement('div');
+            replacementDiv.textContent = input.value;
+            replacementDiv.style.border = 'none';
+            replacementDiv.style.padding = '5px';
 
-       function getPcPosition(evt){          
-          var x = evt.pageX - canvas.offset().left;
-          var y = evt.pageY - canvas.offset().top;
-          return {X:x, Y:y};
-       };
+            // 원본 input의 스타일을 대체 Div에 복사
+            replacementDiv.style.color = window.getComputedStyle(input).color;
+            replacementDiv.style.backgroundColor = window.getComputedStyle(input).backgroundColor;
 
+            input.parentNode.replaceChild(replacementDiv, input);
+        });
 
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents.innerHTML;
 
-
-
-       /* [모바일 그리기 이벤트 처리] */
-       function mobileDraw(evt){
-          console.log("");
-          console.log("[mobileDraw] : [start]");
-          console.log("");
-
-          switch(evt.type){
-            case "touchstart" : {
-               BodyScrollDisAble(); //body 스크롤 정지
-               drawble = true;
-               ctx.beginPath();
-               ctx.moveTo(getMobilePosition(evt).X, getMobilePosition(evt).Y);
-            }
-            break;
-
-            case "touchmove" : {
-               if(drawble){
-                  // 스크롤 및 이동 이벤트 중지
-                  evt.preventDefault();
-                  ctx.lineTo(getMobilePosition(evt).X, getMobilePosition(evt).Y);
-                  ctx.stroke();
-               }
-            }
-            break;
-
-            case "touchend" :
-            case "touchcancel" : {
-               BodyScrollDisAble(); //body 스크롤 허용
-               drawble = false;
-               ctx.closePath();
-            }
-            break;
-         }
-       };
-
-       function getMobilePosition(evt){
-          var x = evt.originalEvent.changedTouches[0].pageX - canvas.offset().left;
-          var y = evt.originalEvent.changedTouches[0].pageY - canvas.offset().top;
-          return {X:x, Y:y};
-       }; 
+        window.print();
+    }
+}
 
 
-
-
-
-       /* [body 영역 스크롤 관리 부분] */
-       function BodyScrollDisAble(){
-          console.log("");
-          console.log("[BodyScrollDisAble] : [start]");
-          console.log("");         
-
-          document.body.style.overflow = "hidden"; //스크롤 막음
-       };
-       function BodyScrollAble(){  
-          console.log("");
-          console.log("[BodyScrollAble] : [start]");
-          console.log("");        
-
-          document.body.style.overflow = "auto"; //스크롤 허용
-       };
-
-
-
-
-
-       /* [url 저장 부분] */
-       function saveUrl(){
-          console.log("");
-          console.log("[saveUrl] : [start]");
-          console.log(""); 
-
-          console.log("");
-          console.log("[saveUrl] : [url] : " + canvas[0].toDataURL()); //데이터베이스에 저장
-          console.log("");                         
-       };
-
-
-
-
-       /* [캔버스 지우기 부분] */
-       function savePicture(){
-          console.log("");
-          console.log("[savePicture] : [start]");
-          console.log(""); 
-
-          // a 태그를 만들어서 다운로드를 만듭니다
-          var link = document.createElement("a");
-
-          // base64 데이터 링크
-          link.href = canvas[0].toDataURL("image/png"); //로컬 pc 다운로드 이미지
-
-          // 다운로드시 파일명 지정
-          link.download = "image.png";
-
-          // body에 추가
-          document.body.appendChild(link);
-          link.click();          
-
-          // 다운로드용 a 태그는 다운로드가 끝나면 삭제
-          document.body.removeChild(link);
-       };
-
-
-
-
-       /* [캔버스 지우기 부분] */
-       function deleteCanvas(){
-          console.log("");
-          console.log("[deleteCanvas] : [start]");
-          console.log(""); 
-          canvasResize(); //캔버스 새로고침       
-       }; 
-       
-    </script>
-    <div id = "delete_container" onclick = "deleteCanvas();">
-   <p id = "delete_txt">지우기</p>   
-</div>
-
-					</div>
+					</script>
 				</div><br>
 		</div>
+		<input type="button" class="btn btn-secondary ReceiptPDF" onclick="printModalContent()" value="출력">
 	</div>
 </div>
-		
-	
+</div>
+</div>
 
 <script>
 	/* 리스트 값 납품서 모달로 값 전달 */
@@ -755,59 +617,6 @@
 $("#openReceiptModal").modal('show');
 		console.log("납품서 모달 열기");
 	}
-	
-//모달 내용을 인쇄하는 함수
-// function printModalContent() {
-//   var printContents = document.getElementById('pdf').cloneNode(true); // 모달의 복제
-
-//   // input 요소에 대해 시각적인 표현으로 대체
-//   var inputElements = printContents.querySelectorAll('input');
-//   inputElements.forEach(function(input) {
-//     var replacementDiv = document.createElement('div');
-//     replacementDiv.textContent = input.value;
-//     replacementDiv.style.border = 'none'; // 테두리 제거
-//     replacementDiv.style.padding = '5px'; // 패딩 유지
-//     input.parentNode.replaceChild(replacementDiv, input);
-//   });
-
-//   var originalContents = document.body.innerHTML;
-//   document.body.innerHTML = printContents.innerHTML;
-  
-//   window.print();
-// //   document.body.innerHTML = originalContents;
-// }
-function printModalContent() {
-  var printContents = document.getElementById('pdf').cloneNode(true); // 모달의 복제
-
-  // input 요소에 대해 시각적인 표현으로 대체
-  var inputElements = printContents.querySelectorAll('input');
-  inputElements.forEach(function(input) {
-    var replacementDiv = document.createElement('div');
-    replacementDiv.textContent = input.value;
-    replacementDiv.style.border = 'none'; // 테두리 제거
-    replacementDiv.style.padding = '5px'; // 패딩 유지
-    input.parentNode.replaceChild(replacementDiv, input);
-  });
-
-  // Canvas 요소를 이미지로 변환
-  var canvas = document.getElementById('canvas');
-  var imageDataUrl = canvas.toDataURL();
-
-  // 이미지 요소를 생성
-  var image = document.createElement('img');
-  image.src = imageDataUrl;
-
-  // PDF에 이미지 요소를 추가
-  printContents.appendChild(image);
-
-  // 모달 내용을 인쇄
-  var originalContents = document.body.innerHTML;
-  document.body.innerHTML = printContents.innerHTML;
-
-  // 모달 닫기 방지
-  window.print();
-}
-
 </script>
 	
 	<!-- 품목 등록 모달 -->

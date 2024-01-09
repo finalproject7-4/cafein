@@ -1,6 +1,7 @@
 package com.cafein.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class WorkVO {
 	
 	// 작업지시+실적
 	private int workid;
-	private String membercode;
+	private int membercode;
 	private Date workdate1;
 	private Date workdate2;
 	private String worksts;
@@ -46,6 +47,15 @@ public class WorkVO {
 	private String qualitycheck;
 	private String state;
 	
+	// 출하
+	private int shipid;
+	private String shipcode;
+//	private int pocnt;
+	private String shipsts;
+	private Date shipdate1;
+	private Date shipdate2;
+	
+//	private String pocode;
 	
 	// item 테이블
 	private int itemid;
@@ -100,5 +110,20 @@ public class WorkVO {
 	private String updatehistory;
 	private int nowquantity;
 	private String nowstorage;
+	
+	// 멤버 테이블
+	private int memberid;
+//	private int membercode;
+	private String membername;
+	private String memberpw;
+	private Date memberbirth;
+	private Date memberhire;
+	private Timestamp memberupdate;
+	private String departmentname;
+	private String memberposition;
+	private String memberemail;
+	private String memberdeptphone;
+	private String memberphone;
+//	private String available;
 
 }

@@ -12,8 +12,8 @@ public class MemberVO {
 	private int membercode;
 	private String membername;
 	private String memberpw;
-	private Date memberbirth;
-	private Date memberhire;
+	private String memberbirth;
+	private String memberhire;
 	private Timestamp memberupdate;
 	private String departmentname;
 	private String memberposition;

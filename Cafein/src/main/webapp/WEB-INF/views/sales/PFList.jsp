@@ -45,11 +45,7 @@
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary" id="allpf">전체</button>
 			<input type="hidden" name="state" value="불량">
-			<button type="button" class="btn btn-sm btn-danger" id="stop">불량</button>
-			<span id="buttonset1"><button type="button"
-					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
-					등록</button></span>
+			<button type="button" class="btn btn-sm btn-danger" id="stop">반품</button>
 		</div>
 		
 						<script>
@@ -413,7 +409,7 @@ $("#modifyButton").click(function() {
         }
     });
 });
-	   function openModifyModal(workid, workcode, clientname, itemname, pocnt, returnreason, returncount, workdate2, membercode) {
+	   function openModifyModal(workid, workcode, clientname, itemname, pocnt, returncount, returnreason, workdate2, membercode) {
 
 		   console.log('workid', workid);
 		   console.log('workcode', workcode);

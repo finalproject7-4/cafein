@@ -187,11 +187,9 @@
 				// 선택한 행 불러오기
 				$('.mccodeset').click(function() {
 					// 선택한 행의 데이터를 가져오기
-					var membername = $(this).find('td:eq(1)').text(); // 직원이름
 					var membercode = $(this).find('td:eq(2)').text(); // 직원코드
 
 					// 첫 번째 모달의 각 입력 필드에 데이터를 설정
-					$('#membername').val(membername);
 					$('#membercode').val(membercode);
 
 					$('#mccodeModal').modal('hide');
