@@ -55,9 +55,10 @@
 			<button type="button" class="btn btn-sm btn-danger" id="cancel">취소</button>
 		</div>
 
-		
+				<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
 				 <input type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal"
-					data-bs-target="#registModal" id="regist" value="등록"> 
+					data-bs-target="#registModal" id="regist" value="등록">
+					</c:if> 
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
@@ -76,8 +77,10 @@
 								<th scope="col">수정일자</th>
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
+								<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
 								<th scope="col">진행</th>
 								<th scope="col">관리</th>
+								</c:if>
 								<th scope="col">납품서발행</th>
 								
 								<th scope="col" style="display: none;">원산지</th>
@@ -131,6 +134,7 @@
 											</c:choose>
 											<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 											<td>${po.membername}</td>
+											<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
 											<td><input value="진행" type="submit" class="btn btn-sm btn-info ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<button type="button" class="btn btn-sm btn-warning updateInfo"
@@ -138,6 +142,7 @@
 													수정</button> 
 													<input value="취소" type="submit" class="btn btn-sm btn-secondary cancelUpdate" data-poid="${po.poid}">
 											</td>
+											</c:if>
 											<td>
 												<input value="PDF" type="button" class="btn btn-sm btn-danger" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
@@ -313,7 +318,7 @@
 			<!-- 페이지 블럭 생성 -->
 			</form>
 			<form action="POListPrint" method="GET">
-			<input id="ListExcel" type="submit" value="전체 리스트 출력(.xlsx)" class="btn btn-sm btn-success">
+			<input id="ListExcel" type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 		</form><br>
 		</div>
 	</div>

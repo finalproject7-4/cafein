@@ -48,7 +48,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 					<c:if test="${!empty param.endDate }">
 						<input type="hidden" value="${param.endDate }" name="endDate">
 					</c:if>
-					<input type="submit" value="엑셀 파일 저장" class="btn btn-sm btn-success">
+					<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 				</form>	
 			<br>
 				<div class="table-responsive">
@@ -103,7 +103,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									${clist.itemname }
 									</c:if>
 									</td>
+									<c:if test="${clist.auditbycode != 0 }">
 									<td>${clist.auditbycode }</td>
+									</c:if>
+									<c:if test="${clist.auditbycode == 0 }">
+									<td></td>
+									</c:if>
 									<td>
 										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">${clist.productquantity }(개)</c:if>
 										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }">${clist.productquantity }(g)</c:if>
