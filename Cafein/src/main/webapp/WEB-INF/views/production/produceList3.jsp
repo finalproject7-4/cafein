@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 <!-- SweetAlert 추가 -->
@@ -139,10 +140,12 @@
 				<input type="button" class="btn btn-sm btn-danger" value="생산중" id="proIng">
 				<input type="button" class="btn btn-sm btn-warning" value="검사대기" id="qccWait">
 			
+			<c:if test="${departmentname =='생산' && memberposition == '팀장' || membername eq 'admin' } ">
 				<span style="float: right;">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">생산지시 등록</button>
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">BOM등록</button>
 				</span>
+			</c:if>
 </div>
 
 <!-- 페이지 Ajax 동적 이동 (1) -->
@@ -293,7 +296,7 @@ function fetchData(searchBtnValue) {
 <!-- 엑셀파일 다운로드 -->
 <div style="float: right">
 	<form action="/production/excelPrint" method="post">
-		<input class="btn btn-sm btn-success" type="submit" value="리스트출력">
+		<input class="btn btn-sm btn-success" type="submit" value="엑셀 파일 다운로드">
 	</form>
 </div>
 
