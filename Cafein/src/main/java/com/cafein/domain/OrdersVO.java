@@ -10,7 +10,7 @@ public class OrdersVO {
 	// orders 테이블
 	private int ordersid;
 	private String orderscode;
-	private String membercode;
+	private int membercode;
 	private String itemcode;
 	private int ordersquantity;
 	private String orderstate;

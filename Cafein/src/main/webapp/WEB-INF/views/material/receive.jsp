@@ -103,7 +103,7 @@
 								<td>${rcl.receivestate }</td>
 								<td>
 									<button type="button" class="btn btn-sm btn-warning m-1" 
-										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.stockid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">수정
+										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
@@ -336,10 +336,9 @@
 	})
 	
 	// 입고 수정
-	function receiveModifyModal(receiveid, itemid, stockid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membername) {
+	function receiveModifyModal(receiveid, itemid, orderscode, itemname, ordersquantity, receivestate, receivedate, receivequantity, storagecode, lotnumber, membername) {
 		console.log('receiveid:', receiveid);
 		console.log('itemid:', itemid);
-		console.log('stockid:', stockid);
 		console.log('orderscode:', orderscode);
 		console.log('itemname:', itemname);
 		console.log('ordersquantity:', ordersquantity);
@@ -353,7 +352,6 @@
 		// 가져온 값들을 모달에 설정
 		$("#receiveid2").val(receiveid);
 		$("#itemid2").val(itemid);
-		$("#stockid2").val(stockid);
 		$("#orderscode2").val(orderscode);
 		$("#itemname2").val(itemname);
 		$("#ordersquantity2").val(ordersquantity);

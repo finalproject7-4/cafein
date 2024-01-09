@@ -17,12 +17,11 @@
 			<form action="receiveModify" method="post">
 			<input type="hidden" name="receiveid" id="receiveid2">
 			<input type="hidden" name="itemid" id="itemid2">
-			<input type="hidden" name="stockid" id="stockid2">
 			<div class="modal-body">
 				<div class="row">
 					<div class="col">
 						<label for="orderscode" class="col-form-label"><b>발주코드</b></label>
-						<input name="orderscode" id="orderscode2" class="form-control mb-2" readonly>
+						<input id="orderscode2" class="form-control mb-2" readonly>
 					</div>
 				</div>
 				<div class="row">	
@@ -58,17 +57,17 @@
 				<div class="row">
 					<div class="col">
 						<label for="storagecode" class="col-form-label"><b>창고코드</b></label>
-						<input type="text" name="storagecode" id="storagecode2" class="form-control mb-2" readonly>
+						<input type="text" id="storagecode2" class="form-control mb-2" readonly>
 					</div>
 					<div class="col">
 						<label for="lotnumber" class="col-form-label"><b>LOT번호</b></label>
-						<input type="text" name="lotnumber" id="lotnumber2" class="form-control mb-2" readonly>
+						<input type="text" id="lotnumber2" class="form-control mb-2" readonly>
 					</div>
 				</div>										
 				<div class="row">
 					<div class="col">
 						<label for="membercode" class="col-form-label"><b>담당자</b></label>
-						<input type="text" name="membercode" id="membername2" class="form-control mb-2" readonly>
+						<input type="text" id="membername2" class="form-control mb-2" readonly>
 					</div>
 				</div>										
 			</div>

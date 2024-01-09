@@ -282,10 +282,10 @@ public class MaterialController {
 	public String receiveModify(ReceiveVO vo) throws Exception {
 		logger.debug("receiveModify() 호출");
 		logger.debug("입고 상태: " + vo.getReceivestate());
-		
+				
 		// 서비스
 		// 입고상태가 대기일 경우 수정만 처리
-		if(!vo.getReceivestate().equals("완료")) {
+		if(vo.getReceivestate().equals("대기")) {
 			materService.receiveModify(vo);
 		}
 		

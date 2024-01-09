@@ -12,9 +12,7 @@ import com.cafein.domain.ClientVO;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
-import com.cafein.domain.TestVO;
 import com.cafein.persistence.SalesDAO;
-import com.cafein.persistence.TestDAO;
 
 @Service
 public class SalesServiceImpl implements SalesService {

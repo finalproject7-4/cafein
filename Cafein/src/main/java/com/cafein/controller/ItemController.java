@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -43,11 +42,9 @@ public class ItemController {
 	// http://localhost:8088/information/items
 	// 품목 목록 - GET
 	@RequestMapping(value = "/items", method = RequestMethod.GET)
-	public void itemList(HttpSession session, Model model, ItemVO vo, Criteria cri) throws Exception {
+	public void itemList(Model model, ItemVO vo, Criteria cri) throws Exception {
 		logger.debug("itemList() 호출");
 		logger.debug("ItemVO: " + vo);
-		
-		session.getAttribute("membercode");
 		
 		// ItemVO의 Criteria 설정
 		vo.setCri(cri);
@@ -79,7 +76,7 @@ public class ItemController {
 		iService.itemRegist(vo);
 		
 		// 등록 완료 시 뜨는 알림창 (정보 이동)
-		rttr.addFlashAttribute("result", "REGISTOK");
+		rttr.addFlashAttribute("result1", "REGISTOK");
 		
 		return "redirect:/information/items";
 	} // itemRegist() 끝
@@ -101,11 +98,14 @@ public class ItemController {
 	
 	// 품목 수정 - POST
 	@RequestMapping(value = "/itemModify", method = RequestMethod.POST)
-	public String itemModify(ItemVO vo) throws Exception {
+	public String itemModify(ItemVO vo, RedirectAttributes rttr) throws Exception {
 		logger.debug("itemModify() 호출");
 		
 		// 서비스
 		iService.itemModify(vo);
+		
+		// 수정 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result2", "MODIFYOK");		
 		
 		return "redirect:/information/items";
 	}

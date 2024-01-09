@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.itwillbs</groupId>
 	<artifactId>web</artifactId>
-	<name>SpringStudy</name>
+	<name>Cafein</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>

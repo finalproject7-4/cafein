@@ -303,15 +303,26 @@
     });
     
     // 품목 등록 완료 시 뜨는 알림창
-	var result = "${result}";
+	var result1 = "${result1}";
 	
-	if(result == "REGISTOK"){
+	if(result1 == "REGISTOK"){
 		Swal.fire({
 			  title: "품목 등록 완료",
 			  text: "정상적으로 등록되었습니다.",
 			  icon: "success"
 		});
-	}    
+	}
+	
+    // 품목 수정 완료 시 뜨는 알림창
+	var result2 = "${result2}";
+	
+	if(result2 == "MODIFYOK"){
+		Swal.fire({
+			  title: "품목 수정 완료",
+			  text: "정상적으로 수정되었습니다.",
+			  icon: "success"
+		});
+	}	
     
     // 품목 삭제
 	$("td").on("click", "#deleteBtn", function() {
