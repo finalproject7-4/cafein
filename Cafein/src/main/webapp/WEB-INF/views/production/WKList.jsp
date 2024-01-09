@@ -4,23 +4,27 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
+<link href="../resources/css/po.css" rel="stylesheet">
 <br>
 <fiedset>
 	<!-- 검색 폼 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/production/WKList" method="get">
+				<form action="/production/WKList" method="GET" style="margin-bottom: 10px;">
+				<h6>작업지시 조회</h6>
 				<c:if test="${!empty param.searchBtn }">
-				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="검색">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="납품처명을 입력하세요">
 				</c:if>
-				검색 <input class="workSearch" type="text" name="searchText" placeholder="검색">
-				작업지시일자 
-				<input type="date" id="startDate" name="startDate" required> ~
-				<input type="date" id="endDate" name="endDate" required>
-				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
-				<br>
-			</form>
-						<form action="WKList" method="GET">
+				<span style="display:flex;">
+				<label style="margin: 5px 10px 0 0;">검색</label>
+				<input type="text" name="searchText" placeholder="검색어를 입력하세요" class="form-control fcsearch">
+				<label style="margin: 5px 10px 0 0; margin-left:10em;">
+				작업지시일자</label>		
+				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch"> &nbsp; ~ &nbsp;
+				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch">
+				<input class="btn btn-sm btn-dark m-2 searchmini" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
+			</form>	
+			<form action="POList" method="GET">
 					<c:if test="${!empty param.searchBtn }">
 						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 					</c:if>
@@ -31,7 +35,6 @@
 						<input type="hidden" value="${param.endDate }" name="endDate">
 					</c:if>
 				</form>
-
 		</div>
 	</div>
 
@@ -105,7 +108,7 @@
 					<table class="table" id="workTable">
 						<thead>
 							<tr>
-								<th scope="col">No.</th>
+								<th scope="col">번호</th>
 								<th scope="col">작업지시일</th>
 								<th scope="col">작업지시코드</th>
 								<th scope="col">수주코드</th>
