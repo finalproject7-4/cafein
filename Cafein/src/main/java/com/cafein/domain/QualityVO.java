@@ -16,7 +16,7 @@ public class QualityVO {
 	private String produceprocess;
 	private int returnid;
 	private int itemid;
-	private String auditbycode;
+	private int auditbycode;
 	private int productquantity;
 	private int auditquantity;
 	private int normalquantity;
@@ -42,7 +42,7 @@ public class QualityVO {
 	private int stockquantity;
 	private int storageid;
 //	private Timestamp registerationdate;
-	private String workerbycode;
+	private int workerbycode;
 	private Date updatedate;
 	private String updatehistory;
 	private int nowquantity;
