@@ -47,7 +47,7 @@ public class ItemController {
 		logger.debug("itemList() 호출");
 		logger.debug("ItemVO: " + vo);
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)		
+		session.getAttribute("membercode");
 		
 		// ItemVO의 Criteria 설정
 		vo.setCri(cri);
@@ -184,6 +184,5 @@ public class ItemController {
         out.close();
         workbook.close();
 	}
-
 	
 } // Controller 끝

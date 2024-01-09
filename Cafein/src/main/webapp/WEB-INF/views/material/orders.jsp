@@ -327,19 +327,19 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
  				<div class="modal-header">
-                     <h5 class="modal-title" id="exampleModalLabel">품목</h5>
+                     <h5 class="modal-title" id="exampleModalLabel">품목 목록</h5>
                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				
 				<div class="modal-body">
 					<div class="col-12">
-                        <div class="bg-light rounded h-100 p-3">
+                        <div class="bg-light rounded h-100">
 							<table class="table">
 								<thead>
 									<tr style="text-align: center;">
 										<th scope="col">번호</th>
 										<th scope="col" style="display: none;">품목코드</th>
-										<th scope="col">유형</th>
+										<th scope="col">거래처</th>
 										<th scope="col">품명</th>
 										<th scope="col">단가(원)</th>
                                     </tr>
@@ -350,7 +350,7 @@
                                     <tr class="itemset" style="text-align: center;">
                                       <td>${counter }</td> 
                                       <td style="display: none;">${itemList.itemcode }</td> 
-                                      <td>${itemList.itemtype }</td> 
+                                      <td>${itemList.clientname }</td> 
                                       <td>${itemList.itemname }</td> 
                                       <td>${itemList.itemprice }</td> 
                                     </tr>
@@ -482,7 +482,7 @@
     });    	
 	
     $(document).ready(function() {
-	    // 공급처 모달
+	    // 공급처 목록 모달
 	    $("#clientname").click(function() {
 	        $("#clientModal").modal('show');
 	   	});
@@ -495,7 +495,7 @@
 	        $('#clientModal').modal('hide');
 	    });	
 
-		// 품목 모달
+		// 품목 목록 모달
     	$("#itemname").click(function() {
         	$("#itemModal").modal('show');
    		});

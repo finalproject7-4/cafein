@@ -57,8 +57,6 @@ public class MaterialController {
 		logger.debug("ordersList() 호출");
 		logger.debug("OrdersVO: " + vo);
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)		
-		
 		// OrdersVO의 Criteria 설정
 		vo.setCri(cri);
 		
@@ -69,6 +67,7 @@ public class MaterialController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		// 데이터를 연결된 뷰페이지로 전달
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 		model.addAttribute("ordersList", materService.ordersList(vo));
 		model.addAttribute("clientList", cService.clientList()); // 공급처 모달
 		model.addAttribute("itemList", iService.itemList()); // 품목 모달
@@ -83,9 +82,6 @@ public class MaterialController {
 	public String orderRegist(OrdersVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		logger.debug("orderRegist() 호출");
 		
-		// 담당자 사원번호 입력
-		vo.setMembercode((String) session.getAttribute("membercode"));			
-			
 		// 생성한 발주코드 저장
 		vo.setOrderscode(generateOrdersCode());
 		
@@ -210,8 +206,6 @@ public class MaterialController {
 	public void receiveList(HttpSession session, Model model, ReceiveVO vo, Criteria cri) throws Exception {
 		logger.debug("receiveList() 호출");
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
-
 		// ReceiveVO의 Criteria 설정
 		vo.setCri(cri);
 		
@@ -222,6 +216,7 @@ public class MaterialController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		// 데이터를 연결된 뷰페이지로 전달
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 		model.addAttribute("receiveList", materService.receiveList(vo));
 		model.addAttribute("ordersList", materService.ordersList());
 		model.addAttribute("storageList", materService.storageList());
@@ -236,9 +231,6 @@ public class MaterialController {
 	public String receiveRegist(ReceiveVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		logger.debug("receiveRegist() 호출");
 
-		// 담당자 입력
-		vo.setMembercode((String) session.getAttribute("membercode"));			
-		
 		// 생성한 입고코드 저장
 		vo.setReceivecode(generateReceiveCode());
 		
@@ -390,8 +382,6 @@ public class MaterialController {
 	public void releasesList(HttpSession session, Model model, ReleasesVO vo, Criteria cri) throws Exception {
 		logger.debug("releasesList() 호출");
 
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
-		
 		// ReleasesVO의 Criteria 설정
 		vo.setCri(cri);
 		
