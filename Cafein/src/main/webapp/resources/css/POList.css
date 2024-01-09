@@ -82,8 +82,9 @@ table {
 	font-size: 19px;
 }
 
+
 .inputWidth input {
-	width:109px;
+	width:100%;
 }
 
 .rowspan6 {
@@ -141,6 +142,7 @@ table {
 }
 
 .refooter{
+	float:right;
 	color: black;
 	display: flex;
 	text-align: center !important;
@@ -166,13 +168,17 @@ table {
 }
 
 .retoday {
+	margin-top:8%;
 	color: black;
     text-align: center;
     font-size: 24px;
 }
-.form-control {
+.fc {
    border-radius: 5px; 
-   width:220px;
+}
+
+.fcsearch {
+	width:12%;
 }
 
 #cafeinPng {
@@ -180,4 +186,8 @@ table {
     width: 200px;
     margin-left: 25.4rem;
     margin-top: -5px;
+}
+
+.searchmini {
+	margin-top: 3px !important;
 }

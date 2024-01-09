@@ -17,6 +17,10 @@ public class RoastedbeanVO {
 	private String lotnumber;
 	private String note;
 	
+	private String auditstatus;
+	private String defect;
+	
+	
 	private String roasteddate1;
 
 	// Criteria 객체

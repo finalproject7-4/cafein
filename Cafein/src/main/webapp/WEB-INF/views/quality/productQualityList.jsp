@@ -35,7 +35,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				</c:if>
 				<input type="date" id="startDate" name="startDate" required> ~
 				<input type="date" id="endDate" name="endDate" required>
-				<input type="submit" value="검색">
+				<input type="submit" value="조회">
 			</form>
 			</div>
 				<form action="/productQualityPrint" method="GET">
@@ -655,6 +655,21 @@ $(document).ready(function() {
                 	+ item.lotnumber +
                 	"</td><td>" + 
 					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<c:if test='${empty param.page}'>" +
+					"<input type='hidden' name='page' value='1'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.page}'>" +
+					"<input type='hidden' name='page' value='${param.page}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.searchBtn}'>" +
+					"<input type='hidden' name='searchBtn' value='${param.searchBtn}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.startDate}'>" +
+					"<input type='hidden' name='startDate' value='${param.startDate}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.endDate}'>" +
+					"<input type='hidden' name='endDate' value='${param.endDate}'>" +
+					"</c:if>" + 
 					"<input type='hidden' name='qualityid' value='"+ qualityid + "'>" +
 					"<input type='hidden' name='produceid' value='"+ produceid + "'>" +
 					"<input type='hidden' name='auditcode' value='"+ auditcode + "'>" +
@@ -666,8 +681,23 @@ $(document).ready(function() {
 					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
 					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
 					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
-					"<input type='submit' class='btn btn-sm btn-primary' value='정상'></form></td><td>" +
+					"<input type='submit' class='normalbtn btn btn-sm btn-primary' value='정상'></form></td><td>" +
 					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<c:if test='${empty param.page}'>" +
+					"<input type='hidden' name='page' value='1'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.page}'>" +
+					"<input type='hidden' name='page' value='${param.page}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.searchBtn}'>" +
+					"<input type='hidden' name='searchBtn' value='${param.searchBtn}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.startDate}'>" +
+					"<input type='hidden' name='startDate' value='${param.startDate}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.endDate}'>" +
+					"<input type='hidden' name='endDate' value='${param.endDate}'>" +
+					"</c:if>" + 
 					"<input type='hidden' name='qualityid' value='"+ qualityid + "'>" +
 					"<input type='hidden' name='produceid' value='"+ produceid + "'>" +
 					"<input type='hidden' name='auditcode' value='"+ auditcode + "'>" +
@@ -679,7 +709,7 @@ $(document).ready(function() {
 					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
 					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
 					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
-					"<input type='submit' class='btn btn-sm btn-danger' value='불량'></form></td>";
+					"<input type='submit' class='defectbtn btn btn-sm btn-danger' value='불량'></form></td>";
                     tableBody.innerHTML += row;
                 });
             }
@@ -701,6 +731,22 @@ $(document).ready(function() {
       </div>
       <div class="modal-body">
       
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+            
       	<div class="row">
  			<div class="col">
            		<label for="qualityid3" class="col-form-label">품질관리ID:</label>
@@ -836,10 +882,10 @@ $(document).ready(function() {
         // 검수량 입력 시 생산량 초과 검사
         auditquantityInput.addEventListener('blur', function() {
             if (parseInt(auditquantityInput.value) > parseInt(productquantityInput.value)) {
-                alert('검수량은 생산량보다 많을 수 없습니다.');
+            	Swal.fire('검수량은 생산량보다 많을 수 없습니다.');
                 auditquantityInput.value = auditquantity;  // 검수량을 초기값으로 설정
             }else if(parseInt(auditquantityInput.value) < auditquantity){
-                alert('검수량은 기존 검수량보다 적을 수 없습니다!');
+            	Swal.fire('검수량은 기존 검수량보다 적을 수 없습니다!');
                 auditquantityInput.value = auditquantity;  // 검수량을 초기값으로 설정
             }
             
@@ -864,7 +910,7 @@ $(document).ready(function() {
         // 옵션: 유효성 검사 실패 시 폼 제출 방지
         submitButton.addEventListener('click', function(event) {
             if (parseInt(auditquantityInput.value) > parseInt(productquantityInput.value)) {
-                alert('검수량은 생산량을 초과할 수 없습니다.');
+            	Swal.fire('검수량은 생산량을 초과할 수 없습니다.');
                 event.preventDefault();  // 폼 제출 방지
             }
         });
@@ -883,6 +929,22 @@ $(document).ready(function() {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
       
       	<div class="row">
  			<div class="col">
@@ -989,12 +1051,12 @@ $(document).ready(function() {
     		
         	// 검수량이 생산량보다 큰 경우
         	if (auditQuantity > productquantity) {
-        		alert("검수량은 반품량보다 많을 수 없습니다!");
+        		Swal.fire("검수량은 반품량보다 많을 수 없습니다!");
         		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
         		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스
         		return;
         	}else if(auditQuantity < auditquantity){
-        		alert("검수량은 기존 검수량보다 적을 수 없습니다!");
+        		Swal.fire("검수량은 기존 검수량보다 적을 수 없습니다!");
         		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
         		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스 
         		return;
@@ -1010,12 +1072,12 @@ $(document).ready(function() {
 
     		// 불량 개수가 검수량을 초과하는 경우
     		if (defectiveQuantity > auditQuantity) {
-    			alert("불량 개수는 검수량을 초과할 수 없습니다!");
+    			Swal.fire("불량 개수는 검수량을 초과할 수 없습니다!");
     			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
     			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
     			return;
     		}else if(defectiveQuantity < defectquantity){
-    			alert("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
+    			Swal.fire("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
     			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
     			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
     			return;

@@ -28,7 +28,7 @@
         color: "#000000", // 바코드 색상
         fontSize: 15, // 글자 크기 조정
         output: "css",
-        posX: 500,
+        posX: 0,
         posY: 0
     },
     intval: function(val){

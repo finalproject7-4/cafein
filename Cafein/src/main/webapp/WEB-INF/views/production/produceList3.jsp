@@ -185,6 +185,7 @@ $(document).ready(function() {
 });
 
 function fetchData(searchBtnValue) {
+	
     $.ajax({
         url: "/production/produceList3",
         type: "GET",
@@ -520,23 +521,50 @@ function fetchData(searchBtnValue) {
 			
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
+			var pageNum = $(this).data('page');
+				
+				var searchBtn = "${param.searchBtn}";
+				var startDate = "${param.startDate}";
+				var endDate = "${param.endDate}";
 
+				var dataObject = {
+					"page" : pageNum,
+					"produceid" : produceId,
+					"state" : stateValue					
+				};
+				
+				if (searchBtn) {
+				    dataObject.searchBtn = searchBtn;
+				}
+				if (startDate) {
+				    dataObject.startDate = startDate;
+				}
+				if (endDate) {
+				    dataObject.endDate = endDate;
+				}
+				
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/AJAXupdateProduceState",
 				type : "POST",
-				data : {
-					state : stateValue,
-					produceid : produceId
-				},
+				data : dataObject,
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					Swal.fire('변경완료!');
-					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-					getList(currentPage);
 					
-
+					$.ajax({
+						url: "/production/produceList3",
+						type: "GET",
+						data: dataObject,
+						success: function(data) {
+    						$("#produceListAll").html(data);
+						},
+						 	error: function(error) {
+    						console.error("Error fetching data:", error);
+						}
+						});
+					
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
@@ -558,30 +586,55 @@ function fetchData(searchBtnValue) {
 			var stockId2 = $(this).closest("tr").find("td:eq(16)").text(); // 재고ID2 값
 			var stockId3 = $(this).closest("tr").find("td:eq(17)").text(); // 재고ID3 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
+			
+			var pageNum = $(this).data('page');
+			
+			var searchBtn = "${param.searchBtn}";
+			var startDate = "${param.startDate}";
+			var endDate = "${param.endDate}";
 
+			var dataObject = {
+				"page" : pageNum,
+				"produceid" : produceId,
+				"state" : stateValue,
+				"itemid" : itemID,
+				"amount" : amount,
+				"producecode" : producecode,
+				"stockid1" : stockId1,
+				"stockid2" : stockId2,
+				"stockid3" : stockId3				
+			};
+			
+			if (searchBtn) {
+			    dataObject.searchBtn = searchBtn;
+			}
+			if (startDate) {
+			    dataObject.startDate = startDate;
+			}
+			if (endDate) {
+			    dataObject.endDate = endDate;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/BupdateProduceState",
 				type : "POST",
-				data : {
-					state : stateValue,
-					produceid : produceId,
-					itemid : itemID,
-					amount : amount,
-					producecode : producecode,
-					stockid1 : stockId1,
-					stockid2 : stockId2,
-					stockid3 : stockId3
-						
-				},
+				data : dataObject,
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					Swal.fire('변경완료!');
-					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-					getList(currentPage);
+					$.ajax({
+						url: "/production/produceList3",
+					type: "GET",
+					data: dataObject,
+					success: function(data) {
+						$("#produceListAll").html(data);
+					},
+					 	error: function(error) {
+						console.error("Error fetching data:", error);
+					}
+					});
 					
-
 				},
 				error : function(error) {
 					// 요청 실패 시 수행할 코드
@@ -606,7 +659,26 @@ function fetchData(searchBtnValue) {
 		          if (result.value) {
 
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
+			var pageNum = $(this).data('page');
+			
+			var searchBtn = "${param.searchBtn}";
+			var startDate = "${param.startDate}";
+			var endDate = "${param.endDate}";
 
+			var dataObject = {
+				"page" : pageNum,
+				"produceid" : produceId			
+			};
+			
+			if (searchBtn) {
+			    dataObject.searchBtn = searchBtn;
+			}
+			if (startDate) {
+			    dataObject.startDate = startDate;
+			}
+			if (endDate) {
+			    dataObject.endDate = endDate;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/deletePlan",
@@ -618,8 +690,17 @@ function fetchData(searchBtnValue) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					Swal.fire('삭제완료!');
-					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-					getList(currentPage);
+					$.ajax({
+						url: "/production/produceList3",
+					type: "GET",
+					data: dataObject,
+					success: function(data) {
+						$("#produceListAll").html(data);
+					},
+					 	error: function(error) {
+						console.error("Error fetching data:", error);
+					}
+					});
 					
 
 				},
@@ -637,25 +718,52 @@ function fetchData(searchBtnValue) {
 
 			$("td").on("click", "#roastingBtn", function() {
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
-			 var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
-			 var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
+			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
+			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
+			var pageNum = $(this).data('page');
+			var searchBtn = "${param.searchBtn}";
+			var startDate = "${param.startDate}";
+			var endDate = "${param.endDate}";
+
+			var dataObject = {
+					"page" : pageNum,
+					"produceid" : produceId,	
+					"itemid" : itemID,
+					"amount" : amount,
+					process : "로스팅"
+				};
+				
+				if (searchBtn) {
+				    dataObject.searchBtn = searchBtn;
+				}
+				if (startDate) {
+				    dataObject.startDate = startDate;
+				}
+				if (endDate) {
+				    dataObject.endDate = endDate;
+				}
+			 
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/processUpdateRoasting",
 				type : "POST",
-				data : {
-					produceid : produceId,
-					itemid : itemID,
-					process : "로스팅",
-					amount : amount
-				},
+				data : dataObject ,
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
 					Swal.fire('변경완료!');
-					var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-					getList(currentPage);
+					$.ajax({
+						url: "/production/produceList3",
+					type: "GET",
+					data: dataObject,
+					success: function(data) {
+						$("#produceListAll").html(data);
+					},
+					 	error: function(error) {
+						console.error("Error fetching data:", error);
+					}
+					});
 					
 
 				},
