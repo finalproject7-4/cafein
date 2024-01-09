@@ -5,6 +5,11 @@
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
+
 <!-- 입고관리 페이지 시작 -->
 <div class="col-12">
 
@@ -42,7 +47,9 @@
 		<div class="buttonarea1">
 			<b>총 ${pageVO.totalCount} 건</b>
 			<span style="float: right;">
+			  <c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			  </c:if>
 				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#receiveDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
@@ -65,7 +72,9 @@
 						<th scope="col">입고일자</th>
 						<th scope="col">담당자</th>
 						<th scope="col">입고상태</th>
+						<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 						<th scope="col">관리</th>
+						</c:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -93,20 +102,24 @@
 						<c:choose>
 							<c:when test="${rcl.receivestate == '완료'}">
 								<td><b>${rcl.receivestate }</b></td>
+								<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-1" 
 										onclick="receiveDetailModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">상세내역
 									</button>
 								</td>
+								</c:if>
 							</c:when>
 							<c:otherwise>
 								<td>${rcl.receivestate }</td>
+								<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
+								</c:if>
 							</c:otherwise>
 						</c:choose>						
 					</tr>

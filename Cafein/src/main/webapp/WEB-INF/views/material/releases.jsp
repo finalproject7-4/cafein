@@ -3,6 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp" %>
 
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
+
 <!-- 출고관리 페이지 시작 -->
 <div class="col-12">
 
@@ -60,7 +65,9 @@
 						<th scope="col">출고일자</th>
 						<th scope="col">담당자</th>
 						<th scope="col">출고상태</th>
+						<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 						<th scope="col">관리</th>
+						</c:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -72,9 +79,6 @@
 						<td>${rl.releasecode }</td>
 						<td>${rl.producecode }</td>
 						<td>${rl.itemname }</td>
-<!-- 						<td> -->
-<%-- 							<fmt:formatNumber value="${rl.stockquantity }" pattern="#,###"/> --%>
-<!-- 						</td> -->
 						<td>${rl.releasequantity }</td>
 						<td>
 							<fmt:formatDate value="${rl.releasedate }" dateStyle="short" pattern="yyyy-MM-dd"/>
@@ -83,20 +87,24 @@
 						<c:choose>
 							<c:when test="${rl.releasestate == '완료'}">
 								<td><b>${rl.releasestate }</b></td>
+								<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-1"
 										onclick="releaseDetailModal('${rl.releasecode }', '${rl.producecode }', '${rl.itemname }', '${rl.releasestate }', '${rl.releasedate }', '${rl.releasequantity }', '${rl.membername }')">상세내역
 									</button>
 								</td>
+								</c:if>
 							</c:when>
 							<c:otherwise>
 								<td>${rl.releasestate }</td>
+								<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="releaseModifyModal('${rl.releaseid }', '${rl.releasecode }', '${rl.producecode }', '${rl.itemname }', '${rl.releasequantity }', '${rl.releasedate }', '${rl.membername }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
+								</c:if>
 							</c:otherwise>
 						</c:choose>
 					</tr>
