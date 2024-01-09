@@ -62,7 +62,8 @@ public class SalesController {
 		logger.debug("@@@POList"+sService.POList(svo));
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("cliList", sService.registCli()); 
-		model.addAttribute("iList", sService.registItem());  
+		model.addAttribute("iList", sService.registItem());
+		model.addAttribute("membercode", session.getAttribute("membercode")); 
 		
 		
 		return "/sales/POList";
@@ -77,7 +78,7 @@ public class SalesController {
 							@RequestParam(value = "ordersduedate") String ordersduedate,
 							@RequestParam(value = "clientid") int clientid,
 							@RequestParam(value = "itemid") int itemid,
-							RedirectAttributes rttr) throws Exception {
+							RedirectAttributes rttr, HttpSession session,Model model) throws Exception {
 		
 		logger.debug("폼submit -> registPOST() 호출 ");                                 
 		logger.debug(" svo : " + svo);                                               
@@ -87,6 +88,7 @@ public class SalesController {
 		svo.setClientid(clientid);	                                         
 		svo.setItemid(itemid);
 		svo.setPocode(makePOcode(svo));
+		model.addAttribute("membercode", session.getAttribute("membercode")); 
 		
 		sService.registPO(svo);                                                      
 		logger.debug(" 글작성 완료! ");     
@@ -119,7 +121,7 @@ public class SalesController {
 			@RequestParam(value = "poid") int poid,
 			@RequestParam(value = "clientid") int clientid,
 			@RequestParam(value = "itemid") int itemid
-			) throws Exception {
+			, HttpSession session, Model model) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + svo);
 		
@@ -127,7 +129,7 @@ public class SalesController {
 		svo.setItemid(itemid);
 		svo.setPoid(poid);
 		svo.setUpdatedate(Date.valueOf(updatedate));
-
+		model.addAttribute("membercode", session.getAttribute("membercode")); 
 
 		// 서비스 - 정보수정 동작
 		int result = sService.POModify(svo);
@@ -139,7 +141,8 @@ public class SalesController {
 	//수주상태 취소 변경
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/cancelUpdate", method = RequestMethod.POST)
-	public String cancelUpdate(SalesVO svo, @RequestParam("poid") int poid) throws Exception {
+	public String cancelUpdate(SalesVO svo, @RequestParam("poid") int poid, 
+			HttpSession session, Model model) throws Exception {
 	    try {
 	        logger.debug("/sales/cancelUpdate() 호출!");
 	        svo.setPoid(poid);
@@ -151,6 +154,7 @@ public class SalesController {
 	    } catch (Exception e) {
 	        logger.error("수주상태 업데이트 중 오류 발생:", e);
 	    }
+	    model.addAttribute("membercode", session.getAttribute("membercode")); 
 		return "redirect:/sales/POList";                                             
 	}
 	//수주상태 진행 변경
