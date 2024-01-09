@@ -84,10 +84,10 @@
 								<fmt:formatNumber value="${il.itemprice }" pattern="#,###"/>
 							</td>
 							<td>
-								<button type="button" class="btn btn-sm btn-dark m-1" 
+								<button type="button" class="btn btn-sm btn-warning m-1" 
 									onclick="itemModifyModal('${il.itemid }', '${il.itemcode }', '${il.itemtype }', '${il.itemname }', '${il.clientname }', '${il.origin }', '${il.itemweight }', '${il.itemprice }')">수정
 								</button>
-								<input type="button" class="btn btn-sm btn-dark m-1" value="삭제" id="deleteBtn">
+								<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 							</td>
 						</tr>
 					</c:forEach>	
