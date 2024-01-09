@@ -478,7 +478,7 @@
 											<td class="rem13"><b>대표자</b></td>
 											<td><input  name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>										</tr>
 									</tbody>
-							</table><br><br><br>
+							</table>
 					<div class="refooter">담당자 &nbsp;&nbsp;&nbsp;<input type="text" class="refooter1" placeholder="담당자를 입력하세요"></div>
 					<div class="retoday"></div>
 				<img src="../resources/img/cafein_crop.png" id="cafeinPng">
