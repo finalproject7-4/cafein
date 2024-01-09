@@ -53,10 +53,7 @@
 			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
 			<button type="button" class="btn btn-sm btn-warning" id="complete">완료</button>
-						<span id="buttonset1"><button type="button"
-					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
-					등록</button></span>
+			
 		</div>
 		
 				<script>
@@ -100,9 +97,12 @@
 		}
 		</script>
 		
-
+					<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+					<input type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal"
+					data-bs-target="#registModal" id="regist" value="등록">
+					</c:if>
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<form role="form" action="/production/WKList" method="post">
+			<form role="form" action="/production/modifyWK" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table" id="workTable">
@@ -118,7 +118,9 @@
 								<th scope="col">지시수량</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
+								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
 								<th scope="col">관리</th>
+								</c:if>
 							</tr>
 						</thead>
 						<tbody>
@@ -148,8 +150,9 @@
 										<td><fmt:formatDate value="${wk.workdate2}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 									</c:otherwise>
 									</c:choose>
-									<td>${wk.membercode }</td>
+									<td>${wk.membername }</td>
 									<!-- 버튼 수정 -->
+									<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
 									<td style="font-weight: bold; ${wk.worksts == '완료'? 'color:red;' : ''}">
 									<c:if test="${wk.worksts == '완료'}">
 									작업지시 완료
@@ -162,12 +165,14 @@
 									<input type="button" class="btn btn-sm btn-secondary" value="삭제" id="deleteBtn">
 									</c:if>
 									<c:if test="${wk.worksts == '진행'}">
+									<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
 									<button type="button" class="btn btn-sm btn-warning"
 									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.membercode}')">
 									수정
 									</button>
 									</c:if>
-								</td>
+									</c:if>
+									</c:if>
 								</tr>
 							</c:forEach>
 							</c:otherwise>
@@ -409,6 +414,35 @@ $("#modifyButton").click(function() {
 		    
 		}
 	   
+	   // 작업지시 상태가 진행일 경우 다시 접수로 수정 불가능
+	    $('#modifyModal').on('shown.bs.modal', function() {
+	        // 현재 선택된 작업지시상태를 가져옴
+	        var selectedStatus = $('#worksts2').val();
+
+	        // 만약 선택된 상태가 '진행'이면 '접수'를 비활성화
+	        if (selectedStatus === '진행') {
+	            $('#worksts2 option[value="접수"]').prop('disabled', true);
+	        }
+	    });
+
+	    // 작업지시상태가 변경될 때
+	    $('#worksts2').change(function() {
+	        // 선택된 상태가 '진행'이면 '접수'를 비활성화
+	        if ($(this).val() === '진행') {
+	            $('#worksts2 option[value="접수"]').prop('disabled', true);
+	        } else {
+	            // 선택된 상태가 '진행'이 아니면 '접수'를 활성화
+	            $('#worksts2 option[value="접수"]').prop('disabled', false);
+	        }
+	    });
+
+	    // 모달이 닫힐 때
+	    $('#modifyModal').on('hidden.bs.modal', function() {
+	        // 비활성화된 옵션을 해제
+	        $('#worksts2 option[value="접수"]').prop('disabled', false);
+	    });
+	   
+	    // 작업지시일자 클릭시 현재 날짜로 업데이트
 	    $('#workdate11').click(function(){
 	        var today = new Date();
 	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅

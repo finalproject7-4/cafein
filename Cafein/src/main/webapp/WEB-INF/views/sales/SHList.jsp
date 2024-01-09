@@ -105,7 +105,9 @@
 								<th scope="col">출하상태</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
+								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
 								<th scope="col">관리</th>
+								</c:if>
 							</tr>
 						</thead>
 						<tbody>
@@ -135,8 +137,9 @@
 										<td><fmt:formatDate value="${sh.shipdate2}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
 									</c:otherwise>
 									</c:choose>
-							<td>${sh.membercode }</td>
-							<td>
+							<td>${sh.membername }</td>
+								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+							<td style="font-weight: bold; ${sh.shipsts == '완료'? 'color:red;' : ''}">
 								<c:if test="${sh.shipsts == '완료'}">
 									출하 완료
 									</c:if>
@@ -144,6 +147,7 @@
 									<input value="완료" type="submit" class="btn btn-sm btn-info ingUpdate1" data-shipid="${sh.shipid}">
 									</c:if>
 									</td>
+									</c:if>
 								</tr>
 								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>
@@ -161,7 +165,6 @@
 				event.preventDefault();
 
 				var shipid = $(this).data("shipid");
-				// var workcode = $(this).data("workcode");
 				var shipsts = $(this).closest('tr').find('td:nth-child(8)').text(); // 주문 상태 가져오기
 				var workcode = $(this).closest('tr').find('td:nth-child(4)').text();
 				
