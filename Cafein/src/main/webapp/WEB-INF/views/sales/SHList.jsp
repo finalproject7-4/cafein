@@ -4,21 +4,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
+<link href="../resources/css/po.css" rel="stylesheet">
 <br>
 <fieldset>
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/sales/SHList" method="get">
+				<form action="/sales/SHList" method="GET" style="margin-bottom: 10px;">
+				<h6>출하 조회</h6>
 				<c:if test="${!empty param.searchBtn }">
-				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="검색">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="검색어를 입력하세요">
 				</c:if>
-				검색 <input class="shipSearch" type="text" name="searchText" placeholder="검색">
-				출하일자 
-				<input type="date" id="startDate" name="startDate" required> ~
-				<input type="date" id="endDate" name="endDate" required>
-				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
-				<br>
-			</form>
+				<span style="display:flex;">
+				<label style="margin: 5px 10px 0 0;">검색</label>
+				<input type="text" name="searchText" placeholder="검색어를 입력하세요" class="form-control fcsearch">
+				<label style="margin: 5px 10px 0 0; margin-left:10em;">출하일자</label>		
+				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch"> &nbsp; ~ &nbsp;
+				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch">
+				<input class="btn btn-sm btn-dark m-2 searchmini" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
+			</form>	
 			<form action="SHList" method="GET">
 					<c:if test="${!empty param.searchBtn }">
 						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
@@ -86,13 +89,13 @@
 		</script>
 		
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<form role="form" action="/sales/SHList" method="post">
+			<form role="form" action="/sales/ingUpdate1" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table" id="workTable">
 						<thead>
 							<tr>
-								<th scope="col">No.</th>
+								<th scope="col">번호</th>
 								<th scope="col">출하일</th>
 								<th scope="col">출하코드</th>
 								<th scope="col">작업지시코드</th>
@@ -123,7 +126,7 @@
 							<td>${sh.clientname}</td>
 							<td>${sh.itemname }</td>
 							<td>${sh.pocnt }</td>
-							<td>${sh.shipsts }</td>
+							<td style="font-weight: bold; ${sh.shipsts == '완료'? 'color:red;' : ''} ${sh.shipsts == '진행'? 'color:blue;' : ''}">${sh.shipsts }</td>
 							<c:choose>
 									<c:when test="${empty sh.shipdate2}">
 										<td>업데이트 날짜 없음</td>
@@ -138,9 +141,7 @@
 									출하 완료
 									</c:if>
 									<c:if test="${sh.shipsts == '진행'}">
-									<button type="button" class="btn btn-outline-dark">
-    										완료
-									</button>
+									<input value="완료" type="submit" class="btn btn-sm btn-info ingUpdate1" data-shipid="${sh.shipid}">
 									</c:if>
 									</td>
 								</tr>
@@ -154,6 +155,54 @@
 			</div>
 			</form>
 			</div>
+			<script>
+			
+			$(".ingUpdate1").click(function() {
+				event.preventDefault();
+
+				var shipid = $(this).data("shipid");
+				// var workcode = $(this).data("workcode");
+				var shipsts = $(this).closest('tr').find('td:nth-child(8)').text(); // 주문 상태 가져오기
+				var workcode = $(this).closest('tr').find('td:nth-child(4)').text();
+				
+				console.log('shipid 값:', shipid);
+				console.log('shipsts 값:', shipsts);
+				console.log('workcode 값:', workcode);
+				
+			
+			Swal.fire({
+					title : '출하를 완료하시겠습니까?',
+					text : '출하 완료로업데이트 됩니다.',
+					icon : 'warning',
+					showCancelButton : true,
+					confirmButtonColor : '#3085d6',
+					cancelButtonColor : '#d33',
+					confirmButtonText : '승인',
+					cancelButtonText : '취소',
+					reverseButtons : false,
+				}).then(function(result) {
+					if (result.value) { //승인시
+						// Ajax 요청 실행
+			$.ajax({
+				type : 'POST',
+				url : '/sales/ingUpdate1',
+				data : {
+					shipid : shipid,
+					workcode : workcode
+				},
+				success : function(response) {
+					console.log('Ajax success:', response);
+					location.reload();
+				},
+				error : function(error) {
+					console.error('Error during cancellation:', error);
+					Swal.fire('완료에 실패했습니다.', '다시 시도해주세요.', 'error');
+				}
+			});
+		}
+	});
+});
+			</script>
 		
 
 				<!-- 페이지 블럭 생성 -->

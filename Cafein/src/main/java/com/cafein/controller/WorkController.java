@@ -118,7 +118,7 @@ public class WorkController {
 	// 작업지시 수정 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/modifyWK", method = RequestMethod.POST)
-	public String modifyPOST(WorkVO wvo,ShipVO svo, Model model) throws Exception {
+	public String modifyPOST(WorkVO wvo, ShipVO svo, Model model) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + wvo);
 

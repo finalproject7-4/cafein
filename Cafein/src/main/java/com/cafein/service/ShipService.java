@@ -39,6 +39,9 @@ public interface ShipService {
 		
 	// 출하 수정
 	public int SHModify(ShipVO svo) throws Exception;
+	
+	// 출하 상태 진행으로 변경
+	public int ingUpdate(ShipVO svo) throws Exception;
 		
 		
 	
@@ -69,8 +72,8 @@ public interface ShipService {
 	// 작업 지시 등록과 동시에 출하 지시 등록
 	public void insertShipList(ShipVO svo) throws Exception;
 	
-	// 작업 지시 진행 = 출하 진행
-	public void updateCompletShip(WorkVO wvo) throws Exception;
+	// 출하 완료 -> 작업지시 완료
+	public void updateCompletWork(WorkVO wvo) throws Exception;
 	
 	
 	
