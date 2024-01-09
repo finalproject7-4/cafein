@@ -103,7 +103,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									${clist.itemname }
 									</c:if>
 									</td>
+									<c:if test="${clist.auditbycode != 0 }">
 									<td>${clist.auditbycode }</td>
+									</c:if>
+									<c:if test="${clist.auditbycode == 0 }">
+									<td></td>
+									</c:if>
 									<td>
 										<c:if test="${!empty clist.itemtype && clist.itemtype == '반품' }">${clist.productquantity }(개)</c:if>
 										<c:if test="${!empty clist.itemtype && clist.itemtype != '반품' }">${clist.productquantity }(g)</c:if>
