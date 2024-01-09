@@ -42,7 +42,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<c:if test="${!empty param.searchText }">
 					<input type="hidden" name="searchText" value="${param.searchText }">
 				</c:if>
-				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 저장">
+				<input type="submit" class="btn btn-sm btn-success" value="엑셀 파일 다운로드">
 			</form>
 	</div>
 </div>
@@ -60,7 +60,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
 								<th scope="col">중량</th>
-								<th scope="col">생산번호</th>
+								<th scope="col">생산/반품번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
 								<th scope="col">최종 작업자</th>
@@ -120,7 +120,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									창고 이동
 									</button>
 									</td>
+									<c:if test="${slist.workerbycode != 0 }">
 									<td>${slist.workerbycode }</td>
+									</c:if>
+									<c:if test="${slist.workerbycode == 0 }">
+									<td></td>
+									</c:if>
 									<td>${slist.registerationdate }</td>
 									<td>${slist.updatedate }</td>
 									<td>${slist.updatehistory }</td>

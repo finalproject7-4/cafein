@@ -153,8 +153,10 @@ public class QualityController {
 			return "redirect:/quality/qualities";
 		}
 		
+		int auditbycode = (int) session.getAttribute("membercode");
+		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode(session.getAttribute("membercode").toString());
+		vo.setAuditbycode(auditbycode);
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -242,8 +244,10 @@ public class QualityController {
 			return "redirect:/quality/qualities";
 		}
 		
+		int auditbycode = (int) session.getAttribute("membercode");
+		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode(session.getAttribute("membercode").toString());
+		vo.setAuditbycode(auditbycode);
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -314,8 +318,10 @@ public class QualityController {
 			return "redirect:/quality/qualities";
 		}
 		
+		int auditbycode = (int) session.getAttribute("membercode");
+		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode(session.getAttribute("membercode").toString());
+		vo.setAuditbycode(auditbycode);
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -428,8 +434,10 @@ public class QualityController {
 		}
 		
 		qService.roastedBeanDefect(vo);
+		int auditbycode = (int) session.getAttribute("membercode");
+		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode(session.getAttribute("membercode").toString());
+		vo.setAuditbycode(auditbycode);
 		
 		int weight = vo.getWeight();
 		int auditquantity = vo.getAuditquantity();

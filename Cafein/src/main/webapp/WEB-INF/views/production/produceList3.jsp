@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 <!-- SweetAlert 추가 -->
@@ -139,10 +140,12 @@
 				<input type="button" class="btn btn-sm btn-danger" value="생산중" id="proIng">
 				<input type="button" class="btn btn-sm btn-warning" value="검사대기" id="qccWait">
 			
+			<c:if test="${departmentname =='생산' && memberposition == '팀장' || membername eq 'admin' } ">
 				<span style="float: right;">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">생산지시 등록</button>
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">BOM등록</button>
 				</span>
+			</c:if>
 </div>
 
 <!-- 페이지 Ajax 동적 이동 (1) -->
@@ -293,7 +296,7 @@ function fetchData(searchBtnValue) {
 <!-- 엑셀파일 다운로드 -->
 <div style="float: right">
 	<form action="/production/excelPrint" method="post">
-		<input class="btn btn-sm btn-success" type="submit" value="리스트출력">
+		<input class="btn btn-sm btn-success" type="submit" value="엑셀 파일 다운로드">
 	</form>
 </div>
 
@@ -521,14 +524,13 @@ function fetchData(searchBtnValue) {
 			
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
-			var pageNum = $(this).data('page');
+			
 				
 				var searchBtn = "${param.searchBtn}";
 				var startDate = "${param.startDate}";
 				var endDate = "${param.endDate}";
 
 				var dataObject = {
-					"page" : pageNum,
 					"produceid" : produceId,
 					"state" : stateValue					
 				};
@@ -541,6 +543,14 @@ function fetchData(searchBtnValue) {
 				}
 				if (endDate) {
 				    dataObject.endDate = endDate;
+				}
+				
+				var currentPage = getCurrentPageNumber();
+				var dataObjectCom = {
+						"page" : currentPage	
+					};
+		        if (searchBtn) {
+		        	dataObjectCom.searchBtn = searchBtn;
 				}
 				
 			// AJAX 요청 수행
@@ -556,7 +566,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 						type: "GET",
-						data: dataObject,
+						data: dataObjectCom,
 						success: function(data) {
     						$("#produceListAll").html(data);
 						},
@@ -587,14 +597,12 @@ function fetchData(searchBtnValue) {
 			var stockId3 = $(this).closest("tr").find("td:eq(17)").text(); // 재고ID3 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
 			
-			var pageNum = $(this).data('page');
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
 			var dataObject = {
-				"page" : pageNum,
 				"produceid" : produceId,
 				"state" : stateValue,
 				"itemid" : itemID,
@@ -614,6 +622,14 @@ function fetchData(searchBtnValue) {
 			if (endDate) {
 			    dataObject.endDate = endDate;
 			}
+
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/BupdateProduceState",
@@ -626,7 +642,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},
@@ -659,7 +675,6 @@ function fetchData(searchBtnValue) {
 		          if (result.value) {
 
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
-			var pageNum = $(this).data('page');
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
@@ -679,6 +694,14 @@ function fetchData(searchBtnValue) {
 			if (endDate) {
 			    dataObject.endDate = endDate;
 			}
+			
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/deletePlan",
@@ -693,7 +716,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},
@@ -721,13 +744,11 @@ function fetchData(searchBtnValue) {
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
-			var pageNum = $(this).data('page');
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
 			var dataObject = {
-					"page" : pageNum,
 					"produceid" : produceId,	
 					"itemid" : itemID,
 					"amount" : amount,
@@ -743,7 +764,15 @@ function fetchData(searchBtnValue) {
 				if (endDate) {
 				    dataObject.endDate = endDate;
 				}
-			 
+				
+	
+				var currentPage = getCurrentPageNumber();
+				var dataObjectCom = {
+						"page" : currentPage	
+					};
+		        if (searchBtn) {
+		        	dataObjectCom.searchBtn = searchBtn;
+				}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/processUpdateRoasting",
@@ -756,7 +785,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},

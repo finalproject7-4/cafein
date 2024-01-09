@@ -48,7 +48,7 @@ public class ProductionController {
 	private MaterialService mateService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
-	// http://localhost:8088/ production/produceList
+	// http://localhost:8088/production/produceList
 	@GetMapping(value = "/produceList")
 	public void produceListAllGET(HttpSession session, Model model) throws Exception {
 
@@ -115,7 +115,7 @@ public class ProductionController {
 		int rate2;
 		int rate3;
 				logger.debug("생산일은?! "+vo.getProducedate());
-		if(vo.getStockid1() !=null) {
+		if(vo.getItemid1() !=null) {
 			rvo.setProducecode(vo.getProducecode());
 			rvo.setMembercode(vo.getMembercode());
 			rvo.setReleasedate(vo.getProducedate());
@@ -124,11 +124,11 @@ public class ProductionController {
 			int usingAmount = (vo.getAmount()/10000)*rate1;
 			rvo.setReleasecode(generateReceiveCode());
 			rvo.setReleasequantity(usingAmount);
-			rvo.setStockid(vo.getStockid1());
+
 			pService.insertReleasesList(rvo);			
 		}
 		
-		if(vo.getStockid2() != null) {
+		if(vo.getItemid2() != null) {
 			rvo.setProducecode(vo.getProducecode());
 			rvo.setMembercode(vo.getMembercode());
 			rvo.setReleasedate(vo.getProducedate());
@@ -137,13 +137,13 @@ public class ProductionController {
 			int usingAmount2 = (vo.getAmount()/10000)*rate2;
 			rvo.setReleasequantity(usingAmount2);
 			rvo.setReleasecode(generateReceiveCode());
-			rvo.setStockid(vo.getStockid2());
+
 			pService.insertReleasesList(rvo);			
 	
 		}
 			
 		
-		if(vo.getStockid3() != null) {
+		if(vo.getItemid3() != null) {
 			rvo.setProducecode(vo.getProducecode());
 			rvo.setMembercode(vo.getMembercode());
 			rvo.setReleasedate(vo.getProducedate());
@@ -152,7 +152,7 @@ public class ProductionController {
 			int usingAmount3 = (vo.getAmount()/10000)*rate3;
 			rvo.setReleasequantity(usingAmount3);
 			rvo.setReleasecode(generateReceiveCode());
-			rvo.setStockid(vo.getStockid3());
+
 			pService.insertReleasesList(rvo);			
 		}
 		
@@ -221,23 +221,19 @@ public class ProductionController {
 		pService.updateCompletRelease(vo);
 		
 		// 재고리스트 업데이트
-		if (vo.getStockid1() != null) {
-		    vo.setStockid(vo.getStockid1());
-		    pService.updateStockList(vo);
-			}
-			
-		if(vo.getStockid2() != null) {
-			vo.setStockid(vo.getStockid2());
-			pService.updateStockList(vo);
-			}
-		if(vo.getStockid3() != null) {
-			vo.setStockid(vo.getStockid3());
-			pService.updateStockList(vo);
-			}
-		
-		
-		
-		
+//		if (vo.getStockid1() != null) {
+//		    vo.setStockid(vo.getStockid1());
+//		    pService.updateStockList(vo);
+//			}
+//			
+//		if(vo.getStockid2() != null) {
+//			vo.setStockid(vo.getStockid2());
+//			pService.updateStockList(vo);
+//			}
+//		if(vo.getStockid3() != null) {
+//			vo.setStockid(vo.getStockid3());
+//			pService.updateStockList(vo);
+//			}		
 	}
 	
 	// 품질 데이터 추가 삽입 필요없는 생산 상태 변경 (state) 생산중 or 완료

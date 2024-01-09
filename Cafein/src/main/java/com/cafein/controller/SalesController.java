@@ -157,6 +157,7 @@ public class SalesController {
 	    model.addAttribute("membercode", session.getAttribute("membercode")); 
 		return "redirect:/sales/POList";                                             
 	}
+	
 	//수주상태 진행 변경
 	// http://localhost:8088/sales/POList
 	@RequestMapping(value = "/ingUpdate", method = RequestMethod.POST)

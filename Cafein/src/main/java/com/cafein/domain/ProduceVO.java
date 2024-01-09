@@ -22,7 +22,7 @@ public class ProduceVO {
 	private Integer itemid2;		// 원재료명 2
 	private Integer itemid3;		// 원재료명 3
 	private Integer amount;				// 생산량
-	private String membercode;		// 담당사원 코드
+	private Integer membercode;		// 담당사원 코드
 	private String qualitycheck;	// 품질검사 상태
 	private String state;			// 생산 상태
 	private int packagevol;			// 포장 용량

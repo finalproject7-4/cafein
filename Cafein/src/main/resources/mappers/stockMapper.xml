@@ -341,8 +341,10 @@
  	
  	<!-- receive 테이블 조회 -->
  	<select id="selectReceiveInfo" resultType="QualityVO">
- 		SELECT receiveid, receivecode, membercode, itemcode, storagecode, lotnumber, receivedate, receivequantity
- 		FROM receive
+ 		SELECT r.receiveid, r.receivecode, r.membercode, i.itemcode, r.storagecode, r.lotnumber, r.receivedate, r.receivequantity
+ 		FROM receive r
+ 		JOIN item i
+ 		ON r.itemid = i.itemid
  		WHERE receiveid = #{receiveid}
  	</select>
  	<!-- receive 테이블 조회 -->

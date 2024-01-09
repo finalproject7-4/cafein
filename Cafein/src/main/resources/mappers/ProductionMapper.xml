@@ -11,12 +11,8 @@
 	<select id="getProduceListAJAX" resultType="com.cafein.domain.ProduceVO">
 		
 		select produceid, producecode, submitdate, producedate, produceline, producetime, p.itemid, p.itemname as itemname, 
-		process, temper, p.itemid1 as itemid1, p.itemid2 as itemid2, p.itemid3 as itemid3, amount, membercode, qualitycheck, state, packagevol, 
-		i1.stockid AS stockid1, i2.stockid AS stockid2, i3.stockid AS stockid3
+		process, temper, p.itemid1 as itemid1, p.itemid2 as itemid2, p.itemid3 as itemid3, amount, membercode, qualitycheck, state, packagevol
 		from produce p
-		LEFT JOIN stock i1 ON p.itemid1 = i1.itemid
-		LEFT JOIN stock i2 ON p.itemid2 = i2.itemid
-		LEFT JOIN stock i3 ON p.itemid3 = i3.itemid
 		
 		<where>
 		true
@@ -28,25 +24,25 @@
 			AND process like concat('%',#{process},'%')
 		</if>
 		
-		<if test="itemname != null and !itemname.equals('') and searchBtn != '오늘' and searchBtn !='검사전' and searchBtn != '대기' and searchBtn == '생산중'">
+		<if test="itemname != null and !itemname.equals('')">
 		<![CDATA[
 			AND p.itemname = #{itemname}
 			]]>
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기' and process == null">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
 			AND state = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중' and process == null">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
 			AND state = #{searchBtn}
 		</if>
 
-		<if test="searchBtn != null and searchBtn=='검사전' and process == null">
+		<if test="searchBtn != null and searchBtn=='검사전'">
 			AND qualitycheck = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn=='오늘' and process == null">
+		<if test="searchBtn != null and searchBtn=='오늘'">
 			AND DATE(producedate) = CURDATE()
 		</if>
 			
@@ -143,16 +139,12 @@
 	<!-- BOM  목록 조회 -->
 	<select id="getBomList" resultType="com.cafein.domain.BomVO">
 		SELECT bomid, b.itemcode, b.itemid as itemid, itemid1, itemid2, itemid3, temper, rate, roastedtime,
-        i.itemname AS itemname, i1.itemname AS itemname1, i2.itemname AS itemname2, i3.itemname AS itemname3,
-        s1.stockid AS stockid1, s2.stockid AS stockid2, s3.stockid AS stockid3
+        i.itemname AS itemname, i1.itemname AS itemname1, i2.itemname AS itemname2, i3.itemname AS itemname3
 		FROM bom b
 		JOIN item i ON b.itemcode = i.itemcode
 		LEFT JOIN item i1 ON b.itemid1 = i1.itemid
 		LEFT JOIN item i2 ON b.itemid2 = i2.itemid
 		LEFT JOIN item i3 ON b.itemid3 = i3.itemid
-		LEFT JOIN stock s1 ON b.itemid1 = s1.itemid
-		LEFT JOIN stock s2 ON b.itemid2 = s2.itemid
-		LEFT JOIN stock s3 ON b.itemid3 = s3.itemid
 		WHERE i.available = 'Y'
  	</select>
 	
@@ -276,8 +268,8 @@
 	
 	<!-- 출고리스트 삽입 -->
 	<insert id="insertReleasesList">
-		insert into releases(releasecode, membercode, itemid, stockid, releasequantity, releasedate, producecode )
-		values (#{releasecode}, #{membercode}, #{itemid}, #{stockid}, #{releasequantity}, #{releasedate}, #{producecode})
+		insert into releases(releasecode, membercode, itemid, releasequantity, releasedate, producecode )
+		values (#{releasecode}, #{membercode}, #{itemid}, #{releasequantity}, #{releasedate}, #{producecode})
 	</insert>
 	
 	<!-- 생산코드 개수 계산 -->

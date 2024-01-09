@@ -122,7 +122,7 @@
 								<label for="packagevol" class="col-form-label">포장용량</label>
 								<input type="number" name="packagevol" class="form-control" id="packagevol" value="500" min="500" max="1000" step="500">
 							</div>
-							<div class="col">
+							<div class="col" style="display: none;">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode" value="${membercode }" readonly="readonly">
 							</div>
@@ -130,7 +130,7 @@
 								<label for="itemid" class="col-form-label" >아이템ID</label>
 								<input name="itemid" class="form-control" id="itemidPro">
 							</div>
-					</div>
+							</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 						<input type="submit" class="btn btn-primary" value="등록">
@@ -195,7 +195,7 @@
 								<input type="text" id="amountPack2" name="amount" class="form-control" >
 							</div>
 					</div>
-					<div class="row">
+					<div class="row" style="display: none;">
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode2" value="${membercode }" readonly="readonly">
@@ -233,7 +233,16 @@
 	        e.preventDefault(); // 기본 제출 동작 방지
 
 	        var formData = $(this).serialize(); // 폼 데이터 직렬화
-
+	        
+	        var searchBtn = "${param.searchBtn}";
+	        var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
+	        
 	        $.ajax({
 	            url: '/production/produceReg',
 	            type: 'POST',
@@ -241,9 +250,19 @@
 	            success: function(response) {
 	            	console.log('생산지시 등록 성공!');
 	                Swal.fire("등록 완료");
-	                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-					getList(currentPage);
 	                $('#exampleModal').modal('hide');
+	                $.ajax({
+						url: "/production/produceList3",
+						type: "GET",
+						data: dataObjectCom,
+						success: function(data) {
+							$("#produceListAll").html(data);
+						},
+					 		error: function(error) {
+							console.error("Error fetching data:", error);
+						}
+					});
+	               
 	            },
 	            error: function(error) {
 	            	 console.error('생산지시 등록 실패:', error);
@@ -253,12 +272,21 @@
 	    });
 	             
 	    
+		
 	    // 포장공정 등록 AJAX
 	    $('#updateModal2 form').submit(function(e) {
 	        e.preventDefault(); // 기본 제출 동작 방지
 
 	        var formData = $(this).serialize(); // 폼 데이터 직렬화
-
+	        
+	        var searchBtn = "${param.searchBtn}";
+	        var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 	        $.ajax({
 	            url: '/production/processUpdatePackage',
 	            type: 'POST',
@@ -266,9 +294,17 @@
 	            success: function(response) {
 	            	console.log('포장공정 등록 성공!');
 	                Swal.fire("포장공정 등록 완료");
-	                
-	                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-					getList(currentPage);
+	                $.ajax({
+						url: "/production/produceList3",
+						type: "GET",
+						data: dataObjectCom,
+						success: function(data) {
+							$("#produceListAll").html(data);
+						},
+					 		error: function(error) {
+							console.error("Error fetching data:", error);
+						}
+					});
 	                $('#updateModal2').modal('hide');
 	            },
 	            error: function(error) {

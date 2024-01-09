@@ -8,9 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.cafein.domain.ClientVO;
-import com.cafein.domain.ItemVO;
-import com.cafein.domain.QualityVO;
 import com.cafein.domain.SalesVO;
 import com.cafein.persistence.SalesDAO;
 

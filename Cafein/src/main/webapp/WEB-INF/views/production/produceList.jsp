@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
 
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
@@ -14,12 +17,14 @@ $(document).ready(function() {
 
 function getList(){
     // 첫 번째 페이지 가져오기
+//    e.preventDefault(); // 기본 이벤트 ㅈㅔ거
     $.ajax({
         url: "/production/produceList3",
         type: "GET",
         dataType: "html",
         success: function(data) {
             // 성공적으로 데이터를 받아왔을 때 처리할 코드
+
             $("#produceListAll").html(data);
         },
         error: function(error) {
@@ -43,7 +48,7 @@ function getCurrentPageNumber() {
 	return currentPage;
 	 }
 
-function getList(pageNumber) {
+/* function getList(pageNumber) {
 	$.ajax({
 		 url: "/production/produceList3",
 		 type: "GET",
@@ -60,7 +65,7 @@ function getList(pageNumber) {
     		console.error("Error fetching quality list:", error);
 		}
 	});
-}
+} */
 
 </script>
 

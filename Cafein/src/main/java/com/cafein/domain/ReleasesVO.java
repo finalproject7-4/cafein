@@ -11,7 +11,7 @@ public class ReleasesVO {
 	private int releaseid;
 	private String releasecode;
 	private String producecode;
-	private String membercode;
+	private Integer membercode;
 	private int itemid;
 	private int stockid;
 	private String releasestate;
