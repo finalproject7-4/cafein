@@ -8,6 +8,7 @@
 
 	<!-- 출고 조회 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+	<h6 class="mb-4">출고 조회</h6>
 	<form name="search" method="get">
 		<div class="row align-items-stretch">
 		  <div class="form-group col">
@@ -34,15 +35,17 @@
 
 	<!-- 출고 목록 시작 -->
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
-		<span class="mb-4">총 ${releasesCount } 건</span>
 		
 		<form action="releaseListExcelDownload" method="GET">
-		<span style="margin-left: 1050px;">
-			<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
-			<!-- <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button> -->
-			<!-- <input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseModifyModal" data-bs-whatever="@getbootstrap" value="수정"> -->
-			<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
-		</span>
+		<div class="buttonarea1">
+			<b>총 ${pageVO.totalCount} 건</b>		
+			<span style="float: right;">
+				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+				<!-- <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button> -->
+				<!-- <input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseModifyModal" data-bs-whatever="@getbootstrap" value="수정"> -->
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
+			</span>
+		</div>	
 		</form>
 		
 		<div class="table-responsive">
@@ -70,7 +73,9 @@
 						<td>${rl.releasecode }</td>
 						<td>${rl.producecode }</td>
 						<td>${rl.itemname }</td>
-						<td>${rl.stockquantity }</td>
+						<td>
+							<fmt:formatNumber value="${rl.stockquantity }" pattern="#,###"/>
+						</td>
 						<td>${rl.releasequantity }</td>
 						<td>
 							<fmt:formatDate value="${rl.releasedate }" dateStyle="short" pattern="yyyy-MM-dd"/>
@@ -83,7 +88,7 @@
 							<td>${rl.releasestate }</td>
 						</c:if>
 						<td>
-							<button type="button" class="btn btn-sm btn-outline-dark m-1"
+							<button type="button" class="btn btn-sm btn-dark m-1"
 								onclick="releaseDetailModal('${rl.releaseid }', '${rl.releasecode }', '${rl.producecode }', '${rl.itemname }', '${rl.stockquantity }', '${rl.releasequantity }', '${rl.releasedate }', '${rl.membername }')">상세내역
 							</button>
 						</td>

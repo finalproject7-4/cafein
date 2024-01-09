@@ -40,7 +40,7 @@ public class QualityController {
 	@GetMapping(value = "/qualities")
 	public void productQualityGET(HttpSession session, @RequestParam(name = "page", required = false) Integer page, 
 			@RequestParam(name = "searchBtn", required = false) String searchBtn, @RequestParam(name = "startDate", required = false) String startDate, @RequestParam(name = "endDate", required = false) String endDate) {
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
+		session.getAttribute("membercode");
 		
 	}
 	
@@ -48,7 +48,7 @@ public class QualityController {
 	// http://localhost:8088/quality/qualitiesMaterial
 	@GetMapping(value = "/qualitiesMaterial")
 	public void materialQualityGET(HttpSession session) {
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
+		session.getAttribute("membercode");
 		
 	}
 
@@ -57,7 +57,7 @@ public class QualityController {
 	public void productQualityListGET(Model model, HttpSession session, QualityVO vo, 
 			Criteria cri) throws Exception{
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		session.getAttribute("membercode");
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -76,7 +76,7 @@ public class QualityController {
 	@GetMapping(value = "/materialQualityList")
 	public void materialQualityList(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		session.getAttribute("membercode");
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -96,7 +96,7 @@ public class QualityController {
 	public void productQualityDefectListGET(Model model, HttpSession session, 
 			Criteria cri, QualityVO vo) throws Exception{
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		session.getAttribute("membercode");
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -115,7 +115,7 @@ public class QualityController {
 	public void  materialDefectListGET(Model model, HttpSession session, 
 			Criteria cri, QualityVO vo) throws Exception{
 		
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		session.getAttribute("membercode");
 		
 		cri.setPageSize(5);
 		vo.setCri(cri);
@@ -154,7 +154,7 @@ public class QualityController {
 		}
 		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode((String) session.getAttribute("membercode"));
+		vo.setAuditbycode(session.getAttribute("membercode").toString());
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -243,7 +243,7 @@ public class QualityController {
 		}
 		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode((String) session.getAttribute("membercode"));
+		vo.setAuditbycode(session.getAttribute("membercode").toString());
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -266,9 +266,13 @@ public class QualityController {
 			
 			if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
 				vo.setReprocessmethod("정상");
+				vo.setReturnstatus("완료");
+				vo.setReturninfo("재등록");
 				qService.returnsQualityid(vo);
 			}else { // 생산 검수 - 불량
 				vo.setReprocessmethod("불량");
+				vo.setReturnstatus("완료");
+				vo.setReturninfo("폐기");
 				qService.returnsQualityid(vo);
 			}
 			
@@ -311,7 +315,7 @@ public class QualityController {
 		}
 		
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode((String) session.getAttribute("membercode"));
+		vo.setAuditbycode(session.getAttribute("membercode").toString());
 		
 		int result = 0;
 		if(vo.getProductquantity() == vo.getAuditquantity()) { // 생산량 = 검수량 ("검수완료")
@@ -425,7 +429,7 @@ public class QualityController {
 		
 		qService.roastedBeanDefect(vo);
 		// 검수자 입력 (멤버코드)
-		vo.setAuditbycode((String) session.getAttribute("membercode"));
+		vo.setAuditbycode(session.getAttribute("membercode").toString());
 		
 		int weight = vo.getWeight();
 		int auditquantity = vo.getAuditquantity();

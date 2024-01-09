@@ -40,7 +40,7 @@ public class StockController {
 	// 재고 목록 조회 검색 버튼 (생산 [포장] + 반품)
 	@RequestMapping(value = "/stockProduct", method = RequestMethod.GET)
 	public void productStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용
+		session.getAttribute("membercode");
 		
 		// cri.setPageSize(1); // 삭제 예정
 		vo.setCri(cri);
@@ -61,7 +61,7 @@ public class StockController {
 	// 재고 목록 조회 검색 버튼 (자재)
 	@GetMapping(value = "/stock")
 	public void materialStockListGET(Model model, HttpSession session, QualityVO vo, Criteria cri) throws Exception{
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (없어서 추가해놓은 부분 / 삭제 예정)
+		session.getAttribute("membercode");
 		
 		// cri.setPageSize(1); // 삭제 예정
 		vo.setCri(cri);
@@ -94,7 +94,7 @@ public class StockController {
 			return "redirect:/quality/qualities";
 		}else {
 		
-		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
+		String workerbycode = session.getAttribute("membercode").toString(); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		vo.setWorkerbycode(workerbycode);
 		
 		int produceid = vo.getProduceid();
@@ -133,7 +133,7 @@ public class StockController {
 			return "redirect:/quality/qualities";
 		}else {
 			
-		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
+		String workerbycode = session.getAttribute("membercode").toString(); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		
 		vo.setWorkerbycode(workerbycode);
 		int receiveid = vo.getReceiveid();
@@ -157,10 +157,10 @@ public class StockController {
 	// 재고량 변경 (생산 [포장] + 반품)
 	@RequestMapping(value = "/updateStockQuantity", method = RequestMethod.POST)
 	public String updateStockQuantityPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, Criteria cri) throws Exception{
-		
-		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
-		
+		logger.debug(" updateStockQuantity 실행! ");		
+		String workerbycode = session.getAttribute("membercode").toString(); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		vo.setWorkerbycode(workerbycode);
+
 		logger.debug(" vo : " + vo);
 		int result = sService.stockQuantity(vo);
 		
@@ -212,7 +212,7 @@ public class StockController {
 	@RequestMapping(value = "/updateStockStorage", method = RequestMethod.POST)
 	public String updateStockStoragePOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, Criteria cri) throws Exception{
 		
-		String workerbycode = (String) session.getAttribute("membercode"); // 세션에 있는 사용자코드 받아오기 (수정 예정)
+		String workerbycode = session.getAttribute("membercode").toString(); // 세션에 있는 사용자코드 받아오기 (수정 예정)
 		
 		vo.setWorkerbycode(workerbycode);
 		logger.debug(" vo : " + vo);

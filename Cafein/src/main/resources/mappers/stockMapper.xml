@@ -349,8 +349,8 @@
  	
  	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
  	<insert id="insertNormalRoastedBeanLot">
- 		INSERT INTO productlot (stockid, produceid, lotnumber)
- 		SELECT s.stockid, r.produceid, r.lotnumber
+ 		INSERT INTO productlot (stockid, itemid, produceid, lotnumber)
+ 		SELECT s.stockid, q.itemid, r.produceid, r.lotnumber
  		FROM roastedbean r
  		JOIN quality q
  		ON r.produceid = q.produceid
@@ -364,8 +364,8 @@
  	
  	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
  	<insert id="insertNormalRoastedBeanLotMat">
- 		INSERT INTO productlot (stockid, receiveid, lotnumber)
- 		SELECT s.stockid, r.receiveid, r.lotnumber
+ 		INSERT INTO productlot (stockid, itemid, receiveid, lotnumber)
+ 		SELECT s.stockid, q.itemid, r.receiveid, r.lotnumber
 		FROM receive r
 		JOIN quality q
 		ON r.receiveid = q.receiveid
