@@ -84,7 +84,6 @@
 								<th scope="col">진행</th>
 								<th scope="col">관리</th>
 								</c:if>
-								<th scope="col">상세내역</th>
 								<th scope="col">납품서 발행</th>
 								
 								<th scope="col" style="display: none;">원산지</th>
@@ -123,7 +122,9 @@
 											<td id="poidCancel" style="display: none;">${po.poid }</td>
 											<td>${counter }</td>
 											<td><b>${po.postate }</b></td>
-											<td>${po.pocode }</td>
+											<td class="pocodeColor"
+											onclick="openDetailModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+											${po.pocode }</td>
 											<td>${po.clientname}</td>
 											<td>${po.itemname}</td>
 											<td>${po.pocnt}</td>
@@ -140,7 +141,7 @@
 											
 											<td class="memberCall" 
 											onclick="memberCall('${po.membername}','${po.memberphone}','${po.departmentname}','${po.memberposition}','${po.memberemail}')">
-											${po.membername}</td>
+											<u>${po.membername}</u></td>
 											
 											<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
 											<td><input value="진행" type="submit" class="btn btn-sm btn-primary ingUpdate" data-poid="${po.poid}"></td>
@@ -152,13 +153,8 @@
 											</td>
 											</c:if>
 											<td>
-												<button type="button" class="btn btn-sm btn-dark"
-													onclick="openDetailModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
-													상세내역</button>
-											</td> 
-											<td>
-												<input value="PDF" type="button" class="btn btn-sm btn-danger" 
-												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
+												<input value="PDF/발행" type="button" class="btn btn-sm btn-danger" 
+												onclick="openReceiptModal('${po.poid}','${po.pocode}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
 												'${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}', '${po.origin}', '${po.itemweight}', '${po.itemprice}',
 												'${po.representative}','${po.clientaddress}' , '${po.businessnumber}', '${po.clientphone}' , '${po.clientfax}',
 												'${po.cafeinNumber}','${po.cafeinName}', '${po.cafeinRepresent}', '${po.cafeinAddr}','${po.cafeinFax}','${po.cafeinCall}',
@@ -424,6 +420,12 @@
             <button type="button" class="btn-close bclose" data-bs-dismiss="modal"
                   aria-label="Close" onclick="location.href='/sales/POList';"></button>
             <h6 class="modal-title receiptTitle" >납품서</h6>
+            
+            <div id="rpocodeid" style="display: flex;">
+            <label style="color:black;">수주코드</label>&nbsp;&nbsp;&nbsp;
+            <input type="text" id="rpocode" name="pocode" class="form-control form-control-sm rpocode"  readonly>
+            </div>
+            
             <div class="odate">
             <label style="color:black;">주문일자</label>&nbsp;&nbsp;&nbsp;<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
                      <table class="table table-bordered">
@@ -586,10 +588,11 @@ function printModalContent() {
 
 <script>
 	/* 리스트 값 납품서 모달로 값 전달 */
-	function openReceiptModal(poid, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, 
+	function openReceiptModal(poid, pocode, clientid, itemid, clientname, itemname, postate, pocnt, ordersdate, ordersduedate, membercode, 
 			origin, itemweight, itemprice, representative, clientaddress, businessnumber, clientphone, clientfax, 
 			cafeinNumber, cafeinName, cafeinRepresent, cafeinAddr, cafeinFax,cafeinCall, updatedate) {
 		console.log('poid:', poid);
+		console.log('pocode:', pocode);
 		console.log('clientid:', clientid);
 		console.log('itemid:', itemid);
 		console.log('clientname:', clientname);
@@ -610,6 +613,7 @@ function printModalContent() {
 		
 		// 가져온 값들을 모달에 설정
 		$("#rpoid").val(poid);
+		$("#rpocode").val(pocode);
 		$("#rclientid").val(clientid);
 		$("#ritemid").val(itemid);
 		$("#rclientname").val(clientname);

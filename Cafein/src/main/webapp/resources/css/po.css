@@ -160,3 +160,22 @@
 	margin-top: 37% !important;
 	height:37em;
 }
+
+.memberCall {
+	cursor: pointer;
+}
+
+.pocodeColor {
+	color:#009CFF;
+	cursor: pointer;
+}
+
+.rpocode {
+	margin-top: -6px;
+	width:50%;
+	font-size: 15px !important;
+}
+#rpocodeid{
+	float: left;
+    margin-top: -50px;
+}

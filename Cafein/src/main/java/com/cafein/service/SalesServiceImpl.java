@@ -55,7 +55,13 @@ public class SalesServiceImpl implements SalesService {
 		return sdao.registItem();
 	}
 
-	/*수주코드 생성*/
+	/*수주코드 생성-코드*/
+	@Override
+	public String pocode(SalesVO svo) throws Exception {
+		logger.debug("S : pocode(SalesVO svo)");
+		return sdao.getPOCode(svo);
+	}
+	/*수주코드 생성-개수*/
 	@Override
 	public int poCount(SalesVO svo) throws Exception {
 		logger.debug("S : poCount(SalesVO svo)");

@@ -2,6 +2,8 @@ package com.cafein.controller;
 
 import java.io.OutputStream;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -87,7 +89,7 @@ public class SalesController {
 		svo.setOrdersduedate(Date.valueOf(ordersduedate));
 		svo.setClientid(clientid);	                                         
 		svo.setItemid(itemid);
-		svo.setPocode(makePOcode(svo));
+		svo.setPocode(makePOcode(svo, model));
 		model.addAttribute("membercode", session.getAttribute("membercode")); 
 		
 		sService.registPO(svo);                                                      
@@ -99,19 +101,33 @@ public class SalesController {
 		return "redirect:/sales/POList";                                             
 	}        
 	
-	// 품목코드 생성 메서드
-	public String makePOcode(SalesVO svo) throws Exception {
+	// 수주코드 생성 메서드
+	public String makePOcode(SalesVO svo, Model model) throws Exception {
+		model.addAttribute("pocode",sService.pocode(svo));
+
 		String code = "";
-		int num = 1001 + sService.poCount(svo);
-		
-		switch(svo.getPostate()) {
-			case "대기": code = "AL"; break;
-			case "진행": code = "SK"; break;
-			case "완료": code = "FJ"; break;
-			case "취소": code = "GH"; break;
+           int count = sService.poCount(svo);
+
+           String codePrefix = sService.pocode(svo);
+		    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyMMdd");
+		    String datePart = LocalDate.now().format(dateFormat);
+		 // countPart 계산
+		    int countPart = count % 36; // 0~9까지는 숫자로, 10 이상은 A부터 Z까지의 알파벳으로 표현
+
+		    // 최종 코드 생성
+		    return codePrefix + datePart + convertToAlphabet(countPart);
 		}
-		return code + num;
-	}
+
+		// 10부터 A부터 Z까지의 알파벳으로 변환하는 메서드
+		private String convertToAlphabet(int countPart) {
+		    if (countPart < 10) {
+		        return String.valueOf(countPart); // 0~9까지는 숫자 그대로 반환
+		    } else {
+		        // 10 이상부터 A부터 Z까지의 알파벳으로 변환
+		        char alphabet = (char) ('A' + (countPart - 10));
+		        return String.valueOf(alphabet);
+		    }
+		}
 	
 	// 수주 수정 - POST
 	// http://localhost:8088/sales/POList

@@ -24,7 +24,9 @@ public interface SalesDAO {
 	// 수주등록 - 품목
 	public List<SalesVO> registItem() throws Exception;
 	
-	// 수주코드 생성
+	// 수주코드 생성-개수
+	public String getPOCode(SalesVO svo) throws Exception;
+	// 수주코드 생성-개수
 	public int getPOCount(SalesVO svo) throws Exception;
 	
 	//수주수정

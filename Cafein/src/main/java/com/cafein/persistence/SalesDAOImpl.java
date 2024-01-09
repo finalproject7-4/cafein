@@ -58,7 +58,13 @@ public class SalesDAOImpl implements SalesDAO {
 		return sqlSession.selectList(NAMESPACE+".iList");
 	}
 
-	// 수주코드 생성
+	// 수주코드 생성-코드
+	@Override
+	public String getPOCode(SalesVO svo) throws Exception {
+		logger.debug("DAO : getItemCount(SalesVO svo)");
+		return sqlSession.selectOne(NAMESPACE + ".getPOCode", svo);
+	}
+	// 수주코드 생성-개수
 	@Override
 	public int getPOCount(SalesVO svo) throws Exception {
 		logger.debug("DAO : getItemCount(SalesVO svo)");

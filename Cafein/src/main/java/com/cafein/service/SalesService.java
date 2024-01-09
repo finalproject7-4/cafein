@@ -19,6 +19,8 @@ public interface SalesService {
 	public List<SalesVO> registItem() throws Exception;
 		
 	//수주코드 생성 - 목록 총 개수
+	public String pocode(SalesVO svo) throws Exception;
+	//수주코드 생성 - 목록 총 개수
 	public int poCount(SalesVO svo) throws Exception;
 	
 	// 페이징
