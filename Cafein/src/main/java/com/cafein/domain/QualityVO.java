@@ -62,7 +62,7 @@ public class QualityVO {
 	// produce 테이블
 //	private int produceid;
 	private Timestamp submitdate;
-	private Timestamp producedate;
+	private Date producedate;
 	private int produceline;
 //	private int itemid;
 //	private String itemname;
