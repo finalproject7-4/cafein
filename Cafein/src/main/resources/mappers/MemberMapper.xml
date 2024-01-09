@@ -93,7 +93,22 @@
 <!-- 직원 정보 수정 -->
 <update id="updateMember">
 	update member 
-	set membername=#{membername}, memberpw=#{memberpw}, memberbirth=#{memberbirth}, memberhire=#{memberhire}, memberupdate=now(), 
+	set membername=#{membername}, memberpw=#{memberpw}, 
+	
+	memberbirth=
+	
+	<choose>
+		<when test="memberbirth eq null or memberbirth.toString() eq ''"/>
+		<when test="memberbirth neq null and memberbirth.toString() neq ''">#{memberbirth},</when>
+	</choose> 
+	
+	memberhire=
+	<choose>
+		<when test="memberhire eq null or memberhire.toString() eq ''"/>
+		<when test="memberhire neq null and memberhire.toString() neq ''">#{memberhire},</when>
+	</choose>
+	
+	memberupdate=now(), 
 	departmentname=#{departmentname}, memberposition=#{memberposition}, memberemail=#{memberemail}, memberdeptphone=#{memberdeptphone}, 
 	memberphone=#{memberphone}, available=#{available}  
 	where memberid=#{memberid}
