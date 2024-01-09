@@ -58,10 +58,9 @@ public class ShipController {
 		model.addAttribute("countSH",shService.countSH(svo));
 		model.addAttribute("AllSHList", shService.AllSHList(svo));
 		model.addAttribute("wcList", shService.registWC());
-		model.addAttribute("stList", shService.registST()); 
-		model.addAttribute("stList", shService.registMC()); 
 		model.addAttribute("pageVO", pageVO);
 		
+		logger.debug("@@@"+shService.registMC());
 		logger.debug("출하 리스트 출력!");
 		
 		return "/sales/SHList";
@@ -103,7 +102,6 @@ public class ShipController {
 	    // DB에서 전체 작업 수 조회
 	    int count = shService.shCount(svo);
 
-	    // 작업 코드 형식 설정
 	    String codePrefix = "SH";
 	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyMMdd");
 	    String datePart = LocalDate.now().format(dateFormat);

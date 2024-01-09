@@ -1,6 +1,7 @@
 package com.cafein.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -41,8 +42,6 @@ public class ShipVO {
 	private int nowquantity;
 	private String nowstorage;
 	
-	private String membercode;
-	private String membername;
 	private String lotnumber;
 	
 	// item 테이블
@@ -86,5 +85,20 @@ public class ShipVO {
 	private String clientphone;
 	private String clientfax;
 	private String clientemail;
+	
+	// 멤버 테이블
+	private int memberid;
+	private int membercode;
+	private String membername;
+	private String memberpw;
+	private Date memberbirth;
+	private Date memberhire;
+	private Timestamp memberupdate;
+	private String departmentname;
+	private String memberposition;
+	private String memberemail;
+	private String memberdeptphone;
+	private String memberphone;
+//	private String available;
 	
 }

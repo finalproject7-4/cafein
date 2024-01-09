@@ -4,7 +4,7 @@
                 <div class="bg-transparent rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#" style="color:#610B0B;">Cafe In</a>, 2013 CafeIn Corp. 
+                            &copy; <a href="#" style="color:#610B0B;">Cafe In</a>, 2023 CafeIn Corp. 
                         </div>
                         
                     </div>

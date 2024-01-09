@@ -50,10 +50,6 @@
 			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
 			<button type="button" class="btn btn-sm btn-warning" id="complete">완료</button>
-						<span id="buttonset1"><button type="button"
-					class="btn btn-dark m-2" data-bs-toggle="modal"
-					data-bs-target="#registModal" data-bs-whatever="@getbootstrap">신규
-					등록</button></span>
 		</div>
 		
 		<script>
@@ -146,11 +142,15 @@
 									</c:choose>
 							<td>${sh.membercode }</td>
 							<td>
-								<!-- 버튼 수정 -->
+								<c:if test="${sh.shipsts == '완료'}">
+									출하 완료
+									</c:if>
+									<c:if test="${sh.shipsts != '완료'}">
 									<button type="button" class="btn btn-outline-dark"
     										onclick="openModifyModal('${sh.shipid}','${sh.workcode}', '${sh.clientname}', '${sh.itemname}', '${sh.shipsts}', '${sh.pocnt}', '${sh.shipdate1}', '${sh.membercode}')">
     										수정
 									</button>
+									</c:if>
 									</td>
 								</tr>
 								<c:set var="counter" value="${counter+1 }" />
