@@ -1,9 +1,0 @@
-diff a/Cafein/src/main/java/com/cafein/controller/TestController.java b/Cafein/src/main/java/com/cafein/controller/TestController.java	(rejected hunks)
-@@ -75,4 +75,7 @@
- 			return "redirect:/test/test2";			
- 		}
- 	}
-+	
-+	
-+	
- }

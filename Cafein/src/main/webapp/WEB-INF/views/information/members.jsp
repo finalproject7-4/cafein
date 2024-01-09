@@ -2,14 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="../include/header.jsp"%>
-<jsp:useBean id="date" class="java.util.Date" />
 <%@ page import="java.text.SimpleDateFormat"%>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<%
-	SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", java.util.Locale.KOREA);
-	pageContext.setAttribute("format", format);
-%>
+
 <!-- 본문 보기 시작 -->
 
 <!-- 직원 조회 -->
@@ -17,8 +13,7 @@
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 		<form action="/information/members" method="get">
 			<div class="input-group mb-3">
-				<select name="option" class="form-select mb-3"
-					aria-label="Default select example">
+				<select name="option" class="form-select mb-3" aria-label="search member">
 					<option value="membername">직원명</option>
 					<option value="departmentname">부서명</option>
 				</select>&nbsp;&nbsp; <input type="text" class="form-control" name="keyword"
@@ -37,7 +32,7 @@
 		<h6 class="mb-4">직원 목록</h6>
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 		<span style="margin-left: 82%;">
-		<c:if test="${sessionScope.membername eq '최윤지' or sessionScope.membername eq 'admin'}">
+		<c:if test="${membername eq '최윤지' or membername eq 'admin'}">
 			<button type="button" class="btn btn-sm btn-dark m-2"
 				data-bs-toggle="modal" data-bs-target="#memberJoinModal"
 				data-bs-whatever="@getbootstrap">직원 등록</button>
@@ -59,7 +54,7 @@
 						<th scope="col">내선 번호</th>
 						<th scope="col">전화 번호</th>
 						
-						<c:if test="${sessionScope.membername eq '최윤지' or sessionScope.membername eq 'admin'}">
+						<c:if test="${membername eq '최윤지' or membername eq 'admin'}">
 							<th scope="col">관리</th>
 						</c:if>	
 						
@@ -79,7 +74,7 @@
 							<td>${vo.memberdeptphone }</td>
 							<td>${vo.memberphone.substring(0,3)}−${vo.memberphone.substring(3,7)}−${vo.memberphone.substring(7)}</td>
 							
-							<c:if test="${sessionScope.membername eq '최윤지' or sessionScope.membername eq 'admin'}">
+							<c:if test="${membername eq '최윤지' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-2"
 										data-bs-toggle="modal" data-bs-target="#memberUpdateModal"
@@ -240,6 +235,58 @@
 <!-- 본문 보기 끝 -->
 
 <script type="text/javascript">
+
+	// 직원 등록 모달 유효성 검사
+	function validateFormInsert() {
+		// 각 필수 입력 필드 값
+	    var membername = document.getElementById("insertMemberName").value;
+	    var memberpw = document.getElementById("insertMemberPw").value;
+	    var departmentname = document.getElementById("insertDepartment").value;
+	    var memberposition = document.getElementById("insertPosition").value;
+	    var memberemail = document.getElementById("insertMemberEmail").value;
+	    var memberphone = document.getElementById("insertMemberPhone").value;
+	      
+		// 빈 필드 검사
+	    if (membername === "" || memberpw === "" || departmentname === "" ||
+	    	memberposition === "" || memberemail === "" || memberphone === "") {
+
+	        Swal.fire({
+				title : "직원 등록 오류",
+				text : "필수 내용을 입력해주세요.",
+				icon : "info"
+			});
+	        
+	        return false; // 제출 방지
+	    }
+	    return true;
+	}	
+	
+	// 직원 수정 모달 유효성 검사
+	function validateFormUpdate() {
+		// 각 필수 입력 필드 값
+	    var membername = document.getElementById("membername").value;
+	    var memberpw = document.getElementById("memberpw").value;
+	    var departmentname = document.getElementById("updateDepartment").value;
+	    var memberposition = document.getElementById("updatePosition").value;
+	    var memberemail = document.getElementById("memberemail").value;
+	    var memberphone = document.getElementById("memberphone").value;
+	    var available = document.getElementById("available").value;
+	      
+		// 빈 필드 검사
+	    if (membername === "" || memberpw === "" || departmentname === "" ||
+	    	memberposition === "" || memberemail === "" || memberphone === "" || available === "" ) {
+
+	        Swal.fire({
+				title : "직원 수정 오류",
+				text : "필수 내용을 입력해주세요.",
+				icon : "info"
+			});
+	        
+	        return false; // 제출 방지
+	    }
+	    return true;
+	}
+
 	// 직원 수정 모달
 	function memberUpdateModal(memberid, membercode, memberpw, membername,
 			memberbirth, memberhire, departmentname, memberposition,
