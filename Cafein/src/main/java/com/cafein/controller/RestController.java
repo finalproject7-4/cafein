@@ -2,11 +2,13 @@ package com.cafein.controller;
 
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -18,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.QualityVO;
 import com.cafein.service.ExcelService;
@@ -134,7 +138,7 @@ public class RestController {
 		
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = sheet.createRow(0);
-	    String[] headers = {"품질관리번호", "검수번호", "상품구분", "입고번호", "품목코드", "제품명", "검수자", "생산량", "검수량", "정상", "불량", "검수상태", "등록일", "검수완료일자"};
+	    String[] headers = {"품질관리번호", "검수번호", "상품구분", "입고번호", "품목코드", "제품명", "검수자", "입고량", "검수량", "정상", "불량", "검수상태", "등록일", "검수완료일자"};
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);
@@ -504,4 +508,117 @@ public class RestController {
 			return sService.normalLot(vo);
 		}
 		
+		// roastedBean 검수 / 불량 업데이트 - POST
+		@PostMapping(value = "/roastedBeanDefect")
+		public void roastedBeanDefect(QualityVO vo, HttpSession session) throws Exception{
+			qService.roastedBeanDefect(vo);
+			// 검수자 입력 (멤버코드)
+			vo.setAuditbycode((String) session.getAttribute("membercode"));
+			
+			int weight = vo.getWeight();
+			int auditquantity = vo.getAuditquantity();
+			int normalquantity = vo.getNormalquantity();
+			int defectquantity = vo.getDefectquantity();
+			
+			vo.setAuditquantity(auditquantity + vo.getWeight()); // 검수량 변경 (기존 검수량 + 중량)
+			
+			if(vo.getDefect() != null && vo.getDefect().equals("Y")) { // 불량 있음
+				
+				if(vo.getProductquantity() == vo.getAuditquantity()) { // 검수 완료
+					vo.setAuditstatus("검수완료");
+					
+					// 검수코드 생성
+					if(vo.getAuditcode().equals("")) {
+					LocalDateTime now = LocalDateTime.now();
+					String fmt = "yyMMddHHmmss";
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+					String dateTime = now.format(dtf);
+					vo.setAuditcode("QC" + dateTime);
+					}else if(!vo.getAuditcode().equals("")) {
+						vo.setAuditcode(vo.getAuditcode());
+					}
+					
+					vo.setDefectquantity(defectquantity + weight);
+					vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
+					qService.productAuditFull(vo);
+					
+					
+					if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+						vo.setQualitycheck("정상");
+						qService.productQualityCheck(vo);
+								
+					}else { // 생산 검수 - 불량
+						vo.setQualitycheck("불량");
+						qService.productQualityCheck(vo);
+					}
+				
+					
+				}else { // 검수 중
+					vo.setAuditstatus("검수중");
+					
+					// 검수코드 생성
+					if(vo.getAuditcode().equals("")) {
+					LocalDateTime now = LocalDateTime.now();
+					String fmt = "yyMMddHHmmss";
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+					String dateTime = now.format(dtf);
+					vo.setAuditcode("QC" + dateTime);
+					}else if(!vo.getAuditcode().equals("")) {
+						vo.setAuditcode(vo.getAuditcode());
+					}
+					
+					vo.setDefectquantity(defectquantity + weight);
+					vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
+					qService.produceAudit(vo);
+				}
+				
+				
+			}else { // 불량 없음
+				if(vo.getProductquantity() == vo.getAuditquantity()) { // 검수 완료
+					vo.setAuditstatus("검수완료");
+					
+					// 검수코드 생성
+					if(vo.getAuditcode().equals("")) {
+					LocalDateTime now = LocalDateTime.now();
+					String fmt = "yyMMddHHmmss";
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+					String dateTime = now.format(dtf);
+					vo.setAuditcode("QC" + dateTime);
+					}else if(!vo.getAuditcode().equals("")) {
+						vo.setAuditcode(vo.getAuditcode());
+					}
+					
+					vo.setNormalquantity(normalquantity + weight);
+					vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
+					qService.productAuditFull(vo);
+					
+					if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+						vo.setQualitycheck("정상");
+						qService.productQualityCheck(vo);
+								
+					}else { // 생산 검수 - 불량
+						vo.setQualitycheck("불량");
+						qService.productQualityCheck(vo);
+					}
+
+				}else { // 검수 중
+					vo.setAuditstatus("검수중");
+					
+					// 검수코드 생성
+					if(vo.getAuditcode().equals("")) {
+					LocalDateTime now = LocalDateTime.now();
+					String fmt = "yyMMddHHmmss";
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+					String dateTime = now.format(dtf);
+					vo.setAuditcode("QC" + dateTime);
+					}else if(!vo.getAuditcode().equals("")) {
+						vo.setAuditcode(vo.getAuditcode());
+					}
+					
+					vo.setNormalquantity(normalquantity + weight);
+					vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
+					qService.produceAudit(vo);
+				}
+			}
+		}	
 }
