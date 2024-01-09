@@ -148,7 +148,7 @@
 
 			Swal.fire({
 				title : '수주를 진행하시겠습니까?',
-				text : '수주가 진행상태로 업데이트 됩니다.',
+				  html: '수주가 <strong style="color: red;">진행</strong>상태로 업데이트 됩니다.',
 				icon : 'warning',
 				showCancelButton : true,
 				confirmButtonColor : '#3085d6',
@@ -210,7 +210,7 @@
 
 			Swal.fire({
 				title : '수주를 취소하시겠습니까?',
-				text : '수주가 취소상태로 업데이트 됩니다.',
+				  html: '수주가 <strong style="color: red;">취소</strong>상태로 업데이트 됩니다.',
 				icon : 'warning',
 				showCancelButton : true,
 				confirmButtonColor : '#3085d6',
@@ -270,6 +270,26 @@
 
 		// 모달 열기
 		$("#openModifyModal").modal('show');
+	}
+	
+	/* 리스트 값 상세내역 모달로 값 전달 */
+	function openDetailModal(poid, clientid, itemid, clientname, itemname,
+			postate, pocnt, ordersdate, ordersduedate, membercode) {
+
+		// 가져온 값들을 모달에 설정
+		$("#poid4").val(poid);
+		$("#clientid4").val(clientid);
+		$("#itemid4").val(itemid);
+		$("#clientid5").val(clientname);
+		$("#itemid5").val(itemname);
+		$("#floatingSelect4").val(postate);
+		$("#pocnt4").val(pocnt);
+		$("#ordersdate4").val(ordersdate);
+		$("#date4").val(ordersduedate);
+		$(".membercode4").val(membercode);
+
+		// 모달 열기
+		$("#openDetailModal").modal('show');
 	}
 
 	/*달력 이전날짜 비활성화*/
