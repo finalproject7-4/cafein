@@ -60,7 +60,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
 								<th scope="col">중량</th>
-								<th scope="col">생산번호</th>
+								<th scope="col">생산/반품번호</th>
 								<th scope="col">재고량</th>
 								<th scope="col">창고명</th>
 								<th scope="col">최종 작업자</th>
