@@ -214,6 +214,7 @@
 	
 	<!-- 재고 토스트 데이터 (생산 [포장] + 반품) -->
 	<select id="productStockToast" resultType="QualityVO">
+		<![CDATA[
 		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, stockquantity, s.storageid, 
  		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
@@ -225,13 +226,15 @@
  		ON q.produceid = r.produceid
  		LEFT OUTER JOIN storage str
  		ON s.storageid = str.storageid
- 		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
+ 		WHERE (q.itemtype = '생산' OR q.itemtype = '반품') AND stockquantity > 0
  		ORDER BY stockquantity
  		LIMIT 0, 1
+		]]>
 	</select>
 	
 	<!-- 재고 토스트 데이터 (자재) -->
 	<select id="materialStockToast" resultType="QualityVO">
+	 	<![CDATA[
 	 	SELECT stockid, s.qualityid, q.receiveid, r.lotnumber, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
  		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
  		FROM stock s
@@ -243,9 +246,10 @@
  		ON q.receiveid = r.receiveid
  		LEFT OUTER JOIN storage str
  		ON s.storageid = str.storageid
- 		WHERE q.itemtype = '자재'
+ 		WHERE q.itemtype = '자재' AND stockquantity > 0
  		ORDER BY stockquantity
  		LIMIT 0, 1
+		]]> 		
 	</select>
 	
 	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->

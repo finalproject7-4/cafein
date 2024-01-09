@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
@@ -36,7 +38,8 @@ public class QualityController {
 	// 품질 관리 페이지 (생산 + 반품)
 	// http://localhost:8088/quality/qualities
 	@GetMapping(value = "/qualities")
-	public void productQualityGET(HttpSession session) {
+	public void productQualityGET(HttpSession session, @RequestParam(name = "page", required = false) Integer page, 
+			@RequestParam(name = "searchBtn", required = false) String searchBtn, @RequestParam(name = "startDate", required = false) String startDate, @RequestParam(name = "endDate", required = false) String endDate) {
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
 		
 	}
@@ -129,7 +132,21 @@ public class QualityController {
 	
 	// 생산 검수 입력 처리 - POST
 	@PostMapping(value = "/productAudit")
-	public String productQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String productQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, @ModelAttribute("page") Integer page, 
+			@ModelAttribute("searchBtn") String searchBtn, @ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		// 페이지 유지를 위한 페이지 정보 가져오기
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
@@ -204,7 +221,21 @@ public class QualityController {
 	
 	// 반품 검수 입력 처리 - POST
 	@PostMapping(value = "/returnAudit")
-	public String returnQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String returnQualityAuditPOST(QualityVO vo, HttpSession session, RedirectAttributes rttr, @ModelAttribute("page") Integer page, 
+			@ModelAttribute("searchBtn") String searchBtn, @ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		// 페이지 유지를 위한 페이지 정보 가져오기
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
@@ -377,7 +408,21 @@ public class QualityController {
 	
 	// roastedBean 검수 / 불량 업데이트 - POST
 	@PostMapping(value = "/roastedBeanDefect")
-	public String roastedBeanDefect(QualityVO vo, HttpSession session) throws Exception{
+	public String roastedBeanDefect(QualityVO vo, HttpSession session, RedirectAttributes rttr, @ModelAttribute("page") Integer page, 
+			@ModelAttribute("searchBtn") String searchBtn, @ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		// 페이지 유지를 위한 페이지 정보 가져오기
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		qService.roastedBeanDefect(vo);
 		// 검수자 입력 (멤버코드)
 		vo.setAuditbycode((String) session.getAttribute("membercode"));
@@ -389,6 +434,7 @@ public class QualityController {
 		
 		vo.setAuditquantity(auditquantity + vo.getWeight()); // 검수량 변경 (기존 검수량 + 중량)
 		
+		int result = 0;
 		if(vo.getDefect() != null && vo.getDefect().equals("Y")) { // 불량 있음
 			
 			if(vo.getProductquantity() == vo.getAuditquantity()) { // 검수 완료
@@ -407,7 +453,7 @@ public class QualityController {
 				
 				vo.setDefectquantity(defectquantity + weight);
 				vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
-				qService.productAuditFull(vo);
+				result = qService.productAuditFull(vo);
 				
 				
 				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
@@ -436,7 +482,7 @@ public class QualityController {
 				
 				vo.setDefectquantity(defectquantity + weight);
 				vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
-				qService.produceAudit(vo);
+				result = qService.produceAudit(vo);
 			}
 			
 			
@@ -457,7 +503,7 @@ public class QualityController {
 				
 				vo.setNormalquantity(normalquantity + weight);
 				vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
-				qService.productAuditFull(vo);
+				result = qService.productAuditFull(vo);
 				
 				if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
 					vo.setQualitycheck("정상");
@@ -484,11 +530,19 @@ public class QualityController {
 				
 				vo.setNormalquantity(normalquantity + weight);
 				vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
-				qService.produceAudit(vo);
+				result = qService.produceAudit(vo);
 			}
 		}
 		
+		if(result == 0) {
+			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
+			return "redirect:/quality/qualities";
+		}
+		logger.debug(" 검수 성공 ");
+		rttr.addFlashAttribute("AUDIT", "O");
 		return "redirect:/quality/qualities";
+		
 	}
 	
 	// http://localhost:8088/quality/productQualityToast

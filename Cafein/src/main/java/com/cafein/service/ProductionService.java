@@ -95,8 +95,8 @@ public interface ProductionService {
 	// 금년 총 생산량
 	public Integer getProduceAmountThisYear() throws Exception;
 	
-	// 금주 총 생산량
-	public Integer getProduceAmountThisWeek() throws Exception;
+	// 금일 목표 생산량
+	public Integer getProduceAmountTodayGoal() throws Exception;
 	
 	// 생산지시리스트 출력(메인용)
 	public List<ProduceVO> getProduceList() throws Exception;

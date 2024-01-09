@@ -48,7 +48,7 @@ public class ProductionController {
 	private MaterialService mateService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
-	// http://localhost:8088/production/produceList
+	// http://localhost:8088/ production/produceList
 	@GetMapping(value = "/produceList")
 	public void produceListAllGET(HttpSession session, Model model) throws Exception {
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
@@ -418,22 +418,6 @@ public class ProductionController {
 				
 	}
 	
-	
-	
-	// 메인페이지 (사용X, 메인컨트롤러로 다 옮김)
-	// http://localhost:8088/production/main
-	@RequestMapping(value="/main", method=RequestMethod.GET)
-	public void cafeinMain(Model model, ProduceVO vo) throws Exception {
-		logger.debug("컨트롤러 - 메인페이지 호출!");
-			
-		model.addAttribute("today", pService.getProduceAmountToday());
-		model.addAttribute("thisMonth", pService.getProduceAmountThisMonth());
-		model.addAttribute("thisYear", pService.getProduceAmountThisYear());
-		model.addAttribute("thisWeek", pService.getProduceAmountThisWeek());
-		model.addAttribute("produceList", pService.getProduceList());
-		
-		
-	}
 	
 	
 

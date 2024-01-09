@@ -152,6 +152,7 @@
 <th scope="col">제품명</th>
 <th scope="col">포장중량(g)</th>
 <th scope="col">로스팅일</th>
+<th scope="col">품질검수</th>
 <th scope="col">LOT번호</th>
 <th scope="col">바코드</th>
 </tr>
@@ -164,6 +165,7 @@
 <td>${rlist.itemname }</td>
 <td>${rlist.weight }</td>
 <td><fmt:formatDate value="${rlist.roasteddate }" pattern="yyyy-MM-dd" /></td>
+<td>${rlist.defect =='Y' ? '정상' : '-' } </td>
 <td>${rlist.lotnumber }</td>
 <td id="barcode${status.index }">
 <input type="button" class="btn btn-sm btn-primary" value="출력" id="barcodeButton" onclick="openbarcodeModal('${rlist.itemname}','${rlist.weight }', '${rlist.lotnumber }','${rlist.roasteddate }' )" data-bs-toggle="modal" data-bs-target="#barcodeModal" data-bs-whatever="@getbootstrap">
@@ -213,7 +215,8 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> 제품 바코드 출력 </h5>
-						<button type="button" onclick="location.href='/production/roastedList';" class="btn-close" aria-label="Close" ></button>
+						<button type="button" class="btn-close" aria-label="Close" ></button>
+					<!-- onclick="location.href='/production/roastedList';"  -->
 					</div>
 					<div class="modal-body">
 						<form action="" >
