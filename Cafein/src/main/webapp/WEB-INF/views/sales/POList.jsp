@@ -81,6 +81,7 @@
 								<th scope="col">진행</th>
 								<th scope="col">관리</th>
 								</c:if>
+								<th scope="col">상세내역</th>
 								<th scope="col">납품서발행</th>
 								
 								<th scope="col" style="display: none;">원산지</th>
@@ -99,7 +100,7 @@
 								<c:when test="${empty POList}">
 								<script>
 								    Swal.fire({
-								        title: "검색하신 조건에 해당하는 수주가 없습니다",
+								        title: "조건에 해당하는 수주가 없습니다",
 								        icon: "warning",
 								        showCancelButton: false,
 								        confirmButtonColor: '#3085d6',
@@ -133,7 +134,11 @@
 												</c:otherwise>
 											</c:choose>
 											<td><fmt:formatDate value="${po.ordersduedate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-											<td>${po.membername}</td>
+											
+											<td class="memberCall" 
+											onclick="memberCall('${po.membername}','${po.memberphone}','${po.departmentname}','${po.memberposition}','${po.memberemail}')">
+											${po.membername}</td>
+											
 											<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
 											<td><input value="진행" type="submit" class="btn btn-sm btn-info ingUpdate" data-poid="${po.poid}"></td>
 											<td>
@@ -143,6 +148,11 @@
 													<input value="취소" type="submit" class="btn btn-sm btn-secondary cancelUpdate" data-poid="${po.poid}">
 											</td>
 											</c:if>
+											<td>
+												<button type="button" class="btn btn-sm btn-dark"
+													onclick="openDetailModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+													상세내역</button>
+											</td> 
 											<td>
 												<input value="PDF" type="button" class="btn btn-sm btn-danger" 
 												onclick="openReceiptModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', 
@@ -182,7 +192,17 @@
 						</tbody>
 					</table>
 				</div>
-				
+				<script>
+				  function memberCall(memberName, memberphone, departmentname,memberposition, memberemail) {
+					  Swal.fire('👤 ' + memberName, 
+						  '부서 | ' + departmentname + '<br>' +
+						  '직급 | ' + memberposition + '<br>' +
+						  '이메일 | ' + memberemail + '<br>' +
+						  '전화번호 | ' + memberphone 
+						);
+
+				  }
+				</script>
 				
 			<!-- 페이지 블럭 생성 -->
 			<nav aria-label="Page navigation example">
@@ -629,6 +649,8 @@ $("#openReceiptModal").modal('show');
 	<jsp:include page="registPO.jsp" />
 	<!-- 품목 수정 모달 -->
 	<jsp:include page="modifyPO.jsp" />
+	<!-- 상세내역 모달 -->
+	<jsp:include page="PODetail.jsp" />
 
 	<!-- 납품처 조회 모달 -->
 	<div class="modal fade" id="clientSM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

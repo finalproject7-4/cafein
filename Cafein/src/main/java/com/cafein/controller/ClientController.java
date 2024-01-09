@@ -18,7 +18,7 @@ import com.cafein.domain.PageVO;
 import com.cafein.service.ClientService;
 
 @Controller
-@RequestMapping(value = "information/*")
+@RequestMapping(value = "/information/*")
 public class ClientController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
@@ -56,7 +56,6 @@ public class ClientController {
 	// 거래처 코드 생성 메서드
 	public String generateClientcode(ClientVO vo) throws Exception {
 		
-		// 코드 만들기는 가능... 왜 순서가 뒤죽박죽...
 		String code = "";
 		int num = 101 + cService.maxClientCode(vo);
 		

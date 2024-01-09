@@ -27,7 +27,7 @@ public class SalesVO {
 	private Date ordersdate;
 	private Date updatedate;
 	private Date ordersduedate;
-	private String membercode;
+	private int membercode;
 	
 	//client 테이블
 	private String clientcode; // 거래처코드
@@ -53,6 +53,11 @@ public class SalesVO {
 	private String cafeinAddr;
 	private String cafeinFax;
 	private String cafeinCall;
+	private String memberphone;
+	private String departmentname;
+	private String memberposition;
+	private String memberemail;
+
 	
 	// ship 테이블
 	private String lotnumber; //LOT번호

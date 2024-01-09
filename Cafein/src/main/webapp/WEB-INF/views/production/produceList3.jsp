@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 <!-- SweetAlert 추가 -->
@@ -139,10 +140,12 @@
 				<input type="button" class="btn btn-sm btn-danger" value="생산중" id="proIng">
 				<input type="button" class="btn btn-sm btn-warning" value="검사대기" id="qccWait">
 			
+
 				<span style="float: right;">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">생산지시 등록</button>
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">BOM등록</button>
 				</span>
+
 </div>
 
 <!-- 페이지 Ajax 동적 이동 (1) -->
@@ -225,8 +228,10 @@ function fetchData(searchBtnValue) {
 <th scope="col" style="display: none;">아이템ID</th>
 <th scope="col" style="display: none;">포장지시량</th>
 <th scope="col" style="display: none;">생산량</th>
+
 <th scope="col">상태변경</th>
 <th scope="col">공정관리</th>
+
 <th scope="col" style="display: none;">생산코드</th>
 <th scope="col" style="display: none;">재고ID1</th>
 <th scope="col" style="display: none;">재고ID2</th>
@@ -250,6 +255,7 @@ function fetchData(searchBtnValue) {
 <td style="display: none;">${plist.packagevol }</td>
 <td style="display: none;">${plist.amount }</td>
 <td>
+
 	<!-- 블렌딩 대기 상태일때, 상태변경 버튼 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
 	<c:if test="${plist.process == '블렌딩' && plist.state == '대기'}">
 	<input id="BingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
@@ -266,8 +272,11 @@ function fetchData(searchBtnValue) {
 	<c:if test="${plist.state == '생산중'&& plist.process =='포장' }">
 	<input id="packageBtn" type="button" onclick="openPackageModal('${plist.produceid}', '${plist.producedate}', '${plist.producetime }', '${plist.produceline}',  '${plist.itemname }', '${plist.itemid }', '${plist.packagevol }', '${plist.amount }')" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료"> 
 	</c:if>
+
+	
 </td>
-<td>
+<td>	
+
 	<!-- 삭제 버튼은 생산공정이 블렌딩이고, 상태가 대기중일 때만 표시 -->
 	<c:if test="${plist.state == '대기' && plist.process=='블렌딩' && plist.qualitycheck == '검사전'}">
 	<input type="submit" id="deletProduceBtn" class="btn btn-sm btn-dark m-1" value="삭제">
@@ -277,7 +286,8 @@ function fetchData(searchBtnValue) {
 	</c:if>
 	<c:if test="${plist.state == '완료' &&  plist.process =='로스팅' && plist.qualitycheck == '정상' }">
 	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }','${plist.amount }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
-		</c:if>
+	</c:if>	
+
 </td>
 <td style="display: none;">${plist.producecode }</td>
 <td style="display: none;">${plist.stockid1 }</td>
@@ -293,7 +303,7 @@ function fetchData(searchBtnValue) {
 <!-- 엑셀파일 다운로드 -->
 <div style="float: right">
 	<form action="/production/excelPrint" method="post">
-		<input class="btn btn-sm btn-success" type="submit" value="리스트출력">
+		<input class="btn btn-sm btn-success" type="submit" value="엑셀 파일 다운로드">
 	</form>
 </div>
 
@@ -521,14 +531,13 @@ function fetchData(searchBtnValue) {
 			
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
-			var pageNum = $(this).data('page');
+			
 				
 				var searchBtn = "${param.searchBtn}";
 				var startDate = "${param.startDate}";
 				var endDate = "${param.endDate}";
 
 				var dataObject = {
-					"page" : pageNum,
 					"produceid" : produceId,
 					"state" : stateValue					
 				};
@@ -541,6 +550,14 @@ function fetchData(searchBtnValue) {
 				}
 				if (endDate) {
 				    dataObject.endDate = endDate;
+				}
+				
+				var currentPage = getCurrentPageNumber();
+				var dataObjectCom = {
+						"page" : currentPage	
+					};
+		        if (searchBtn) {
+		        	dataObjectCom.searchBtn = searchBtn;
 				}
 				
 			// AJAX 요청 수행
@@ -556,7 +573,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 						type: "GET",
-						data: dataObject,
+						data: dataObjectCom,
 						success: function(data) {
     						$("#produceListAll").html(data);
 						},
@@ -587,14 +604,12 @@ function fetchData(searchBtnValue) {
 			var stockId3 = $(this).closest("tr").find("td:eq(17)").text(); // 재고ID3 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
 			
-			var pageNum = $(this).data('page');
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
 			var dataObject = {
-				"page" : pageNum,
 				"produceid" : produceId,
 				"state" : stateValue,
 				"itemid" : itemID,
@@ -614,6 +629,14 @@ function fetchData(searchBtnValue) {
 			if (endDate) {
 			    dataObject.endDate = endDate;
 			}
+
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/BupdateProduceState",
@@ -626,7 +649,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},
@@ -659,7 +682,6 @@ function fetchData(searchBtnValue) {
 		          if (result.value) {
 
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
-			var pageNum = $(this).data('page');
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
@@ -679,6 +701,14 @@ function fetchData(searchBtnValue) {
 			if (endDate) {
 			    dataObject.endDate = endDate;
 			}
+			
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/deletePlan",
@@ -693,7 +723,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},
@@ -721,13 +751,11 @@ function fetchData(searchBtnValue) {
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
-			var pageNum = $(this).data('page');
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
 			var dataObject = {
-					"page" : pageNum,
 					"produceid" : produceId,	
 					"itemid" : itemID,
 					"amount" : amount,
@@ -743,7 +771,15 @@ function fetchData(searchBtnValue) {
 				if (endDate) {
 				    dataObject.endDate = endDate;
 				}
-			 
+				
+	
+				var currentPage = getCurrentPageNumber();
+				var dataObjectCom = {
+						"page" : currentPage	
+					};
+		        if (searchBtn) {
+		        	dataObjectCom.searchBtn = searchBtn;
+				}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/processUpdateRoasting",
@@ -756,7 +792,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},

@@ -12,47 +12,43 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      
-		<form action="/information/memberJoin" method="post">
+		<form action="/information/memberJoin" method="post" onsubmit="return validateFormInsert()">
 	      <div class="modal-body">
 			직원명 <span style="color:red;">*</span>
-				<input type="text" name="membername" class="form-control" placeholder="직원명(20자 이하, 한글만 가능)" 
-					   pattern="^[가-힣]{1,20}$" title="직원명은 20자 이하의 한글만 가능합니다." required><br>
+				<input type="text" name="membername" class="form-control" id ="insertMemberName" placeholder="직원명(20자 이하, 한글만 가능)" 
+					   pattern="^[가-힣]{1,20}$" title="직원명은 20자 이하의 한글만 가능합니다."><br>
 			비밀번호 <span style="color:red;">*</span> 
-				<input type="password" name="memberpw" class="form-control" placeholder="비밀번호(6자 이상 10자 이하)" 
-					   minlength="6" maxlength="10" title="비밀번호는 6자 이상 10자 이하입니다." required><br>
+				<input type="password" name="memberpw" class="form-control" id ="insertMemberPw" placeholder="비밀번호(6자 이상 10자 이하)" 
+					   minlength="6" maxlength="10" title="비밀번호는 6자 이상 10자 이하입니다."><br>
 			생년월일 
 				<input type="date" name="memberbirth" class="form-control"><br>
 			입사일 
 				<input type="date" name="memberhire" class="form-control"><br>
 				
-			부서명 <span style="color:red;">*</span> 
-				<input type="radio" name="departmentname" value="생산" class="btn-check" id="production">
-				<label class="btn btn-outline-primary" for="production">생산</label>
-				<input type="radio" name="departmentname" value="영업" class="btn-check" id="sales">
-				<label class="btn btn-outline-primary" for="sales">영업</label>
-				<input type="radio" name="departmentname" value="자재" class="btn-check" id="material">
-				<label class="btn btn-outline-primary" for="material">자재</label>
-				<input type="radio" name="departmentname" value="품질" class="btn-check" id="quality">
-				<label class="btn btn-outline-primary" for="quality">품질</label><br>
-				
-			직급 <span style="color:red;">*</span> 
-				<input type="radio" name="memberposition" value="사원" class="btn-check" id="employee">
-				<label class="btn btn-outline-primary" for="employee">사원</label>
-				<input type="radio" name="memberposition" value="주임" class="btn-check" id="manager">
-				<label class="btn btn-outline-primary" for="manager">주임</label>
-				<input type="radio" name="memberposition" value="대리" class="btn-check" id="deputy">
-				<label class="btn btn-outline-primary" for="deputy">대리</label>
-				<input type="radio" name="memberposition" value="과장" class="btn-check" id="sectionChief">
-				<label class="btn btn-outline-primary" for="sectionChief">과장</label><br>
+			부서명 <span style="color:red;">*</span>
+			<select name="departmentname" class="form-select mb-3" id="insertDepartment" aria-label="select Departmentname">
+				<option value="생산">생산</option>
+				<option value="영업">영업</option>
+				<option value="자재">자재</option>
+				<option value="품질">품질</option>
+			</select>
+			
+			직급 <span style="color:red;">*</span>
+			<select name="memberposition" class="form-select mb-3" id="insertPosition" aria-label="select Departmentname">
+				<option value="사원">사원</option>
+				<option value="주임">주임</option>
+				<option value="대리">대리</option>
+				<option value="과장">과장</option>
+			</select>
 				
 			E-Mail <span style="color:red;">*</span> 
-				<input type="email" name="memberemail" class="form-control" required><br>
+				<input type="email" name="memberemail" class="form-control" id="insertMemberEmail"><br>
 			내선번호 
 				<input type="tel" name="memberdeptphone" class="form-control" placeholder="내선번호(예:1234)" 
-					   title="내선번호는 4자리 숫자만 가능합니다."><br>
+					   title="내선번호는 4자리 숫자만 가능합니다." pattern="[0-9]{4}"><br>
 			전화번호 <span style="color:red;">* 다음과 같이 입력하세요:01012345678</span> 
-				<input type="tel" name="memberphone" class="form-control" placeholder="전화번호(예:01012345678)" 
-					   title="전화번호는 11자리 숫자만 가능합니다." required><br>
+				<input type="tel" name="memberphone" class="form-control" id="insertMemberPhone" placeholder="전화번호(예:01012345678)" 
+					   title="전화번호는 11자리 숫자만 가능합니다." pattern="[0-9]{11}"><br>
 	      </div>
 	      
 	      <div class="modal-footer">
@@ -65,11 +61,3 @@
 	  </div>
 	</div>
 	
-<script>
-if($('input:radio[name=departmentname]').is(':checked')) {
-	; //통과
-	} else {
-	alert('체크해 주세요');
-	return false;
-	}
-</script>

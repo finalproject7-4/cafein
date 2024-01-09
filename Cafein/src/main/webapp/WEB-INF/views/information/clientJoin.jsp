@@ -12,40 +12,52 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      
-		<form role="form" action="/information/clientJoin" method="post" id="clientJoin">
+		<form role="form" action="/information/clientJoin" method="post" id="clientJoin" onsubmit="return validateFormInsert()">
 	      <div class="modal-body">
 			거래처명 <span style="color:red;">*</span> 
-				<input type="text" name="clientname" class="form-control" required><br>
+				<input type="text" name="clientname" class="form-control" id="insertClientName"><br>
 			
-			거래처 구분 <span style="color:red;">*</span><br>
-				<input type="radio" name="categoryofclient" value="납품" class="btn-check" id="orderer">
-				<label class="btn btn-outline-primary" for="orderer">납품</label>
-				<input type="radio" name="categoryofclient" value="공급" class="btn-check" id="deliveryDestination">
-				<label class="btn btn-outline-primary" for="deliveryDestination">공급</label><br>
+<!-- 			거래처 구분 <span style="color:red;">*</span><br> -->
+<!-- 				<input type="radio" name="categoryofclient" value="납품" class="btn-check" id="orderer"> -->
+<!-- 				<label class="btn btn-outline-primary" for="orderer">납품</label> -->
+<!-- 				<input type="radio" name="categoryofclient" value="공급" class="btn-check" id="deliveryDestination"> -->
+<!-- 				<label class="btn btn-outline-primary" for="deliveryDestination">공급</label><br> -->
      	  	
-      	  	거래처 업종 <span style="color:blue; font-size: 0.8em;">&nbsp;거래처 구분이 '공급'일 때만 선택하세요.</span><br>
-				<input type="radio" name="typeofclient" value="원자재" class="btn-check" id="rawMaterial">
-				<label class="btn btn-outline-primary" for="rawMaterial">원자재</label>
-				<input type="radio" name="typeofclient" value="부자재" class="btn-check" id="additionalMaterial">
-				<label class="btn btn-outline-primary" for="additionalMaterial">부자재</label><br>
+     	  	거래처 구분 <span style="color:red;">*</span>
+     	  	<select name="categoryofclient" class="form-select mb-3" id="insertCategory" aria-label="select Departmentname">
+				<option value="납품">납품</option>
+				<option value="공급">공급</option>
+			</select>
+     	  	
+<!--       	  	거래처 업종 <span style="color:blue; font-size: 0.8em;">&nbsp;거래처 구분이 '공급'일 때만 선택하세요.</span><br> -->
+<!-- 				<input type="radio" name="typeofclient" value="원자재" class="btn-check" id="rawMaterial"> -->
+<!-- 				<label class="btn btn-outline-primary" for="rawMaterial">원자재</label> -->
+<!-- 				<input type="radio" name="typeofclient" value="부자재" class="btn-check" id="additionalMaterial"> -->
+<!-- 				<label class="btn btn-outline-primary" for="additionalMaterial">부자재</label><br> -->
+				
+			거래처 업종 <span style="color:red;">*</span>
+     	  	<select name="typeofclient" class="form-select mb-3" id="insertType" aria-label="select Departmentname">
+				<option value="원자재">원자재</option>
+				<option value="부자재">부자재</option>
+			</select>	
 			
 			사업자 번호 
 				<input type="text" name="businessnumber" class="form-control" placeholder="사업자 번호(예:1234567890)" 
 				  	   title="사업자 번호는 10자리 숫자만 가능합니다."><br>
 			대표자 <span style="color:red;">*</span>
-				<input type="text" name="representative" class="form-control" required><br>
+				<input type="text" name="representative" class="form-control" id="insertRepresentative"><br>
 			담당자 <span style="color:red;">*</span>
-				<input type="text" name="manager" class="form-control" required><br>
+				<input type="text" name="manager" class="form-control" id="insertManager"><br>
 			주소 
 				<input type="text" name="clientaddress" class="form-control"><br>
 			전화번호 <span style="color:red;">*</span>
-				<input type="tel" name="clientphone" class="form-control" placeholder="전화번호(예:01012345678)" 
-					   title="전화번호는 11자리 숫자만 가능합니다." required><br>
+				<input type="tel" name="clientphone" class="form-control" id="insertPhone" placeholder="전화번호(예:01012345678)" 
+					   title="전화번호는 11자리 숫자만 가능합니다."><br>
 			팩스번호 
 				<input type="tel" name="clientfax" class="form-control" placeholder="팩스번호(예:0101234567)" 
 					   title="팩스번호는 10자리 숫자만 가능합니다."><br>
 			E-Mail <span style="color:red;">*</span>
-				<input type="email" name="clientemail" class="form-control" required><br>
+				<input type="email" name="clientemail" class="form-control" id="insertEmail"><br>
 	      </div>
 	      
 	      <div class="modal-footer">

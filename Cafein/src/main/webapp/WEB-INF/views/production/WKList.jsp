@@ -4,23 +4,27 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
+<link href="../resources/css/po.css" rel="stylesheet">
 <br>
 <fiedset>
 	<!-- 검색 폼 -->
 		<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<form name="dateSearch" action="/production/WKList" method="get">
+				<form action="/production/WKList" method="GET" style="margin-bottom: 10px;">
+				<h6>작업지시 조회</h6>
 				<c:if test="${!empty param.searchBtn }">
-				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="검색">
+				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="납품처명을 입력하세요">
 				</c:if>
-				검색 <input class="workSearch" type="text" name="searchText" placeholder="검색">
-				작업지시일자 
-				<input type="date" id="startDate" name="startDate" required> ~
-				<input type="date" id="endDate" name="endDate" required>
-				<input class="search" type="submit" value="검색" data-toggle="tooltip" title="등록일이 필요합니다!">
-				<br>
-			</form>
-						<form action="WKList" method="GET">
+				<span style="display:flex;">
+				<label style="margin: 5px 10px 0 0;">검색</label>
+				<input type="text" name="searchText" placeholder="검색어를 입력하세요" class="form-control fcsearch">
+				<label style="margin: 5px 10px 0 0; margin-left:10em;">
+				작업지시일자</label>		
+				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch"> &nbsp; ~ &nbsp;
+				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch">
+				<input class="btn btn-sm btn-dark m-2 searchmini" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
+			</form>	
+			<form action="POList" method="GET">
 					<c:if test="${!empty param.searchBtn }">
 						<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 					</c:if>
@@ -31,7 +35,6 @@
 						<input type="hidden" value="${param.endDate }" name="endDate">
 					</c:if>
 				</form>
-
 		</div>
 	</div>
 
@@ -105,7 +108,7 @@
 					<table class="table" id="workTable">
 						<thead>
 							<tr>
-								<th scope="col">No.</th>
+								<th scope="col">번호</th>
 								<th scope="col">작업지시일</th>
 								<th scope="col">작업지시코드</th>
 								<th scope="col">수주코드</th>
@@ -113,7 +116,6 @@
 								<th scope="col">제품명</th>
 								<th scope="col">지시상태</th>
 								<th scope="col">지시수량</th>
-								<th scope="col">수정일자</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
@@ -136,19 +138,11 @@
 									<td>${wk.pocode }</td>
 									<td>${wk.clientname}</td>
 									<td>${wk.itemname }</td>
-									<td>${wk.worksts }</td>
+									<td style="font-weight: bold; ${wk.worksts == '완료'? 'color:red;' : ''}${wk.worksts == '진행'? 'color:blue;' : ''}">${wk.worksts }</td>
 									<td>${wk.pocnt }</td>
 									<c:choose>
-									<c:when test="${empty wk.workupdate}">
-										<td>업데이트 날짜 없음</td>
-									</c:when>
-									<c:otherwise>
-										<td><fmt:formatDate value="${wk.workupdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
-									</c:otherwise>
-									</c:choose>
-									<c:choose>
 									<c:when test="${empty wk.workdate2}">
-										<td>진행 중</td>
+										<td><b>업데이트 없음</b></td>
 									</c:when>
 									<c:otherwise>
 										<td><fmt:formatDate value="${wk.workdate2}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
@@ -156,20 +150,20 @@
 									</c:choose>
 									<td>${wk.membercode }</td>
 									<!-- 버튼 수정 -->
-									<td>
+									<td style="font-weight: bold; ${wk.worksts == '완료'? 'color:red;' : ''}">
 									<c:if test="${wk.worksts == '완료'}">
 									작업지시 완료
 									</c:if>
 									<c:if test="${wk.worksts == '접수'}">
-									<button type="button" class="btn btn-outline-dark"
-									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									<button type="button" class="btn btn-sm btn-warning"
+									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.membercode}')">
 									수정
 									</button>
-									<input type="button" class="btn btn-outline-dark" value="삭제" id="deleteBtn">
+									<input type="button" class="btn btn-sm btn-secondary" value="삭제" id="deleteBtn">
 									</c:if>
 									<c:if test="${wk.worksts == '진행'}">
-									<button type="button" class="btn btn-outline-dark"
-									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.workupdate}', '${wk.membercode}')">
+									<button type="button" class="btn btn-sm btn-warning"
+									onclick="openModifyModal('${wk.workid}', '${wk.worksts}', '${wk.workcode }', '${wk.pocode}', '${wk.clientname}', '${wk.itemname}',  '${wk.pocnt}', '${wk.workdate1}', '${wk.membercode}')">
 									수정
 									</button>
 									</c:if>
@@ -346,6 +340,8 @@
 
 			
 $("#modifyButton").click(function() {
+	
+	
     // 가져온 값들을 변수에 저장
     var modifiedWorkid = $("#workid2").val();
     var modifiedWorksts = $("#worksts2").val();
@@ -355,9 +351,9 @@ $("#modifyButton").click(function() {
     var modifiedItemName = $("#itemcode2").val();
     var modifiedPocnt = $("#pocnt2").val();
     var modifiedWorkdate1 = $("#workdate11").val();
-    var modifiedWorkupdate = $("#workupdate2").val();
     var modifiedMemberCode = $("#membercode2").val();
 
+    
     // Ajax를 사용하여 서버로 수정된 값 전송
     $.ajax({
         type: "POST",
@@ -371,7 +367,6 @@ $("#modifyButton").click(function() {
              itemname: modifiedItemName,
              pocnt: modifiedPocnt,
              workdate1: modifiedworkDate1,
-             workupdate: modifiedWorkupDate,
              membercode: modifiedMemberCode
         },
         success: function(response) {
@@ -384,8 +379,19 @@ $("#modifyButton").click(function() {
     });
 });
 	   
-	   function openModifyModal(workid, worksts, workcode, pocode, clientname, itemname,  pocnt, workdate1, workupdate, membercode) {
+	   function openModifyModal(workid, worksts, workcode, pocode, clientname, itemname, pocnt, workdate1, membercode) {
 
+		   
+			console.log("workid:", workid);
+			console.log("worksts:", worksts);
+			console.log("workcode:", workcode);
+			console.log("pocode:", pocode);
+			console.log("clientname:", clientname);
+			console.log("itemname:", itemname);
+			console.log("pocnt:", pocnt);
+			console.log("workdate1:", workdate1);
+			console.log("membercode:", membercode);
+			
 		   
 		   // 가져온 값들을 모달에 설정
 		   $("#workid2").val(workid);
@@ -396,7 +402,6 @@ $("#modifyButton").click(function() {
 		    $("#itemcode2").val(itemname);
 		    $("#pocnt2").val(pocnt);
 		    $("#workdate11").val(workdate1);
-		    $("#workupdate2").val(workupdate);
 		    $("#membercode2").val(membercode);
 
 		    // 모달 열기
@@ -409,13 +414,6 @@ $("#modifyButton").click(function() {
 	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
 	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 	        $('#workdate11').val(formattedDate);
-	    });
-	    
-	    $('#workupdate2').click(function(){
-	        var today = new Date();
-	        // 날짜를 YYYY-MM-DD 형식으로 포맷팅
-	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-	        $('#workupdate2').val(formattedDate);
 	    });
 	    
 		// 작업지시 삭제 (작업지시가 대기일 경우에만 삭제 가능)
