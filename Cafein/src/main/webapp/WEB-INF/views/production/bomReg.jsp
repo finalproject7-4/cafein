@@ -75,7 +75,7 @@
 								<label for="rate" class="col-form-label">비율</label>
 								<input type="text" name="rate" class="form-control" id="rate">
 							</div>
-							<div class="col">
+							<div class="col" style="display: none;">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode" value="${membercode }" readonly="readonly">
 							</div>
