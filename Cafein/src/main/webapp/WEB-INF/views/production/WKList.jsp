@@ -258,6 +258,7 @@
 			            	let enddate = "${param.enddate}";
 
 			                let pageValue = $(this).data('page');
+			                let worksts = "${param.worksts}";
 		                	url = "/production/WKList?page=" + pageValue;
 			                
 			                if (searchBtn) {
@@ -274,6 +275,10 @@
 			            	if (enddate) {
 			            	  url += "&enddate=" + encodeURIComponent(enddate);
 			            	}
+			            	
+			            	if (worksts) {
+			                    url += "&worksts=" + encodeURIComponent(worksts);
+			                }
 			                
 			                location.href = url;
 			            });

@@ -282,6 +282,8 @@
 			            	let enddate = "${param.enddate}";
 
 			                let pageValue = $(this).data('page');
+			                let shipsts = "${param.shipsts}";
+			                
 		                	url = "/sales/SHList?page=" + pageValue;
 			                
 			                if (searchBtn) {
@@ -298,6 +300,10 @@
 			            	if (enddate) {
 			            	  url += "&enddate=" + encodeURIComponent(enddate);
 			            	}
+			            	
+			            	if (shipsts) {
+			                    url += "&shipsts=" + encodeURIComponent(shipsts);
+			                }
 			                
 			                location.href = url;
 			            });

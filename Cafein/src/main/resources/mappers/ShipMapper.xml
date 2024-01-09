@@ -36,6 +36,7 @@
 	<select id="countSH" resultType="int" parameterType="com.cafein.domain.ShipVO">
    SELECT count(*)
 	FROM ship sh
+	JOIN member mb ON sh.membercode = mb.membercode
 	LEFT JOIN stock st ON sh.stockid = st.stockid
 		<where>
 		<if test="shipsts != null" >
@@ -51,6 +52,7 @@
 		and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
 		</if>
 		</where>
+		ORDER BY shipdate1 DESC, shipid DESC
 	</select>
 	
 	<!-- 출하 등록 -->
@@ -155,6 +157,7 @@
 		wk.worksts, wk.pocnt, wk.workdate2,
 		wk.membercode
 		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
 		JOIN purchaseorder po ON wk.pocode = po.pocode
 		<where>
 		<if test="worksts != null" >
