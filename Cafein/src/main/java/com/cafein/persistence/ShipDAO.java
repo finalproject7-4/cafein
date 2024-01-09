@@ -43,6 +43,8 @@ public interface ShipDAO {
 	// 출하 상태 완료 변경
 	public int ingUpdate(ShipVO svo) throws Exception;
 	
+	// 출하 엑셀 출력
+	public List<ShipVO> selectSHListExcel(ShipVO svo) throws Exception;
 		
 	
 	// 작업 지시 조회
@@ -72,6 +74,9 @@ public interface ShipDAO {
 	// 출하 완료-> 작업지시 완료
 	public void updateCompletWork(WorkVO wvo) throws Exception;
 	
+	// 작업지시 엑셀출력
+	public List<WorkVO> selectWKListExcel(WorkVO wvo) throws Exception;
+	
 	
 	
 	// 실적 조회
@@ -82,6 +87,9 @@ public interface ShipDAO {
 	
 	// 실적 수정
 	public int updatePF(WorkVO wvo) throws Exception;
+	
+	// 실적 엑셀출력
+	public List<WorkVO> selectPFListExcel(WorkVO wvo) throws Exception;
 
 	
 

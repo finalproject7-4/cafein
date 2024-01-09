@@ -51,6 +51,7 @@
 
 		<div class="col-12">
 		<div class="buttonarea1" style="margin-bottom: 10px;">
+		<form action="WKListPrint" method="GET">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary"  id="allwk">전체</button>
 			<input type="hidden" name="state" value="접수">
@@ -60,7 +61,7 @@
 			<input type="hidden" name="state" value="완료">
 			<button type="button" class="btn btn-sm btn-warning" id="complete">완료</button>
 			
-		</div>
+		
 		
 				<script>
 		$("#allwk").click(function() {
@@ -102,12 +103,18 @@
 			updateTotalCount();
 		}
 		</script>
-		
-					<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
-					<input type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal"
-					data-bs-target="#registModal" id="regist" value="등록">
-					</c:if>
-					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
+					<span style="float: right;">
+			  <c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
+				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			  </c:if>
+				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
+					</span>
+					</form>
+
+					</div>
+					
 			<form role="form" action="/production/modifyWK" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
@@ -453,6 +460,18 @@ $("#modifyButton").click(function() {
 	        var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 	        $('#workdate11').val(formattedDate);
 	    });
+	    
+	    /*달력 이전||+5일 이후 날짜 비활성화*/
+		var now_utc = Date.now(); // 현재 날짜를 밀리초로
+		var timeOff = new Date().getTimezoneOffset() * 60000; // 분 단위를 밀리초로 변환
+		var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+		
+		var fiveDaysLater = new Date(now_utc + 5 * 24 * 60 * 60 * 1000 - timeOff).toISOString().split("T")[0];
+		
+		//id="date"
+		var dateInput = document.getElementById("date");
+		dateInput.setAttribute("min", today);
+		dateInput.setAttribute("max", fiveDaysLater);
 	    
 		// 작업지시 삭제 (작업지시가 대기일 경우에만 삭제 가능)
 	    $("td").on("click", "#deleteBtn", function() {
