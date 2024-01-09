@@ -98,6 +98,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<c:if test="${slist.stockquantity >= 10 }">
 										${slist.stockquantity }개
 									</c:if>
+									<c:if test="${sessionScope.membername.equals('강호룡') || sessionScope.membername.equals('admin') }">
 									<button type="button" class="btn btn-primary btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
@@ -106,11 +107,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									data-lotnumber="${slist.lotnumber }">
  									실사 변경
 									</button>
+									</c:if>
 									</td>
 									<td>
 									<c:if test="${!empty slist.storagecode }">
 									${slist.storagecode } - ${slist.storagename }
 									</c:if>
+									<c:if test="${sessionScope.membername.equals('강호룡') || sessionScope.membername.equals('admin') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
@@ -119,6 +122,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
 									창고 이동
 									</button>
+									</c:if>
 									</td>
 									<c:if test="${slist.workerbycode != 0 }">
 									<td>${slist.workerbycode }</td>
