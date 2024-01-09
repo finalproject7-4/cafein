@@ -116,7 +116,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									</button>
 									</c:if>
 									</td>
+									<c:if test="${slist.workerbycode != 0 }">
 									<td>${slist.workerbycode }</td>
+									</c:if>
+									<c:if test="${slist.workerbycode == 0 }">
+									<td></td>
+									</c:if>
 									<td>${slist.registerationdate }</td>
 									<td>${slist.updatedate }</td>
 									<td>${slist.updatehistory }</td>
