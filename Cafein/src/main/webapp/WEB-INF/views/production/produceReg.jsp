@@ -64,8 +64,8 @@
 								<label for="amount" class="col-form-label">생산량</label>
 								<input type="number" required="required"  name="amount" id="amount" class="form-control" min="20000" max="60000" step="10000" placeholder="생산량(g)">
 							</div>
-							</div>
-							<div class="row">
+					</div>
+					<div class="row">
 							<div class="col">
 								<label for="itemname1" class="col-form-label">원재료1</label>
 								<input name="itemname1" type="text" class="form-control" id="itemnameOri1" readonly>
@@ -78,9 +78,9 @@
 								<label for="itemname3" class="col-form-label">원재료3</label>
 								<input type="text" name="itemname3" class="form-control" id="itemnameOri3" readonly>
 							</div>
+					</div>
 							<!-- 아래가 실제 등록될 itemid1~3 값 -->
-							</div>
-							<div class="row" style="display:none;">
+					<div class="row" style="display:none;">
 							<div class="col">
 								<label for="itemid1" class="col-form-label">원재료1</label>
 								<input name="itemid1" type="text" class="form-control" id="itemidOri1" readonly>
@@ -93,9 +93,9 @@
 								<label for="itemid3" class="col-form-label">원재료3</label>
 								<input type="text" name="itemid3" class="form-control" id="itemidOri3" readonly>
 							</div>
-							</div>
+					</div>
 							<!-- 출고대기등록할 때 쓸 stockid -->
-							<div class="row" style="display: none;">
+					<div class="row" style="display: none;">
 							<div class="col">
 								<label for="stockid1" class="col-form-label">재고ID1</label>
 								<input name="stockid1" type="text" class="form-control" id="stockid1" readonly>
@@ -108,8 +108,8 @@
 								<label for="stockid3" class="col-form-label">재고ID3</label>
 								<input type="text" name="stockid3" class="form-control" id="stockid3" readonly>
 							</div>
-							</div>
-							<div class="row">
+					</div>
+					<div class="row">
 							<div class="col">
 								<label for="rate" class="col-form-label">비율</label>
 								<input type="text" name="rate" class="form-control" id="rate" readonly>
@@ -124,13 +124,13 @@
 							</div>
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
-								<input name="membercode" class="form-control" id="membercode" value="1004">
+								<input name="membercode" class="form-control" id="membercode" value="${membercode }" readonly="readonly">
 							</div>
 							<div class="col" style="display:none;">
 								<label for="itemid" class="col-form-label" >아이템ID</label>
 								<input name="itemid" class="form-control" id="itemidPro">
 							</div>
-							</div>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 						<input type="submit" class="btn btn-primary" value="등록">
@@ -198,7 +198,7 @@
 					<div class="row">
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
-								<input name="membercode" class="form-control" id="membercode2" value="1004">
+								<input name="membercode" class="form-control" id="membercode2" value="${membercode }" readonly="readonly">
 							</div>
 					</div>
 					<div class="modal-footer">

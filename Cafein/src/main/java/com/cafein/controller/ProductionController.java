@@ -51,7 +51,6 @@ public class ProductionController {
 	// http://localhost:8088/ production/produceList
 	@GetMapping(value = "/produceList")
 	public void produceListAllGET(HttpSession session, Model model) throws Exception {
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
 
 		model.addAttribute("itemList", pService.getBomList());
 
@@ -62,6 +61,7 @@ public class ProductionController {
 	@RequestMapping(value = "/produceList3", method = RequestMethod.GET)
 	public void produceListAJAX(Model model, HttpSession session, Criteria cri, ProduceVO vo) throws Exception {
 
+		
 		logger.debug("컨트롤러 - AJAX produceList3() 호출");
 		logger.debug("검색조건은? "+vo.getItemname());
 		// 페이징 처리
@@ -75,6 +75,7 @@ public class ProductionController {
 		model.addAttribute("itemList", pService.getItemList());
 		model.addAttribute("bomList", pService.getBomList());
 		model.addAttribute("newItemList", pService.getNewItem());
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 
 		logger.debug("생산지시 목록 출력!");
 
@@ -387,7 +388,6 @@ public class ProductionController {
 	// http://localhost:8088/production/roastedList
 	@GetMapping(value = "/roastedList")
 	public void roastedBeanList(HttpSession session, Model model) throws Exception {
-		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
 
 		
 
