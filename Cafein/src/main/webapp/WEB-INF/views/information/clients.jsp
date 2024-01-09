@@ -3,6 +3,11 @@
 <%@ include file="../include/header.jsp"%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+	<c:redirect url="/main/login" />
+</c:if>
+
 <!-- 본문 보기 시작 -->
 
 	<!-- 거래처 조회 -->
@@ -30,9 +35,11 @@
 			<h6 class="mb-4">거래처 목록</h6>
 			<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 			<span style="margin-left: 82%;">
+			<c:if test="${memberposition eq '과장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-2" 
 						data-bs-toggle="modal" data-bs-target="#clientJoinModal" 
 						data-bs-whatever="@getbootstrap">거래처 등록</button>
+			</c:if>			
 			</span>
 			
 			<div class="table-responsive">
@@ -48,7 +55,11 @@
 							<th scope="col">전화번호</th>
 							<th scope="col">팩스번호</th>
 							<th scope="col">이메일</th>
-							<th scope="col">관리</th>
+							
+							<c:if test="${memberposition eq '과장' or membername eq 'admin'}">
+								<th scope="col">관리</th>
+							</c:if>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -61,22 +72,28 @@
 								<td>${vo.typeofclient }</td>
 								<td>${vo.manager }</td>
 								<td>${vo.clientphone.substring(0,3)}−${vo.clientphone.substring(3,7)}−${vo.clientphone.substring(7)}</td>
+								
 								<td>
 									<c:if test="${!empty vo.clientfax}">
 										${vo.clientfax.substring(0,3)}) ${vo.clientfax.substring(3,6)}−${vo.clientfax.substring(6)}
 									</c:if>
 								</td>
+								
 								<td>${vo.clientemail }</td>
-								<td>
-									<button type="button" class="btn btn-sm btn-dark m-2" 
-											onclick="clientUpdateModal('${vo.clientid }', '${vo.clientname }', '${vo.categoryofclient }', '${vo.typeofclient }', '${vo.businessnumber }', 
-													'${vo.representative }', '${vo.manager }', '${vo.clientaddress }', '${vo.clientphone }', '${vo.clientfax }',
-													'${vo.clientemail }', '${vo.available }')">수정</button>
-									<button type="button" class="btn btn-sm btn-dark m-2" 
-											onclick="clientDeleteModal('${vo.clientid }', '${vo.clientcode }', '${vo.clientname }', '${vo.categoryofclient }', '${vo.typeofclient }', '${vo.businessnumber }', 
-													'${vo.representative }', '${vo.manager }', '${vo.clientaddress }', '${vo.clientphone }', '${vo.clientfax }',
-													'${vo.clientemail }')">비활성화</button>
-								</td>
+							
+								<c:if test="${memberposition eq '과장' or membername eq 'admin'}">
+									<td>
+										<button type="button" class="btn btn-sm btn-warning m-1" 
+												onclick="clientUpdateModal('${vo.clientid }', '${vo.clientname }', '${vo.categoryofclient }', '${vo.typeofclient }', '${vo.businessnumber }', 
+														'${vo.representative }', '${vo.manager }', '${vo.clientaddress }', '${vo.clientphone }', '${vo.clientfax }',
+														'${vo.clientemail }', '${vo.available }')">수정</button>
+										<button type="button" class="btn btn-sm btn-secondary m-1" 
+												onclick="clientDeleteModal('${vo.clientid }', '${vo.clientcode }', '${vo.clientname }', '${vo.categoryofclient }', '${vo.typeofclient }', '${vo.businessnumber }', 
+														'${vo.representative }', '${vo.manager }', '${vo.clientaddress }', '${vo.clientphone }', '${vo.clientfax }',
+														'${vo.clientemail }')">비활성화</button>
+									</td>
+								</c:if>
+										
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -223,7 +240,7 @@
 	}
 	
 	// 거래처 수정 모달 유효성 검사
-	function validateFormCUpdateC() {
+	function validateFormCUpdate() {
 		// 각 필수 입력 필드 값
 	    var clientname = document.getElementById("clientname").value;
 	    var categoryofclient = document.getElementById("updateCategory").value;

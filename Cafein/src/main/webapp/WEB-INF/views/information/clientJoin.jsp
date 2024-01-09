@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>     
+    
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+	<c:redirect url="/main/login" />
+</c:if>    
 	
 	<!-- Modal -->
 	<div class="modal fade" id="clientJoinModal" tabindex="-1">
@@ -12,7 +18,7 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      
-		<form role="form" action="/information/clientJoin" method="post" id="clientJoin" onsubmit="return validateFormInsertC()">
+		<form action="/information/clientJoin" method="post" onsubmit="return validateFormCInsert()">
 	      <div class="modal-body">
 			거래처명 <span style="color:red;">*</span> 
 				<input type="text" name="clientname" class="form-control" id="insertClientName"><br>
@@ -32,7 +38,7 @@
 			
 			사업자 번호 
 				<input type="text" name="businessnumber" class="form-control" placeholder="사업자 번호(예:1234567890)" 
-				  	   title="사업자 번호는 10자리 숫자만 가능합니다."><br>
+				  	   title="사업자 번호는 10자리 숫자만 가능합니다." pattern="[0-9]{10}"><br>
 			대표자 <span style="color:red;">*</span>
 				<input type="text" name="representative" class="form-control" id="insertRepresentative"><br>
 			담당자 <span style="color:red;">*</span>
@@ -43,7 +49,7 @@
 				<input type="tel" name="clientphone" class="form-control" id="insertPhone" placeholder="전화번호(예:01012345678)" 
 					   title="전화번호는 11자리 숫자만 가능합니다." pattern="[0-9]{11}"><br>
 			팩스번호 
-				<input type="tel" name="clientfax" class="form-control" placeholder="팩스번호(예:0101234567)" 
+				<input type="tel" name="clientfax" class="form-control" placeholder="팩스번호(예:0511234567)" 
 					   title="팩스번호는 10자리 숫자만 가능합니다." pattern="[0-9]{10}"><br>
 			E-Mail <span style="color:red;">*</span>
 				<input type="email" name="clientemail" class="form-control" id="insertEmail"><br>
