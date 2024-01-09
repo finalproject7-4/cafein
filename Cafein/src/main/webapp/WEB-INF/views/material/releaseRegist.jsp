@@ -53,7 +53,7 @@
 				</div>				
 				<div class="row">
 					<div class="col">
-						<label for="membercode" class="col-form-label"><b>담당자</b></label>
+						<label for="membercode" class="col-form-label"><b>담당자 (사원번호)</b></label>
 						<input type="text" name="membercode" id="membercode" class="form-control mb-2">
 					</div>
 				</div>										

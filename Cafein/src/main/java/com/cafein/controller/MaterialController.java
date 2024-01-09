@@ -8,6 +8,7 @@ import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
 import com.cafein.domain.OrdersVO;
@@ -51,7 +53,7 @@ public class MaterialController {
 	// http://localhost:8088/material/orders
 	// 발주 목록 - GET
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public void ordersList(Model model, OrdersVO vo, Criteria cri) throws Exception {
+	public void ordersList(HttpSession session, Model model, OrdersVO vo, Criteria cri) throws Exception {
 		logger.debug("ordersList() 호출");
 		logger.debug("OrdersVO: " + vo);
 		
@@ -65,6 +67,7 @@ public class MaterialController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		// 데이터를 연결된 뷰페이지로 전달
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 		model.addAttribute("ordersList", materService.ordersList(vo));
 		model.addAttribute("clientList", cService.clientList()); // 공급처 모달
 		model.addAttribute("itemList", iService.itemList()); // 품목 모달
@@ -76,14 +79,17 @@ public class MaterialController {
 	
 	// 발주 등록 - POST
 	@RequestMapping(value = "/orderRegist", method = RequestMethod.POST)
-	public String orderRegist(OrdersVO vo) throws Exception {
+	public String orderRegist(OrdersVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		logger.debug("orderRegist() 호출");
-			
+		
 		// 생성한 발주코드 저장
 		vo.setOrderscode(generateOrdersCode());
 		
 		// 서비스
 		materService.orderRegist(vo);
+		
+		// 등록 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result", "REGISTOK");
 		
 		return "redirect:/material/orders";
 	} // orderRegist() 끝	
@@ -197,9 +203,9 @@ public class MaterialController {
 	// http://localhost:8088/material/receive
 	// 입고 목록 - GET
 	@RequestMapping(value = "/receive", method = RequestMethod.GET)
-	public void receiveList(Model model, ReceiveVO vo, Criteria cri) throws Exception {
+	public void receiveList(HttpSession session, Model model, ReceiveVO vo, Criteria cri) throws Exception {
 		logger.debug("receiveList() 호출");
-
+		
 		// ReceiveVO의 Criteria 설정
 		vo.setCri(cri);
 		
@@ -210,6 +216,7 @@ public class MaterialController {
 		logger.debug("총 개수: " + pageVO.getTotalCount());
 		
 		// 데이터를 연결된 뷰페이지로 전달
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 		model.addAttribute("receiveList", materService.receiveList(vo));
 		model.addAttribute("ordersList", materService.ordersList());
 		model.addAttribute("storageList", materService.storageList());
@@ -221,17 +228,20 @@ public class MaterialController {
 	
 	// 입고 등록 - POST
 	@RequestMapping(value = "/receiveRegist", method = RequestMethod.POST)
-	public String receiveRegist(ReceiveVO vo) throws Exception {
+	public String receiveRegist(ReceiveVO vo, RedirectAttributes rttr, HttpSession session) throws Exception {
 		logger.debug("receiveRegist() 호출");
-		
+
 		// 생성한 입고코드 저장
 		vo.setReceivecode(generateReceiveCode());
 		
 		// 생성한 LOT번호 저장
 		vo.setLotnumber(generateLotNumber());
 		
-		// 서비스
-		materService.receiveRegist(vo); // 입고 등록
+		// 서비스 - 입고 등록
+		materService.receiveRegist(vo);
+		
+		// 등록 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result", "REGISTOK");
 		
 		return "redirect:/material/receive";
 	}
@@ -369,7 +379,7 @@ public class MaterialController {
 	
 	// 출고 목록 - GET
 	@RequestMapping(value = "/releases", method = RequestMethod.GET)
-	public void releasesList(Model model, ReleasesVO vo, Criteria cri) throws Exception {
+	public void releasesList(HttpSession session, Model model, ReleasesVO vo, Criteria cri) throws Exception {
 		logger.debug("releasesList() 호출");
 
 		// ReleasesVO의 Criteria 설정

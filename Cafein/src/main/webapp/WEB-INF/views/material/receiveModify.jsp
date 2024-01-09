@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- SweetAlert 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
 <!-- 입고 등록 모달창 -->
 <div class="modal fade" id="receiveModifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -89,7 +91,10 @@ $(document).ready(function() {
         var rCount = parseInt($(this).val());
         
         if (rCount > oCount) {
-            alert("입고수량은 발주수량을 초과할 수 없습니다.");
+        	Swal.fire({
+        		icon: "error",
+        		text: "입고수량은 발주수량을 초과할 수 없습니다.",
+        	});
             $(this).val(oCount); // rCount로 값을 변경
         }
     });

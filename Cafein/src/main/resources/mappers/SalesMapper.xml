@@ -44,25 +44,36 @@
 		<if test="postate != null" >
 			postate=#{postate}
 		</if>
-		<if test="searchBtn != null and searchText == null">
-			AND cli.clientname = #{searchBtn}
+		<if test="searchText != null and !searchText.equals('')">
+			cli.clientname LIKE CONCAT('%', #{searchText}, '%')
 		</if>
-		<if test="searchBtn != null and searchText != null">
-			AND item.itemtype = #{searchBtn} 
-			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
-		<if test="searchBtn == null and searchText != null">
-			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
-		</if>
-		<if test="searchBtn != null and startDate == null and endDate == null">
-		AND cli.clientname = #{searchBtn}
-		</if>
-		<if test="searchBtn == null and startDate != null and endDate != null">
-		AND DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
-		</if>
+		
 	</where>
 	ORDER BY ordersdate DESC, poid DESC
 	LIMIT #{cri.startPage}, #{cri.pageSize}
+</select>
+
+	<!-- 수주조회 총개수 -->
+	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
+   SELECT count(*)
+	FROM purchaseorder po
+	JOIN item ON po.itemid = item.itemid
+	JOIN client cli ON po.clientid = cli.clientid
+	<where>
+		<if test="postate != null" >
+			postate=#{postate}
+		</if>
+			<if test="searchText != null and !searchText.equals('')">
+			cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		
+	</where>
 </select>
 
 	
@@ -121,35 +132,6 @@
 		JOIN item ON re.itemid = item.itemid
 		JOIN purchaseorder po ON re.poid = po.poid
 	</select>
-	
-	<!-- 수주조회 총개수 -->
-	<select id="countPO" resultType="int" parameterType="com.cafein.domain.SalesVO">
-   SELECT count(*)
-	FROM purchaseorder po
-	JOIN item ON po.itemid = item.itemid
-	JOIN client cli ON po.clientid = cli.clientid
-	<where>
-		<if test="postate != null" >
-			postate=#{postate}
-		</if>
-		<if test="searchBtn != null and searchText == null">
-			AND cli.clientname = #{searchBtn}
-		</if>
-		<if test="searchBtn != null and searchText != null">
-			AND item.itemtype = #{searchBtn} 
-			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
-		</if>
-		<if test="searchBtn == null and searchText != null">
-			AND cli.clientname LIKE CONCAT('%', #{searchText}, '%')
-		</if>
-		<if test="searchBtn != null and startDate == null and endDate == null">
-		AND cli.clientname = #{searchBtn}
-		</if>
-		<if test="searchBtn == null and startDate != null and endDate != null">
-		AND DATE(ordersdate) BETWEEN #{startDate} AND #{endDate}
-		</if>
-	</where>
-</select>
 
  <!-- 수주상태 대기 -->
  <select id="stop" resultType="com.cafein.domain.SalesVO">
