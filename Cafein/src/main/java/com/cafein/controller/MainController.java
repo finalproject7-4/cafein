@@ -52,6 +52,8 @@ public class MainController {
 			session.setAttribute("departmentname", resultVO.getDepartmentname()); // 직원의 부서
 			session.setAttribute("memberposition", resultVO.getMemberposition()); // 직원의 직급
 			
+			
+			
 			return "redirect:/main/main";
 		}
 		

@@ -140,12 +140,12 @@
 				<input type="button" class="btn btn-sm btn-danger" value="생산중" id="proIng">
 				<input type="button" class="btn btn-sm btn-warning" value="검사대기" id="qccWait">
 			
-			<c:if test="${(departmentname =='생산' && memberposition == '팀장') || membername eq 'admin' } ">
+
 				<span style="float: right;">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">생산지시 등록</button>
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">BOM등록</button>
 				</span>
-			</c:if>
+
 </div>
 
 <!-- 페이지 Ajax 동적 이동 (1) -->
@@ -228,10 +228,10 @@ function fetchData(searchBtnValue) {
 <th scope="col" style="display: none;">아이템ID</th>
 <th scope="col" style="display: none;">포장지시량</th>
 <th scope="col" style="display: none;">생산량</th>
-<c:if test="${(departmentname =='생산' && memberposition == '팀장') || membername == 'admin' } ">
+
 <th scope="col">상태변경</th>
 <th scope="col">공정관리</th>
-</c:if>
+
 <th scope="col" style="display: none;">생산코드</th>
 <th scope="col" style="display: none;">재고ID1</th>
 <th scope="col" style="display: none;">재고ID2</th>
@@ -254,8 +254,8 @@ function fetchData(searchBtnValue) {
 <td style="display: none;">${plist.itemid }</td>
 <td style="display: none;">${plist.packagevol }</td>
 <td style="display: none;">${plist.amount }</td>
-	<c:if test="${(departmentname =='생산' && memberposition == '팀장') || membername == 'admin' } ">
 <td>
+
 	<!-- 블렌딩 대기 상태일때, 상태변경 버튼 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
 	<c:if test="${plist.process == '블렌딩' && plist.state == '대기'}">
 	<input id="BingBtn" type="button" class="btn btn-sm btn-dark m-1" name="state" value="생산중">
@@ -272,10 +272,11 @@ function fetchData(searchBtnValue) {
 	<c:if test="${plist.state == '생산중'&& plist.process =='포장' }">
 	<input id="packageBtn" type="button" onclick="openPackageModal('${plist.produceid}', '${plist.producedate}', '${plist.producetime }', '${plist.produceline}',  '${plist.itemname }', '${plist.itemid }', '${plist.packagevol }', '${plist.amount }')" data-bs-toggle="modal" data-bs-target="#packageModal" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-danger m-1" name="state" value="완료"> 
 	</c:if>
+
 	
 </td>
-<td>
-	
+<td>	
+
 	<!-- 삭제 버튼은 생산공정이 블렌딩이고, 상태가 대기중일 때만 표시 -->
 	<c:if test="${plist.state == '대기' && plist.process=='블렌딩' && plist.qualitycheck == '검사전'}">
 	<input type="submit" id="deletProduceBtn" class="btn btn-sm btn-dark m-1" value="삭제">
@@ -285,10 +286,9 @@ function fetchData(searchBtnValue) {
 	</c:if>
 	<c:if test="${plist.state == '완료' &&  plist.process =='로스팅' && plist.qualitycheck == '정상' }">
 	<input type="button" onclick="openUpdateModal2('${plist.produceid}', '${plist.producedate}', '${plist.produceline}', '${plist.producetime }', '${plist.itemname }', '${plist.itemid }', '${plist.state }','${plist.amount }')" data-bs-toggle="modal" data-bs-target="#updateModal2" data-bs-whatever="@getbootstrap" class="btn btn-sm btn-dark m-1" name="process" value="수정">
-	</c:if>
-	
+	</c:if>	
+
 </td>
-</c:if>
 <td style="display: none;">${plist.producecode }</td>
 <td style="display: none;">${plist.stockid1 }</td>
 <td style="display: none;">${plist.stockid2 }</td>
