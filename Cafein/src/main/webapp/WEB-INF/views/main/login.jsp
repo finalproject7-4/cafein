@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <!DOCTYPE html>
 <html lang="UTF-8">
 
@@ -9,6 +10,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- Favicon -->
     <link href="../resources/img/favicon.ico" rel="icon">
@@ -75,6 +77,38 @@
 	<!-- JavaScript Libraries -->
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script>
+	//form 제출 이벤트를 가로채고 빈 값이 있는지 확인
+	document.getElementById("login").onsubmit = function(event) {
+		
+	    // 사원번호 입력 필드의 값을 가져옴
+	    var membercode = document.getElementById("membercode").value;
+	 	// 비밀번호 입력 필드의 값을 가져옴
+	    var memberpw = document.getElementById("memberpw").value;
+	    
+	    // 사원번호 값이 비어 있는지 확인
+	    if (membercode === "") {
+	        // 사원번호가 비어 있는 경우 알림 메시지를 띄움
+	        Swal.fire({
+	        	  icon: "error",
+	        	  title: "사원번호 입력 오류",
+	        	  text: "사원번호를 입력하세요.",
+        	});
+	        // 폼 제출 중단
+	        event.preventDefault();
+	    }
+	    
+	 	// 비밀번호 값이 비어 있는지 확인
+	    if (membercode != "" && memberpw === "") {
+	        // 비밀번호가 비어 있는 경우 알림 메시지를 띄움
+	        Swal.fire({
+	        	  icon: "error",
+	        	  title: "비밀번호 입력 오류",
+	        	  text: "비밀번호를 입력하세요.",
+        	});
+	        // 폼 제출 중단
+	        event.preventDefault();
+	    }
+	};
 	
 	// 사원번호 기억하기
 	$(document).ready(function() {
