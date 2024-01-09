@@ -23,7 +23,7 @@
 						<select class="form-select" id="worksts2" name="worksts"
 							aria-label="Floating label select example">
 							<optgroup label="작업지시상태">
-								<option value="접수">대기</option>
+								<option value="접수">접수</option>
 								<option value="진행">진행</option>
 								<option value="완료">완료</option>
 							</optgroup>
@@ -53,8 +53,8 @@
 						</div>
 					</div>
 					<br>
-						<div class="col"><input name="workupdate" id="workupdate2" type="hidden" class="form-control"  placeholder="수정일자">
-						</div>
+						<!-- <div class="col"><input name="workdate2" id="workdate21" type="hidden" class="form-control"  placeholder="완료일자">
+						</div> -->
 					<div class="mb-3">
 						<b>담당자</b><input class="form-control" name="membercode" id="membercode2">
 					</div>

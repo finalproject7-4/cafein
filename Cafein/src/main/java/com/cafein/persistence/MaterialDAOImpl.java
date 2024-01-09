@@ -169,5 +169,26 @@ public class MaterialDAOImpl implements MaterialDAO {
 		logger.debug("DAO - selectReleaseListExcel(ReleasesVO vo)");
 		return sqlSession.selectList(NAMESPACE + ".selectReleaseListExcel", vo);
 	}
+
+	// 재고 목록 (모달)
+	@Override
+	public List<ReleasesVO> selectStockList() throws Exception {
+		logger.debug("DAO - selectStockList()");
+		return sqlSession.selectList(NAMESPACE + ".selectStockList");
+	}
+
+	// 출고 수정
+	@Override
+	public int updateRelease(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - updateRelease(ReleasesVO vo)");
+		return sqlSession.update(NAMESPACE + ".updateRelease", vo);
+	}
+
+	// 출고상태 완료 -> 재고관리 출고 데이터 등록
+	@Override
+	public void updateStockQuantity(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - updateStockQuantity(ReleasesVO vo)");
+		sqlSession.update(NAMESPACE + ".updateStockQuantity", vo);
+	}
 	
 }

@@ -68,7 +68,16 @@ public interface MaterialDAO {
 	// 출고코드 개수 계산 (중복코드 생성 방지)
 	public Integer selectReleasecodeCount(String datePart) throws Exception;
 
-	// 출고 목록 목록 (엑셀 파일 다운로드)
+	// 출고 목록 (엑셀 파일 다운로드)
 	public List<ReleasesVO> selectReleaseListExcel(ReleasesVO vo) throws Exception;
+
+	// 재고 목록 (모달)
+	public List<ReleasesVO> selectStockList() throws Exception;
+
+	// 출고 수정
+	public int updateRelease(ReleasesVO vo) throws Exception;
+
+	// 출고상태 완료 -> 재고관리 출고 데이터 등록
+	public void updateStockQuantity(ReleasesVO v) throws Exception;
 
 }

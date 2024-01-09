@@ -60,6 +60,7 @@ public class WorkController {
 		model.addAttribute("pageVO", pageVO);
 		model.addAttribute("pcList", shService.registPC()); 
 		model.addAttribute("mcList", shService.registMC());
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 		
 		logger.debug("작업지시 리스트 출력!");
 		
@@ -70,13 +71,16 @@ public class WorkController {
 	// 작업지시 등록 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/registWK", method = RequestMethod.POST)
-	public String registWK(WorkVO wvo, ShipVO svo,@RequestParam(value = "workdate1") String workdate1) 
+	public String registWK(WorkVO wvo, ShipVO svo, HttpSession session, Model model,
+			@RequestParam(value = "workdate1") String workdate1) 
 										throws Exception {
 		
 		logger.debug("registWK() 호출 ");                                 
 		logger.debug(" wvo : " + wvo);  
 		wvo.setWorkcode(makeWKcode(wvo));
 		wvo.setWorkdate1(Date.valueOf(workdate1));
+		
+		model.addAttribute("membercode", session.getAttribute("membercode"));
 		
 		shService.registWK(wvo);                                                      
 		logger.debug(" 작업지시 등록 완료! ");     
@@ -118,21 +122,24 @@ public class WorkController {
 	// 작업지시 수정 - POST
 	// http://localhost:8088/production/WKList
 	@RequestMapping(value = "/modifyWK", method = RequestMethod.POST)
-	public String modifyPOST(WorkVO wvo,ShipVO svo, Model model) throws Exception {
+	public String modifyPOST(WorkVO wvo, ShipVO svo, HttpSession session, Model model) throws Exception {
 		logger.debug(" /modify form -> modifyPOST()");
 		logger.debug(" 수정할 정보 " + wvo);
 
-		svo.setShipdate1(wvo.getWorkdate1());
-		svo.setShipcode(makeSHcode(svo));
-		svo.setWorkcode(wvo.getWorkcode());
-		svo.setClientname(wvo.getClientname());
-		svo.setItemname(wvo.getItemname());
-		svo.setShipsts(wvo.getWorksts());
-		svo.setPocnt(wvo.getPocnt());
-		svo.setShipdate2(wvo.getWorkdate2());
-		svo.setMembercode(wvo.getMembercode());
-		shService.insertShipList(svo);
-		
+		// 출하 등록 조건 검사
+	    if ("진행".equals(wvo.getWorksts())) {
+	        svo.setShipdate1(wvo.getWorkdate1());
+	        svo.setShipcode(makeSHcode(svo));
+	        svo.setWorkcode(wvo.getWorkcode());
+	        svo.setClientname(wvo.getClientname());
+	        svo.setItemname(wvo.getItemname());
+	        svo.setShipsts(wvo.getWorksts());
+	        svo.setPocnt(wvo.getPocnt());
+	        svo.setShipdate2(wvo.getWorkdate2());
+	        svo.setMembercode(wvo.getMembercode());
+	        shService.insertShipList(svo);
+	        model.addAttribute("membercode", session.getAttribute("membercode")); 
+	    }
 
 		// 서비스 - 정보수정 동작
 		int result = shService.WKModify(wvo);
@@ -142,11 +149,12 @@ public class WorkController {
 	
 	// 작업지시 삭제 - POST
 		@RequestMapping(value = "/WKDelete", method = RequestMethod.POST)
-		public String WKDelete(WorkVO wvo) throws Exception {
+		public String WKDelete(WorkVO wvo, HttpSession session, Model model) throws Exception {
 			logger.debug("WKdelete() 호출");
 			
 			// 서비스
 			shService.WKDelete(wvo);
+			model.addAttribute("membercode", session.getAttribute("membercode")); 
 			
 			return "redirect:/production/WKList";
 		}

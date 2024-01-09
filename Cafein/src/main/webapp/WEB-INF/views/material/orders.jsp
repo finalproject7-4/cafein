@@ -5,6 +5,11 @@
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
+
 <!-- 발주관리 페이지 시작 -->
 <div class="col-12">
 
@@ -56,7 +61,9 @@
 		<div class="buttonarea1">
 			<b>총 ${pageVO.totalCount} 건</b>				
 			<span style="float: right;">
+			  <c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			  </c:if>
 				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
@@ -80,7 +87,9 @@
 						<th scope="col">납기일자</th>
 						<th scope="col">담당자</th>
 						<th scope="col">발주상태</th>
+					    <c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">	
 						<th scope="col">관리</th>
+					    </c:if>	
 					</tr>
 				</thead>
 				<tbody>
@@ -108,20 +117,24 @@
 						<c:choose>
 							<c:when test="${ol.orderstate == '완료'}">
 								<td><b>${ol.orderstate }</b></td>
+								<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-1" 
 										onclick="orderDetailModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">상세내역
 									</button>
 								</td>
+								</c:if>
 							</c:when>
 							<c:otherwise>
 								<td>${ol.orderstate }</td>
+								<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="orderModifyModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">수정
 									</button>
 									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
+								</c:if>
 							</c:otherwise>
 						</c:choose>
 					</tr>
@@ -429,12 +442,23 @@
     }
 	
     // 발주 등록 완료 시 뜨는 알림창
-	var result = "${result}";
+	var result1 = "${result1}";
 	
-	if(result == "REGISTOK"){
+	if(result1 == "REGISTOK"){
 		Swal.fire({
 			  title: "발주 등록 완료",
 			  text: "정상적으로 등록되었습니다.",
+			  icon: "success"
+		});
+	}
+	
+    // 발주 수정 완료 시 뜨는 알림창
+	var result2 = "${result2}";
+	
+	if(result2 == "MODIFYOK"){
+		Swal.fire({
+			  title: "발주 수정 완료",
+			  text: "정상적으로 수정되었습니다.",
 			  icon: "success"
 		});
 	}	

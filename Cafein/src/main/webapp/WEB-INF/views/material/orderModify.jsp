@@ -28,7 +28,7 @@
 				<div class="row">
 					<div class="col">
 						<label for="ordersdate" class="col-form-label"><b>발주일자</b></label>
-						<input type="text" name="ordersdate" id="todayod2" class="form-control mb-2" readonly>
+						<input type="text" id="todayod2" class="form-control mb-2" readonly>
 					</div>
 					<div class="col">
 						<label for="deliverydate" class="col-form-label"><b>납기일자</b></label>
@@ -53,19 +53,19 @@
 					</div>
 					<div class="col">
 						<label for="itemprice" class="col-form-label"><b>단가(원)</b></label>
-						<input type="text" name="itemprice" id="itemprice2" class="form-control mb-2" readonly>
+						<input type="text" id="itemprice2" class="form-control mb-2" readonly>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
-						<label for="orderprice" class="col-form-label"><b>발주금액</b></label>
-						<input type="text" name="orderprice" id="orderprice2" class="form-control mb-2" readonly>
+						<label for="orderprice" class="col-form-label"><b>발주금액(원)</b></label>
+						<input type="text" id="orderprice2" class="form-control mb-2" readonly>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col">
 						<label for="membercode" class="col-form-label"><b>담당자</b></label>
-						<input type="text" name="membercode" id="membername2" class="form-control mb-2" readonly>
+						<input type="text" id="membername2" class="form-control mb-2" readonly>
 					</div>
 				</div>										
 			</div>

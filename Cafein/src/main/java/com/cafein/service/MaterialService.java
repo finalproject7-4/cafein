@@ -71,4 +71,13 @@ public interface MaterialService {
 	// 출고 목록 (엑셀 파일 다운로드)
 	public List<ReleasesVO> releaseListExcel(ReleasesVO vo) throws Exception;
 
+	// 재고 목록 (모달)
+	public List<ReleasesVO> stockList() throws Exception;
+
+	// 출고 수정
+	public int releaseModify(ReleasesVO vo) throws Exception;
+
+	// 출고상태 완료 -> 재고관리 출고 데이터 등록
+	public void stockRegist(ReleasesVO vo) throws Exception;
+
 }

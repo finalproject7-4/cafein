@@ -11,7 +11,7 @@ public class ReceiveVO {
 	private int receiveid;
 	private String receivecode;
 	private String orderscode;
-	private String membercode;
+	private int membercode;
 	private int itemid;
 	private String storagecode;
 	private String lotnumber;

@@ -10,38 +10,23 @@
 		<!-- select * from ship -->
 		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
 		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
-		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
 		FROM ship sh
+		JOIN member mb ON sh.membercode = mb.membercode
 		LEFT JOIN stock st ON sh.stockid = st.stockid
 		<where>
 		<if test="shipsts != null" >
 			shipsts=#{shipsts}
 		</if>
-		<if test="searchBtn != null and searchText == null">
-        AND (sh.clientname = #{searchBtn} OR sh.itemname = #{searchBtn} OR sh.shipcode = #{searchBtn} OR sh.pocode = #{searchBtn})
-    	</if>
-    	<if test="searchBtn != null and searchText != null">
-        AND (
-            sh.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.shipcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn == null and searchText != null">
-        AND (
-            sh.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.shipcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn != null and startDate == null and endDate == null">
-        AND (sh.clientname = #{searchBtn} OR sh.itemname = #{searchBtn} OR sh.shipcode = #{searchBtn} OR sh.pocode = #{searchBtn})
-    	</if>
-    	<if test="searchBtn == null and startDate != null and endDate != null">
-        AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
-    	</if>
+		<if test="searchText != null and !searchText.equals('')">
+            AND (sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.shipcode LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
 		</where>
 		ORDER BY shipdate1 DESC, shipid DESC
 		LIMIT #{cri.startPage}, #{cri.pageSize}
@@ -52,36 +37,20 @@
    SELECT count(*)
 	FROM ship sh
 	LEFT JOIN stock st ON sh.stockid = st.stockid
-	<where>
+		<where>
 		<if test="shipsts != null" >
 			shipsts=#{shipsts}
 		</if>
-		<if test="searchBtn != null and searchText == null">
-        AND (sh.clientname = #{searchBtn} OR sh.itemname = #{searchBtn} OR sh.shipcode = #{searchBtn} OR sh.pocode = #{searchBtn})
-    </if>
-    <if test="searchBtn != null and searchText != null">
-        AND (
-            sh.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.shipcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    </if>
-    <if test="searchBtn == null and searchText != null">
-        AND (
-            sh.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.shipcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            sh.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    </if>
-    <if test="searchBtn != null and startDate == null and endDate == null">
-        AND (sh.clientname = #{searchBtn} OR sh.itemname = #{searchBtn} OR sh.shipcode = #{searchBtn} OR sh.pocode = #{searchBtn})
-    </if>
-    <if test="searchBtn == null and startDate != null and endDate != null">
-        AND DATE(shipdate1) BETWEEN #{startDate} AND #{endDate}
-    </if>
-	</where>
+		<if test="searchText != null and !searchText.equals('')">
+            AND (sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.shipcode LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
 	</select>
 	
 	<!-- 출하 등록 -->
@@ -116,28 +85,24 @@
 	</where>
 	</select>
 
-	<!-- 출하 검색 -->
-	<select id="searchSHList" resultType="com.cafein.domain.ShipVO" parameterType="java.util.Map">
-    <![CDATA[
-        SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
-        sh.stockid, st.stockquantity, sh.itemname, sh.lotnumber, sh.clientname,
-        sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
-        FROM ship sh
-        LEFT JOIN stock st ON sh.stockid = st.stockid
-        WHERE
-            clientname LIKE '%' || #{keyword} || '%' OR
-            itemname LIKE '%' || #{keyword} || '%' OR
-            shipcode LIKE '%' || #{keyword} || '%'
-        ORDER BY shipdate1 DESC, shipid DESC
-    ]]>
-	</select>
-
 	<!-- 출하 수정 -->
 	<update id="updateSH">
 	 	update ship set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, shipsts=#{shipsts}, membercode=#{membercode},
 	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}
 	 	where shipid=#{shipid}
 	 </update>
+	 
+	 <!-- 출하 상태 완료 -->
+	 <update id="ingSHState">
+	 	update ship set shipsts = '완료', shipdate2 = #{shipdate2}
+	 	where shipid=#{shipid}
+	 </update>
+	 
+	<!-- 출하 완료시 작업지시 완료 변경 -->
+	<update id="updateCompletWork">
+		update work set worksts = '완료', workdate2 = #{workdate2}
+		where workcode=#{workcode}
+	</update>
 	
 
 
@@ -148,39 +113,24 @@
 		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
        wk.pocode, wk.itemname,
        wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
-       wk.membercode
+       wk.membercode, mb.membername
 		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
 		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
-    <where>
+		<where>
 		<if test="worksts != null" >
 			worksts=#{worksts}
 		</if>
-		<if test="searchBtn != null and searchText == null">
-        AND (wk.clientname = #{searchBtn} OR wk.itemname = #{searchBtn} OR wk.workcode = #{searchBtn} OR wk.pocode = #{searchBtn})
-    	</if>
-    	<if test="searchBtn != null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn == null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn != null and startDate == null and endDate == null">
-        AND (wk.clientname = #{searchBtn} OR wk.itemname = #{searchBtn} OR wk.workcode = #{searchBtn} OR wk.pocode = #{searchBtn})
-    	</if>
-    	<if test="searchBtn == null and startDate != null and endDate != null">
-        AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
-    	</if>
-	</where>
+		<if test="searchText != null and !searchText.equals('')">
+            AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.workcode LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.pocode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
 		ORDER BY workdate1 DESC, workid DESC
 		LIMIT #{cri.startPage}, #{cri.pageSize}
 	</select>
@@ -195,37 +145,22 @@
 		wk.membercode
 		FROM work wk
 		JOIN purchaseorder po ON wk.pocode = po.pocode
-	<where>
+		<where>
 		<if test="worksts != null" >
 			worksts=#{worksts}
 		</if>
-		<if test="searchBtn != null and searchText == null">
-        AND (wk.clientname = #{searchBtn} OR wk.itemname = #{searchBtn} OR wk.workcode = #{searchBtn} OR wk.pocode = #{searchBtn})
-    	</if>
-    	<if test="searchBtn != null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn == null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.pocode LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn != null and startDate == null and endDate == null">
-        AND (wk.clientname = #{searchBtn} OR wk.itemname = #{searchBtn} OR wk.workcode = #{searchBtn} OR wk.pocode = #{searchBtn})
-    	</if>
-    	<if test="searchBtn == null and startDate != null and endDate != null">
-        AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
-    	</if>
-	</where>
-		ORDER BY workdate1 desc, workid desc) as subquery;
+		<if test="searchText != null and !searchText.equals('')">
+                AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+                OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+                OR wk.workcode LIKE CONCAT('%', #{searchText}, '%')
+                OR wk.pocode LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+			ORDER BY workdate1 desc, workid desc
+			) as subquery;
 	</select>
 	
 	<!-- 작업 지시 등록 -->
@@ -254,7 +189,7 @@
 	<!-- 작업 지시 수정 -->
 	<update id="updateWK">
 	 	update work set pocode=#{pocode}, clientname=#{clientname}, itemname=#{itemname}, worksts=#{worksts}, membercode=#{membercode},
-	 	pocnt=#{pocnt}, workdate1=#{workdate1}, workupdate=#{workupdate}
+	 	pocnt=#{pocnt}, workdate1=#{workdate1}
 	 	where workid=#{workid}
 	 </update>
 	 
@@ -271,10 +206,6 @@
 	</insert>
 	
 	
-	<!-- 작업 진행=출하 진행으로 변경 -->
-	<update id="updateCompletShip">
-		update ship set shipsts = '진행' where workcode=#{workcode}
-	</update>
 	 
 	 
 	 
@@ -282,32 +213,19 @@
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
     SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
-           wk.pocnt, wk.membercode, wk.returnyn, wk.returncount, wk.returnreason
+           wk.pocnt, wk.membercode, mb.membername, wk.returncount, wk.returnreason
     FROM work wk
-  	    <where>
-  	    wk.worksts = '완료'
-		<if test="searchBtn != null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.returnreason LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn == null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.returnreason LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn != null and startDate == null and endDate == null">
-        AND wk.clientname = #{searchBtn}
-    	</if>
-    	<if test="searchBtn == null and startDate != null and endDate != null">
-        AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
-    	</if>
+    JOIN member mb ON wk.membercode = mb.membercode
+ 		<where>
+		wk.worksts = '완료'
+		<if test="searchText != null and !searchText.equals('')">
+            AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(wk.workdate2) BETWEEN #{startDate} AND #{endDate}
+		</if>
 		</where>
     ORDER BY workid DESC 
     LIMIT #{cri.startPage}, #{cri.pageSize}
@@ -317,37 +235,23 @@
 	<select id="countPF" resultType="int" parameterType="com.cafein.domain.WorkVO">
    SELECT count(*)
 	FROM work wk
-	<where>
-	wk.worksts = '완료'
-		<if test="searchBtn != null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.returnreason LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn == null and searchText != null">
-        AND (
-            wk.clientname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.itemname LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.workcode LIKE CONCAT('%', #{searchText}, '%') OR 
-            wk.returnreason LIKE CONCAT('%', #{searchText}, '%')
-        )
-    	</if>
-    	<if test="searchBtn != null and startDate == null and endDate == null">
-        AND wk.clientname = #{searchBtn}
-    	</if>
-    	<if test="searchBtn == null and startDate != null and endDate != null">
-        AND DATE(workdate1) BETWEEN #{startDate} AND #{endDate}
-    	</if>
-	</where>
+ 		<where>
+		wk.worksts = '완료'
+		<if test="searchText != null and !searchText.equals('')">
+            AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(wk.workdate2) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
 	</select>
 	
 	<!-- 실적 수정 -->
 	<update id="updatePF">
 	 	update work set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, membercode=#{membercode},
-	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returnyn=#{returnyn}, returncount=#{returncount}, returnreason=#{returnreason}
+	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returncount=#{returncount}, returnreason=#{returnreason}
 	 	where workid=#{workid}
 	 </update>
 

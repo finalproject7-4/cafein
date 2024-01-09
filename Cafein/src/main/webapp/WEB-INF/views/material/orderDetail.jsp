@@ -51,7 +51,7 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<label for="orderprice" class="col-form-label"><b>발주금액</b></label>
+						<label for="orderprice" class="col-form-label"><b>발주금액(원)</b></label>
 						<input type="text" name="orderprice" id="orderprice3" class="form-control mb-2" readonly>
 					</div>
 				</div>

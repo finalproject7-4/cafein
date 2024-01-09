@@ -23,8 +23,6 @@
 							aria-label="Floating label select example">
 							<optgroup label="작업지시상태">
 								<option value="접수">접수</option>
-								<option value="진행">진행</option>
-								<option value="완료">완료</option>
 							</optgroup>
 						</select>
 					</div>

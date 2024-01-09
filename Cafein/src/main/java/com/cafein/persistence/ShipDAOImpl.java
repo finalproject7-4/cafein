@@ -91,7 +91,13 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : SHModify(ShipVO svo)");
 		return sqlSession.update(NAMESPACE + ".updateSH", svo);
 	}
-	
+
+	// 출하 상태 완료 변경
+	@Override
+	public int ingUpdate(ShipVO svo) throws Exception {
+		logger.debug("DAO : ingUpdate(svo)");
+		return sqlSession.update(NAMESPACE+".ingSHState",svo);
+	}
 	
 	
 	
@@ -163,9 +169,9 @@ public class ShipDAOImpl implements ShipDAO {
 
 	// 작업 진행 = 출하 진행
 	@Override
-	public void updateCompletShip(WorkVO wvo) throws Exception {
-		logger.debug("DAO - 출하 상태 진행으로 변경!");
-		sqlSession.update(NAMESPACE+".updateCompletShip", wvo);
+	public void updateCompletWork(WorkVO wvo) throws Exception {
+		logger.debug("DAO - 작업지시 완료로 변경!");
+		sqlSession.update(NAMESPACE+".updateCompletWork", wvo);
 	}
 
 	// 실적 조회

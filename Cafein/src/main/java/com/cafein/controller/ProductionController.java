@@ -53,6 +53,9 @@ public class ProductionController {
 	public void produceListAllGET(HttpSession session, Model model) throws Exception {
 
 		model.addAttribute("itemList", pService.getBomList());
+		model.addAttribute("membercode", session.getAttribute("membercode"));
+		model.addAttribute("departmentname", session.getAttribute("departmentname"));
+		model.addAttribute("memberposition", session.getAttribute("memberposition"));
 
 	}
 
@@ -76,6 +79,8 @@ public class ProductionController {
 		model.addAttribute("bomList", pService.getBomList());
 		model.addAttribute("newItemList", pService.getNewItem());
 		model.addAttribute("membercode", session.getAttribute("membercode"));
+		model.addAttribute("departmentname", session.getAttribute("departmentname"));
+		model.addAttribute("memberposition", session.getAttribute("memberposition"));
 
 		logger.debug("생산지시 목록 출력!");
 

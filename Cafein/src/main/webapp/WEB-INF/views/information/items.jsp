@@ -5,6 +5,11 @@
 <!-- SweetAlert 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
+
 <!-- 품목관리 페이지 시작 -->
 <div class="col-12">
 
@@ -39,7 +44,9 @@
 		<div class="buttonarea1">
 			<b>총 ${pageVO.totalCount} 건</b>
 			<span style="float: right;">
+			  <c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			  </c:if>
 				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#itemModifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			</span>
@@ -59,7 +66,9 @@
 						<th scope="col">원산지</th>
 						<th scope="col">중량(g)</th>
 						<th scope="col">단가(원)</th>
+					    <c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 						<th scope="col">관리</th>
+					    </c:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -83,12 +92,14 @@
 							<td>
 								<fmt:formatNumber value="${il.itemprice }" pattern="#,###"/>
 							</td>
+							<c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 							<td>
 								<button type="button" class="btn btn-sm btn-warning m-1" 
 									onclick="itemModifyModal('${il.itemid }', '${il.itemcode }', '${il.itemtype }', '${il.itemname }', '${il.clientname }', '${il.origin }', '${il.itemweight }', '${il.itemprice }')">수정
 								</button>
 								<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 							</td>
+							</c:if>
 						</tr>
 					</c:forEach>	
 				</tbody>
@@ -303,15 +314,26 @@
     });
     
     // 품목 등록 완료 시 뜨는 알림창
-	var result = "${result}";
+	var result1 = "${result1}";
 	
-	if(result == "REGISTOK"){
+	if(result1 == "REGISTOK"){
 		Swal.fire({
 			  title: "품목 등록 완료",
 			  text: "정상적으로 등록되었습니다.",
 			  icon: "success"
 		});
-	}    
+	}
+	
+    // 품목 수정 완료 시 뜨는 알림창
+	var result2 = "${result2}";
+	
+	if(result2 == "MODIFYOK"){
+		Swal.fire({
+			  title: "품목 수정 완료",
+			  text: "정상적으로 수정되었습니다.",
+			  icon: "success"
+		});
+	}	
     
     // 품목 삭제
 	$("td").on("click", "#deleteBtn", function() {

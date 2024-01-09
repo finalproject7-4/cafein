@@ -189,7 +189,7 @@
   		values (#{receivecode},#{orderscode},#{membercode},#{itemid},#{storagecode},#{lotnumber},#{receivestate},#{receivedate},#{receivequantity})	
 	</insert>
 	
-	<!-- 입고 완료 후 품질관리로 이동 -->
+	<!-- 입고 완료 후 품질관리 입고 데이터 등록 -->
 	<insert id="insertQuality">
 		insert into quality (receiveid,itemid,itemtype,productquantity)
 		values (#{receiveid},#{itemid},'자재',#{receivequantity})
@@ -236,12 +236,12 @@
 	
 	<!-- 출고 목록 -->
 	<select id="selectReleasesList" resultType="ReleasesVO">
-		select rl.releaseid, rl.releasecode, rl.producecode, rl.stockid, 
+		select rl.releaseid, rl.releasecode, rl.producecode, 
 			   rl.releasestate , rl.releasedate, rl.releasequantity, 
 			   sto.stockquantity, it.itemname, mem.membername
 		from releases rl
 		join stock sto 
-		on rl.stockid = sto.stockid
+		on rl.itemid = sto.itemid
 		left outer join item it
 		on sto.itemid = it.itemid
 		left outer join member mem
@@ -286,12 +286,12 @@
 	
 	<!-- 출고 목록 (엑셀 파일 다운로드) -->
 	<select id="selectReleaseListExcel" resultType="ReleasesVO">
-		select rl.releaseid, rl.releasecode, rl.producecode, rl.stockid, 
+		select rl.releaseid, rl.releasecode, rl.producecode, 
 			   rl.releasestate , rl.releasedate, rl.releasequantity, 
 			   sto.stockquantity, it.itemname, mem.membername
 		from releases rl
 		join stock sto 
-		on rl.stockid = sto.stockid
+		on rl.itemid = sto.itemid
 		left outer join item it
 		on sto.itemid = it.itemid
 		left outer join member mem
@@ -306,5 +306,28 @@
 		</where>		
 		order by rl.releaseid desc	
 	</select>
+	
+	<!-- 재고 목록 -->
+	<select id="selectStockList" resultType="ReleasesVO">
+		select stockid, s.itemid, i.itemname, stockquantity
+		from stock s
+		join quality q
+		on s.qualityid = q.qualityid
+		join item i
+		on s.itemid = i.itemid
+		where q.itemtype = '자재'
+	</select>
+	
+	<!-- 출고 수정 -->
+	<update id="updateRelease">
+		update releases set releasestate=#{releasestate}
+		where releaseid=#{releaseid}
+	</update>
+	
+	<!-- 출고상태 완료 후 재고관리 출고 데이터 등록 -->
+	<update id="updateStockQuantity">
+		update stock set stockquantity = stockquantity - #{releasequantity}
+		where stockid=#{stockid} and itemid=#{itemid}
+	</update>
 	
 </mapper>
