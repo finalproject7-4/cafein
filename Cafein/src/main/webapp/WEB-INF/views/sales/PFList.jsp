@@ -47,38 +47,30 @@
 		<div class="buttonarea1" style="margin-bottom: 10px;">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary" id="allpf">전체</button>
-			<input type="hidden" name="state" value="불량">
-			<button type="button" class="btn btn-sm btn-danger" id="stop">반품</button>
 		</div>
 		
-						<script>
-		$("#allpf").click(function() {
-		   location.href="/sales/PFList";
-		});
+<script>
+    $("#allpf").click(function() {
+        location.href = "/sales/PFList";
+    });
 
-		$("#stop").click(function () {
-		 	console.log("불량 버튼 클릭됨");
-			event.preventDefault();
-		    location.href="/sales/PFList=불량";
-		});
+    function updateTotalCount() {
+        var totalCount = $(".table tbody tr:visible").length;
+        $(".settingPF").text("총 " + totalCount + "건");
+    }
 
-		function updateTotalCount() {
-			var totalCount = $(".table tbody tr:visible").length;
-			$(".settingPF").text("총 " + totalCount + "건");
-		}
+    // 필터링할 때마다 호출하여 업데이트
+    function updateRowNumbers() {
+        var counter = 1;
+        $(".table tbody tr:visible").each(function() {
+            $(this).find('td:nth-child(2)').text(counter);
+            counter++;
+        });
 
-		// 필터링할 때마다 호출하여 업데이트
-		function updateRowNumbers() {
-			var counter = 1;
-			$(".table tbody tr:visible").each(function() {
-				$(this).find('td:nth-child(2)').text(counter);
-				counter++;
-			});
-
-			// 총 건수 업데이트 호출
-			updateTotalCount();
-		}
-		</script>
+        // 총 건수 업데이트 호출
+        updateTotalCount();
+    }
+</script>
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 			<form role="form" action="/sales/PFList" method="post">
 			<div class="table-responsive">
@@ -95,7 +87,9 @@
 								<th scope="col">반품수량</th>
 								<th scope="col">반품사유</th>
 								<th scope="col">담당자</th>
+								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}"> Model model
 								<th scope="col">관리</th>
+								</c:if>
 							</tr>
 						</thead>
 						<tbody>
@@ -110,16 +104,32 @@
 									<td>${pf.clientname}</td>
 									<td>${pf.itemname }</td>
 									<td>${pf.pocnt }</td>
-									<td>${pf.returncount }</td>
-									<td>${pf.returnreason }</td>
-									<td>${pf.membercode }</td>
+									<c:choose>
+            						<c:when test="${empty pf.returncount}">
+               						<td>X</td>
+            						</c:when>
+            						<c:otherwise>
+                					<td>${pf.returncount}</td>
+            						</c:otherwise>
+        							</c:choose>
+									<c:choose>
+            						<c:when test="${empty pf.returnreason}">
+                					 <td style="font-weight: bold; color: blue;">반품없음</td>
+            						</c:when>
+            						<c:otherwise>
+                					<td style="font-weight: bold; color: red;">${pf.returnreason}</td>
+            						</c:otherwise>
+        							</c:choose>
+									<td>${pf.membername }</td>
+									<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-sm btn-warning"
-										onclick="openModifyModal('${pf.workid}', '${pf.workcode }', '${pf.clientname}', '${pf.itemname}', '${pf.pocnt}', '${pf.workdate2}', '${pf.returnreason}', '${pf.returncount}', '${pf.membercode}')">
+										onclick="openModifyModal('${pf.workid}', '${pf.workcode }', '${pf.clientname}', '${pf.itemname}', '${pf.pocnt}', '${pf.workdate2}', '${pf.returncount}', '${pf.returnreason}', '${pf.membercode}')">
    										수정
 									</button>
 									</td>
+									</c:if>
 								</tr>
 								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>

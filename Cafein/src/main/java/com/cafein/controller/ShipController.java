@@ -61,6 +61,7 @@ public class ShipController {
 		model.addAttribute("wcList", shService.registWC());
 		model.addAttribute("mcList", shService.registMC());
 		model.addAttribute("pageVO", pageVO);
+		model.addAttribute("membercode", session.getAttribute("membercode")); 
 		
 		logger.debug("@@@"+shService.registMC());
 		logger.debug("출하 리스트 출력!");
@@ -71,7 +72,7 @@ public class ShipController {
 	// 출하 등록 - POST
 	// http://localhost:8088/sales/SHList
 	@RequestMapping(value = "/registSH", method = RequestMethod.POST)
-	public String registSH(ShipVO svo,
+	public String registSH(ShipVO svo, HttpSession session, Model model,
 							@RequestParam(value = "shipdate1") String shipdate1,
 							RedirectAttributes rttr
 							) throws Exception {
@@ -80,23 +81,14 @@ public class ShipController {
 		logger.debug(" svo : " + svo);                                               
 
 		svo.setShipcode(makeSHcode(svo));
-		svo.setShipdate1(Date.valueOf(shipdate1));	                                         
+		svo.setShipdate1(Date.valueOf(shipdate1));	
+		model.addAttribute("membercode", session.getAttribute("membercode")); 
 		
 		shService.registSH(svo);                                                      
 		logger.debug(" 출하 등록 완료! ");                              
 	                                                                                 
 		logger.debug("/sales/registSH 이동");                                          
 		return "redirect:/sales/SHList";                                             
-	}
-	
-	// 출하 검색
-	@RequestMapping(value = "/SHList", method = RequestMethod.POST)
-	@ResponseBody
-	public List<ShipVO> searchSHListPOST(@RequestBody Map<String, Object> searchParams) throws Exception {
-	    logger.debug("SearchSHListPOST() 실행. 검색 조건: {}", searchParams);
-	    List<ShipVO> result = shService.searchSHList(searchParams);
-	    logger.debug("출하 검색 결과 출력!");
-	    return result;
 	}
 
 	// 출하 코드 생성 메서드
@@ -116,9 +108,11 @@ public class ShipController {
 	// 출하 수정 - POST
 		// http://localhost:8088/sales/SHList
 		@RequestMapping(value = "/modifySH", method = RequestMethod.POST)
-		public String modifyPOST(ShipVO svo) throws Exception {
+		public String modifyPOST(ShipVO svo, HttpSession session, Model model) throws Exception {
 			logger.debug(" /modify form -> modifyPOST()");
 			logger.debug(" 수정할 정보 " + svo);
+			
+			model.addAttribute("membercode", session.getAttribute("membercode")); 
 
 			// 서비스 - 정보수정 동작
 			int result = shService.SHModify(svo);
@@ -131,7 +125,8 @@ public class ShipController {
 		// http://localhost:8088/sales/SHList
 		@RequestMapping(value = "/ingUpdate1", method = RequestMethod.POST)
 		public String ingUpdate(ShipVO svo, WorkVO wvo, @RequestParam("shipid") int shipid,
-				@RequestParam("workcode") String workcode) throws Exception {
+				@RequestParam("workcode") String workcode,
+				HttpSession session, Model model) throws Exception {
 
 			logger.debug("/sales/ingUpdate1() 호출!");
 			svo.setShipid(shipid);
@@ -146,7 +141,7 @@ public class ShipController {
 			shService.ingUpdate(svo);
 			logger.debug("출하상태 업데이트 성공!");
 				
-				
+			model.addAttribute("membercode", session.getAttribute("membercode")); 
 
 			logger.debug("작업지시상태 업데이트 성공!");
 

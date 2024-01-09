@@ -10,8 +10,9 @@
 		<!-- select * from ship -->
 		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
 		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
-		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
 		FROM ship sh
+		JOIN member mb ON sh.membercode = mb.membercode
 		LEFT JOIN stock st ON sh.stockid = st.stockid
 		<where>
 		<if test="shipsts != null" >
@@ -112,8 +113,9 @@
 		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
        wk.pocode, wk.itemname,
        wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
-       wk.membercode
+       wk.membercode, mb.membername
 		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
 		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
 		<where>
 		<if test="worksts != null" >
@@ -211,8 +213,9 @@
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
     SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
-           wk.pocnt, wk.membercode, wk.returncount, wk.returnreason
+           wk.pocnt, wk.membercode, mb.membername, wk.returncount, wk.returnreason
     FROM work wk
+    JOIN member mb ON wk.membercode = mb.membercode
  		<where>
 		wk.worksts = '완료'
 		<if test="searchText != null and !searchText.equals('')">
