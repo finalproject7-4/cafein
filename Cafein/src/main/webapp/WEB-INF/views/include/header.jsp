@@ -55,6 +55,7 @@
 
     <!-- Template Stylesheet -->
     <link href="../resources/css/style.css" rel="stylesheet">
+    <link href="../resources/css/Modal.css" rel="stylesheet">
 </head>
 
 <body>

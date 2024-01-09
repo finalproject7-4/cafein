@@ -513,7 +513,7 @@ public class RestController {
 		public void roastedBeanDefect(QualityVO vo, HttpSession session) throws Exception{
 			qService.roastedBeanDefect(vo);
 			// 검수자 입력 (멤버코드)
-			vo.setAuditbycode((String) session.getAttribute("membercode"));
+			vo.setAuditbycode(session.getAttribute("membercode").toString());
 			
 			int weight = vo.getWeight();
 			int auditquantity = vo.getAuditquantity();

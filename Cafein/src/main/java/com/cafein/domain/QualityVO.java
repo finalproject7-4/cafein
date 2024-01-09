@@ -111,6 +111,8 @@ public class QualityVO {
 	
 	// return 테이블
 	private String reprocessmethod;
+	private String returnstatus;
+	private String returninfo;
 	
 	// 검색용 특별 변수
 	private String startDate;
