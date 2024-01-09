@@ -64,9 +64,8 @@ public class MainController {
 		logger.debug("/views/main/main.jsp 페이지로 이동 ");
 			
 		model.addAttribute("today", proService.getProduceAmountToday());
-		model.addAttribute("thisMonth", proService.getProduceAmountThisMonth());
 		model.addAttribute("thisYear", proService.getProduceAmountThisYear());
-		model.addAttribute("thisWeek", proService.getProduceAmountThisWeek());
+		model.addAttribute("todayGoal", proService.getProduceAmountTodayGoal());
 		model.addAttribute("produceList", proService.getProduceList());
 		
 	}
