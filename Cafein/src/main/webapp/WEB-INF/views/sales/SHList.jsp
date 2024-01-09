@@ -86,7 +86,7 @@
 		</script>
 		
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
-			<form role="form" action="/sales/SHList" method="post">
+			<form role="form" action="/sales/ingUpdate1" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
 					<table class="table" id="workTable">
@@ -123,7 +123,7 @@
 							<td>${sh.clientname}</td>
 							<td>${sh.itemname }</td>
 							<td>${sh.pocnt }</td>
-							<td>${sh.shipsts }</td>
+							<td style="font-weight: bold; ${sh.shipsts == '완료'? 'color:red;' : ''} ${sh.shipsts == '진행'? 'color:blue;' : ''}">${sh.shipsts }</td>
 							<c:choose>
 									<c:when test="${empty sh.shipdate2}">
 										<td>업데이트 날짜 없음</td>
@@ -138,9 +138,7 @@
 									출하 완료
 									</c:if>
 									<c:if test="${sh.shipsts == '진행'}">
-									<button type="button" class="btn btn-outline-dark">
-    										완료
-									</button>
+									<input value="완료" type="submit" class="btn btn-sm btn-info ingUpdate1" data-shipid="${sh.shipid}">
 									</c:if>
 									</td>
 								</tr>
@@ -154,6 +152,54 @@
 			</div>
 			</form>
 			</div>
+			<script>
+			
+			$(".ingUpdate1").click(function() {
+				event.preventDefault();
+
+				var shipid = $(this).data("shipid");
+				// var workcode = $(this).data("workcode");
+				var shipsts = $(this).closest('tr').find('td:nth-child(8)').text(); // 주문 상태 가져오기
+				var workcode = $(this).closest('tr').find('td:nth-child(4)').text();
+				
+				console.log('shipid 값:', shipid);
+				console.log('shipsts 값:', shipsts);
+				console.log('workcode 값:', workcode);
+				
+			
+			Swal.fire({
+					title : '출하를 완료하시겠습니까?',
+					text : '출하 완료로업데이트 됩니다.',
+					icon : 'warning',
+					showCancelButton : true,
+					confirmButtonColor : '#3085d6',
+					cancelButtonColor : '#d33',
+					confirmButtonText : '승인',
+					cancelButtonText : '취소',
+					reverseButtons : false,
+				}).then(function(result) {
+					if (result.value) { //승인시
+						// Ajax 요청 실행
+			$.ajax({
+				type : 'POST',
+				url : '/sales/ingUpdate1',
+				data : {
+					shipid : shipid,
+					workcode : workcode
+				},
+				success : function(response) {
+					console.log('Ajax success:', response);
+					location.reload();
+				},
+				error : function(error) {
+					console.error('Error during cancellation:', error);
+					Swal.fire('완료에 실패했습니다.', '다시 시도해주세요.', 'error');
+				}
+			});
+		}
+	});
+});
+			</script>
 		
 
 				<!-- 페이지 블럭 생성 -->

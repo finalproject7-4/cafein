@@ -40,6 +40,9 @@ public interface ShipDAO {
 	// 출하 수정
 	public int updateSH(ShipVO svo) throws Exception;
 	
+	// 출하 상태 완료 변경
+	public int ingUpdate(ShipVO svo) throws Exception;
+	
 		
 	
 	// 작업 지시 조회
@@ -66,8 +69,8 @@ public interface ShipDAO {
 	// 작업지시 등록시 출하 등록(접수)
 	public void insertShipList(ShipVO svo) throws Exception;
 	
-	// 작업 지시 진행 = 출하 진행
-	public void updateCompletShip(WorkVO wvo) throws Exception;
+	// 출하 완료-> 작업지시 완료
+	public void updateCompletWork(WorkVO wvo) throws Exception;
 	
 	
 	

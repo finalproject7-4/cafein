@@ -89,7 +89,6 @@
 								<th scope="col">납품처</th>
 								<th scope="col">제품명</th>
 								<th scope="col">지시수량</th>
-								<th scope="col">반품처리여부</th>
 								<th scope="col">반품수량</th>
 								<th scope="col">반품사유</th>
 								<th scope="col">담당자</th>
@@ -107,14 +106,13 @@
 									<td>${pf.clientname}</td>
 									<td>${pf.itemname }</td>
 									<td>${pf.pocnt }</td>
-									<td>${pf.returnyn }</td>
 									<td>${pf.returncount }</td>
 									<td>${pf.returnreason }</td>
 									<td>${pf.membercode }</td>
 									<td>
 									<!-- 버튼 수정 -->
-									<button type="button" class="btn btn-outline-dark"
-										onclick="openModifyModal('${pf.workid}', '${pf.workcode }', '${pf.clientname}', '${pf.itemname}', '${pf.pocnt}', '${pf.returnyn }', '${pf.returnreason}', '${pf.returncount}', '${pf.workdate2}', '${pf.membercode}')">
+									<button type="button" class="btn btn-sm btn-warning"
+										onclick="openModifyModal('${pf.workid}', '${pf.workcode }', '${pf.clientname}', '${pf.itemname}', '${pf.pocnt}', '${pf.workdate2}', '${pf.returnreason}', '${pf.returncount}', '${pf.membercode}')">
    										수정
 									</button>
 									</td>
@@ -270,24 +268,7 @@
 
 
 <script>
-// 수정된 값을 서버로 전송
-
-// 직원 불러오기
-$(document).on('click', '#membercode3', function() {
-	$('#mccodeModal2').modal('show');
-	});
-
-// 선택한 행 불러오기
-	$('.mccodeset2').click(function() {
-// 선택한 행의 데이터를 가져오기
-	var membercode = $(this).find('td:eq(2)').text(); // 직원코드
-
-// 첫 번째 모달의 각 입력 필드에 데이터를 설정
-	$('#membercode3').val(membercode);
-
-	$('#mccodeModal2').modal('hide');
-	});
-	
+// 수정된 값을 서버로 전송	
 	
 									
 $("#modifyButton").click(function() {
@@ -297,10 +278,9 @@ $("#modifyButton").click(function() {
     var modifiedClientName = $("#clientname3").val();
     var modifiedItemName = $("#itemname3").val();
     var modifiedPocnt = $("#pocnt3").val();
-    var modifiedReturnYN = $("#returnyn3").val();
+    var modifiedWorkdate2 = $("#workdate23").val();
     var modifiedReturnCount = $("#returncount3").val();
     var modifiedReturnReason = $("#returnreason3").val();
-    var modifiedWorkdate2 = $("#workdate23").val();
     var modifiedMemberCode = $("#membercode3").val();
 
     // Ajax를 사용하여 서버로 수정된 값 전송
@@ -313,10 +293,9 @@ $("#modifyButton").click(function() {
         	 clientname: modifiedClientName,
              itemname: modifiedItemName,
              pocnt: modifiedPocnt,
-             returnyn: modifiedReturnYN,
+             workdate2: modifiedworkdate2,
              returncount: modifiedReturnCount,
              returnreason: modifiedReturnReason,
-             workdate2: modifiedworkdate2,
              membercode: modifiedMemberCode
         },
         success: function(response) {
@@ -328,17 +307,16 @@ $("#modifyButton").click(function() {
         }
     });
 });
-	   function openModifyModal(workid, workcode, clientname, itemname, pocnt, returnyn, returncount, returnreason, workdate2, membercode) {
+	   function openModifyModal(workid, workcode, clientname, itemname, pocnt, workdate2, returncount, returnreason, membercode) {
 
 		   console.log('workid', workid);
 		   console.log('workcode', workcode);
 		   console.log('clientname', clientname);
 		   console.log('itemname', itemname);
 		   console.log('pocnt', pocnt);
-		   console.log('returnyn', returnyn);
+		   console.log('workdate2', workdate2);
 		   console.log('returncount', returncount);
 		   console.log('returnreason', returnreason);
-		   console.log('workdate23', workdate2);
 		   console.log('membercode', membercode);
 		   
 		   // 가져온 값들을 모달에 설정
@@ -347,10 +325,9 @@ $("#modifyButton").click(function() {
 		    $("#clientname3").val(clientname);
 		    $("#itemname3").val(itemname);
 		    $("#pocnt3").val(pocnt);
-		    $("#returnyn3").val(returnyn);
+		    $("#workdate23").val(workdate2);
 		    $("#returncount3").val(returncount);
 		    $("#returnreason3").val(returnreason);
-		    $("#workdate23").val(workdate2);
 		    $("#membercode3").val(membercode);
 
 		    // 모달 열기
