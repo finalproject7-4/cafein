@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
-<link href="../resources/css/POList.css" rel="stylesheet">
+<link href="../resources/css/po.css" rel="stylesheet">
 <br>
 <fieldset>
 
@@ -588,7 +588,7 @@ function printModalContent() {
 		$("#rpocnt").val(pocnt);
 		$("#rordersdate").val(ordersdate);
 		$("#rdate").val(ordersduedate);
-		$("#rmembercode").val(membercode);
+		$(".membercode2").val(membercode);
 		
 		$("#rorigin").val(origin);
 		$("#ritemweight").val(itemweight);
