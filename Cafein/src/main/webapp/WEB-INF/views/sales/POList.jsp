@@ -15,10 +15,10 @@
 				</c:if>
 				<span style="display:flex;">
 				<label style="margin: 5px 10px 0 0;">납품처조회</label>
-				<input type="text" name="searchText" placeholder="납품처명을 입력하세요" class="form-control">
+				<input type="text" name="searchText" placeholder="납품처명을 입력하세요" class="form-control fc fc">
 				<label style="margin: 5px 10px 0 0; margin-left:10em;">수주일자</label>		
-				<input type="date" id="startDate" name="startDate" class="form-control"> &nbsp; ~ &nbsp;
-				<input type="date" id="endDate" name="endDate" class="form-control">
+				<input type="date" id="startDate" name="startDate" class="form-control fc fc"> &nbsp; ~ &nbsp;
+				<input type="date" id="endDate" name="endDate" class="form-control fc fc">
 				<input class="btn btn-sm btn-dark search" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
 			</form>	
 			<form action="POList" method="GET">
@@ -380,12 +380,12 @@
 				<h5 class="modal-title recript-title" id="exampleModalLabel">납품서 미리보기</h5>
 				</div>
 				<div class="modal-body">
-				<input id="rpoid" name="poid" class="form-control mb-3" type="hidden" value="" readonly> 
-				<input id="rupdatedate" name="updatedate" class="form-control mb-3" type="hidden" readonly> 
-				<input id="rclientid" name="clientid" class="form-control mb-3" type="hidden" readonly> 
-				<input id="ritemid" name="itemid" class="form-control mb-3" type="hidden" readonly> 
-				<input id="rpostate" name="postate" class="form-control mb-3" type="hidden" readonly> 
-				<input id="rmembercode" name="membercode" class="form-control mb-3" type="hidden" readonly> 
+				<input id="rpoid" name="poid" class="form-control fc fc mb-3" type="hidden" value="" readonly> 
+				<input id="rupdatedate" name="updatedate" class="form-control fc mb-3" type="hidden" readonly> 
+				<input id="rclientid" name="clientid" class="form-control fc mb-3" type="hidden" readonly> 
+				<input id="ritemid" name="itemid" class="form-control fc mb-3" type="hidden" readonly> 
+				<input id="rpostate" name="postate" class="form-control fc mb-3" type="hidden" readonly> 
+				<input id="rmembercode" name="membercode" class="form-control fc mb-3" type="hidden" readonly> 
 				
 				<div class="col-12" id="pdf">
 				<div class="rounded h-100 p-4 bgray">
@@ -393,44 +393,44 @@
 						aria-label="Close" onclick="location.href='/sales/POList';"></button>
 				<h6 class="modal-title receiptTitle" >납품서</h6>
 				<div class="odate">
-				<label style="color:black;">주문일자</label>&nbsp;&nbsp;&nbsp;<input name="ordersdate" id="rordersdate" type="text" class="form-control form-control-sm"  readonly></div>
+				<label style="color:black;">주문일자</label>&nbsp;&nbsp;&nbsp;<input name="ordersdate" id="rordersdate" type="text" class="form-control fc form-control-sm"  readonly></div>
 							<table class="table table-bordered">
 							<thead>
 									<tr>
 										<td class="pt15 rowspan6" rowspan="6">공급처</td>
 										<td class="pt15"><b>등록번호</b></td>
-										<td colspan="2"><input id="rcafeinNumber" name="cafeinNumber" class="form-control form-control-sm" type="text"  readonly ></td>
+										<td colspan="2"><input id="rcafeinNumber" name="cafeinNumber" class="form-control fc form-control-sm" type="text"  readonly ></td>
 										<td class="pt15 rowspan6" rowspan="6">납품처</td>
 										<td class="pt15"><b>상호</b></td>
-										<td colspan="2"><input id="rclientname" name="clientname" class="form-control form-control-sm" type="text"  readonly></td>
+										<td colspan="2"><input id="rclientname" name="clientname" class="form-control fc form-control-sm" type="text"  readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>상호</b></td>
-										<td colspan="2"><input  id="rcafeinName" name="cafeinName" class="form-control form-control-sm" type="text"  readonly></td>
+										<td colspan="2"><input  id="rcafeinName" name="cafeinName" class="form-control fc form-control-sm" type="text"  readonly></td>
 										<td class="pt15"><b>성명</b></td>
-										<td colspan="2"><input id="rrepresentative" name="representative" class="form-control form-control-sm" type="text" value="" readonly></td>
+										<td colspan="2"><input id="rrepresentative" name="representative" class="form-control fc form-control-sm" type="text" value="" readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>대표자</b></td>
-										<td colspan="2"><input name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>
+										<td colspan="2"><input name="cafeinRepresent" class="form-control fc form-control-sm rcafeinRepresent" type="text" readonly></td>
 										<td class="pt15"><b>주소</b></td>
-										<td colspan="2"><input id="rclientaddress" name="clientaddress" class="form-control form-control-sm" type="text" value="" readonly></td>
+										<td colspan="2"><input id="rclientaddress" name="clientaddress" class="form-control fc form-control-sm" type="text" value="" readonly></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>주소</b></td>
-										<td colspan="2"><input id="rcafeinAddr" name="cafeinAddr" class="form-control form-control-sm" type="text" readonly></td>
+										<td colspan="2"><input id="rcafeinAddr" name="cafeinAddr" class="form-control fc form-control-sm" type="text" readonly></td>
 										<td class="pt15"></td>
 										<td class="pt15" colspan="2"></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>전화번호</b></td>
-										<td colspan="2"><input id="rcafeinCall" name="cafeinCall" class="form-control form-control-sm" type="text" readonly></td>
+										<td colspan="2"><input id="rcafeinCall" name="cafeinCall" class="form-control fc form-control-sm" type="text" readonly></td>
 										<td class="pt15"></td>
 										<td class="pt15" colspan="2"></td>
 									</tr>
 									<tr>
 										<td class="pt15"><b>팩스번호</b></td>
-										<td colspan="2"><input id="rcafeinFax" name="cafeinFax" class="form-control form-control-sm" type="text" readonly></td>
+										<td colspan="2"><input id="rcafeinFax" name="cafeinFax" class="form-control fc form-control-sm" type="text" readonly></td>
 										<td class="pt15"></td>
 										<td class="pt15" colspan="2"></td>
 									</tr>
@@ -449,14 +449,14 @@
 											<th>합계총액(원)</th>
 										</tr>
 										<tr class="inputWidth">
-											<td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
-											<td><input id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
-											<td><input id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input id="ritemprice" name="itemprice" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input id="rpocnt" name="pocnt" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input id="rsum" name="sum" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
-											<td><input  name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+											<td><input id="ritemname" name="itemname" class="form-control fc form-control-sm" type="text" readonly ></td>
+											<td><input id="rorigin" name="origin" class="form-control fc form-control-sm" type="text" value="" readonly></td>
+											<td><input id="ritemweight" name="itemweight" class="form-control fc form-control-sm" type="number" value="" readonly></td>
+											<td><input id="ritemprice" name="itemprice" class="form-control fc form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rpocnt" name="pocnt" class="form-control fc form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rsum" name="sum" class="form-control fc form-control-sm" type="number" value="" readonly></td>
+											<td><input id="rtax" name="tax" class="form-control fc form-control-sm" type="number" value="" readonly></td>
+											<td><input  name="total" class="form-control fc form-control-sm rtotal" type="number"  readonly></td>
 										</tr>
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 										<tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -468,15 +468,15 @@
 										<table class="table table-bordered thirdtable">
 										<tr>
 											<td class="rem13"><b>합계총액(원)</b></td>
-											<td ><input name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
+											<td ><input name="total" class="form-control fc form-control-sm rtotal" type="number"  readonly></td>
 										</tr>
 										<tr>
 											<td class="rem13"><b>납품예정일</b></td>
-											<td ><input name="ordersduedate" type="date" id="rdate" class="form-control form-control-sm" value="" readonly></td>
+											<td ><input name="ordersduedate" type="date" id="rdate" class="form-control fc form-control-sm" value="" readonly></td>
 										</tr>
 										<tr>
 											<td class="rem13"><b>대표자</b></td>
-											<td><input  name="cafeinRepresent" class="form-control form-control-sm rcafeinRepresent" type="text" readonly></td>										</tr>
+											<td><input  name="cafeinRepresent" class="form-control fc form-control-sm rcafeinRepresent" type="text" readonly></td>										</tr>
 									</tbody>
 							</table>
 					<div class="refooter">담당자 &nbsp;&nbsp;&nbsp;<input type="text" class="refooter1" placeholder="담당자를 입력하세요"></div>
