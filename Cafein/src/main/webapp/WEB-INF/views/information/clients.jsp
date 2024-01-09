@@ -27,6 +27,7 @@
 	<!-- 거래처 목록 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
+			<h6 class="mb-4">거래처 목록</h6>
 			<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 			<span style="margin-left: 82%;">
 				<button type="button" class="btn btn-sm btn-dark m-2" 

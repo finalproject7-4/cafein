@@ -65,3 +65,11 @@
 	  </div>
 	</div>
 	
+<script>
+if($('input:radio[name=departmentname]').is(':checked')) {
+	; //통과
+	} else {
+	alert('체크해 주세요');
+	return false;
+	}
+</script>

@@ -49,6 +49,7 @@ public class MainController {
 			session.setAttribute("membercode", resultVO.getMembercode());
 			session.setAttribute("membername", resultVO.getMembername());
 			
+			
 			return "redirect:/main/main";
 		}
 		

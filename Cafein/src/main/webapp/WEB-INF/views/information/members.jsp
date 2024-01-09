@@ -34,6 +34,7 @@
 <!-- 직원 목록 -->
 <div class="col-12">
 	<div class="bg-light rounded h-100 p-4">
+		<h6 class="mb-4">직원 목록</h6>
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 		<span style="margin-left: 82%;">
 		<c:if test="${sessionScope.membername eq '최윤지' }">

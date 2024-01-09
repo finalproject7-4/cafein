@@ -118,5 +118,3 @@ ${resultVO }
 </style>
 <!-- 버튼 색상 css -->
 	
-
-
