@@ -32,7 +32,7 @@
 	#{manager},#{clientaddress},#{clientphone},#{clientfax},#{clientemail})
 </insert>
 
-<!-- 최신 등록된 거래처의 거래처 코드 확인(GPT) -->
+<!-- 최신 등록된 거래처의 거래처 코드 확인 -->
 <select id="getMaxClientCode" resultType="int" parameterType="ClientVO">
 	select count(*) from client 
 		<where>

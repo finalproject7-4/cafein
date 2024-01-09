@@ -67,7 +67,7 @@ public class ShipDAOImpl implements ShipDAO {
 	
 	// 출하 등록 - 멤버 코드
 	@Override
-	public List<ShipVO> registMC() throws Exception {
+	public List<MemberVO> registMC() throws Exception {
 		logger.debug("DAO : 출하 멤버코드");
 		return sqlSession.selectList(NAMESPACE+".mcList");
 	}
@@ -152,10 +152,22 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO - deleteWK(WorkVO wvo)");
 		sqlSession.delete(NAMESPACE + ".deleteWK", wvo);
 	}
+	
+	// 작업 지시 등록과 동시에 출하 등록
+	@Override
+	public void insertShipList(ShipVO svo) throws Exception {
+		logger.debug("DAO - 생산등록해서 출고등록도 한다!");
+		sqlSession.insert(NAMESPACE+".insertShipList",svo);
+		
+	}
 
-	
-	
-	
+	// 작업 진행 = 출하 진행
+	@Override
+	public void updateCompletShip(WorkVO wvo) throws Exception {
+		logger.debug("DAO - 출하 상태 진행으로 변경!");
+		sqlSession.update(NAMESPACE+".updateCompletShip", wvo);
+	}
+
 	// 실적 조회
 	@Override
 	public List<WorkVO> getPFList(WorkVO wvo) throws Exception {

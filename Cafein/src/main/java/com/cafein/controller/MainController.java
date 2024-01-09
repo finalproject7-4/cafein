@@ -27,46 +27,61 @@ public class MainController {
 	@Inject
 	private ProductionService proService;
 	
-	// 로그인 페이지
+	// 로그인 - GET
 	// http://localhost:8088/main/login
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public void loginGET() throws Exception {
-		logger.debug("loginGET() 호출");
-		logger.debug("/views/main/login.jsp 페이지로 이동");
+		logger.debug(" loginGET() 호출 ");
+		logger.debug(" /views/main/login.jsp 페이지로 이동 ");
 	}
 	
+	// 로그인 - POST
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPOST(MemberVO vo, HttpSession session) throws Exception {
-		logger.debug("loginPOST() 호출");
+		logger.debug(" loginPOST() 호출 ");
 		
 		MemberVO resultVO = mainService.memberLogin(vo);
 		
 		if(resultVO != null) {
+			logger.debug(" /views/main/main.jsp 페이지로 이동 ");
 			
+			// 로그인 할 때 세션에 필요한 정보 담아가기
 			session.setAttribute("membercode", resultVO.getMembercode());
-			logger.debug("membercode: " + resultVO.getMembercode());
-			logger.debug("memberpw: " + resultVO.getMemberpw());
-
-			logger.debug("/views/main/main.jsp 페이지로 이동");
+			session.setAttribute("membername", resultVO.getMembername());
+			
+			
 			return "redirect:/main/main";
 		}
 		
 		return "redirect:/main/login";
 	}
 	
-	// 메인페이지
+	// 메인페이지 - GET
 	// http://localhost:8088/main/main
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public void cafeinMain(Model model, ProduceVO vo) throws Exception {
-		
-		logger.debug("컨트롤러 - 메인페이지 호출!");
-				
+		logger.debug(" mainGET() 호출 ");
+		logger.debug("/views/main/main.jsp 페이지로 이동 ");
+			
 		model.addAttribute("today", proService.getProduceAmountToday());
 		model.addAttribute("thisMonth", proService.getProduceAmountThisMonth());
 		model.addAttribute("thisYear", proService.getProduceAmountThisYear());
 		model.addAttribute("thisWeek", proService.getProduceAmountThisWeek());
-		model.addAttribute("produceList", proService.getProduceList());	
+		model.addAttribute("produceList", proService.getProduceList());
 		
 	}
+	
+	// 로그아웃 - GET
+	// http://localhost:8088/main/logout
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutGET(HttpSession session) throws Exception {
+		logger.debug(" logoutGET() 호출 ");
+		
+		// 세션 정보 초기화
+		session.invalidate();
+		
+		return "redirect:/main/login";
+	}
+	
 	
 }

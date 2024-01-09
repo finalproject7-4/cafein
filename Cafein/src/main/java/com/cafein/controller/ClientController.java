@@ -67,24 +67,6 @@ public class ClientController {
 		
 		return code + num;
 		
-		// 코드 만들기는 가능... 왜 순서가 뒤죽박죽...
-//	    String prefix = "";
-//
-//	    if ("납품".equals(vo.getCategoryofclient())) {
-//	        prefix = "D";
-//	    } else if ("공급".equals(vo.getCategoryofclient())) {
-//	        prefix = "S";
-//	    }
-//	    
-//	    // 최대 거래처 코드 조회
-//	    Integer maxCode = cService.maxClientCode(vo);
-//
-//	    if (maxCode == 0) { // 데이터베이스에 거래처가 하나도 등록되어 있지 않은 경우
-//	        maxCode = 100; // 기본값 설정
-//	    }
-//	    
-//	    // 거래처 코드가 존재할 경우 최대 거래처 코드에 +1
-//	    return prefix + (maxCode + 100);
 	}
 	
 	// 거래처 목록 조회 (페이징) - GET

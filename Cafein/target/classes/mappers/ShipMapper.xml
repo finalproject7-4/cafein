@@ -84,9 +84,8 @@
 	</select>
 	
 	<!-- 출하 등록 멤버코드 -->
-	<select id="mcList" resultType="com.cafein.domain.ShipVO">
-		SELECT mb.membercode, mb.membername
-		FROM member mb
+	<select id="mcList" resultType="com.cafein.domain.MemberVO">
+		SELECT * from member
 	</select>
 	
 	<!-- 출하 코드 생성 -->
@@ -221,6 +220,18 @@
 		delete from work
 		where workid=#{workid}
 	</delete>
+	
+	<!-- 출하 리스트 삽입 -->
+	<insert id="insertShipList">
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode} )
+	</insert>
+	
+	
+	<!-- 작업 진행=출하 진행으로 변경 -->
+	<update id="updateCompletShip">
+		update ship set shipsts = '진행' where workcode=#{workcode}
+	</update>
 	 
 	 
 	 

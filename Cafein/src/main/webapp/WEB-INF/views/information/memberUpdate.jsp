@@ -65,11 +65,9 @@ ${resultVO }
 			내선번호 
 				<input type="tel" name="memberdeptphone" class="form-control" id="memberdeptphone" 
 					   title="내선번호는 4자리 숫자만 가능합니다."><br>
-<!-- 					   pattern="[0-9]{4}" title="내선번호는 4자리 숫자만 가능합니다."><br> -->
 			전화번호 <span style="color:red;">*</span>
 				<input type="tel" name="memberphone" class="form-control" id="memberphone"
 					   title="전화번호는 11자리 숫자만 가능합니다." required><br>
-<!-- 					   pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="전화번호는 11자리 숫자만 가능합니다." required><br> -->
 			
 	        <label for="available">활성화 여부</label>
 	        <select id="available" name="available" class="form-select mb-3" aria-label="Default select example" required>
@@ -80,10 +78,8 @@ ${resultVO }
 	      </div>
 	      
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-	        		style="color: #610B0B;background-color: #FBF8EF; border-color: #610B0B;">취소</button>
-	        <button type="submit" class="btn btn-primary" id="memberUpdateModal"
-	        		style="background-color: #610B0B; border-color: #FBF8EF;">수정</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="submit" class="btn btn-primary" id="memberUpdateModal">수정</button>
 	      </div>
 		</form>
 		
@@ -122,5 +118,3 @@ ${resultVO }
 </style>
 <!-- 버튼 색상 css -->
 	
-
-
