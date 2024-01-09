@@ -117,10 +117,10 @@
 							<c:otherwise>
 								<td>${ol.orderstate }</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-dark m-1" 
+									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="orderModifyModal('${ol.ordersid }', '${ol.orderstate }', '${ol.ordersdate }', '${ol.deliverydate }', '${ol.clientname }', '${ol.itemname }', '${ol.ordersquantity }', '${ol.itemprice }', '${ol.orderprice }', '${ol.membername }')">수정
 									</button>
-									<input type="button" class="btn btn-sm btn-dark m-1" value="삭제" id="deleteBtn">
+									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
 							</c:otherwise>
 						</c:choose>

@@ -102,10 +102,10 @@
 							<c:otherwise>
 								<td>${rcl.receivestate }</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-dark m-1" 
+									<button type="button" class="btn btn-sm btn-warning m-1" 
 										onclick="receiveModifyModal('${rcl.receiveid }', '${rcl.itemid }', '${rcl.stockid }', '${rcl.orderscode }', '${rcl.itemname }', '${rcl.ordersquantity }', '${rcl.receivestate }', '${rcl.receivedate }', '${rcl.receivequantity }', '${rcl.storagecode }', '${rcl.lotnumber }', '${rcl.membername }')">수정
 									</button>
-									<input type="button" class="btn btn-sm btn-dark m-1" value="삭제" id="deleteBtn">
+									<input type="button" class="btn btn-sm btn-secondary m-1" value="삭제" id="deleteBtn">
 								</td>
 							</c:otherwise>
 						</c:choose>						
