@@ -51,7 +51,7 @@
 					<br>
 					
 					담당자
-					<input autocomplete="off"  id="membercode" name="membercode" class="form-control mb-3" type="number" placeholder="담당자" autocomplete="off"  required="required">
+					<input autocomplete="off" name="membercode" class="membercode2 form-control mb-3" type="number" placeholder="담당자" autocomplete="off"  required="required">
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

@@ -182,7 +182,7 @@
 	<!-- 검수ID 입력 (반품 테이블) -->
 	<update id="updateReturnsQualityid">
 		UPDATE returns 
-		SET qualityid = #{qualityid}, reprocessmethod = #{reprocessmethod}
+		SET qualityid = #{qualityid}, returnstatus = #{returnstatus}, reprocessmethod = #{reprocessmethod}, returninfo = #{returninfo}  
 		WHERE returnid = #{returnid}
 	</update>
 	
