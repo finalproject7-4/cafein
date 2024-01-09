@@ -5359,7 +5359,7 @@ keyframes progress-bar-stripes { 0%{
 }
 
 .modal-content {
-	margin-top: 50%;
+	margin-top: 20% !important;
     height: 40em;
 	position: relative;
 	display: flex;

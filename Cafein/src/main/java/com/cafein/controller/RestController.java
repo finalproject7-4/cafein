@@ -512,8 +512,11 @@ public class RestController {
 		@PostMapping(value = "/roastedBeanDefect")
 		public void roastedBeanDefect(QualityVO vo, HttpSession session) throws Exception{
 			qService.roastedBeanDefect(vo);
+			
+			int auditbycode = (int) session.getAttribute("membercode");
+			
 			// 검수자 입력 (멤버코드)
-			vo.setAuditbycode(session.getAttribute("membercode").toString());
+			vo.setAuditbycode(auditbycode);
 			
 			int weight = vo.getWeight();
 			int auditquantity = vo.getAuditquantity();
