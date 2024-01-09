@@ -113,6 +113,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${mlist.registerationdate }</td>
 									<td>${mlist.completedate }</td>
 									<td>
+									<c:if test="${sessionScope.membername.equals('강호룡') || sessionScope.membername.equals('admin') }">
 										<c:if test="${mlist.auditstatus.equals('대기') || mlist.auditstatus.equals('검수중') }">
 											<button type="button" class="btn btn-primary btn-sm" 
 												data-bs-toggle="modal" data-bs-target="#materialAuditModal"
@@ -173,6 +174,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													</button>												
 												</c:if>		
 											</c:if>
+										</c:if>
 										</c:if>
 									</td>
 								</tr>
