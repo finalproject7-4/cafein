@@ -28,25 +28,25 @@
 			AND process like concat('%',#{process},'%')
 		</if>
 		
-		<if test="itemname != null and !itemname.equals('') and searchBtn != '오늘' and searchBtn !='검사전' and searchBtn != '대기' and searchBtn == '생산중'">
+		<if test="itemname != null and !itemname.equals('')">
 		<![CDATA[
 			AND p.itemname = #{itemname}
 			]]>
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기' and process == null">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
 			AND state = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중' and process == null">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
 			AND state = #{searchBtn}
 		</if>
 
-		<if test="searchBtn != null and searchBtn=='검사전' and process == null">
+		<if test="searchBtn != null and searchBtn=='검사전'">
 			AND qualitycheck = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn=='오늘' and process == null">
+		<if test="searchBtn != null and searchBtn=='오늘'">
 			AND DATE(producedate) = CURDATE()
 		</if>
 			

@@ -62,7 +62,7 @@
 								<input name="note" class="form-control" id="notePack" style="color:lightgray;" placeholder="특이사항 있을 경우 입력">
 							</div>
 							</div>
-							<div class="row">
+							<div class="row" style="display: none;">
 							<div class="col">
 								<label for="memebercode" class="col-form-label">담당자(사원번호)</label>
 								<input name="membercode" class="form-control" id="membercode" required="required" value="${membercode }" readonly="readonly">
@@ -91,6 +91,16 @@ $(document).ready(function() {
 
         var formData = $(this).serialize(); // 폼 데이터 직렬화
 
+        var searchBtn = "${param.searchBtn}";
+        
+        var currentPage = getCurrentPageNumber();
+		var dataObjectCom = {
+				"page" : currentPage	
+			};
+        if (searchBtn) {
+        	dataObjectCom.searchBtn = searchBtn;
+		}
+        
         $.ajax({
             url: '/production/updateRoastedbeanList',
             type: 'POST',
@@ -98,9 +108,18 @@ $(document).ready(function() {
             success: function(response) {
                 console.log('포장 공정 완료!');
                 Swal.fire("포장 공정 완료");
-                var currentPage = getCurrentPageNumber(); // 현재 페이지 번호를 가져옴
-				getList(currentPage);
                 $('#packageModal').modal('hide');
+                $.ajax({
+					url: "/production/produceList3",
+					type: "GET",
+					data: dataObjectCom,
+					success: function(data) {
+						$("#produceListAll").html(data);
+					},
+				 		error: function(error) {
+						console.error("Error fetching data:", error);
+					}
+				});
             },
             error: function(error) {
                 console.error('포장완료 등록 실패:', error);

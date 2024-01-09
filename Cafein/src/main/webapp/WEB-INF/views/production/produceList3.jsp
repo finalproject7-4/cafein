@@ -521,14 +521,13 @@ function fetchData(searchBtnValue) {
 			
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
-			var pageNum = $(this).data('page');
+			
 				
 				var searchBtn = "${param.searchBtn}";
 				var startDate = "${param.startDate}";
 				var endDate = "${param.endDate}";
 
 				var dataObject = {
-					"page" : pageNum,
 					"produceid" : produceId,
 					"state" : stateValue					
 				};
@@ -541,6 +540,14 @@ function fetchData(searchBtnValue) {
 				}
 				if (endDate) {
 				    dataObject.endDate = endDate;
+				}
+				
+				var currentPage = getCurrentPageNumber();
+				var dataObjectCom = {
+						"page" : currentPage	
+					};
+		        if (searchBtn) {
+		        	dataObjectCom.searchBtn = searchBtn;
 				}
 				
 			// AJAX 요청 수행
@@ -556,7 +563,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 						type: "GET",
-						data: dataObject,
+						data: dataObjectCom,
 						success: function(data) {
     						$("#produceListAll").html(data);
 						},
@@ -587,14 +594,12 @@ function fetchData(searchBtnValue) {
 			var stockId3 = $(this).closest("tr").find("td:eq(17)").text(); // 재고ID3 값
 			var stateValue = $(this).val(); // 버튼의 value 값(생산중 or 완료)
 			
-			var pageNum = $(this).data('page');
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
 			var dataObject = {
-				"page" : pageNum,
 				"produceid" : produceId,
 				"state" : stateValue,
 				"itemid" : itemID,
@@ -614,6 +619,14 @@ function fetchData(searchBtnValue) {
 			if (endDate) {
 			    dataObject.endDate = endDate;
 			}
+
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/BupdateProduceState",
@@ -626,7 +639,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},
@@ -659,7 +672,6 @@ function fetchData(searchBtnValue) {
 		          if (result.value) {
 
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
-			var pageNum = $(this).data('page');
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
@@ -679,6 +691,14 @@ function fetchData(searchBtnValue) {
 			if (endDate) {
 			    dataObject.endDate = endDate;
 			}
+			
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
+					"page" : currentPage	
+				};
+	        if (searchBtn) {
+	        	dataObjectCom.searchBtn = searchBtn;
+			}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/deletePlan",
@@ -693,7 +713,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},
@@ -721,13 +741,11 @@ function fetchData(searchBtnValue) {
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
-			var pageNum = $(this).data('page');
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
 			var dataObject = {
-					"page" : pageNum,
 					"produceid" : produceId,	
 					"itemid" : itemID,
 					"amount" : amount,
@@ -743,7 +761,15 @@ function fetchData(searchBtnValue) {
 				if (endDate) {
 				    dataObject.endDate = endDate;
 				}
-			 
+				
+	
+				var currentPage = getCurrentPageNumber();
+				var dataObjectCom = {
+						"page" : currentPage	
+					};
+		        if (searchBtn) {
+		        	dataObjectCom.searchBtn = searchBtn;
+				}
 			// AJAX 요청 수행
 			$.ajax({
 				url : "/production/processUpdateRoasting",
@@ -756,7 +782,7 @@ function fetchData(searchBtnValue) {
 					$.ajax({
 						url: "/production/produceList3",
 					type: "GET",
-					data: dataObject,
+					data: dataObjectCom,
 					success: function(data) {
 						$("#produceListAll").html(data);
 					},

@@ -48,7 +48,7 @@ public class ProductionController {
 	private MaterialService mateService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
-	// http://localhost:8088/ production/produceList
+	// http://localhost:8088/production/produceList
 	@GetMapping(value = "/produceList")
 	public void produceListAllGET(HttpSession session, Model model) throws Exception {
 
@@ -233,11 +233,7 @@ public class ProductionController {
 		if(vo.getStockid3() != null) {
 			vo.setStockid(vo.getStockid3());
 			pService.updateStockList(vo);
-			}
-		
-		
-		
-		
+			}		
 	}
 	
 	// 품질 데이터 추가 삽입 필요없는 생산 상태 변경 (state) 생산중 or 완료
