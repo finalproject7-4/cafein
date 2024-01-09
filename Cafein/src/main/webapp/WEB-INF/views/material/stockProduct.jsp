@@ -8,6 +8,14 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 "></script>
 <!-- SweetAlert 추가 -->
 
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
+<c:if test="${empty sessionScope.membercode }">
+	<script>
+		location.href="/main/login";
+	</script>
+</c:if>
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
+
 <!-- 재고 조회 -->
 <div class="col-12">
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
