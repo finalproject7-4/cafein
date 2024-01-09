@@ -18,7 +18,7 @@ import com.cafein.domain.PageVO;
 import com.cafein.service.ClientService;
 
 @Controller
-@RequestMapping(value = "information/*")
+@RequestMapping(value = "/information/*")
 public class ClientController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
