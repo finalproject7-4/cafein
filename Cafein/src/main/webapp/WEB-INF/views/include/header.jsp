@@ -55,7 +55,6 @@
 
     <!-- Template Stylesheet -->
     <link href="../resources/css/style.css" rel="stylesheet">
-    <link href="../resources/css/POList.css" rel="stylesheet">
 </head>
 
 <body>

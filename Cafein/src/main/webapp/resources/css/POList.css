@@ -187,3 +187,7 @@ table {
     margin-left: 25.4rem;
     margin-top: -5px;
 }
+
+.searchmini {
+	margin-top: 3px !important;
+}

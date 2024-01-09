@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
+<link href="../resources/css/POList.css" rel="stylesheet">
 <br>
 <fieldset>
 
@@ -19,7 +20,7 @@
 				<label style="margin: 5px 10px 0 0; margin-left:10em;">수주일자</label>		
 				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch"> &nbsp; ~ &nbsp;
 				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch">
-				<input class="btn btn-sm btn-dark search" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
+				<input class="btn btn-sm btn-dark m-2 searchmini" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
 			</form>	
 			<form action="POList" method="GET">
 					<c:if test="${!empty param.searchBtn }">
