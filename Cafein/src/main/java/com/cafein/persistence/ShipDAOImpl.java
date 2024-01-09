@@ -99,8 +99,15 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.update(NAMESPACE+".ingSHState",svo);
 	}
 	
+	// 출하 엑셀
+	@Override
+	public List<ShipVO> selectSHListExcel(ShipVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectSHListExcel", svo);
+	}
 	
 	
+
 
 	// 작업 지시 조회
 	@Override
@@ -115,14 +122,6 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : countWK(wvo)");
 		return sqlSession.selectOne(NAMESPACE+".countWK",wvo);
 	}
-	
-//	// 작업 지시 검색
-//	@Override
-//	public List<WorkVO> searchWKList(String keyword) throws Exception {
-//	    return sqlSession.selectList(NAMESPACE + ".searchWKList", keyword);
-//	}
-
-
 
 	// 작업 지시 등록
 	@Override
@@ -173,6 +172,16 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO - 작업지시 완료로 변경!");
 		sqlSession.update(NAMESPACE+".updateCompletWork", wvo);
 	}
+	
+	// 작업 지시 엑셀
+	@Override
+	public List<WorkVO> selectWKListExcel(WorkVO wvo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectWKListExcel", wvo);
+	}
+	
+	
+	
 
 	// 실적 조회
 	@Override
@@ -194,6 +203,15 @@ public class ShipDAOImpl implements ShipDAO {
 		logger.debug("DAO : PFModify(WorkVO wvo)");
 		return sqlSession.update(NAMESPACE + ".updatePF", wvo);
 	}
+
+	// 실적 엑셀
+	@Override
+	public List<WorkVO> selectPFListExcel(WorkVO wvo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectPFListExcel", wvo);
+	}
+	
+	
 
 	
 	

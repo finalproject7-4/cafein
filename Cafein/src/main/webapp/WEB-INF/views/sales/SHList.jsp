@@ -5,6 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
 <br>
 <fieldset>
 		<div class="col-12">
@@ -38,20 +41,21 @@
 	</div>
 	<br>
 
-	<!-- 작업지시 조회 -->
+	<!-- 출하 조회 -->
 	<div class="col-12" style="margin-top: 20px;">
 		<div class="bg-light rounded h-100 p-4">
 			<h6 class="mb-4">출하 관리  <span class="settingSH">[총 ${countSH}건]</span> </h6>
 
 		<div class="col-12">
 		<div class="buttonarea1" style="margin-bottom: 10px;">
+		<form action="SHListPrint" method="GET">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary"  id="allsh">전체</button>
 			<input type="hidden" name="state" value="진행">
 			<button type="button" class="btn btn-sm btn-danger" id="ing">진행</button>
 			<input type="hidden" name="state" value="완료">
 			<button type="button" class="btn btn-sm btn-warning" id="complete">완료</button>
-		</div>
+		
 		
 		<script>
 		$("#allsh").click(function() {
@@ -88,7 +92,17 @@
 		}
 		</script>
 		
-					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
+				<span style="float: right;">
+			  <c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
+				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			  </c:if>
+				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
+					</span>
+					</form>
+				</div>
+		
 			<form role="form" action="/sales/ingUpdate1" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
@@ -105,7 +119,7 @@
 								<th scope="col">출하상태</th>
 								<th scope="col">완료일자</th>
 								<th scope="col">담당자</th>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+								<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 								<th scope="col">관리</th>
 								</c:if>
 							</tr>
@@ -138,7 +152,7 @@
 									</c:otherwise>
 									</c:choose>
 							<td>${sh.membername }</td>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+							<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 							<td style="font-weight: bold; ${sh.shipsts == '완료'? 'color:red;' : ''}">
 								<c:if test="${sh.shipsts == '완료'}">
 									출하 완료

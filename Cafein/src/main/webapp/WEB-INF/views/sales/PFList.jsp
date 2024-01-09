@@ -5,6 +5,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
 <br>
 <fiedset>
 	<!-- 검색 폼 -->
@@ -45,9 +48,10 @@
 
 		<div class="col-12">
 		<div class="buttonarea1" style="margin-bottom: 10px;">
+		<form action="PFListPrint" method="GET">
 			<input type="hidden" name="state" value="전체">
 			<button type="button" class="btn btn-sm btn-primary" id="allpf">전체</button>
-		</div>
+		
 		
 <script>
     $("#allpf").click(function() {
@@ -71,7 +75,17 @@
         updateTotalCount();
     }
 </script>
-					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
+
+			<span style="float: right;">
+			  <c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
+				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>
+			  </c:if>
+				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderModifyModal" data-bs-whatever="@getbootstrap" value="수정">
+				<input type="hidden" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderDetailModal" data-bs-whatever="@getbootstrap" value="상세내역">
+					</span>
+				</form>
+				</div>
 			<form role="form" action="/sales/PFList" method="post">
 			<div class="table-responsive">
 				<div class="table-responsive" style="text-align: center;">
@@ -87,7 +101,7 @@
 								<th scope="col">반품수량</th>
 								<th scope="col">반품사유</th>
 								<th scope="col">담당자</th>
-								<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}"> Model model
+								<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 								<th scope="col">관리</th>
 								</c:if>
 							</tr>
@@ -121,7 +135,7 @@
             						</c:otherwise>
         							</c:choose>
 									<td>${pf.membername }</td>
-									<c:if test="${sessionScope.membercode eq '1006' or membername eq 'admin'}">
+									<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-sm btn-warning"

@@ -103,6 +103,17 @@
 		update work set worksts = '완료', workdate2 = #{workdate2}
 		where workcode=#{workcode}
 	</update>
+
+	<!-- 리스트 출력 -->
+ 	<select id="selectSHListExcel" resultType="ShipVO">
+		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
+		FROM ship sh
+		JOIN member mb ON sh.membercode = mb.membercode
+		LEFT JOIN stock st ON sh.stockid = st.stockid
+		ORDER BY shipdate1 DESC, shipid DESC
+ 	</select>
 	
 
 
@@ -205,7 +216,17 @@
 		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode} )
 	</insert>
 	
-	
+	<!-- 리스트 출력 -->
+ 	<select id="selectWKListExcel" resultType="WorkVO">
+ 		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
+       wk.pocode, wk.itemname,
+       wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
+       wk.membercode, mb.membername
+		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
+		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
+		ORDER BY workdate1 DESC, workid DESC
+ 	</select>
 	 
 	 
 	 
@@ -254,5 +275,15 @@
 	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returncount=#{returncount}, returnreason=#{returnreason}
 	 	where workid=#{workid}
 	 </update>
+	 
+	<!-- 리스트 출력 -->
+ 	<select id="selectPFListExcel" resultType="WorkVO">
+ 		SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
+        wk.pocnt, wk.membercode, mb.membername, wk.returncount, wk.returnreason
+    	FROM work wk
+    	JOIN member mb ON wk.membercode = mb.membercode
+    	WHERE wk.worksts = '완료'
+		ORDER BY workid DESC 
+ 	</select>
 
 </mapper>

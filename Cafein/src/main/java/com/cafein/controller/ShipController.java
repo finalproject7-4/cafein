@@ -1,33 +1,35 @@
 package com.cafein.controller;
 
+import java.io.OutputStream;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
-import com.cafein.domain.MemberVO;
 import com.cafein.domain.PageVO;
-import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -204,5 +206,157 @@ public class ShipController {
 		logger.debug("result", result);
 		return "redirect:/sales/PFList";
 	}
+	
+	/************************************************************************************************************/
+	// 출하 리스트출력
+	@GetMapping("/SHListPrint") // 기호에 맞게 매핑하시면 됩니다
+	public void SHPrint(HttpServletResponse response, ShipVO svo) throws Exception { 
+		// 메서드명도 기호에 맞게 바꾸시고 HttpServletResponse response만 매개변수로 반드시 받아주세요
+		// 1. 테이블 데이터를 가져옵니다.
+		List<ShipVO> list = shService.SHListExcel(svo); // 서비스에서 리스트로 받아서 List<VO> 형태로 넣어주세요.
+		logger.debug(" list : " + list); // 확인용 로그입니다.
+
+		// 2. 엑셀 데이터로 변환합니다.
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("sheet");
+		
+	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
+	    Row headerRow = (Row) sheet.createRow(0);
+	    String[] headers = {"출하번호", "출하일", "출하코드", "작업지시코드", "납품처명", "품목명", "출하량", "출하상태", "완료일자", "담당자"};
+	    
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	    
+	    for (int i = 0; i < headers.length; i++) {
+	        Cell cell = headerRow.createCell(i);
+	        cell.setCellValue(headers[i]);
+	        cell.setCellStyle(headerStyle);
+	    }
+	    // 첫 번째 행에 열의 헤더 추가
+
+		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작하시면 됩니다.
+		for (ShipVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+			Row row = sheet.createRow(rowNum++);
+
+			int colNum = 0;
+			// 컬럼 내용 추가 (vo의 Getter를 사용하시면 됩니다.)
+			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환입니다. 형식을 정하지 않으면 날짜가 제대로 표기되지 않습니다.
+			CellStyle dateCellStyle = workbook.createCellStyle();
+			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+			
+			row.createCell(colNum++).setCellValue(vo2.getShipid());
+			
+			Cell registrationDateCell = row.createCell(colNum++);
+			registrationDateCell.setCellValue(vo2.getShipdate1()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
+			registrationDateCell.setCellStyle(dateCellStyle);
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+			
+			row.createCell(colNum++).setCellValue(vo2.getShipcode());
+			row.createCell(colNum++).setCellValue(vo2.getWorkcode());
+			row.createCell(colNum++).setCellValue(vo2.getClientname());
+			sheet.setColumnWidth(colNum - 1, 20*256); 
+			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			sheet.setColumnWidth(colNum - 1, 20*256);  // 현재 열의 너비를 자동으로 조정
+			row.createCell(colNum++).setCellValue(vo2.getPocnt());
+			
+			Cell updateDateCell = row.createCell(colNum++);
+			updateDateCell.setCellValue(vo2.getShipdate2()); // 위와 동일
+			updateDateCell.setCellStyle(dateCellStyle);
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+
+			row.createCell(colNum++).setCellValue(vo2.getMembername());
+			sheet.autoSizeColumn(colNum - 1);
+		}
+		
+		String fileName = "ShipList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
+
+		// 3. 엑셀 파일을 저장합니다.
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식입니다
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행됩니다
+		
+        OutputStream out = response.getOutputStream();
+        workbook.write(out);
+        out.flush();
+        
+        out.close();
+        workbook.close();
+	}
+
+	/****************************************************************************************************************************************/
+
+	/************************************************************************************************************/
+	//리스트출력
+	@GetMapping("/PFListPrint") // 기호에 맞게 매핑하시면 됩니다
+	public void PFPrint(HttpServletResponse response, WorkVO wvo) throws Exception { 
+		// 메서드명도 기호에 맞게 바꾸시고 HttpServletResponse response만 매개변수로 반드시 받아주세요
+		// 1. 테이블 데이터를 가져옵니다.
+		List<WorkVO> list = shService.PFListExcel(wvo); // 서비스에서 리스트로 받아서 List<VO> 형태로 넣어주세요.
+		logger.debug(" list : " + list); // 확인용 로그입니다.
+
+		// 2. 엑셀 데이터로 변환합니다.
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("sheet");
+		
+	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
+	    Row headerRow = (Row) sheet.createRow(0);
+	    String[] headers = {"작업지시번호", "작업지시완료일자", "작업지시코드", "납품처명", "품목명", "지시수량", "반품수량", "반품사유", "담당자"};
+	    
+	    CellStyle headerStyle = workbook.createCellStyle();
+	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	    
+	    for (int i = 0; i < headers.length; i++) {
+	        Cell cell = headerRow.createCell(i);
+	        cell.setCellValue(headers[i]);
+	        cell.setCellStyle(headerStyle);
+	    }
+	    // 첫 번째 행에 열의 헤더 추가
+
+		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작하시면 됩니다.
+		for (WorkVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+			Row row = sheet.createRow(rowNum++);
+
+			int colNum = 0;
+			// 컬럼 내용 추가 (vo의 Getter를 사용하시면 됩니다.)
+			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환입니다. 형식을 정하지 않으면 날짜가 제대로 표기되지 않습니다.
+			CellStyle dateCellStyle = workbook.createCellStyle();
+			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+			
+			row.createCell(colNum++).setCellValue(vo2.getWorkid());
+			
+			Cell registrationDateCell = row.createCell(colNum++);
+			registrationDateCell.setCellValue(vo2.getWorkdate2()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
+			registrationDateCell.setCellStyle(dateCellStyle);
+			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+			
+			row.createCell(colNum++).setCellValue(vo2.getWorkcode());
+			row.createCell(colNum++).setCellValue(vo2.getClientname());
+			sheet.setColumnWidth(colNum - 1, 20*256); 
+			row.createCell(colNum++).setCellValue(vo2.getItemname());
+			sheet.setColumnWidth(colNum - 1, 20*256);  // 현재 열의 너비를 자동으로 조정
+			row.createCell(colNum++).setCellValue(vo2.getPocnt());
+			row.createCell(colNum++).setCellValue(vo2.getReturncount());
+			row.createCell(colNum++).setCellValue(vo2.getReturnreason());
+			row.createCell(colNum++).setCellValue(vo2.getMembername());
+			sheet.autoSizeColumn(colNum - 1);
+		}
+		
+		String fileName = "PFList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
+
+		// 3. 엑셀 파일을 저장합니다.
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식입니다
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행됩니다
+		
+        OutputStream out = response.getOutputStream();
+        workbook.write(out);
+        out.flush();
+        
+        out.close();
+        workbook.close();
+	}
+
+	/****************************************************************************************************************************************/
+
 
 }

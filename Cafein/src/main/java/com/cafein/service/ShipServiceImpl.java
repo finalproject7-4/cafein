@@ -38,8 +38,6 @@ public class ShipServiceImpl implements ShipService {
 		return shdao.countSH(svo);
 	}
 
-
-
 	// 출하 등록
 	@Override
 	public void registSH(ShipVO svo) throws Exception {
@@ -96,9 +94,17 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S :ingUpdate(svo)");
 		return shdao.ingUpdate(svo);
 	}
+	
+	// 출하 엑셀
+	@Override
+	public List<ShipVO> SHListExcel(ShipVO svo) throws Exception {
+		// TODO Auto-generated method stub
+		return shdao.selectSHListExcel(svo);
+	}
 
 	
 	
+
 
 
 	// 작업 지시 조회
@@ -114,16 +120,6 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : countWK(WorkVO wvo)");
 		return shdao.countWK(wvo);
 	}
-	
-	
-//	// 작업 지시 검색
-//	@Override
-//	public List<WorkVO> searchWKList(String keyword) throws Exception {
-//		    logger.debug("searchWKList()");
-//		    return shdao.searchWKList(keyword);
-//		}
-
-
 
 	// 작업 지시 등록
 	@Override
@@ -174,6 +170,12 @@ public class ShipServiceImpl implements ShipService {
 		shdao.updateCompletWork(wvo);
 	}
 	
+	// 작업 지시 엑셀
+	@Override
+	public List<WorkVO> WKListExcel(WorkVO wvo) throws Exception {
+		// TODO Auto-generated method stub
+		return shdao.selectWKListExcel(wvo);
+	}
 	
 	
 	
@@ -198,6 +200,15 @@ public class ShipServiceImpl implements ShipService {
 		logger.debug("S : PFModify(int workid)");
 		return shdao.updatePF(wvo);
 	}
+
+	// 실적 엑셀
+	@Override
+	public List<WorkVO> PFListExcel(WorkVO wvo) throws Exception {
+		// TODO Auto-generated method stub
+		return shdao.selectPFListExcel(wvo);
+	}
+	
+	
 
 
 
