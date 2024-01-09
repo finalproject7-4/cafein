@@ -882,10 +882,10 @@ $(document).ready(function() {
         // 검수량 입력 시 생산량 초과 검사
         auditquantityInput.addEventListener('blur', function() {
             if (parseInt(auditquantityInput.value) > parseInt(productquantityInput.value)) {
-                alert('검수량은 생산량보다 많을 수 없습니다.');
+            	Swal.fire('검수량은 생산량보다 많을 수 없습니다.');
                 auditquantityInput.value = auditquantity;  // 검수량을 초기값으로 설정
             }else if(parseInt(auditquantityInput.value) < auditquantity){
-                alert('검수량은 기존 검수량보다 적을 수 없습니다!');
+            	Swal.fire('검수량은 기존 검수량보다 적을 수 없습니다!');
                 auditquantityInput.value = auditquantity;  // 검수량을 초기값으로 설정
             }
             
@@ -910,7 +910,7 @@ $(document).ready(function() {
         // 옵션: 유효성 검사 실패 시 폼 제출 방지
         submitButton.addEventListener('click', function(event) {
             if (parseInt(auditquantityInput.value) > parseInt(productquantityInput.value)) {
-                alert('검수량은 생산량을 초과할 수 없습니다.');
+            	Swal.fire('검수량은 생산량을 초과할 수 없습니다.');
                 event.preventDefault();  // 폼 제출 방지
             }
         });
@@ -1051,12 +1051,12 @@ $(document).ready(function() {
     		
         	// 검수량이 생산량보다 큰 경우
         	if (auditQuantity > productquantity) {
-        		alert("검수량은 반품량보다 많을 수 없습니다!");
+        		Swal.fire("검수량은 반품량보다 많을 수 없습니다!");
         		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
         		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스
         		return;
         	}else if(auditQuantity < auditquantity){
-        		alert("검수량은 기존 검수량보다 적을 수 없습니다!");
+        		Swal.fire("검수량은 기존 검수량보다 적을 수 없습니다!");
         		auditQuantityInput.value = auditquantity; // 검수량 입력 필드 초기화
         		auditQuantityInput.focus();    // 검수량 입력 필드에 포커스 
         		return;
@@ -1072,12 +1072,12 @@ $(document).ready(function() {
 
     		// 불량 개수가 검수량을 초과하는 경우
     		if (defectiveQuantity > auditQuantity) {
-    			alert("불량 개수는 검수량을 초과할 수 없습니다!");
+    			Swal.fire("불량 개수는 검수량을 초과할 수 없습니다!");
     			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
     			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
     			return;
     		}else if(defectiveQuantity < defectquantity){
-    			alert("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
+    			Swal.fire("불량 개수는 기존 불량 개수보다 적을 수 없습니다!");
     			defectiveQuantityInput.value = defectquantity; // 불량 개수 입력 필드 초기화
     			defectiveQuantityInput.focus();    // 불량 개수 입력 필드에 포커스
     			return;
