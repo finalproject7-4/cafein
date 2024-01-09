@@ -655,6 +655,21 @@ $(document).ready(function() {
                 	+ item.lotnumber +
                 	"</td><td>" + 
 					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<c:if test='${empty param.page}'>" +
+					"<input type='hidden' name='page' value='1'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.page}'>" +
+					"<input type='hidden' name='page' value='${param.page}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.searchBtn}'>" +
+					"<input type='hidden' name='searchBtn' value='${param.searchBtn}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.startDate}'>" +
+					"<input type='hidden' name='startDate' value='${param.startDate}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.endDate}'>" +
+					"<input type='hidden' name='endDate' value='${param.endDate}'>" +
+					"</c:if>" + 
 					"<input type='hidden' name='qualityid' value='"+ qualityid + "'>" +
 					"<input type='hidden' name='produceid' value='"+ produceid + "'>" +
 					"<input type='hidden' name='auditcode' value='"+ auditcode + "'>" +
@@ -666,8 +681,23 @@ $(document).ready(function() {
 					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
 					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
 					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
-					"<input type='submit' class='btn btn-sm btn-primary' value='정상'></form></td><td>" +
+					"<input type='submit' class='normalbtn btn btn-sm btn-primary' value='정상'></form></td><td>" +
 					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<c:if test='${empty param.page}'>" +
+					"<input type='hidden' name='page' value='1'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.page}'>" +
+					"<input type='hidden' name='page' value='${param.page}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.searchBtn}'>" +
+					"<input type='hidden' name='searchBtn' value='${param.searchBtn}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.startDate}'>" +
+					"<input type='hidden' name='startDate' value='${param.startDate}'>" +
+					"</c:if>" + 
+					"<c:if test='${!empty param.endDate}'>" +
+					"<input type='hidden' name='endDate' value='${param.endDate}'>" +
+					"</c:if>" + 
 					"<input type='hidden' name='qualityid' value='"+ qualityid + "'>" +
 					"<input type='hidden' name='produceid' value='"+ produceid + "'>" +
 					"<input type='hidden' name='auditcode' value='"+ auditcode + "'>" +
@@ -679,7 +709,7 @@ $(document).ready(function() {
 					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
 					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
 					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
-					"<input type='submit' class='btn btn-sm btn-danger' value='불량'></form></td>";
+					"<input type='submit' class='defectbtn btn btn-sm btn-danger' value='불량'></form></td>";
                     tableBody.innerHTML += row;
                 });
             }
@@ -701,6 +731,22 @@ $(document).ready(function() {
       </div>
       <div class="modal-body">
       
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+            
       	<div class="row">
  			<div class="col">
            		<label for="qualityid3" class="col-form-label">품질관리ID:</label>
@@ -883,6 +929,22 @@ $(document).ready(function() {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
       
       	<div class="row">
  			<div class="col">
