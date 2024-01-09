@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.MemberVO;
 import com.cafein.domain.PageVO;
+import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -125,6 +126,55 @@ public class ShipController {
 			return "redirect:/sales/SHList";
 		}
 
+		
+	//출하상태 완료 변경
+		// http://localhost:8088/sales/SHList
+		@RequestMapping(value = "/ingUpdate1", method = RequestMethod.POST)
+		public String ingUpdate(ShipVO svo, WorkVO wvo, @RequestParam("shipid") int shipid,
+				@RequestParam("workcode") String workcode) throws Exception {
+
+			logger.debug("/sales/ingUpdate1() 호출!");
+			svo.setShipid(shipid);
+			wvo.setWorkcode(workcode);
+				
+			// 출하 완료 시간 설정
+			Date shipDate2 = new Date(System.currentTimeMillis());
+		        svo.setShipdate2(shipDate2);
+				
+			logger.debug("출하상태 변경" + svo.getShipsts());
+			logger.debug("@@@@ 출하id " + svo.getShipid());
+			shService.ingUpdate(svo);
+			logger.debug("출하상태 업데이트 성공!");
+				
+				
+
+			logger.debug("작업지시상태 업데이트 성공!");
+
+			// 작업지시상태 업데이트
+			wvo.setWorkdate1(svo.getShipdate1());
+			wvo.setWorkcode(svo.getWorkcode());
+			wvo.setClientname(svo.getClientname());
+			wvo.setItemname(svo.getItemname());
+			wvo.setWorksts(svo.getShipsts());
+			wvo.setPocnt(svo.getPocnt());
+			wvo.setWorkdate2(svo.getShipdate2());
+			wvo.setMembercode(svo.getMembercode());
+			
+			// 작업지시 완료 시간 설정
+			Date workDate2 = new Date(System.currentTimeMillis());
+			wvo.setShipdate2(workDate2);
+			
+			logger.debug("updateCompletWork 메서드 호출 - 작업상태: " + wvo.getWorksts() + ", 작업코드: " + wvo.getWorkcode());
+			shService.updateCompletWork(wvo);
+			logger.debug("updateCompletWork 메서드 호출 완료!");
+			
+			
+			return "redirect:/sales/SHList";                                             
+		}
+		
+		
+
+		
 	// 실적 조회
 	// http://localhost:8088/sales/PFList
 	@RequestMapping(value = "/PFList", method = RequestMethod.GET)

@@ -90,9 +90,16 @@ public class ShipServiceImpl implements ShipService {
 		return shdao.updateSH(svo);
 	}
 	
+	// 출하 상태 완료 변경
+	@Override
+	public int ingUpdate(ShipVO svo) throws Exception {
+		logger.debug("S :ingUpdate(svo)");
+		return shdao.ingUpdate(svo);
+	}
 
 	
 	
+
 
 	// 작업 지시 조회
 	@Override
@@ -160,11 +167,11 @@ public class ShipServiceImpl implements ShipService {
 		shdao.insertShipList(svo);
 	}
 
-	// 작업 지시 진행 = 출하 진행
+	// 출하 완료 -> 작업지시 완료
 	@Override
-	public void updateCompletShip(WorkVO wvo) throws Exception {
+	public void updateCompletWork(WorkVO wvo) throws Exception {
 		logger.debug("Service - 출하 진행으로 변경!");
-		shdao.updateCompletShip(wvo);
+		shdao.updateCompletWork(wvo);
 	}
 	
 	

@@ -138,6 +138,18 @@
 	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}
 	 	where shipid=#{shipid}
 	 </update>
+	 
+	 <!-- 출하 상태 완료 -->
+	 <update id="ingSHState">
+	 	update ship set shipsts = '완료', shipdate2 = #{shipdate2}
+	 	where shipid=#{shipid}
+	 </update>
+	 
+	<!-- 출하 완료시 작업지시 완료 변경 -->
+	<update id="updateCompletWork">
+		update work set worksts = '완료', workdate2 = #{workdate2}
+		where workcode=#{workcode}
+	</update>
 	
 
 
@@ -254,7 +266,7 @@
 	<!-- 작업 지시 수정 -->
 	<update id="updateWK">
 	 	update work set pocode=#{pocode}, clientname=#{clientname}, itemname=#{itemname}, worksts=#{worksts}, membercode=#{membercode},
-	 	pocnt=#{pocnt}, workdate1=#{workdate1}, workupdate=#{workupdate}
+	 	pocnt=#{pocnt}, workdate1=#{workdate1}
 	 	where workid=#{workid}
 	 </update>
 	 
@@ -271,10 +283,6 @@
 	</insert>
 	
 	
-	<!-- 작업 진행=출하 진행으로 변경 -->
-	<update id="updateCompletShip">
-		update ship set shipsts = '진행' where workcode=#{workcode}
-	</update>
 	 
 	 
 	 
@@ -282,7 +290,7 @@
 	<!-- 실적 조회 -->
 	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
     SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
-           wk.pocnt, wk.membercode, wk.returnyn, wk.returncount, wk.returnreason
+           wk.pocnt, wk.membercode, wk.returncount, wk.returnreason
     FROM work wk
   	    <where>
   	    wk.worksts = '완료'
@@ -347,7 +355,7 @@
 	<!-- 실적 수정 -->
 	<update id="updatePF">
 	 	update work set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, membercode=#{membercode},
-	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returnyn=#{returnyn}, returncount=#{returncount}, returnreason=#{returnreason}
+	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returncount=#{returncount}, returnreason=#{returnreason}
 	 	where workid=#{workid}
 	 </update>
 
