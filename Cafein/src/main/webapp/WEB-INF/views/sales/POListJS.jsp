@@ -267,7 +267,6 @@
 		$("#pocnt2").val(pocnt);
 		$("#ordersdate2").val(ordersdate);
 		$("#date2").val(ordersduedate);
-		$(".membercode2").val(membercode);
 
 		// 모달 열기
 		$("#openModifyModal").modal('show');
