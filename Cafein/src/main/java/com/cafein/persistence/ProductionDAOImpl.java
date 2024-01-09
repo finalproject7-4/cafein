@@ -264,9 +264,9 @@ public class ProductionDAOImpl implements ProductionDAO {
 	
 	// 금주 총 생산량
 	@Override
-	public Integer getProduceAmountThisWeek() throws Exception {
-		logger.debug("DAO - 금주 총 생산량 구하는 getProduceAmountThisWeek() 호출!");
-		return sqlSession.selectOne(NAMESPACE+".getProduceAmountThisWeek");
+	public Integer getProduceAmountTodayGoal() throws Exception {
+		logger.debug("DAO - 금일 목표 생산량 구하는 getProduceAmountTodayGoal() 호출!");
+		return sqlSession.selectOne(NAMESPACE+".getProduceAmountTodayGoal");
 	}
 
 

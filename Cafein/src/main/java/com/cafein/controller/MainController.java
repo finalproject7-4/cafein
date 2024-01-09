@@ -61,7 +61,7 @@ public class MainController {
 			model.addAttribute("today", proService.getProduceAmountToday());
 			model.addAttribute("thisMonth", proService.getProduceAmountThisMonth());
 			model.addAttribute("thisYear", proService.getProduceAmountThisYear());
-			model.addAttribute("thisWeek", proService.getProduceAmountThisWeek());
+			model.addAttribute("todayGoal", proService.getProduceAmountTodayGoal());
 			model.addAttribute("produceList", proService.getProduceList());
 			
 			

@@ -28,25 +28,25 @@
 			AND process like concat('%',#{process},'%')
 		</if>
 		
-		<if test="itemname != null and !itemname.equals('')">
+		<if test="itemname != null and !itemname.equals('') and searchBtn != '오늘' and searchBtn !='검사전' and searchBtn != '대기' and searchBtn == '생산중'">
 		<![CDATA[
 			AND p.itemname = #{itemname}
 			]]>
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기' and process == null">
 			AND state = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중' and process == null">
 			AND state = #{searchBtn}
 		</if>
 
-		<if test="searchBtn != null and searchBtn=='검사전'">
+		<if test="searchBtn != null and searchBtn=='검사전' and process == null">
 			AND qualitycheck = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn=='오늘'">
+		<if test="searchBtn != null and searchBtn=='오늘' and process == null">
 			AND DATE(producedate) = CURDATE()
 		</if>
 			
@@ -72,7 +72,7 @@
 		 	p.producedate between #{startDate} and #{endDate}
 		</if>
 		
-		<if test="process != null and !process.equals('')">
+		<if test="process != null and !process.equals('') ">
 			AND process like concat('%',#{process},'%')
 		</if>
 		
@@ -80,19 +80,19 @@
 			AND p.itemname = #{itemname}
 		</if>
 			
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '대기' and process == null">
 			AND state = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중'">
+		<if test="searchBtn != null and searchBtn !='검사전' and searchBtn == '생산중' and process == null">
 			AND state = #{searchBtn}
 		</if>
 
-		<if test="searchBtn != null and searchBtn=='검사전'">
+		<if test="searchBtn != null and searchBtn=='검사전' and process == null">
 			AND qualitycheck = #{searchBtn}
 		</if>
 		
-		<if test="searchBtn != null and searchBtn=='오늘'">
+		<if test="searchBtn != null and searchBtn=='오늘' and process == null">
 			AND DATE(producedate) = CURDATE()
 		</if>	
 		
@@ -302,11 +302,13 @@
 	</update>
 	
 	<!-- main페이지용 오늘의 생산량과 총 당해, 당월 생산량 구하는 함수들 -->
+	
+	<!-- 당일 생산량 구하는 쿼리 ( -->
 	<select id="getProduceAmountToday" resultType="Integer">
 	<![CDATA[
 		SELECT sum(amount) as todayAmount
 		from produce
-		where DATE(producedate) = CURDATE() and state = '완료'
+		where DATE(producedate) = CURDATE() and process = '포장' and state = '완료'
 	]]>
 	</select>
 	
@@ -328,14 +330,12 @@
 	]]>
 	</select>
 	
-	<!-- 금주 생산량 구하는 쿼리 -->
-	<select id="getProduceAmountThisWeek" resultType="Integer">
+	<!-- 금일 목표 생산량 구하는 쿼리 -->
+	<select id="getProduceAmountTodayGoal" resultType="Integer">
 		<![CDATA[
-		 SELECT SUM(amount) AS thisWeekAmount
-        FROM produce
-        WHERE producedate >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY
-        AND producedate < CURDATE() - INTERVAL DAYOFWEEK(CURDATE())-1 DAY + INTERVAL 1 WEEK
-        AND process = '포장' and state = '완료'
+		 SELECT sum(amount) as todayAmount
+		from produce
+		where DATE(producedate) = CURDATE()
         ]]>
 	</select>
 	

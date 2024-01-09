@@ -48,7 +48,7 @@ public class ProductionController {
 	private MaterialService mateService;
 
 	// 생산지시 관리 입장 페이지 (AJAX용)
-	// http://localhost:8088/production/produceList
+	// http://localhost:8088/ production/produceList
 	@GetMapping(value = "/produceList")
 	public void produceListAllGET(HttpSession session, Model model) throws Exception {
 		session.setAttribute("membercode", "admin"); // 정상 처리 시 세션에 저장된 값 사용 (get으로 변경)
@@ -429,7 +429,7 @@ public class ProductionController {
 		model.addAttribute("today", pService.getProduceAmountToday());
 		model.addAttribute("thisMonth", pService.getProduceAmountThisMonth());
 		model.addAttribute("thisYear", pService.getProduceAmountThisYear());
-		model.addAttribute("thisWeek", pService.getProduceAmountThisWeek());
+		model.addAttribute("todayGoal", pService.getProduceAmountTodayGoal());
 		model.addAttribute("produceList", pService.getProduceList());
 		
 		

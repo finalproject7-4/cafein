@@ -363,11 +363,11 @@ public class ProductionServiceImpl implements ProductionService{
 	}
 	
 	
-	// 금주 총 생산량
+	// 금일 목표 생산량
 	@Override
-	public Integer getProduceAmountThisWeek() throws Exception {
-		logger.debug("Service - 이번주 총 생산량 구하는 getProduceAmountThisWeek() 호출!");
-		return pdao.getProduceAmountThisWeek();
+	public Integer getProduceAmountTodayGoal() throws Exception {
+		logger.debug("Service - 금일 목표 생산량 구하는 getProduceAmountTodayGoal() 호출!");
+		return pdao.getProduceAmountTodayGoal();
 	}
 
 	// 생산지시리스트 출력(메인용)

@@ -9,19 +9,19 @@
 <div class="row g-4">
 <div class="col-sm-6 col-xl-3">
 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-<i class="fa fa-chart-line fa-3x text-primary"></i>
+<i class="fa fa-chart-pie fa-3x text-primary"></i>
 <div class="ms-3">
-<p class="mb-2">오늘 생산량</p>
-<h6 class="mb-0" style="color: red;"><fmt:formatNumber value="${today }"/> g</h6>
+<p class="mb-2">금일 목표량</p>
+<h6 class="mb-0"><fmt:formatNumber value="${todayGoal }"/> g</h6>
 </div>
 </div>
 </div>
 <div class="col-sm-6 col-xl-3">
 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-<i class="fa fa-chart-pie fa-3x text-primary"></i>
+<i class="fa fa-chart-line fa-3x text-primary"></i>
 <div class="ms-3">
-<p class="mb-2">금주 생산량</p>
-<h6 class="mb-0"><fmt:formatNumber value="${thisWeek }"/> g</h6>
+<p class="mb-2">금일 생산량</p>
+<h6 class="mb-0" style="color: red;"><fmt:formatNumber value="${today }"/> g</h6>
 </div>
 </div>
 </div>
