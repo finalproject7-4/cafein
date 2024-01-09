@@ -5,7 +5,7 @@
 	<!-- 상세내역 모달창 -->
 	<div class="modal fade" id="openDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content podetail-content">
 			
 				<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">상세 내역</h5>

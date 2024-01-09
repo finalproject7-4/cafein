@@ -48,6 +48,8 @@
 		</if>
 		<if test="searchText != null and !searchText.equals('')">
 			cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+			or item.itemname LIKE CONCAT('%', #{searchText}, '%')
+			
 		</if>
 		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
 		and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
@@ -70,6 +72,8 @@
 		</if>
 			<if test="searchText != null and !searchText.equals('')">
 			cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+			or item.itemname LIKE CONCAT('%', #{searchText}, '%')
+			
 		</if>
 		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
 		and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
