@@ -157,10 +157,10 @@ public class StockController {
 	// 재고량 변경 (생산 [포장] + 반품)
 	@RequestMapping(value = "/updateStockQuantity", method = RequestMethod.POST)
 	public String updateStockQuantityPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, Criteria cri) throws Exception{
-		
+		logger.debug(" updateStockQuantity 실행! ");		
 		String workerbycode = session.getAttribute("membercode").toString(); // 세션에 있는 사용자코드 받아오기 (수정 예정)
-		
 		vo.setWorkerbycode(workerbycode);
+
 		logger.debug(" vo : " + vo);
 		int result = sService.stockQuantity(vo);
 		
