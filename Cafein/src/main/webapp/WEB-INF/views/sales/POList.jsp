@@ -39,6 +39,9 @@
 		<!-- 수주 리스트 테이블 조회 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" id="ListID">
+		<form action="POListPrint" method="GET">
+			<input id="ListExcel" type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
+		</form><br>
 			<form role="form" action="/sales/cancelUpdate" method="post">
 				<h6 class="settingPO">수주 관리 [총 ${countPO}건]</h6>
 				<!-- 수주 상태에 따라 필터링하는 버튼 -->
@@ -63,7 +66,7 @@
 					data-bs-target="#modifyModal" data-bs-whatever="@getbootstrap" value="수정">
 					<input type="hidden" class="btn btn-dark m-2" data-bs-toggle="modal"
 					data-bs-target="#openReceiptModal" data-bs-whatever="@getbootstrap" value="납품서">
-				<div class="table-responsive">
+				<div class="table-responsive tableMargin">
 					<table class="table">
 						<thead>
 							<tr>
@@ -82,7 +85,7 @@
 								<th scope="col">관리</th>
 								</c:if>
 								<th scope="col">상세내역</th>
-								<th scope="col">납품서발행</th>
+								<th scope="col">납품서 발행</th>
 								
 								<th scope="col" style="display: none;">원산지</th>
 								<th scope="col" style="display: none;">중량</th>
@@ -140,7 +143,7 @@
 											${po.membername}</td>
 											
 											<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
-											<td><input value="진행" type="submit" class="btn btn-sm btn-info ingUpdate" data-poid="${po.poid}"></td>
+											<td><input value="진행" type="submit" class="btn btn-sm btn-primary ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<button type="button" class="btn btn-sm btn-warning updateInfo"
 													onclick="openModifyModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
@@ -337,9 +340,6 @@
 			</nav>
 			<!-- 페이지 블럭 생성 -->
 			</form>
-			<form action="POListPrint" method="GET">
-			<input id="ListExcel" type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
-		</form><br>
 		</div>
 	</div>
 	
