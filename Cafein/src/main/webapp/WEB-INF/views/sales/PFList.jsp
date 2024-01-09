@@ -89,8 +89,9 @@
 								<th scope="col">납품처</th>
 								<th scope="col">제품명</th>
 								<th scope="col">지시수량</th>
-								<th scope="col">불량수량</th>
-								<th scope="col">불량사유</th>
+								<th scope="col">반품처리여부</th>
+								<th scope="col">반품수량</th>
+								<th scope="col">반품사유</th>
 								<th scope="col">담당자</th>
 								<th scope="col">관리</th>
 							</tr>
@@ -106,13 +107,14 @@
 									<td>${pf.clientname}</td>
 									<td>${pf.itemname }</td>
 									<td>${pf.pocnt }</td>
+									<td>${pf.returnyn }</td>
 									<td>${pf.returncount }</td>
 									<td>${pf.returnreason }</td>
 									<td>${pf.membercode }</td>
 									<td>
 									<!-- 버튼 수정 -->
 									<button type="button" class="btn btn-outline-dark"
-										onclick="openModifyModal('${pf.workid}', '${pf.workcode }', '${pf.clientname}', '${pf.itemname}', '${pf.pocnt}', '${pf.returnreason}', '${pf.returncount}', '${pf.workdate2}', '${pf.membercode}')">
+										onclick="openModifyModal('${pf.workid}', '${pf.workcode }', '${pf.clientname}', '${pf.itemname}', '${pf.pocnt}', '${pf.returnyn }', '${pf.returnreason}', '${pf.returncount}', '${pf.workdate2}', '${pf.membercode}')">
    										수정
 									</button>
 									</td>
@@ -263,115 +265,30 @@
 		</div>
 </fiedset>
 
-		<jsp:include page="modifyPF.jsp"/>
-
-<!-- 검색 -->
-<script>
-
-$('.workSearch').on('input', function(event) {
-    filterRows(event);
-});
-    
-function filterRows(event) {
-	// 기본 폼 제출 동작 방지
-	event.preventDefault();
-
-	// 입력된 키워드 가져오기
-	var keyword = $('.workSearch').val().toLowerCase();
-
-	// 시작일자와 종료일자 가져오기
-	var startDate = $('#startDate').val() ? new Date($('#startDate').val())
-			: null;
-	var endDate = $('#endDate').val() ? new Date($('#endDate').val())
-			: null;
-
-	// 테이블의 모든 행 가져오기
-	var rows = $('.table tbody tr');
-
-	// 각 행에 대해 키워드 및 날짜 포함 여부 확인
-	rows.each(function() {
-		var clientName = $(this).find('td:nth-child(5)').text()
-				.toLowerCase();
-		var itemName = $(this).find('td:nth-child(6)').text()
-		.toLowerCase();
-		var workCode = $(this).find('td:nth-child(3)').text().toLowerCase(); // 필요에 따라 열 위치 조절
-        var poCode = $(this).find('td:nth-child(4)').text().toLowerCase(); // 필요에 따라 열 위치 조절
-		var workDateStr = $(this).find('td:nth-child(2)').text();
-		var workDate = workDateStr ? new Date(workDateStr) : null;
-
-		var keywordMatch = keyword === '' || clientName.includes(keyword) || itemName.includes(keyword)|| workCode.includes(keyword) || poCode.includes(keyword);
-		var dateMatch = (startDate === null || (workDate !== null
-				&& workDate >= startDate && workDate <= endDate));
-
-		if (keywordMatch && dateMatch) {
-			$(this).show(); // 키워드 및 날짜가 포함된 경우 행을 표시
-		} else {
-			$(this).hide(); // 키워드 또는 날짜가 포함되지 않은 경우 행을 숨김
-		}
-		console.log('거래처명:', clientName, '품목명:', itemName, '작업코드:', workCode, 'PO코드:', poCode, '작업일자:', workDate,
-	            '키워드 일치:', keywordMatch, '날짜 일치:', dateMatch);
-	});
-
-	// 번호 업뎃
-	updateRowNumbers();
-	// 총 건수 업뎃
-	updateTotalCount();
-	// 폼이 실제로 제출되지 않도록 false 반환
-	return false;
-}
-
-// 테이블에 표시되는 행의 번호를 업데이트하는 함수
-function updateRowNumbers() {
-	// 표시된 행만 선택하여 번호 업데이트
-	var visibleRows = $('.table tbody tr:visible');
-	visibleRows.each(function(index) {
-		// 첫 번째 자식 요소인 td 엘리먼트를 찾아 번호를 업데이트
-		$(this).find('td:first').text(index + 1);
-	});
-}
-// 총 건수 업데이트 함수
-function updateTotalCount() {
-	var totalCount = $('.table tbody tr:visible').length;
-	$('.mb-5').text('[총 ' + totalCount + '건]');
-}
+<jsp:include page="modifyPF.jsp"/>
 
 
-
-$("#allwk").click(function() {
-	$(".table tbody tr").show();
-	updateTotalCount();
-});
-
-$("#stop").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('대기'))").show();
-	updateTotalCount();
-});
-
-$("#ing").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('진행'))").show();
-	updateTotalCount();
-});
-
-$("#complete").click(function() {
-	$(".table tbody tr").hide();
-	$(".table tbody tr:has(td:nth-child(7):contains('완료'))").show();
-	updateTotalCount();
-});
-
-
-
-function updateTotalCount() {
-	var totalCount = $(".table tbody tr:visible").length;
-	$(".mb-5").text("[총 " + totalCount + "건]");
-}
-
-
-</script>
 
 <script>
 // 수정된 값을 서버로 전송
+
+// 직원 불러오기
+$(document).on('click', '#membercode3', function() {
+	$('#mccodeModal2').modal('show');
+	});
+
+// 선택한 행 불러오기
+	$('.mccodeset2').click(function() {
+// 선택한 행의 데이터를 가져오기
+	var membercode = $(this).find('td:eq(2)').text(); // 직원코드
+
+// 첫 번째 모달의 각 입력 필드에 데이터를 설정
+	$('#membercode3').val(membercode);
+
+	$('#mccodeModal2').modal('hide');
+	});
+	
+	
 									
 $("#modifyButton").click(function() {
     // 가져온 값들을 변수에 저장
@@ -380,6 +297,7 @@ $("#modifyButton").click(function() {
     var modifiedClientName = $("#clientname3").val();
     var modifiedItemName = $("#itemname3").val();
     var modifiedPocnt = $("#pocnt3").val();
+    var modifiedReturnYN = $("#returnyn3").val();
     var modifiedReturnCount = $("#returncount3").val();
     var modifiedReturnReason = $("#returnreason3").val();
     var modifiedWorkdate2 = $("#workdate23").val();
@@ -395,6 +313,7 @@ $("#modifyButton").click(function() {
         	 clientname: modifiedClientName,
              itemname: modifiedItemName,
              pocnt: modifiedPocnt,
+             returnyn: modifiedReturnYN,
              returncount: modifiedReturnCount,
              returnreason: modifiedReturnReason,
              workdate2: modifiedworkdate2,
@@ -409,13 +328,14 @@ $("#modifyButton").click(function() {
         }
     });
 });
-	   function openModifyModal(workid, workcode, clientname, itemname, pocnt, returncount, returnreason, workdate2, membercode) {
+	   function openModifyModal(workid, workcode, clientname, itemname, pocnt, returnyn, returncount, returnreason, workdate2, membercode) {
 
 		   console.log('workid', workid);
 		   console.log('workcode', workcode);
 		   console.log('clientname', clientname);
 		   console.log('itemname', itemname);
 		   console.log('pocnt', pocnt);
+		   console.log('returnyn', returnyn);
 		   console.log('returncount', returncount);
 		   console.log('returnreason', returnreason);
 		   console.log('workdate23', workdate2);
@@ -427,6 +347,7 @@ $("#modifyButton").click(function() {
 		    $("#clientname3").val(clientname);
 		    $("#itemname3").val(itemname);
 		    $("#pocnt3").val(pocnt);
+		    $("#returnyn3").val(returnyn);
 		    $("#returncount3").val(returncount);
 		    $("#returnreason3").val(returnreason);
 		    $("#workdate23").val(workdate2);

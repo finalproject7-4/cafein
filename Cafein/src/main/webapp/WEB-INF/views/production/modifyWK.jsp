@@ -29,7 +29,9 @@
 							</optgroup>
 						</select>
 					</div>
-					<br>
+					<div class="mb-3">
+							<b>작업지시코드</b><input id="workcode2" name="workcode" class="form-control" readonly="readonly">
+					</div>
 					<div class="row">
 						<div class="col">
 							<b>수주코드</b><input id="pocode2" name="pocode" class="form-control" readonly="readonly">
@@ -51,12 +53,8 @@
 						</div>
 					</div>
 					<br>
-					<div class="row">
-						<div class="col">
-							<b>수정일자</b><input name="workupdate" id="workupdate2" type="date" class="form-control"  placeholder="수정일자">
+						<div class="col"><input name="workupdate" id="workupdate2" type="hidden" class="form-control"  placeholder="수정일자">
 						</div>
-					</div>
-					<br>
 					<div class="mb-3">
 						<b>담당자</b><input class="form-control" name="membercode" id="membercode2">
 					</div>
@@ -70,4 +68,44 @@
 			</div>
 		</div>
 	</div>
-
+	
+<!-- 멤버불러오기 -->
+<div class="modal fade" id="mccodeModal1" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">직원 목록</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-12">
+					<div class="bg-light rounded h-100 p-4">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">No.</th>
+									<th scope="col">직원 이름</th>
+									<th scope="col">직원 코드</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:set var="counter" value="1" />
+								<c:forEach items="${mcList}" var="mc" varStatus="status">
+									<tr class="mccodeset1">
+										<td>${counter }</td>
+										<td>${mc.membername }</td>
+										<td>${mc.membercode }</td>
+									</tr>
+									<c:set var="counter" value="${counter+1 }" />
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
