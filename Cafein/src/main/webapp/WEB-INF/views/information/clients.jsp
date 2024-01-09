@@ -60,8 +60,12 @@
 								<td>${vo.categoryofclient }</td>
 								<td>${vo.typeofclient }</td>
 								<td>${vo.manager }</td>
-								<td>${vo.clientphone }</td>
-								<td>${vo.clientfax }</td>
+								<td>${vo.clientphone.substring(0,3)}−${vo.clientphone.substring(3,7)}−${vo.clientphone.substring(7)}</td>
+								<td>
+									<c:if test="${!empty vo.clientfax}">
+										${vo.clientfax.substring(0,3)}) ${vo.clientfax.substring(3,6)}−${vo.clientfax.substring(6)}
+									</c:if>
+								</td>
 								<td>${vo.clientemail }</td>
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-2" 
@@ -192,6 +196,58 @@
 <!-- 본문 보기 끝 -->
 
 <script type="text/javascript">
+	
+	// 거래처 등록 모달 유효성 검사
+	function validateFormInsert() {
+		// 각 필수 입력 필드 값
+	    var clientname = document.getElementById("insertClientName").value;
+	    var categoryofclient = document.getElementById("insertCategory").value;
+	    var typeofclient = document.getElementById("insertType").value;
+	    var representative = document.getElementById("insertRepresentative").value;
+	    var manager = document.getElementById("insertManager").value;
+	    var clientphone = document.getElementById("insertPhone").value;
+	    var clientemail = document.getElementById("insertEmail").value;
+	      
+		// 빈 필드 검사
+	    if (clientname === "" || categoryofclient === "" || typeofclient === "" || representative === "" || 
+	    	manager === "" || clientphone === "" || clientemail === "") {
+	
+	        Swal.fire({
+				title : "거래처 등록 오류",
+				text : "필수 내용을 입력해주세요.",
+				icon : "info"
+			});
+	        
+	        return false; // 제출 방지
+	    }
+	    return true;
+	}
+	
+	// 거래처 수정 모달 유효성 검사
+	function validateFormUpdate() {
+		// 각 필수 입력 필드 값
+	    var membername = document.getElementById("membername").value;
+	    var memberpw = document.getElementById("memberpw").value;
+	    var departmentname = document.getElementById("updateDepartment").value;
+	    var memberposition = document.getElementById("updatePosition").value;
+	    var memberemail = document.getElementById("memberemail").value;
+	    var memberphone = document.getElementById("memberphone").value;
+	    var available = document.getElementById("available").value;
+	      
+		// 빈 필드 검사
+	    if (membername === "" || memberpw === "" || departmentname === "" ||
+	    	memberposition === "" || memberemail === "" || memberphone === "" || available === "" ) {
+
+	        Swal.fire({
+				title : "거래처 수정 오류",
+				text : "필수 내용을 입력해주세요.",
+				icon : "info"
+			});
+	        
+	        return false; // 제출 방지
+	    }
+	    return true;
+	}
 
 	// 거래처 수정 모달
 	function clientUpdateModal(clientid, clientname, categoryofclient, typeofclient, businessnumber, representative, manager,

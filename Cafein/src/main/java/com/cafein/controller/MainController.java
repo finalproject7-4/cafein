@@ -47,9 +47,10 @@ public class MainController {
 			logger.debug(" /views/main/main.jsp 페이지로 이동 ");
 			
 			// 로그인 할 때 세션에 필요한 정보 담아가기
-			session.setAttribute("membercode", resultVO.getMembercode());
-			session.setAttribute("membername", resultVO.getMembername());
-			
+			session.setAttribute("membercode", resultVO.getMembercode()); // 직원번호(사원번호)
+			session.setAttribute("membername", resultVO.getMembername()); // 직원이름
+			session.setAttribute("departmentname", resultVO.getDepartmentname()); // 직원의 부서
+			session.setAttribute("memberposition", resultVO.getMemberposition()); // 직원의 직급
 			
 			return "redirect:/main/main";
 		}
