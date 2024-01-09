@@ -625,10 +625,7 @@ $(document).ready(function($) {
             	var receivedate = new Date(data.receivedate);
             	var formattedDate = receivedate.getFullYear() + "-" + 
                 String(receivedate.getMonth() + 1).padStart(2, '0') + "-" + 
-                String(receivedate.getDate()).padStart(2, '0') + " " + 
-                String(receivedate.getHours()).padStart(2, '0') + ":" + 
-                String(receivedate.getMinutes()).padStart(2, '0') + ":" + 
-                String(receivedate.getSeconds()).padStart(2, '0');
+                String(receivedate.getDate()).padStart(2, '0');
             	
             	$("#inforeceivedate").val(formattedDate);
             	$("#inforeceivequantity").val(data.receivequantity);

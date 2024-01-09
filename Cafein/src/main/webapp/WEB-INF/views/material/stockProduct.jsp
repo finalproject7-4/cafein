@@ -547,10 +547,7 @@ $(document).ready(function($) {
             	var roasteddate = new Date(data.roasteddate);
             	var formattedDate = roasteddate.getFullYear() + "-" + 
                 String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
-                String(roasteddate.getDate()).padStart(2, '0') + " " + 
-                String(roasteddate.getHours()).padStart(2, '0') + ":" + 
-                String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
-                String(roasteddate.getSeconds()).padStart(2, '0');
+                String(roasteddate.getDate()).padStart(2, '0');
             	
             	$("#inforoasteddate").val(formattedDate);
             	$("#infonote").val(data.note);
@@ -652,10 +649,7 @@ $(document).ready(function($) {
                         	var roasteddate = new Date(data.roasteddate);
                         	var formattedDate = roasteddate.getFullYear() + "-" + 
                             String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
-                            String(roasteddate.getDate()).padStart(2, '0') + " " + 
-                            String(roasteddate.getHours()).padStart(2, '0') + ":" + 
-                            String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
-                            String(roasteddate.getSeconds()).padStart(2, '0');
+                            String(roasteddate.getDate()).padStart(2, '0');
                         	
                         	$("#inforoasteddate").val(formattedDate);
                         	$("#infonote").val(data.note);
