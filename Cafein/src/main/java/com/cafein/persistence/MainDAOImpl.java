@@ -22,7 +22,7 @@ public class MainDAOImpl implements MainDAO {
 
 	@Override
 	public MemberVO selectLoginMember(MemberVO vo) {
-		logger.debug("DAO - selectLoginMember(MemberVO vo)");
+		logger.debug("DAO : 로그인 selectLoginMember(MemberVO vo)");
 		return sqlSession.selectOne(NAMESPACE + ".loginMember", vo);
 	}
 

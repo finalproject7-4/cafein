@@ -19,7 +19,7 @@ public class MainServiceImpl implements MainService {
 
 	@Override
 	public MemberVO memberLogin(MemberVO vo) throws Exception {
-		logger.debug("Service - memberLogin(MemberVO vo) 호출");
+		logger.debug(" Service - memberLogin(MemberVO vo) 호출 ");
 		return mdao.selectLoginMember(vo);
 	}
 

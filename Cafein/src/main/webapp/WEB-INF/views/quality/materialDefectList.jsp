@@ -23,7 +23,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}">
 				</c:if>
 				<input type="text" name="searchText" placeholder="제품명을 입력하세요" required>
-				<input type="submit" value="검색">
+				<input type="submit" value="조회">
 			</form>	
 			</div>
 			<form action="/materialDefectPrint" method="GET">
@@ -45,7 +45,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 								<th scope="col">상품구분</th>
 								<th scope="col">품목코드</th>
 								<th scope="col">제품명</th>
-								<th scope="col">불량</th>
+								<th scope="col">불량수량</th>
 								<th scope="col">불량사유</th>
 								<th scope="col">처리방식</th>
 								<th scope="col">등록일</th>

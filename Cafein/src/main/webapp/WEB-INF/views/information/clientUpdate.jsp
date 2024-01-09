@@ -43,7 +43,6 @@ ${resultVO }
 			사업자 번호
 				<input type="text" name="businessnumber" class="form-control" id="businessnumber"
 				  	   title="사업자 번호는 10자리 숫자만 가능합니다."><br>
-<!-- 				  	   pattern="[0-9]{3}-[0-9]{2}-[0-9]{5}" title="사업자 번호는 10자리 숫자만 가능합니다."><br> -->
 			대표자 <span style="color:red;">*</span>  
 				<input type="text" name="representative" class="form-control" id="representative" required><br>
 			담당자 <span style="color:red;">*</span>
@@ -53,11 +52,9 @@ ${resultVO }
 			전화번호 <span style="color:red;">*</span>  
 				<input type="tel" name="clientphone" class="form-control" id="clientphone"
 					   title="전화번호는 11자리 숫자만 가능합니다." required><br>
-<!-- 					   pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" title="전화번호는 11자리 숫자만 가능합니다."><br> -->
 			팩스번호   
 				<input type="tel" name="clientfax" class="form-control" id="clientfax"
 					   title="팩스번호는 10자리 숫자만 가능합니다."><br>
-<!-- 					   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="팩스번호는 10자리 숫자만 가능합니다."><br> -->
 			E-Mail <span style="color:red;">*</span>  
 				<input type="email" name="clientemail" class="form-control" id="clientemail" required><br>
 			
@@ -70,10 +67,8 @@ ${resultVO }
 	      </div>
 	      
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-	        		style="color: #610B0B;background-color: #FBF8EF; border-color: #610B0B;">취소</button>
-	        <button type="submit" class="btn btn-primary" id="clientUpdateModal"
-	        		style="background-color: #610B0B; border-color: #FBF8EF;">수정</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="submit" class="btn btn-primary" id="clientUpdateModal">수정</button>
 	      </div>
 		</form>
 		
@@ -91,23 +86,3 @@ ${resultVO }
 	}
 </style>
 <!-- select css -->
-
-<!-- 버튼 색상 css -->
-<style>
-	.btn-outline-primary {
-	    color: #610B0B;
-	    border-color: #610B0B;
-	}
-	.btn-outline-primary:hover {
-	    color: #FBF8EF;
-	    border-color: #FBF8EF;
-	    background-color: #610B0B;
-	}
-	
-	.btn-check:checked+.btn-outline-primary, .btn-check:active+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
-	    color: #FBF8EF;
-	    background-color: #610B0B;
-	    border-color: #610B0B;
-	}
-</style>
-<!-- 버튼 색상 css -->

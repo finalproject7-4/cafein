@@ -168,11 +168,13 @@ function printModalContent() {
   document.body.innerHTML = printContents; // 모달 내용을 현재 페이지에 설정합니다.
   window.print(); // 모달 내용을 인쇄합니다.
   document.body.innerHTML = originalContents; // 원래 페이지의 내용으로 되돌립니다.
-
+	$('#barcodeModal').modal('hide'); // 모달을 닫는 코드
+	getList();
 }
 
 function close(){
 	$('#barcodeModal').modal('hide'); // 모달을 닫는 코드
+	getList(currentPage);
 }
 // btn-close 클래스를 가진 요소를 클릭했을 때 모달을 닫음
 $('.btn-close').click(function() {
