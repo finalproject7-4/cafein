@@ -167,5 +167,26 @@ public class MaterialServiceImpl implements MaterialService {
 		logger.debug("Service - releaseListExcel(ReleasesVO vo)");
 		return materdao.selectReleaseListExcel(vo);
 	}
+
+	// 재고 목록 (모달)
+	@Override
+	public List<ReleasesVO> stockList() throws Exception {
+		logger.debug("Service - stockList()");
+		return materdao.selectStockList();
+	}
+
+	// 출고 수정
+	@Override
+	public int releaseModify(ReleasesVO vo) throws Exception {
+		logger.debug("Service - releaseModify(ReleasesVO vo)");
+		return materdao.updateRelease(vo);
+	}
+
+	// 출고상태 완료 -> 재고관리 출고 데이터 등록
+	@Override
+	public void stockRegist(ReleasesVO vo) throws Exception {
+		logger.debug("Service - stockRegist(ReleasesVO vo)");
+		materdao.updateStockQuantity(vo);
+	}
 	
 }

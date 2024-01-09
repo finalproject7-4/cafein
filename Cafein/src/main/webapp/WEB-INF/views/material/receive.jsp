@@ -256,7 +256,6 @@
                             	<thead>
                                 	<tr>
                                 	   <th style="display: none;"></th>
-                                	   <th style="display: none;"></th>
                                        <th scope="col">발주코드</th>
                                        <th scope="col">품명</th>
                                        <th scope="col">수량</th>
@@ -386,12 +385,23 @@
     }
 
     // 입고 등록 완료 시 뜨는 알림창
-	var result = "${result}";
+	var result1 = "${result1}";
 	
-	if(result == "REGISTOK"){
+	if(result1 == "REGISTOK"){
 		Swal.fire({
 			  title: "입고 등록 완료",
 			  text: "정상적으로 등록되었습니다.",
+			  icon: "success"
+		});
+	}	
+	
+    // 입고 수정 완료 시 뜨는 알림창
+	var result2 = "${result2}";
+	
+	if(result2 == "MODIFYOK"){
+		Swal.fire({
+			  title: "입고 수정 완료",
+			  text: "정상적으로 수정되었습니다.",
 			  icon: "success"
 		});
 	}	
@@ -446,7 +456,6 @@
 	document.getElementById("receivedate").setAttribute("min", today);
 	
     $(document).ready(function() {
-    	
     	// 발주 목록 모달
 	    $("#orderscode").click(function() {
 	        $("#ordersListModal").modal('show');
@@ -477,7 +486,6 @@
 	        $('#storagecode').val(selectedStorageCode);
 	        $('#storageListModal').modal('hide');
 	    });
-	    
     });
 </script>	
 

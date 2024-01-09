@@ -20,7 +20,7 @@
 					<div class="row">
 						<div class="col">
 							<label for="itemname" class="col-form-label"><b>품명</b></label>
-							<input type="text" id="itemname2" name="itemname" class="form-control mb-3" value="">
+							<input type="text" id="itemname2" name="itemname" class="form-control mb-3">
 						</div>
 					</div>
 					<div class="row">
@@ -36,11 +36,11 @@
 					<div class="row">
 						<div class="col">
 							<label for="itemweight" class="col-form-label"><b>중량(g)</b></label>
-							<input type="text" id="itemweight2" name="itemweight" class="form-control mb-3" value="">
+							<input type="text" id="itemweight2" name="itemweight" class="form-control mb-3">
 						</div>
 						<div class="col">
 							<label for="itemprice" class="col-form-label"><b>단가(원)</b></label>
-							<input type="text" id="itemprice2" name="itemprice" class="form-control mb-3" value="">
+							<input type="text" id="itemprice2" name="itemprice" class="form-control mb-3">
 						</div>
 					</div>
 				</div>

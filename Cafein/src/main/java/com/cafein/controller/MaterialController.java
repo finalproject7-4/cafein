@@ -89,7 +89,7 @@ public class MaterialController {
 		materService.orderRegist(vo);
 		
 		// 등록 완료 시 뜨는 알림창 (정보 이동)
-		rttr.addFlashAttribute("result", "REGISTOK");
+		rttr.addFlashAttribute("result1", "REGISTOK");
 		
 		return "redirect:/material/orders";
 	} // orderRegist() 끝	
@@ -109,11 +109,14 @@ public class MaterialController {
 	
 	// 발주 수정 - POST
 	@RequestMapping(value = "/orderModify", method = RequestMethod.POST)
-	public String orderModify(OrdersVO vo) throws Exception {
+	public String orderModify(OrdersVO vo, RedirectAttributes rttr) throws Exception {
 		logger.debug("orderModify() 호출");
 		
 		// 서비스
 		materService.orderModify(vo);
+		
+		// 수정 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result2", "MODIFYOK");
 		
 		return "redirect:/material/orders";
 	}
@@ -241,7 +244,7 @@ public class MaterialController {
 		materService.receiveRegist(vo);
 		
 		// 등록 완료 시 뜨는 알림창 (정보 이동)
-		rttr.addFlashAttribute("result", "REGISTOK");
+		rttr.addFlashAttribute("result1", "REGISTOK");
 		
 		return "redirect:/material/receive";
 	}
@@ -279,7 +282,7 @@ public class MaterialController {
 	
 	// 입고 수정 - POST
 	@RequestMapping(value = "/receiveModify", method = RequestMethod.POST)
-	public String receiveModify(ReceiveVO vo) throws Exception {
+	public String receiveModify(ReceiveVO vo, RedirectAttributes rttr) throws Exception {
 		logger.debug("receiveModify() 호출");
 		logger.debug("입고 상태: " + vo.getReceivestate());
 				
@@ -294,6 +297,9 @@ public class MaterialController {
 			materService.receiveModify(vo);
 			materService.qualityRegist(vo);
 		}
+		
+		// 수정 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result2", "MODIFYOK");
 		
 		return "redirect:/material/receive";
 	}
@@ -394,6 +400,7 @@ public class MaterialController {
 		// 데이터를 연결된 뷰페이지로 전달
 		model.addAttribute("releasesCount", materService.releasesCount(vo));
 		model.addAttribute("releasesList", materService.releasesList(vo));
+		model.addAttribute("stockList",  materService.stockList());
 		model.addAttribute("pageVO", pageVO);
 				
 		// 연결된 뷰페이지로 이동
@@ -466,6 +473,21 @@ public class MaterialController {
 		        
 		out.close();
 		workbook.close();
+	}
+	
+	// 출고 수정 - POST
+	@RequestMapping(value = "/releaseModify", method = RequestMethod.POST)
+	public String releaseModify(ReleasesVO vo, RedirectAttributes rttr) throws Exception {
+		logger.debug("releaseModify() 호출");
+				
+		// 출고상태 완료로 변경 후 재고관리에 출고 데이터 등록
+		materService.releaseModify(vo);
+		materService.stockRegist(vo);
+		
+		// 수정 완료 시 뜨는 알림창 (정보 이동)
+		rttr.addFlashAttribute("result", "MODIFYOK");
+		
+		return "redirect:/material/releases";
 	}	
 	
 }
