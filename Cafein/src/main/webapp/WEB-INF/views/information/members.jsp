@@ -37,7 +37,7 @@
 		<h6 class="mb-4">직원 목록</h6>
 		<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 		<span style="margin-left: 82%;">
-		<c:if test="${sessionScope.membername eq '최윤지' }">
+		<c:if test="${sessionScope.membername eq '최윤지' or sessionScope.membername eq 'admin'}">
 			<button type="button" class="btn btn-sm btn-dark m-2"
 				data-bs-toggle="modal" data-bs-target="#memberJoinModal"
 				data-bs-whatever="@getbootstrap">직원 등록</button>
@@ -59,7 +59,7 @@
 						<th scope="col">내선 번호</th>
 						<th scope="col">전화 번호</th>
 						
-						<c:if test="${sessionScope.membername eq '최윤지' }">
+						<c:if test="${sessionScope.membername eq '최윤지' or sessionScope.membername eq 'admin'}">
 							<th scope="col">관리</th>
 						</c:if>	
 						
@@ -77,9 +77,9 @@
 							<td>${vo.memberposition }</td>
 							<td>${vo.memberemail }</td>
 							<td>${vo.memberdeptphone }</td>
-							<td>${vo.memberphone }</td>
+							<td>${vo.memberphone.substring(0,3)}−${vo.memberphone.substring(3,7)}−${vo.memberphone.substring(7)}</td>
 							
-							<c:if test="${sessionScope.membername eq '최윤지' }">
+							<c:if test="${sessionScope.membername eq '최윤지' or sessionScope.membername eq 'admin'}">
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-2"
 										data-bs-toggle="modal" data-bs-target="#memberUpdateModal"

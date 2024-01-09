@@ -60,8 +60,12 @@
 								<td>${vo.categoryofclient }</td>
 								<td>${vo.typeofclient }</td>
 								<td>${vo.manager }</td>
-								<td>${vo.clientphone }</td>
-								<td>${vo.clientfax }</td>
+								<td>${vo.clientphone.substring(0,3)}−${vo.clientphone.substring(3,7)}−${vo.clientphone.substring(7)}</td>
+								<td>
+									<c:if test="${!empty vo.clientfax}">
+										${vo.clientfax.substring(0,3)}) ${vo.clientfax.substring(3,6)}−${vo.clientfax.substring(6)}
+									</c:if>
+								</td>
 								<td>${vo.clientemail }</td>
 								<td>
 									<button type="button" class="btn btn-sm btn-dark m-2" 
