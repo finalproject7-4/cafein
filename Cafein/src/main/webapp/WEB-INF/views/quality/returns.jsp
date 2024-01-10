@@ -276,8 +276,8 @@
         </form>
         <button type="button" class="btn btn-sm btn-success" onclick="submitExcelDownloadForm()"> 엑셀 파일 다운로드 </button>
         <c:if test="${departmentname eq '품질' and memberposition eq '팀장' or membername eq 'admin'}">
-		<button type="button" class="btn btn-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
-		<button id="hiddenRefundButton" class="btn btn-dark btn-sm m-2" onclick="submitRefundForm()"> 환불 </button>
+		<button type="button" class="btn btn-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
+		<button id="hiddenRefundButton" class="btn btn-danger btn-sm m-2" onclick="submitRefundForm()"> 환불 </button>
 		</c:if>
 		</div>
 		
@@ -332,18 +332,18 @@
                             <c:if test="${departmentname eq '품질' and memberposition eq '팀장' or membername eq 'admin'}">
                             <td>
 										<!-- 버튼 수정 -->
-										<button type="button" class="btn btn-dark btn-sm" 
+										<button type="button" class="btn btn-success btn-sm" 
 										        onclick="openModifyModal('${returnVO.returntype}', '${returnVO.returnReason }', '${returnVO.returnname }', '${returnVO.returnquantity}', '${returnVO.returndate}', '${returnVO.refunddate}','${returnVO.returnid}')">
 										        수정 
 										</button>
 										<!-- 버튼 삭제 -->
-										<button type="button" class="btn btn-dark btn-sm"
+										<button type="button" class="btn btn-danger btn-sm"
 												onclick="deleteReturn('${returnVO.returnid}')">
 												삭제
 										</button>
 							</td>
 							<td>
-							<button type="button" class="btn btn-dark btn-sm" 
+							<button type="button" class="btn btn-primary btn-sm" 
 									onclick="addReturn('${returnVO.returnid}')">
 									등록
 							</button>
