@@ -148,14 +148,7 @@ public class ShipController {
 			logger.debug("작업지시상태 업데이트 성공!");
 
 			// 작업지시상태 업데이트
-			wvo.setWorkdate1(svo.getShipdate1());
-			wvo.setWorkcode(svo.getWorkcode());
-			wvo.setClientname(svo.getClientname());
-			wvo.setItemname(svo.getItemname());
 			wvo.setWorksts(svo.getShipsts());
-			wvo.setPocnt(svo.getPocnt());
-			wvo.setWorkdate2(svo.getShipdate2());
-			wvo.setMembercode(svo.getMembercode());
 			
 			// 작업지시 완료 시간 설정
 			Date workDate2 = new Date(System.currentTimeMillis());

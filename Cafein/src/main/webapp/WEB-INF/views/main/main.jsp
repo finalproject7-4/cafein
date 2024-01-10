@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap">
 
 <!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
 <c:if test="${empty membercode}">

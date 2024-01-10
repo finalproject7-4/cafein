@@ -14,15 +14,21 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<form action="/information/clients" method="get">
-				<div class="input-group mb-3">
-					<select name="option" class="form-select mb-3" aria-label="Default select example">
+				<div class="d-flex align-items-center">
+				  <div class="me-2">
+					<select name="option" class="form-select" style="width: 150px;" aria-label="Default select example">
 						<option value="clientname">거래처명</option>
 						<option value="categoryofclient">거래처 구분</option>
 						<option value="typeofclient">거래처 종류</option>
 						<option value="manager">담당자</option>
-					</select>&nbsp;&nbsp;
-						<input type="text" class="form-control" name="keyword" placeholder="검색어를 입력하세요.">
-						<button class="btn btn-sm btn-dark m-2" type="submit">조회</button>
+					</select>
+				  </div>
+				  <div class="me-2">
+					<input type="text" class="form-control" name="keyword" placeholder="검색어를 입력하세요.">
+				  </div>
+				  <div>
+					<button class="btn btn-sm btn-dark m-2" type="submit">조회</button>
+				  </div>
 				</div>
 			</form>
 		</div>
@@ -33,14 +39,16 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<h6 class="mb-4">거래처 목록</h6>
-			<span class="mb-4">총 ${pageVO.totalCount} 건</span>
-			<span style="margin-left: 82%;">
-			<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
-				<button type="button" class="btn btn-sm btn-dark m-2" 
+			<div class="buttonarea1">
+				<b>총 ${pageVO.totalCount} 건</b>
+				<span style="float: right;">
+				<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
+					<button type="button" class="btn btn-sm btn-dark m-2" 
 						data-bs-toggle="modal" data-bs-target="#clientJoinModal" 
 						data-bs-whatever="@getbootstrap">거래처 등록</button>
-			</c:if>			
-			</span>
+				</c:if>			
+				</span>
+			</div>	
 			
 			<div class="table-responsive">
 				<table class="table">
