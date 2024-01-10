@@ -55,7 +55,7 @@
 					<br>
 					
 					담당자
-					<input autocomplete="off" name="membercode" class="form-control mb-3 membercode2" type="number" value="${sessionScope.membercode}">
+					<input autocomplete="off" name="membercode" class="form-control mb-3 membercode2" type="number" value="${sessionScope.membercode}" readonly>
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

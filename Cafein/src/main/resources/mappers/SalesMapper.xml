@@ -87,7 +87,6 @@
 		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
 		and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
-		
 	</where>
 </select>
 
@@ -95,13 +94,12 @@
 	<!-- 수주등록-납품처 -->
 	<select id="cliList" resultType="com.cafein.domain.SalesVO">
 		select * from client 
-		where categoryofclient='납품'
+		where categoryofclient ='납품'
 	</select>
 	
 	<!-- 수주등록-품목 -->
 	<select id="iList" resultType="com.cafein.domain.SalesVO">
-		select * from item
-		where itemcode like '%P%'
+		 select * from item where itemtype='완제품'
 	</select>
 
 	<!-- 수주코드 clientcode -->

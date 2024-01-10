@@ -80,20 +80,20 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">No.</th>
+									<th scope="col">납품처번호</th>
 									<th scope="col">납품처명</th>
 									<th scope="col">납품처코드</th>
 								</tr>
 							</thead>
 							<tbody>
-							<c:set var="counter" value="1" />
-								<c:forEach items="${cliList}" var="cli" varStatus="status">
+								<c:forEach items="${clientList}" var="clientList" varStatus="status">
+								<c:if test="${clientList.categoryofclient eq '납품'}">
 									<tr class="clientset">
-										<td>${counter }</td>
-										<td>${cli.clientname }</td>
-										<td>${cli.clientcode }</td>
+										<td >${clientList.clientid }</td>
+										<td>${clientList.clientname }</td>
+										<td>${clientList.clientcode }</td>
 									</tr>
-									<c:set var="counter" value="${counter+1 }" />
+									</c:if>	
 								</c:forEach>
 							</tbody>
 						</table>
@@ -121,20 +121,18 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">No.</th>
+									<th scope="col">품목번호</th>
 									<th scope="col">품명</th>
 									<th scope="col">품목코드</th>
 								</tr>
 							</thead>
 							<tbody>
-							<c:set var="counter" value="1" />
-								<c:forEach items="${iList}" var="item" varStatus="status">
+								<c:forEach items="${iList}" var="iList" varStatus="status">
 									<tr class="itemset">
-										<td>${counter }</td>
-										<td>${item.itemname }</td>
-										<td>${item.itemcode }</td>
+										<td>${iList.itemid }</td>
+										<td>${iList.itemname }</td>
+										<td>${iList.itemcode }</td>
 									</tr>
-									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>

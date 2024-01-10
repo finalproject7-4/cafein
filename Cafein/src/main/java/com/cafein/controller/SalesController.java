@@ -32,6 +32,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
 import com.cafein.domain.SalesVO;
+import com.cafein.service.ClientService;
+import com.cafein.service.ItemService;
 import com.cafein.service.SalesService;
 
 @Controller
@@ -42,6 +44,12 @@ public class SalesController {
 
 	@Inject
 	private SalesService sService;
+	
+	@Inject
+	private ClientService cService;
+	
+	@Inject
+	private ItemService iService;
 
 	// 수주조회 - GET
 	// http://localhost:8088/sales/POList
@@ -64,8 +72,8 @@ public class SalesController {
 		logger.debug("@@@postate"+svo.getPostate());
 		logger.debug("@@@POList"+sService.POList(svo));
 		model.addAttribute("pageVO", pageVO);
-		model.addAttribute("cliList", sService.registCli()); 
-		model.addAttribute("iList", sService.registItem());
+		model.addAttribute("iList", sService.registItem()); //품목모달
+		model.addAttribute("clientList", cService.clientList()); // 공급처 모달
 		model.addAttribute("membercode", session.getAttribute("membercode")); 
 		
 		
