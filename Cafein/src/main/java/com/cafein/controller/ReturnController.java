@@ -50,7 +50,7 @@ public class ReturnController {
 		model.addAttribute("itList", rService.itList());
 
 		
-		if (rvo.getReturncode() != null || rvo.getStartDate() != null || rvo.getReturntype() != null || rvo.getEndDate() != null) {
+		if (rvo.getReturncode() != null || rvo.getReturnstatus() != null || rvo.getStartDate() != null || rvo.getReturntype() != null || rvo.getEndDate() != null ) {
 			
 			// 검색결과 페이징
 			vo.setCri(cri);
@@ -139,7 +139,7 @@ public class ReturnController {
 		case "제품불량":
 			reasonCode = "01";
 			break;
-		case "주문오류":
+		case "포장불량":
 			reasonCode = "02";
 			break;
 		// 다른 사유가 추가될 경우에도 처리 가능
@@ -230,7 +230,7 @@ public class ReturnController {
 				
 			    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가)
 			    Row headerRow = sheet.createRow(0);
-			    String[] headers = {"번호", "제품명", "품목", "수량", "반품상태","검수상태","반품정보"};
+			    String[] headers = {"번호","반품코드","제품명", "품목", "수량", "반품상태","검수상태","반품정보"};
 			    
 			    CellStyle headerStyle = workbook.createCellStyle();
 			    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
@@ -253,15 +253,9 @@ public class ReturnController {
 					row.createCell(colNum++).setCellValue(rvo2.getReturnname());
 					row.createCell(colNum++).setCellValue(rvo2.getReturntype());
 					row.createCell(colNum++).setCellValue(rvo2.getReturnquantity());
+					row.createCell(colNum++).setCellValue(rvo2.getReturnstatus());
 					row.createCell(colNum++).setCellValue(rvo2.getReprocessmethod());
 					row.createCell(colNum++).setCellValue(rvo2.getReturninfo());
-					
-					
-					if(rvo2.getReturninfo() == null) {
-						row.createCell(colNum++).setCellValue("");
-					}
-					
-					
 					
 					// 셀 크기 조정
 					sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정

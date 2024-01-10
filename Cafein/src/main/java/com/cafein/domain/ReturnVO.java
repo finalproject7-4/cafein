@@ -22,7 +22,7 @@ public class ReturnVO {
     private int returnprice;
     private String returntype;
     private String returninfo;
-    
+    private int membercode;
     // 검색용 
     private String startDate;
 	private String endDate;
