@@ -36,40 +36,44 @@
 
      <!-- 검색창 -->
    		<div class="col-12" style="margin-top:20px;">
-		<div class="bg-light rounded h-100 p-4">
+		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
         <form action="" method="get">
-        <h6 class="mb-4">반품조회</h6>
-	<div class="row">
+	<div class="d-flex align-items-center">
             <div class="form-group" style="width: 200px; margin-right: 20px;">
-                <label for="returncode">반품 코드</label>
                 <input type="text" class="form-control" id="returncode" name="returncode" value="${returnVO.returncode }" placeholder="반품 코드">
             </div>
             
             <div class="form-group" style="width: 200px; margin-right: 20px;">
-                <label for="reuturntype">품목</label>
                 <select name="returntype" class="form-control" id="returntype">
-                	<option ${returnVO.returntype eq "전체" ? "selected" : "" }>전체</option>
+                	<option ${returnVO.returntype eq "전체" ? "selected" : "" }>품목-전체</option>
                 	<option ${returnVO.returntype eq "원자재" ? "selected" : "" }>원자재</option>
                 	<option ${returnVO.returntype eq "부자재" ? "selected" : "" }>부자재</option>
                 	<option ${returnVO.returntype eq "완제품" ? "selected" : "" }>완제품</option>
                 </select>
             </div>
+            
+            <div class="form-group" style="width: 200px; margin-right: 20px;">
+                <select name="returnstatus" class="form-control" id="returnstatus">
+                	<option ${returnVO.returnstatus eq "전체" ? "selected" : "" }>반품상태-전체</option>
+                	<option ${returnVO.returnstatus eq "대기" ? "selected" : "" }>대기</option>
+                	<option ${returnVO.returnstatus eq "완료" ? "selected" : "" }>완료</option>
+                </select>
+            </div>
+            
 	
             <div class="form-group " style="width: 400px;">
-                <label for="returndate">반품 날짜</label>
                 <div class="input-group" style="width: 400px">
-                    <input type="date" class="form-control" id="startDate" name="startDate" value="${not empty returnVO.startDate ? returnVO.startDate : ''}">
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="${returnVO.startDate}">
                 <div >
                 &nbsp;~&nbsp;
                 </div>
-                    <input type="date" class="form-control" id="endDate" name="endDate" value="${not empty returnVO.endDate ? returnVO.endDate : ''}">
+                    <input type="date" class="form-control" id="endDate" name="endDate" value="${returnVO.endDate}">
                 </div>
             </div>
-	</div>
-            
-           <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-outline-dark m-2">조회</button>
+           <div >
+            <button type="submit" class="btn btn-dark btn-sm m-2">조회</button>
            </div>
+	</div>
         </form>
 		</div>
 		</div>
@@ -176,7 +180,7 @@
 					<div class="col">
 						<label for="returntype" class="col-form-label"><b>반품유형</b></label>
 						<select class="form-select" id="returnTypeSelect2" name="returntype"
-							aria-label="Floating label select example" >
+							aria-label="Floating label select example" disabled>
 							<optgroup label="반품유형">
 								<option value="원자재">원자재</option>
 								<option value="부자재">부자재</option>
@@ -189,7 +193,7 @@
 					<div class=col>
 						<label for="returnReason" class="col-form-label"><b>반품사유</b></label>
 						<select class="form-select" id="returnReasonSelect2" name="returnReason"
-							aria-label="Floating label select example" >
+							aria-label="Floating label select example" disabled>
 							<optgroup label="반품사유">
 								<option value="제품불량">제품불량</option>
 								<option value="주문오류">주문오류</option>
@@ -201,11 +205,9 @@
 						<div class="col">
 							<label for="returnname" class="col-form-label">제품명</label> 
 							
-								<select class="form-select" id="floatingSelect2" name="itemid">
-									<c:forEach var="iList" items="${itemList }" begin="0" step="1">
-										<c:if test="${iList.itemtype eq '원자재'}">
-											<option value="${iList.returnname }">${iList.returnname}</option>
-										</c:if>
+								<select class="form-select" id="floatingSelect2" name="returnname" disabled>
+									<c:forEach var="rList" items="${returnList }" begin="0" step="1">
+											<option value="${rList.returnname }">${rList.returnname}</option>
 									</c:forEach>
 								</select>
 						</div>
@@ -215,18 +217,18 @@
 							<b>수량</b><input id="returnquantity2" name="returnquantity" class="form-control" id="floatingInput" value="">
 						</div>
 						<div class="col">
-							<b>반납날짜</b><input type="date" id="returndate2" name="returndate" class="form-control" id="floatingInput" value="">
+							<b>반납날짜</b><input type="date" id="returndate2" name="returndate" class="form-control" id="floatingInput" value="" disabled>
 						</div>
 					</div><br>
 						<div class="col">
-							<b>환불날짜</b><input type="date" id="exchangedate2" name="exchangedate" class="form-control" id="floatingInput" value="">
+							<b>환불날짜</b><input type="date" id="refunddate2" name="refunddate" class="form-control" id="floatingInput" value="">
 						</div><br>
 				</div>
 					
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="submit" class="btn btn-primary" id="ModifyBtn">저장</button>
+					<button type="submit" class="btn btn-primary" >저장</button>
 				</div>
 				</form>
 			</div>
@@ -237,28 +239,31 @@
         
 	
 	<!-- 반품조회 테이블 -->
-	<form action="/quality/refund" method="POST">
+	
 		<div class="col-12" style="margin-top:20px;">
 		<div class="bg-light rounded h-100 p-4">
-		<h6  class="mb-4">총 ${fn:length(returnList)} 건</h6>
+		<h6  class="mb-4">반품 목록</h6>
 		
 		<div class="d-flex justify-content-between">
 		<div>
-		<button onclick="showTab('all') " class="btn btn-outline-dark m-2">전체</button>
-		<button onclick="showTab('waiting') " class="btn btn-outline-dark m-2">대기</button>
-		<button onclick="showTab('inProgress') " class="btn btn-outline-dark m-2">검수중</button>
-		<button onclick="showTab('completed') " class="btn btn-outline-dark m-2">완료</button>
+		<h6>총 ${vo.totalCount}건</h6>
 		</div>
 		
 		<div class="d-flex align-items-center">
-		<button type="button" class="btn btn-outline-dark m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
-		<button type="submit" class="btn btn-outline-dark m-2" > 환불 </button>
+		<form action="returnListExcelDownload" method="get" id="excelDownloadForm" style="display: none;">
+                <input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success" >
+        </form>
+        <button type="button" class="btn btn-sm btn-success" onclick="submitExcelDownloadForm()"> 엑셀 파일 다운로드 </button>
+        
+		<button type="button" class="btn btn-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
+		<button id="hiddenRefundButton" class="btn btn-dark btn-sm m-2" onclick="submitRefundForm()"> 환불 </button>
 		</div>
 		
 		</div>
 		
-		<div id="allTab" class="tab-content active">
         <div class="table-responsive">
+		<form action="/quality/refund" method="POST" id="refundForm">
+		<button type="submit" class="btn btn-dark btn-sm m-2" style="display: none;"> 환불 </button>
             <table class="table">
                 <thead>
                     <tr>
@@ -272,7 +277,7 @@
                         <th scope="col">수량</th>
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
-                        <th scope="col">반품 정보</th>
+                        <th scope="col">반품 처리</th>
                         <th scope="col">수정 & 삭제</th>
                         <th scope="col">품질관리등록</th>
                     </tr>
@@ -281,11 +286,11 @@
                     <c:forEach items="${returnList}" var="returnVO">
                         <tr>
                         	<c:choose>
-	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
+	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.refunddate}">
 	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
 	                        	</c:when>
 	                        	<c:otherwise>
-	                        		<td><input type="checkbox" class="form-check-input" disabled hidden></td>
+	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
 	                        	</c:otherwise>
                         	</c:choose>
                             <td>${returnVO.returnid}</td>
@@ -293,25 +298,25 @@
                             <td>${returnVO.returnname}</td>
                             <td>${returnVO.returntype}</td>
                             <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                            <td>${returnVO.exchangedate}</td>                          
+                            <td>${returnVO.refunddate}</td>                          
                             <td>${returnVO.returnquantity}</td>
                             <td>${returnVO.returnstatus}</td>
                             <td>${returnVO.reprocessmethod}</td>
                             <td>${returnVO.returninfo}</td>
                             <td>
 										<!-- 버튼 수정 -->
-										<button type="button" class="btn btn-outline-dark" 
-										        onclick="openModifyModal('${returnVO.returntype}', '${returnVO.returnReason }', '${returnVO.returnname }', '${returnVO.returnquantity}', '${returnVO.returndate}', '${returnVO.exchangedate}','${returnVO.returnid}')">
+										<button type="button" class="btn btn-dark btn-sm" 
+										        onclick="openModifyModal('${returnVO.returntype}', '${returnVO.returnReason }', '${returnVO.returnname }', '${returnVO.returnquantity}', '${returnVO.returndate}', '${returnVO.refunddate}','${returnVO.returnid}')">
 										        수정 
 										</button>
 										<!-- 버튼 삭제 -->
-										<button type="button" class="btn btn-outline-dark"
+										<button type="button" class="btn btn-dark btn-sm"
 												onclick="deleteReturn('${returnVO.returnid}')">
 												삭제
 										</button>
 							</td>
 							<td>
-							<button type="button" class="btn btn-outline-dark" 
+							<button type="button" class="btn btn-dark btn-sm" 
 									onclick="addReturn('${returnVO.returnid}')">
 									등록
 							</button>
@@ -320,223 +325,88 @@
                     </c:forEach>
                 </tbody>
             </table>
-        </div>
-    </div>	
-    
-    
-    	
-		<div id="waitingTab" class="tab-content active">
-		<div class="table-responsive">
-		    <table class="table">
-		        <thead>
-		        	<tr>
-	        			<th scope="col">선택</th>
-                        <th scope="col">반품ID</th>
-                        <th scope="col">반품코드</th>
-                        <th scope="col">제품명</th>
-                        <th scope="col">품목</th>
-                        <th scope="col">반품날짜</th>
-                        <th scope="col">환불날짜</th>
-                        <th scope="col">수량</th>
-                        <th scope="col">반품상태</th>
-                        <th scope="col">검수상태</th>
-                        <th scope="col">반품 정보</th>
-                        <th scope="col">수정 & 삭제</th>
-                        <th scope="col">품질관리등록</th>
-                    </tr>
-		        </thead>
-		        <tbody>
-		            <c:forEach items="${returnList}" var="returnVO">
-		                <c:if test="${returnVO.returnstatus eq '대기중'}">
-	                    <tr>
-	                       <c:choose>
-	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
-	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
-	                        	</c:when>
-	                        	<c:otherwise>
-	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
-	                        	</c:otherwise>
-                       	   </c:choose>
-                           <td>${returnVO.returnid}</td>
-                           <td>${returnVO.returncode}</td>
-                           <td>${returnVO.returnname}</td>
-                           <td>${returnVO.returntype}</td>
-                           <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                           <td>${returnVO.exchangedate}</td>                          
-                           <td>${returnVO.returnquantity}</td>
-                           <td>${returnVO.returnstatus}</td>
-                           <td>${returnVO.reprocessmethod}</td>
-                           <td>${returnVO.returninfo}</td>
-                           <td>
-										<!-- 버튼 수정 -->
-										<button type="button" class="btn btn-outline-dark" 
-										        onclick="openModifyModal('${returnVO.returntype}', '${returnVO.returnReason }', '${returnVO.returnname }', '${returnVO.returnquantity}', '${returnVO.returndate}', '${returnVO.exchangedate}','${returnVO.returnid}')">
-										        수정 
-										</button>
-										<!-- 버튼 삭제 -->
-										<button type="button" class="btn btn-outline-dark"
-												onclick="deleteReturn('${returnVO.returnid}')">
-												삭제
-										</button>
-							</td>
-							<td>
-							<button type="button" class="btn btn-outline-dark" 
-									onclick="addReturn('${returnVO.returnid}')">
-									등록
-							</button>
-							</td>
-                        </tr>  
-                        </c:if>
-		            </c:forEach>
-		        </tbody>
-		    </table>
-		</div>
-	</div>
-	
-	
-	
+         </form>
+            
+             <!-- 페이지 블럭 생성 -->
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+   
 		
-		<div id="inProgressTab" class="tab-content active">
-		<div class="table-responsive">
-		    <table class="table">
-		        <thead>
-		            <tr>
-		            	<th scope="col">선택</th>
-                        <th scope="col">반품ID</th>
-                        <th scope="col">반품코드</th>
-                        <th scope="col">제품명</th>
-                        <th scope="col">반품날짜</th>
-                        <th scope="col">환불날짜</th>
-                        <th scope="col">수량</th>
-                        <th scope="col">반품상태</th>
-                        <th scope="col">검수상태</th>
-                        <th scope="col">품목</th>
-                        <th scope="col">반품 정보</th>
-                        <th scope="col">수정 & 삭제</th>
-                        <th scope="col">품질관리등록</th>
-                    </tr>
-		        </thead>
-		        <tbody>
-		            <c:forEach items="${returnList}" var="returnVO">
-		            <c:if test="${returnVO.reprocessmethod eq '검수중'}">
-		                <tr>
-		                   <c:choose>
-	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
-	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
-	                        	</c:when>
-	                        	<c:otherwise>
-	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
-	                        	</c:otherwise>
-                           </c:choose>
-	                       <td>${returnVO.returnid}</td>
-                           <td>${returnVO.returncode}</td>
-                           <td>${returnVO.returnname}</td>
-                           <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                           <td>${returnVO.exchangedate}</td>                          
-                           <td>${returnVO.returnquantity}</td>
-                           <td>${returnVO.returnstatus}</td>
-                           <td>${returnVO.reprocessmethod}</td>
-                           <td>${returnVO.returntype}</td>
-                           <td>${returnVO.returninfo}</td>
-                           <td>
-										<!-- 버튼 수정 -->
-										<button type="button" class="btn btn-outline-dark" 
-										        onclick="openModifyModal('${returnVO.returntype}', '${returnVO.returnReason }', '${returnVO.returnname }', '${returnVO.returnquantity}', '${returnVO.returndate}', '${returnVO.exchangedate}','${returnVO.returnid}')">
-										        수정 
-										</button>
-										<!-- 버튼 삭제 -->
-										<button type="button" class="btn btn-outline-dark"
-												onclick="deleteReturn('${returnVO.returnid}')">
-												삭제
-										</button>
-							</td>
-							<td>
-							<button type="button" class="btn btn-outline-dark" 
-									onclick="addReturn('${returnVO.returnid}')">
-									등록
-							</button>
-							</td>
-		                </tr>
-	              	</c:if>
-		            </c:forEach>
-		        </tbody>
-		    </table>
-		</div>
-		</div>
-		
-		
-		
-		<div id="completedTab" class="tab-content active">
-		<div class="table-responsive">
-		    <table class="table">
-		        <thead>
-       			<tr>
-       				<th scope="col">선택</th>
-                    <th scope="col">반품ID</th>
-                    <th scope="col">반품코드</th>
-                    <th scope="col">제품명</th>
-                    <th scope="col">반품날짜</th>
-                    <th scope="col">환불날짜</th>
-                    <th scope="col">수량</th>
-                    <th scope="col">반품상태</th>
-                    <th scope="col">검수상태</th>
-                    <th scope="col">품목</th>
-                    <th scope="col">반품 정보</th>
-                    <th scope="col">수정 & 삭제</th>
-                    <th scope="col">품질관리등록</th>
-                </tr>
-		        
-		        </thead>
-		        <tbody>
-		            <c:forEach items="${returnList}" var="returnVO">
-		            <c:if test="${returnVO.reprocessmethod eq '완료'}">
-		                <tr>
-		                   <c:choose>
-	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.exchangedate}">
-	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
-	                        	</c:when>
-	                        	<c:otherwise>
-	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
-	                        	</c:otherwise>
-                           </c:choose>
-		                   <td>${returnVO.returnid}</td>
-                           <td>${returnVO.returncode}</td>
-                           <td>${returnVO.returnname }</td>
-                           <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
-                           <td>${returnVO.exchangedate}</td>                          
-                           <td>${returnVO.returnquantity}</td>
-                           <td>${returnVO.returnstatus}</td>
-                           <td>${returnVO.reprocessmethod}</td>
-                           <td>${returnVO.returntype}</td>
-                           <td>${returnVO.returninfo}</td>
-                           <td>
-									<!-- 버튼 수정 -->
-									<button type="button" class="btn btn-outline-dark" 
-									        onclick="openModifyModal('${returnVO.returntype}', '${returnVO.returnReason }', '${returnVO.returnname }', '${returnVO.returnquantity}', '${returnVO.returndate}', '${returnVO.exchangedate}','${returnVO.returnid}')">
-									        수정 
-									</button>
-									<!-- 버튼 삭제 -->
-									<button type="button" class="btn btn-outline-dark"
-											onclick="deleteReturn('${returnVO.returnid}')">
-											삭제
-									</button>
-							</td>
-							<td>
-									<button type="button" class="btn btn-outline-dark" 
-											onclick="addReturn('${returnVO.returnid}')">
-											등록
-									</button>
-							</td>
-		                </tr>
-		 			</c:if>
-		            </c:forEach>
-		        </tbody>
-		    </table>
-		</div>
-    </div>
+		<!-- 이전버튼 -->
+		<c:if test="${vo.prev }">
+			<li class="page-item">
+			
+			<c:choose>
+				<c:when test="${not empty rvo.returncode  || not empty rvo.returntype || not empty rvo.returnstatus || not empty rvo.startDate || not empty rvo.endDate }">
+				<a class="page-link"
+				href="/quality/returns?page=${vo.startPage-1 }&returncode=${rvo.returncode}&returnstatus=${rvo.returnstatus}&returntype=${rvo.returntype}&startDate=${rvo.startDate}&endDate=${rvo.endDate}" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+				</c:when>
+				
+				<c:otherwise>
+				<a class="page-link"
+				href="/quality/returns?page=${vo.startPage-1 }" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+				</c:otherwise>
+			</c:choose>
+				
+			</li>
+		</c:if>
+		<!-- 이전버튼 -->
+			
+		<!-- 버튼 -->
+		<c:forEach begin="${vo.startPage }" end="${vo.endPage }" step="1" var="idx">
+		<li class="<c:out value='${vo.cri.page == idx ? "page-item active" : "page-item"}' />">
+			
+			<c:choose>
+				<c:when test="${not empty rvo.returncode  || not empty rvo.returntype || not empty rvo.returnstatus || not empty rvo.startDate || not empty rvo.endDate }">
+				<a class="page-link"
+				href="/quality/returns?page=${idx}&returncode=${rvo.returncode}&returntype=${rvo.returntype}&returnstatus=${rvo.returnstatus}&startDate=${rvo.startDate}&endDate=${rvo.endDate}">${idx }</a>
+				</c:when>
+				
+				<c:otherwise>
+				<a class="page-link"
+				href="/quality/returns?page=${idx}">${idx }</a>
+				</c:otherwise>
+			</c:choose>
+				
+		</li>
+		</c:forEach>
+		<!-- 버튼 -->
+			
+		<!-- 다음버튼 -->
+		<c:if test="${vo.next && vo.endPage > 0}">
+		<li class="page-item">
+			
+			<c:choose>
+				<c:when test="${not empty rvo.returncode  || not empty rvo.returntype || not empty rvo.returnstatus || not empty rvo.startDate || not empty rvo.endDate }">
+				<a class="page-link"
+				href="/quality/returns?page=${vo.endPage+1}&returncode=${rvo.returncode}&returntype=${rvo.returntype}&returnstatus=${rvo.returnstatus}&startDate=${rvo.startDate}&endDate=${rvo.endDate}" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+				</a>
+				</c:when>
+				
+				<c:otherwise>
+				<a class="page-link"
+				href="/quality/returns?page=${vo.endPage+1}" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+				</a>
+				</c:otherwise>
+			</c:choose>
+			
+		</li>
+		</c:if>
+		<!-- 다음버튼 -->
+			
+		</ul>
+	</nav>
+	<!-- 페이징 버튼 -->
+            
    </div>
-   </div> 
-   </form>
+   </div>
+   </div>
 	<!-- 반품조회 테이블 끝-->
 	
 
@@ -546,20 +416,6 @@
 
 <script>
 
-	document.addEventListener("DOMContentLoaded", function () {
-	    // 페이지 로딩 후에 실행될 코드
-	    showTab('all');
-	});
-	    function showTab(tabName) {
-	        var tabs = document.getElementsByClassName('tab-content');
-	        for (var i = 0; i < tabs.length; i++) {
-	            tabs[i].classList.remove('active');
-	        }
-	        document.getElementById(tabName + 'Tab').classList.add('active');
-	    }
-    
-    
-    
     // 반품 등록 모달
     var returnAuditModal = document.getElementById('returnAuditModal')
 	returnAuditModal.addEventListener('show.bs.modal', function (event) {
@@ -570,14 +426,14 @@
 	})
 	
 	// 수정 버튼 클릭시 서버 정보 가져오기
-	function openModifyModal(returntype, returnReason, returnname, returnquantity, returndate, exchangedate,returnid) {
+	function openModifyModal(returntype, returnReason, returnname, returnquantity, returndate, refunddate,returnid) {
     console.log('Rturn id:', returnid);
     console.log('Return Type:', returntype);
     console.log('Return Reason:', returnReason);
     console.log('Item Name:', returnname);
     console.log('Return Quantity:', returnquantity);
     console.log('Return Date:', returndate);
-    console.log('Exchange Date:', exchangedate);
+    console.log('Refund Date:', refunddate);
 
     // 가져온 값들을 모달에 설정
     $("#returnTypeSelect2").val(returntype);
@@ -585,7 +441,7 @@
     $("#floatingSelect2").val(returnname);
     $("#returnquantity2").val(returnquantity);
     $("#returndate2").val(returndate);
-    $("#exchangedate2").val(exchangedate);
+    $("#refunddate2").val(refunddate);
     $("#returnid").val(returnid);
 	
     // 모달 열기
@@ -753,6 +609,18 @@ function addReturn(returnid) {
    document.body.appendChild(form);
    form.submit();
 }	
+
+// 폼안에 환불버튼을 숨기고 바깥 환불버튼 기능하게 만들어줌
+function submitRefundForm() {
+    // 히든 폼의 submit을 트리거
+    document.getElementById('refundForm').submit();
+}
+
+// 폼안에 엑셀다운버튼을 숨기고 바깥 엑셀다운버튼 기능하게 만들어줌
+function submitExcelDownloadForm() {
+    document.getElementById('excelDownloadForm').submit();
+}
+
 </script>
 </body>
 </html>

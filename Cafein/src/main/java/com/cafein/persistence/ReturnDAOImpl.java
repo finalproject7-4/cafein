@@ -1,6 +1,7 @@
 package com.cafein.persistence;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReturnVO;
@@ -25,15 +27,20 @@ public class ReturnDAOImpl implements ReturnDAO {
     private static final String NAMESPACE = "com.cafein.mapper.ReturnMapper";
 
 	@Override
-	public List<ReturnVO> searchReturns() throws Exception {
+	public List<ReturnVO> searchReturns(Criteria cri) throws Exception {
 
-		return sqlSession.selectList(NAMESPACE + ".searchReturns") ;
+		return sqlSession.selectList(NAMESPACE + ".searchReturns",cri) ;
 	}
 
 	@Override
-	public List<ReturnVO> searchReturnsByCondition(ReturnVO rvo) throws Exception {
+	public List<ReturnVO> searchReturnsByCondition(ReturnVO rvo,Criteria cri) throws Exception {
 		
-		return sqlSession.selectList(NAMESPACE + ".searchReturnsByCondition", rvo);
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("rvo", rvo);
+		paramMap.put("cri", cri);
+		logger.debug("paramMap : " + paramMap);
+		
+		return sqlSession.selectList(NAMESPACE + ".searchReturnsByCondition", paramMap);
 	}
 
 	@Override
@@ -47,12 +54,6 @@ public class ReturnDAOImpl implements ReturnDAO {
 		
 		sqlSession.insert(NAMESPACE + ".insertReturn", rvo);
 	}
-
-	/*
-	 * @Override public List<ProduceVO> prList() throws Exception {
-	 * 
-	 * return sqlSession.selectList(NAMESPACE + ".prList"); }
-	 */
 
 	@Override
 	public List<ItemVO> itList() throws Exception {
@@ -86,6 +87,25 @@ public class ReturnDAOImpl implements ReturnDAO {
 		sqlSession.insert(NAMESPACE + ".refundDate",returnCode); 
 	}
 
+	@Override
+	public int returnPageCnt(ReturnVO rvo) throws Exception {
+		
+		return sqlSession.selectOne(NAMESPACE + ".returnPageCnt", rvo);
+	}
+
+	@Override
+	public int returnAllCnt() throws Exception {
+		
+		return sqlSession.selectOne(NAMESPACE + ".returnAllCnt");
+	}
+
+	@Override
+	public List<ReturnVO> returnListExcel(ReturnVO rvo) throws Exception {
+		
+		return sqlSession.selectList(NAMESPACE + ".returnListExcel", rvo);
+	}
+	
+	
 	
 	
 	
