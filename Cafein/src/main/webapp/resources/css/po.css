@@ -182,3 +182,6 @@
 	float: left;
     margin-top: -50px;
 }
+.swal2-popup {
+  width: 40em;
+}

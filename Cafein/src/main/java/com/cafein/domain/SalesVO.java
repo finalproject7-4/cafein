@@ -39,6 +39,7 @@ public class SalesVO {
 	private String clientaddress; //주소
 	private String clientphone; //전화번호
 	private String clientfax; //팩스번호
+	private String clientemail; //이메일
 	
 	//item 테이블
 	private String itemcode; //품목코드

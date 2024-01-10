@@ -136,7 +136,8 @@
 											<td class="pocodeColor"
 											onclick="openDetailModal('${po.poid}','${po.pocode}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 											${po.pocode }</td>
-											<td>${po.clientname}</td>
+											<td class="memberCall"
+											onclick="clientDetail('${po.clientname}','${po.clientcode}','${po.businessnumber}','${po.representative}','${po.clientaddress}','${po.clientphone}', '${po.clientfax}', '${po.clientemail}')">${po.clientname }</td>
 											<td>${po.itemname}</td>
 											<td>${po.pocnt}</td>
 											<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
@@ -217,6 +218,23 @@
 						});
  
 
+				  }
+				  function clientDetail(clientname, clientcode, businessnumber, representative,clientaddress, clientphone, clientfax, clientemail) {
+					  Swal.fire({
+						  title: '☕' + clientname,
+						  html:
+						    '<div style="margin-top: 30px;">' +
+						    '<table style="width: 100%;">' +
+						    '<tr><td style="border-bottom: 1px solid #ddd; padding: 8px;">대표자</td><td style="border-bottom: 1px solid #ddd; padding: 8px;">' + representative + '</td></tr>' +
+						    '<tr><td style="border-bottom: 1px solid #ddd; padding: 8px;">거래처코드</td><td style="border-bottom: 1px solid #ddd; padding: 8px;">' + clientcode + '</td></tr>' +
+						    '<tr><td style="border-bottom: 1px solid #ddd; padding: 8px;">사업자번호</td><td style="border-bottom: 1px solid #ddd; padding: 8px;">' + businessnumber + '</td></tr>' +
+						    '<tr><td style="border-bottom: 1px solid #ddd; padding: 8px;">전화번호</td><td style="border-bottom: 1px solid #ddd; padding: 8px;">' + clientphone + '</td></tr>' +
+						    '<tr><td style="border-bottom: 1px solid #ddd; padding: 8px;">팩스번호</td><td style="border-bottom: 1px solid #ddd; padding: 8px;">' + clientfax + '</td></tr>' +
+						    '<tr><td style="border-bottom: 1px solid #ddd; padding: 8px;">이메일</td><td style="border-bottom: 1px solid #ddd; padding: 8px;">' + clientemail + '</td></tr>' +
+						    '<tr><td style="padding: 8px;">주소</td><td style="padding: 8px;">' + clientaddress + '</td></tr>' +
+						    '</table>' +
+						    '</div>',
+						});
 				  }
 				</script>
 				

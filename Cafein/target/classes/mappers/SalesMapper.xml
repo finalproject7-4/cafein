@@ -31,7 +31,7 @@
 	SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
 	cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
 	po.ordersdate, po.updatedate, po.ordersduedate, po.membercode,
-	cli.businessnumber, cli.representative, cli.clientaddress, 
+	cli.businessnumber, cli.representative, cli.clientaddress, cli.clientemail,
 	cli.clientphone, cli.clientfax, item.origin, item.itemweight,
 	item.itemprice, mem.cafeinNumber, mem.cafeinName,mem.cafeinRepresent,
     mem.cafeinAddr, mem.cafeinFax, mem.cafeinCall, mem.membername, mem.memberphone,
