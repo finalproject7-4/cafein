@@ -283,6 +283,7 @@
 			            	let enddate = "${param.enddate}";
 
 			                let pageValue = $(this).data('page');
+			                let postate = "${param.postate}";
 		                	url = "/sales/POList?page=" + pageValue;
 			                
 			                if (searchBtn) {
@@ -299,6 +300,9 @@
 			            	if (enddate) {
 			            	  url += "&enddate=" + encodeURIComponent(enddate);
 			            	}
+			            	if (postate) {
+			                    url += "&postate=" + encodeURIComponent(postate);
+			                }
 			                
 			                location.href = url;
 			            });
