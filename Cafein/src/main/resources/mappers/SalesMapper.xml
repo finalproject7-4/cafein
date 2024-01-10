@@ -49,6 +49,7 @@
 		<if test="searchText != null and !searchText.equals('')">
 			cli.clientname LIKE CONCAT('%', #{searchText}, '%')
 			or item.itemname LIKE CONCAT('%', #{searchText}, '%')
+			or mem.membername LIKE CONCAT('%', #{searchText}, '%')
 			
 		</if>
 		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">

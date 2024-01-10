@@ -26,7 +26,7 @@
 				품목명
 				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명(클릭)" aria-label="default input example" required="required">
 					<div class="mb-3">
-						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
+						<label for="itemtype" class="col-form-label">수주상태</label>
 						<select class="form-select" id="floatingSelect" name="postate"
 							aria-label="Floating label select example" required="required">
 							<optgroup label="수주상태">

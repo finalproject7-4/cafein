@@ -16,10 +16,10 @@
 				</c:if>
 				<span style="display:flex;">
 				<label style="margin: 5px 10px 0 0;">검색어</label>
-				<input type="text" name="searchText" placeholder="납품처명 또는 품명을 입력하세요" class="form-control fcsearch">
-				<label style="margin: 5px 10px 0 0; margin-left:10em;">수주일자</label>		
-				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch"> &nbsp; ~ &nbsp;
-				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch">
+				<input type="text" name="searchText" placeholder="납품처명 · 품명 · 관리자를 입력하세요" class="form-control fcsearch">
+				<label style="margin: 5px 10px 0 0; margin-left:7em;">수주일자</label>		
+				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch2"> &nbsp; ~ &nbsp;
+				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch2">
 				<input class="btn btn-sm btn-dark m-2 searchmini" type="submit" value="조회" data-toggle="tooltip" title="등록일이 필요합니다!" style="margin-left:2em"></span>
 			</form>	
 			<form action="POList" method="GET">

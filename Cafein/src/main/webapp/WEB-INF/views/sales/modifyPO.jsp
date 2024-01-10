@@ -20,12 +20,12 @@
 				
 				<div class="modal-body">
 				납품처
-				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
+				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly >
 				
 				품목명
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
-						<label for="postate" class="col-form-label"><b>수주상태</b></label>
+						<label for="postate" class="col-form-label">수주상태</label>
 						<select class="form-select" id="floatingSelect2" name="postate">
 						    <optgroup label="수주상태">
 						        <option value="대기">대기</option>
