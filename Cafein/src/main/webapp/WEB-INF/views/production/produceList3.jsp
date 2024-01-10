@@ -693,21 +693,7 @@ function fetchData(searchBtnValue) {
 			var startDate = "${param.startDate}";
 			var endDate = "${param.endDate}";
 
-			var dataObject = {
-				"page" : pageNum,
-				"produceid" : produceId			
-			};
-			
-			if (searchBtn) {
-			    dataObject.searchBtn = searchBtn;
-			}
-			if (startDate) {
-			    dataObject.startDate = startDate;
-			}
-			if (endDate) {
-			    dataObject.endDate = endDate;
-			}
-			
+					
 			var currentPage = getCurrentPageNumber();
 			var dataObjectCom = {
 					"page" : currentPage	
