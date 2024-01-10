@@ -148,6 +148,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${clist.registerationdate }</td>
 									<td>${clist.completedate }</td>
 									<td>
+									<c:if test="${sessionScope.departmentname.equals('품질') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
 										<c:if test="${clist.auditstatus.equals('대기') || clist.auditstatus.equals('검수중') }">
 											<c:if test="${clist.produceid != 0 && clist.returnid == 0 }"> <!-- 생산ID 존재 -->
 												<c:if test="${!empty clist.produceprocess && clist.produceprocess.equals('포장')}"> <!-- 포장 O -->
@@ -316,6 +317,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													</button>												
 												</c:if>	
 											</c:if>
+										</c:if>
 										</c:if>
 									</td>
 								</tr>
@@ -493,11 +495,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       <div class="modal-body">
       	<div class="row">
       		<div class="col">
-           		<label for="qualityid" class="col-form-label">품질관리ID:</label>
+           		<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
         	</div>
         	<div class="col">
-            	<label for="produceid" class="col-form-label">생산ID:</label>
+            	<label for="produceid" class="col-form-label">생산번호:</label>
             	<input type="text" class="form-control" id="produceid" name="produceid" value="" readonly>
 			</div>
 		</div>
@@ -751,11 +753,11 @@ $(document).ready(function() {
             
       	<div class="row">
  			<div class="col">
-           		<label for="qualityid3" class="col-form-label">품질관리ID:</label>
+           		<label for="qualityid3" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid3" name="qualityid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="produceid3" class="col-form-label">생산ID:</label>
+            	<label for="produceid3" class="col-form-label">생산번호:</label>
             	<input type="text" class="form-control" id="produceid3" name="produceid" value="" readonly>
   			</div>
 		</div>
@@ -950,11 +952,11 @@ $(document).ready(function() {
       
       	<div class="row">
  			<div class="col">
-           		<label for="qualityid2" class="col-form-label">품질관리ID:</label>
+           		<label for="qualityid2" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid2" name="qualityid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="returnid2" class="col-form-label">반품ID:</label>
+            	<label for="returnid2" class="col-form-label">반품번호:</label>
             	<input type="text" class="form-control" id="returnid2" name="returnid" value="" readonly>
   			</div>
 		</div>
