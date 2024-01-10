@@ -148,7 +148,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${clist.registerationdate }</td>
 									<td>${clist.completedate }</td>
 									<td>
-									<c:if test="${sessionScope.departmentname.equals('품질') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
+									<c:if test="${(sessionScope.departmentname == '품질' && sessionScope.memberposition == '팀장') || sessionScope.membername.equals('admin') }">
 										<c:if test="${clist.auditstatus.equals('대기') || clist.auditstatus.equals('검수중') }">
 											<c:if test="${clist.produceid != 0 && clist.returnid == 0 }"> <!-- 생산ID 존재 -->
 												<c:if test="${!empty clist.produceprocess && clist.produceprocess.equals('포장')}"> <!-- 포장 O -->
