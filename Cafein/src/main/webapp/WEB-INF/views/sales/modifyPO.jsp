@@ -115,7 +115,6 @@ $(document).ready(function() {
 	
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
-	   
 
 	$.ajax({
         type: "POST",
@@ -132,8 +131,10 @@ $(document).ready(function() {
         },
         
         success: function(response) {
+        	 alert("Modification successful!");
             console.log("Modification success:", response);
             $("#modifyModal").modal('hide');
+
         },
         error: function(error) {
         }
