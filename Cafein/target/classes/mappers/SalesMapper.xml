@@ -31,29 +31,37 @@
 	SELECT po.poid, po.postate, po.pocnt, po.pocode, po.clientid, po.itemid, 
 	cli.clientname, cli.clientcode, item.itemname, item.itemcode, 
 	po.ordersdate, po.updatedate, po.ordersduedate, po.membercode,
-	re.receiptid,  cli.businessnumber, cli.representative, cli.clientaddress, 
+	cli.businessnumber, cli.representative, cli.clientaddress, 
 	cli.clientphone, cli.clientfax, item.origin, item.itemweight,
-	item.itemprice,re.sign, mem.cafeinNumber, mem.cafeinName,mem.cafeinRepresent,
+	item.itemprice, mem.cafeinNumber, mem.cafeinName,mem.cafeinRepresent,
     mem.cafeinAddr, mem.cafeinFax, mem.cafeinCall, mem.membername, mem.memberphone,
     mem.departmentname, mem.memberposition, mem.memberemail
     
 	FROM purchaseorder po
 	JOIN item ON po.itemid = item.itemid
 	JOIN client cli ON po.clientid = cli.clientid
-	left JOIN receipt re ON po.receiptid = re.receiptid
     left join member mem on po.membercode = mem.membercode
 	<where>
+		true
 		<if test="postate != null" >
-			postate=#{postate}
+			and postate=#{postate}
+		</if>
+		<if test="option == 'clientname'">
+			and clientname like concat('%', #{keyword}, '%')
+		</if>
+		<if test="option == 'itemname'">
+			and itemname like concat('%', #{keyword}, '%')
+		</if>
+		<if test="option == 'membername'">
+			and membername like concat('%', #{keyword}, '%')
 		</if>
 		<if test="searchText != null and !searchText.equals('')">
-			cli.clientname LIKE CONCAT('%', #{searchText}, '%')
+			and cli.clientname LIKE CONCAT('%', #{searchText}, '%')
 			or item.itemname LIKE CONCAT('%', #{searchText}, '%')
 			or mem.membername LIKE CONCAT('%', #{searchText}, '%')
-			
 		</if>
 		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
-		and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
+			and DATE(po.ordersdate) BETWEEN #{startDate} AND #{endDate}
 		</if>
 		
 	</where>
