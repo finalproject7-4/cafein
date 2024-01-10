@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<<style>
+<style>
 #worksts2 option:disabled {
     color: #aaa; /* 회색으로 변경 */
     background-color: #eee; /* 배경색 변경 */
     /* 또는 다른 스타일 지정 */
-}>
+}
+
 </style>
 <!-- 작업지시 수정 모달창 -->
 	<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
