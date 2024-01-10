@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-${resultVO }
+
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+	<c:redirect url="/main/login" />
+</c:if>    
 	
     <!-- Modal -->
 	<div class="modal fade" id="memberUpdateModal">
@@ -18,7 +22,7 @@ ${resultVO }
 	      <div class="modal-body">
 	        	<input type="hidden" name="memberid" id="memberid">
 	      	직원명 <span style="color:red;">*</span>
-	      		<input type="text" name="membername" class="form-control" id="membername"
+	      		<input type="text" name="membername" class="form-control" id="membername" placeholder="직원명(20자 이하, 한글만 가능)" 
 					   pattern="^[가-힣]{1,20}$" title="직원명은 20자 이하의 한글만 가능합니다."><br>
 			비밀번호 <span style="color:red;">*</span>
 				<input type="password" name="memberpw" class="form-control" id="memberpw" placeholder="비밀번호(6자 이상 10자 이하)"
@@ -45,18 +49,18 @@ ${resultVO }
 			수정할 직급 <span style="color:red; font-size: 0.8em;">* 수정하지 않아도 입력해 주세요.</span>
 			<select name="memberposition" class="form-select mb-3" id="updatePosition" aria-label="select Departmentname">
 				<option value="사원">사원</option>
-				<option value="주임">주임</option>
 				<option value="대리">대리</option>
+				<option value="팀장">팀장</option>
 				<option value="과장">과장</option>
 			</select>	
 				
 			E-Mail <span style="color:red;">*</span>
 				<input type="email" name="memberemail" class="form-control" id="memberemail"><br>
 			내선번호 
-				<input type="tel" name="memberdeptphone" class="form-control" id="memberdeptphone" 
+				<input type="tel" name="memberdeptphone" class="form-control" id="memberdeptphone" placeholder="내선번호(예:1234)" 
 					   title="내선번호는 4자리 숫자만 가능합니다." pattern="[0-9]{4}"><br>
 			전화번호 <span style="color:red;">*</span>
-				<input type="tel" name="memberphone" class="form-control" id="memberphone"
+				<input type="tel" name="memberphone" class="form-control" id="memberphone" placeholder="전화번호(예:01012345678)" 
 					   title="전화번호는 11자리 숫자만 가능합니다." pattern="[0-9]{11}"><br>
 			
 	        <label for="available">활성화 여부</label>
@@ -76,35 +80,4 @@ ${resultVO }
 	    </div>
 	  </div>
 	</div>
-	
-<!-- select css -->
-<style>
-	.input-group>.form-control, .input-group>.form-select {
-	    position: relative;
-	    flex: none;
-	    width: 20%;
-	    min-width: 0;
-	}
-</style>
-<!-- select css -->
-
-<!-- 버튼 색상 css -->
-<style>
-	.btn-outline-primary {
-	    color: #610B0B;
-	    border-color: #610B0B;
-	}
-	.btn-outline-primary:hover {
-	    color: #FBF8EF;
-	    border-color: #FBF8EF;
-	    background-color: #610B0B;
-	}
-	
-	.btn-check:checked+.btn-outline-primary, .btn-check:active+.btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
-	    color: #FBF8EF;
-	    background-color: #610B0B;
-	    border-color: #610B0B;
-	}
-</style>
-<!-- 버튼 색상 css -->
 	
