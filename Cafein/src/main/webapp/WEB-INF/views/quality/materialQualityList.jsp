@@ -356,11 +356,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       	</c:if>
       	<div class="row">
  			<div class="col">
-           		<label for="qualityid" class="col-form-label">품질관리ID:</label>
+           		<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="receiveid" class="col-form-label">입고ID:</label>
+            	<label for="receiveid" class="col-form-label">입고번호:</label>
             	<input type="text" class="form-control" id="receiveid" name="receiveid" value="" readonly>
   			</div>
 		</div>
