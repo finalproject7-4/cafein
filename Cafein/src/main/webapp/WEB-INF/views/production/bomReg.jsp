@@ -18,9 +18,9 @@
 							</div>
 							<div class="col">
 								<label for="itemname" class="col-form-label">제품명</label> 
-								<input id="itemnameBom" name="itemname" class="form-control" readonly>
+								<input id="itemnameBom" value="클릭하세요." name="itemname" class="form-control" readonly>
 							</div>
-							<div class="col" >
+							<div class="col" style="display: none;">
 								<label for="itemid" class="col-form-label">아이템ID</label> 
 								<input id="itemidBom" name="itemid" class="form-control" readonly>
 							</div>
