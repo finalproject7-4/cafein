@@ -16,6 +16,8 @@ public class SalesVO {
 	private String endDate;
 	private String searchText;
 	private String searchBtn;
+	private String option;
+	private String keyword;
 	
 	//po 테이블
 	private int poid;

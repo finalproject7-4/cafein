@@ -15,14 +15,14 @@ public class ReturnVO {
     private String returnname;
     private int itemid;
     private Date returndate;
-    private Date exchangedate;
+    private Date refunddate;
     private String returnstatus;
     private int returnquantity;
     private String reprocessmethod;
     private int returnprice;
     private String returntype;
     private String returninfo;
-    
+    private int membercode;
     // 검색용 
     private String startDate;
 	private String endDate;

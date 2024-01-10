@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.cafein.domain.Criteria;
 import com.cafein.domain.ItemVO;
 import com.cafein.domain.ProduceVO;
 import com.cafein.domain.ReturnVO;
@@ -23,15 +24,15 @@ public class ReturnServiceImpl implements ReturnService {
 	private ReturnDAO rdao;
 
 	@Override
-	public List<ReturnVO> searchReturns() throws Exception {
+	public List<ReturnVO> searchReturns(Criteria cri) throws Exception {
 		
-		return rdao.searchReturns();
+		return rdao.searchReturns(cri);
 	}
 
 	@Override
-	public List<ReturnVO> searchReturnsByCondition(ReturnVO rvo) throws Exception {
+	public List<ReturnVO> searchReturnsByCondition(ReturnVO rvo,Criteria cri) throws Exception {
 
-		return rdao.searchReturnsByCondition(rvo);
+		return rdao.searchReturnsByCondition(rvo,cri);
 	}
 
 	@Override
@@ -45,12 +46,6 @@ public class ReturnServiceImpl implements ReturnService {
 		
 		rdao.insertReturn(rvo);
 	}
-
-	/*
-	 * @Override public List<ProduceVO> prList() throws Exception {
-	 * 
-	 * return rdao.prList(); }
-	 */
 
 	@Override
 	public List<ItemVO> itList() throws Exception {
@@ -81,7 +76,26 @@ public class ReturnServiceImpl implements ReturnService {
 
 		rdao.refundDate(returnCode);
 	}
-	 
+
+	@Override
+	public int returnPageCnt(ReturnVO rvo) throws Exception {
+		
+		return rdao.returnPageCnt(rvo);
+	}
+
+	@Override
+	public int returnAllCnt() throws Exception {
+		
+		return rdao.returnAllCnt();
+	}
+
+	@Override
+	public List<ReturnVO> returnListExcel(ReturnVO rvo) throws Exception {
+		
+		return rdao.returnListExcel(rvo);
+	}
+	
+	
 	
 	
 	

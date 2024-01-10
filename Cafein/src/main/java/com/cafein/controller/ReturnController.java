@@ -1,9 +1,18 @@
 package com.cafein.controller;
 
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,10 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafein.domain.ItemVO;
-import com.cafein.domain.ProduceVO;
+import com.cafein.domain.Criteria;
+import com.cafein.domain.PageVO;
 import com.cafein.domain.ReturnVO;
-import com.cafein.service.ItemService;
 import com.cafein.service.ReturnService;
 
 @Controller
@@ -31,27 +39,54 @@ public class ReturnController {
 	// 반품 목록
 	// http://localhost:8088/quality/returns
 	@RequestMapping(value = "/returns", method = RequestMethod.GET)
-	public void returnsGET(Model model, ReturnVO rvo) throws Exception {
+	public void returnsGET(Model model, ReturnVO rvo,Criteria cri) throws Exception {
 
 		logger.debug("returnsGET() 호출");
+		
+		PageVO vo = new PageVO();
 		
 		
 		// 원자재,부자재 목록
 		model.addAttribute("itList", rService.itList());
 
 		
-		if (rvo.getReturncode() != null || rvo.getReturndate() != null || rvo.getReturntype() != null) {
+		if (rvo.getReturncode() != null || rvo.getReturnstatus() != null || rvo.getStartDate() != null || rvo.getReturntype() != null || rvo.getEndDate() != null ) {
+			
+			// 검색결과 페이징
+			vo.setCri(cri);
+			vo.setTotalCount(rService.returnPageCnt(rvo));
+			logger.debug("총 개수: " + vo.getTotalCount());
+			
 			// 검색결과
-
-			List<ReturnVO> returnList = rService.searchReturnsByCondition(rvo);
+			List<ReturnVO> returnList = rService.searchReturnsByCondition(rvo,cri);
 			model.addAttribute("returnList", returnList);
+			
+			//페이징정보 저장
+			model.addAttribute("vo", vo);
+			// 검색정보 전달
+			model.addAttribute("rvo", rvo);
 		}
 
 		else {
+			
+			// 전체결과 페이징
+			vo.setCri(cri);
+			vo.setTotalCount(rService.returnAllCnt());
+			logger.debug("총 개수: " + vo.getTotalCount());
+			
 			// 전체결과
-			List<ReturnVO> returnList = rService.searchReturns();
+			List<ReturnVO> returnList = rService.searchReturns(cri);
 			model.addAttribute("returnList", returnList);
+			
+			//페이징정보 저장
+			model.addAttribute("vo", vo);
+			// 검색정보 전달
+			model.addAttribute("rvo", rvo);
+			
 		}
+		
+		
+		
 	}
 
 	
@@ -69,7 +104,7 @@ public class ReturnController {
 		  // 등록시 기본 설정
 		  rvo.setReturnstatus("대기");
 		  rvo.setReprocessmethod("검수중");
-		  
+		  rvo.setReturninfo("확인중");
 		  
 		 rService.returnRegist(rvo); 
 		  
@@ -104,7 +139,7 @@ public class ReturnController {
 		case "제품불량":
 			reasonCode = "01";
 			break;
-		case "주문오류":
+		case "포장불량":
 			reasonCode = "02";
 			break;
 		// 다른 사유가 추가될 경우에도 처리 가능
@@ -158,31 +193,87 @@ public class ReturnController {
 	
 		logger.debug(" addReturn(returnid) 호출 @@@@@@@@");
 		logger.debug("returnid  : {}", returnid);
-		
-		
-		
+	    
+	    
 		rService.addReturn(returnid);
 		
 		return "redirect:/quality/returns";
 	}
 	
+
+	
 	// 환불 날짜 등록
 	@PostMapping(value = "/refund")
 	public String refundDate(@RequestParam(value = "selectedReturnId", required = false) String[] selectedReturnIds) throws Exception {
 		
-		logger.debug(" refundDate() 호출(환불날짜등록)");
+		logger.debug("refundDate() 호출(환불날짜)");
 		if(selectedReturnIds != null) {
 		    for (String returnCode : selectedReturnIds) {
+		    	logger.debug("returnCode  : {}", returnCode);
 		    	rService.refundDate(returnCode);
 		    }
 		}
-		
-		return "redirect:/quality/returns";
+	    
+	    return "redirect:/quality/returns";
 	}
-		
-		
 	
-	
+	// 반품 목록 (엑셀 파일 다운로드)
+			@RequestMapping(value = "/returnListExcelDownload", method = RequestMethod.GET)
+			public void itemListExcelDownload(HttpServletResponse response, ReturnVO rvo) throws Exception { 
+				// 1. 테이블 데이터를 가져옴
+				List<ReturnVO> list = rService.returnListExcel(rvo);
+				logger.debug("list: " + list);
+
+				// 2. 엑셀 데이터로 변환
+				XSSFWorkbook workbook = new XSSFWorkbook();
+				Sheet sheet = workbook.createSheet("sheet");
+				
+			    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가)
+			    Row headerRow = sheet.createRow(0);
+			    String[] headers = {"번호","반품코드","제품명", "품목", "수량", "반품상태","검수상태","반품정보"};
+			    
+			    CellStyle headerStyle = workbook.createCellStyle();
+			    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
+			    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);	    
+			    
+			    for (int i = 0; i < headers.length; i++) {
+			        Cell cell = headerRow.createCell(i);
+			        cell.setCellValue(headers[i]);
+			        cell.setCellStyle(headerStyle);	        
+			    }
+
+				int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작
+				for (ReturnVO rvo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
+					Row row = sheet.createRow(rowNum++);
+
+					int colNum = 0;
+					// 컬럼 내용 추가 (rvo의 Getter를 사용)
+					row.createCell(colNum++).setCellValue(rvo2.getReturnid());
+					row.createCell(colNum++).setCellValue(rvo2.getReturncode());
+					row.createCell(colNum++).setCellValue(rvo2.getReturnname());
+					row.createCell(colNum++).setCellValue(rvo2.getReturntype());
+					row.createCell(colNum++).setCellValue(rvo2.getReturnquantity());
+					row.createCell(colNum++).setCellValue(rvo2.getReturnstatus());
+					row.createCell(colNum++).setCellValue(rvo2.getReprocessmethod());
+					row.createCell(colNum++).setCellValue(rvo2.getReturninfo());
+					
+					// 셀 크기 조정
+					sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+				}
+				
+				String fileName = "ReturnList.xlsx"; // 저장하는 파일명
+
+				// 3. 엑셀 파일을 저장합니다.
+		        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식
+		        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); // 다운로드 형태로 실행
+				
+		        OutputStream out = response.getOutputStream();
+		        workbook.write(out);
+		        out.flush();
+		        
+		        out.close();
+		        workbook.close();
+			}
 	
 	
 	

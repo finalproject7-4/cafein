@@ -17,15 +17,16 @@
 
 				<input type="hidden" name="clientid" id="clientidd">
 				<input type="hidden" name="itemid" id="itemidd">
+				<input type="hidden" name="clientcode" id="addclientcode">
 
 				<div class="modal-body">
-				납품처/코드
-				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example" required="required">
+				납품처
+				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처(클릭)" aria-label="default input example" required="required">
 				
-				품목명/코드
-				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example" required="required">
+				품목명
+				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명(클릭)" aria-label="default input example" required="required">
 					<div class="mb-3">
-						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
+						<label for="itemtype" class="col-form-label">수주상태</label>
 						<select class="form-select" id="floatingSelect" name="postate"
 							aria-label="Floating label select example" required="required">
 							<optgroup label="수주상태">
@@ -79,20 +80,20 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">No.</th>
+									<th scope="col">납품처번호</th>
 									<th scope="col">납품처명</th>
 									<th scope="col">납품처코드</th>
 								</tr>
 							</thead>
 							<tbody>
-							<c:set var="counter" value="1" />
-								<c:forEach items="${cliList}" var="cli" varStatus="status">
+								<c:forEach items="${clientList}" var="clientList" varStatus="status">
+								<c:if test="${clientList.categoryofclient eq '납품'}">
 									<tr class="clientset">
-										<td>${counter }</td>
-										<td>${cli.clientname }</td>
-										<td>${cli.clientcode }</td>
+										<td >${clientList.clientid }</td>
+										<td>${clientList.clientname }</td>
+										<td>${clientList.clientcode }</td>
 									</tr>
-									<c:set var="counter" value="${counter+1 }" />
+									</c:if>	
 								</c:forEach>
 							</tbody>
 						</table>
@@ -120,20 +121,18 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th scope="col">No.</th>
+									<th scope="col">품목번호</th>
 									<th scope="col">품명</th>
 									<th scope="col">품목코드</th>
 								</tr>
 							</thead>
 							<tbody>
-							<c:set var="counter" value="1" />
-								<c:forEach items="${iList}" var="item" varStatus="status">
+								<c:forEach items="${iList}" var="iList" varStatus="status">
 									<tr class="itemset">
-										<td>${counter }</td>
-										<td>${item.itemname }</td>
-										<td>${item.itemcode }</td>
+										<td>${iList.itemid }</td>
+										<td>${iList.itemname }</td>
+										<td>${iList.itemcode }</td>
 									</tr>
-									<c:set var="counter" value="${counter+1 }" />
 								</c:forEach>
 							</tbody>
 						</table>
@@ -159,6 +158,7 @@ $(document).ready(function() {
 	    console.log("clientid:", clientid);
 	    $("#clientidd").val(clientid);
 	});
+	    
 	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:eq(0)').text();
 	    console.log("itemid:", itemid);

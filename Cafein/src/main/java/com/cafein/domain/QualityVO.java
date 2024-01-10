@@ -62,7 +62,7 @@ public class QualityVO {
 	// produce 테이블
 //	private int produceid;
 	private Timestamp submitdate;
-	private Timestamp producedate;
+	private Date producedate;
 	private int produceline;
 //	private int itemid;
 //	private String itemname;
@@ -91,7 +91,7 @@ public class QualityVO {
 //	private int itemid;
 	private int weight;
 //	private int itemprice;
-	private Timestamp roasteddate;
+	private Date roasteddate;
 //	private Sting lotnumber;
 	private String note;
 	private String defect;
@@ -100,7 +100,7 @@ public class QualityVO {
 	private int receiveid;
 	private String receivecode;
 //	private String membercode;
-	private Timestamp receivedate;
+	private Date receivedate;
 	private int receivequantity;
 	
 	// productlot 테이블

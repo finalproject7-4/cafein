@@ -19,13 +19,13 @@
 				<input type="hidden" name="itemid" id="itemid3">
 				
 				<div class="modal-body">
-				납품처/코드
-				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
+				납품처
+				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly >
 				
-				품목명/코드
+				품목명
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
-						<label for="postate" class="col-form-label"><b>수주상태</b></label>
+						<label for="postate" class="col-form-label">수주상태</label>
 						<select class="form-select" id="floatingSelect2" name="postate">
 						    <optgroup label="수주상태">
 						        <option value="대기">대기</option>
@@ -55,7 +55,7 @@
 					<br>
 					
 					담당자
-					<input autocomplete="off" name="membercode" class="form-control mb-3 membercode2" type="number" value="${sessionScope.membercode}">
+					<input autocomplete="off" name="membercode" class="form-control mb-3 membercode2" type="number" value="${sessionScope.membercode}" readonly>
 					</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -115,7 +115,6 @@ $(document).ready(function() {
 	
 	$("#ModifyBtn").submit(function (event) {
 	    event.preventDefault(); // 기본 동작 중지
-	   
 
 	$.ajax({
         type: "POST",
@@ -132,8 +131,10 @@ $(document).ready(function() {
         },
         
         success: function(response) {
+        	 alert("Modification successful!");
             console.log("Modification success:", response);
             $("#modifyModal").modal('hide');
+
         },
         error: function(error) {
         }

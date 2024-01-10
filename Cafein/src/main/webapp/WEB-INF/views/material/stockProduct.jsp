@@ -8,6 +8,14 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 "></script>
 <!-- SweetAlert 추가 -->
 
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
+<c:if test="${empty sessionScope.membercode }">
+	<script>
+		location.href="/main/login";
+	</script>
+</c:if>
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
+
 <!-- 재고 조회 -->
 <div class="col-12">
 	<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
@@ -98,6 +106,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<c:if test="${slist.stockquantity >= 10 }">
 										${slist.stockquantity }개
 									</c:if>
+									<c:if test="${sessionScope.departmentname.equals('자재') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
 									<button type="button" class="btn btn-primary btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
@@ -106,11 +115,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									data-lotnumber="${slist.lotnumber }">
  									실사 변경
 									</button>
+									</c:if>
 									</td>
 									<td>
 									<c:if test="${!empty slist.storagecode }">
 									${slist.storagecode } - ${slist.storagename }
 									</c:if>
+									<c:if test="${sessionScope.departmentname.equals('자재') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 
@@ -119,6 +130,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									data-storagename="${slist.storagename }" data-storagecode="${slist.storagecode }">
 									창고 이동
 									</button>
+									</c:if>
 									</td>
 									<c:if test="${slist.workerbycode != 0 }">
 									<td>${slist.workerbycode }</td>
@@ -543,10 +555,7 @@ $(document).ready(function($) {
             	var roasteddate = new Date(data.roasteddate);
             	var formattedDate = roasteddate.getFullYear() + "-" + 
                 String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
-                String(roasteddate.getDate()).padStart(2, '0') + " " + 
-                String(roasteddate.getHours()).padStart(2, '0') + ":" + 
-                String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
-                String(roasteddate.getSeconds()).padStart(2, '0');
+                String(roasteddate.getDate()).padStart(2, '0');
             	
             	$("#inforoasteddate").val(formattedDate);
             	$("#infonote").val(data.note);
@@ -648,10 +657,7 @@ $(document).ready(function($) {
                         	var roasteddate = new Date(data.roasteddate);
                         	var formattedDate = roasteddate.getFullYear() + "-" + 
                             String(roasteddate.getMonth() + 1).padStart(2, '0') + "-" + 
-                            String(roasteddate.getDate()).padStart(2, '0') + " " + 
-                            String(roasteddate.getHours()).padStart(2, '0') + ":" + 
-                            String(roasteddate.getMinutes()).padStart(2, '0') + ":" + 
-                            String(roasteddate.getSeconds()).padStart(2, '0');
+                            String(roasteddate.getDate()).padStart(2, '0');
                         	
                         	$("#inforoasteddate").val(formattedDate);
                         	$("#infonote").val(data.note);

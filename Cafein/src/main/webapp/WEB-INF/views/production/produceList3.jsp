@@ -98,7 +98,7 @@
 									<tr>
 										<th scope="col">품목코드</th>
 										<th scope="col">품명</th>
-										<th scope="col" >제품ID</th>
+										<th scope="col" style="display: none;">제품ID</th>
 										</tr>
 								</thead>
 								<tbody>
@@ -106,7 +106,7 @@
                                     <tr class="itemset">
                                       <td>${iList.itemcode }</td> 
                                       <td>${iList.itemname }</td>                                    
-                                      <td >${iList.itemid }</td>                                    
+                                      <td style="display: none;">${iList.itemid }</td>                                    
                                     </tr>
 								  </c:forEach>
 								</tbody>

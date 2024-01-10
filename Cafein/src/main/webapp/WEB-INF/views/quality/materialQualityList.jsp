@@ -113,6 +113,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${mlist.registerationdate }</td>
 									<td>${mlist.completedate }</td>
 									<td>
+									<c:if test="${sessionScope.departmentname.equals('품질') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
 										<c:if test="${mlist.auditstatus.equals('대기') || mlist.auditstatus.equals('검수중') }">
 											<button type="button" class="btn btn-primary btn-sm" 
 												data-bs-toggle="modal" data-bs-target="#materialAuditModal"
@@ -173,6 +174,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 													</button>												
 												</c:if>		
 											</c:if>
+										</c:if>
 										</c:if>
 									</td>
 								</tr>
@@ -354,11 +356,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       	</c:if>
       	<div class="row">
  			<div class="col">
-           		<label for="qualityid" class="col-form-label">품질관리ID:</label>
+           		<label for="qualityid" class="col-form-label">품질관리번호:</label>
             	<input type="text" class="form-control" id="qualityid" name="qualityid" value="" readonly>
   			</div>
   			<div class="col">
-            	<label for="receiveid" class="col-form-label">입고ID:</label>
+            	<label for="receiveid" class="col-form-label">입고번호:</label>
             	<input type="text" class="form-control" id="receiveid" name="receiveid" value="" readonly>
   			</div>
 		</div>
