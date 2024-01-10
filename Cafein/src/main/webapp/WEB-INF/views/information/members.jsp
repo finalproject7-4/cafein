@@ -14,13 +14,20 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<form action="/information/members" method="get">
-				<div class="input-group mb-3">
-					<select name="option" class="form-select mb-3" aria-label="search member">
+				<div class="d-flex align-items-center">
+				  <div class="me-2">
+					<select name="option" class="form-select" style="width: 120px;" aria-label="search member">
 						<option value="membername">직원명</option>
 						<option value="departmentname">부서명</option>
-					</select>&nbsp;&nbsp; <input type="text" class="form-control" name="keyword"
+					</select>
+				  </div>
+				  <div class="me-2">
+				  	<input type="text" class="form-control" name="keyword"
 						placeholder="검색어를 입력하세요.">
+				  </div>
+				  <div>		
 					<button class="btn btn-sm btn-dark m-2" type="submit">조회</button>
+				  </div>	
 				</div>
 			</form>
 		</div>
@@ -32,14 +39,16 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
 			<h6 class="mb-4">직원 목록</h6>
-			<span class="mb-4">총 ${pageVO.totalCount} 건</span>
-			<span style="margin-left: 82%;">
-			<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
-				<button type="button" class="btn btn-sm btn-dark m-2"
-					data-bs-toggle="modal" data-bs-target="#memberJoinModal"
-					data-bs-whatever="@getbootstrap">직원 등록</button>
-			</c:if>		
-			</span>
+			<div class="buttonarea1">
+				<b>총 ${pageVO.totalCount} 건</b>
+				<span style="float: right;">
+				<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
+					<button type="button" class="btn btn-sm btn-dark m-2"
+						data-bs-toggle="modal" data-bs-target="#memberJoinModal"
+						data-bs-whatever="@getbootstrap">직원 등록</button>
+				</c:if>		
+				</span>
+			</div>
 	
 			<div class="table-responsive">
 				<table class="table">

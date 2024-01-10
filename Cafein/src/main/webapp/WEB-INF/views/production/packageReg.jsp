@@ -44,8 +44,8 @@
 						</div>
 							<div class="row">
 							<div class="col">
-								<label for="roasteddate" class="col-form-label">생산일</label> 
-								<input type="text" name="roasteddate" class="form-control" id="producedatePack" min="150" max="250" step="10" readonly="readonly">
+								<label for="planDate" class="col-form-label">생산일</label> 
+								<input type="text" name="planDate" class="form-control" id="producedatePack" min="150" max="250" step="10" readonly="readonly">
 							</div>
 							<div class="col">
 								<label for="produceline" class="col-form-label">생산라인</label> 

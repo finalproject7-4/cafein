@@ -106,7 +106,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<c:if test="${slist.stockquantity >= 10 }">
 										${slist.stockquantity }개
 									</c:if>
-									<c:if test="${sessionScope.departmentname.equals('자재') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
+									<c:if test="${(sessionScope.departmentname == '자재' && sessionScope.memberposition == '팀장') || sessionScope.membername.equals('admin') || sessionScope.membername.equals('강호룡') }">
 									<button type="button" class="btn btn-primary btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal"
 									data-stockid="${slist.stockid}" data-qualityid="${slist.qualityid}" 
@@ -121,7 +121,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<c:if test="${!empty slist.storagecode }">
 									${slist.storagecode } - ${slist.storagename }
 									</c:if>
-									<c:if test="${sessionScope.departmentname.equals('자재') || sessionScope.memberposition.equals('팀장') || sessionScope.membername.equals('admin') }">
+									<c:if test="${(sessionScope.departmentname == '자재' && sessionScope.memberposition == '팀장') || sessionScope.membername.equals('admin') || sessionScope.membername.equals('강호룡') }">
 									<button type="button" class="btn btn-danger btn-sm" 
 									data-bs-toggle="modal" data-bs-target="#exampleModal2"
 									data-stockid="${slist.stockid }" data-qualityid="${slist.qualityid }" 

@@ -2,6 +2,7 @@ package com.cafein.controller;
 
 
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -224,21 +225,7 @@ public class ProductionController {
 				
 		// 출고리스트 상태 업데이트
 		pService.updateCompletRelease(vo);
-		
-		// 재고리스트 업데이트
-//		if (vo.getStockid1() != null) {
-//		    vo.setStockid(vo.getStockid1());
-//		    pService.updateStockList(vo);
-//			}
-//			
-//		if(vo.getStockid2() != null) {
-//			vo.setStockid(vo.getStockid2());
-//			pService.updateStockList(vo);
-//			}
-//		if(vo.getStockid3() != null) {
-//			vo.setStockid(vo.getStockid3());
-//			pService.updateStockList(vo);
-//			}		
+				
 	}
 	
 	// 품질 데이터 추가 삽입 필요없는 생산 상태 변경 (state) 생산중 or 완료
@@ -257,16 +244,19 @@ public class ProductionController {
 	@ResponseBody
 	@PostMapping(value = "/updateRoastedbeanList")
 	public String updateProduceState(/* @RequestBody */ RoastedbeanVO vo, ProduceVO pvo, 
-			@RequestParam("roasteddate") String roastedate
+			@RequestParam("planDate") String planDate
 			) throws Exception {
 		logger.debug("/producetion/updateRoastedbeanList() 호출!");
 
 		pService.updateProduceState(pvo);
 		
-		String[] rdate = roastedate.split("-");
+		  Date roasetedDate = new Date(System.currentTimeMillis());
+          vo.setRoasteddate(roasetedDate); // 포장완료한 날짜로 업데이트
+		
+		String[] rdate = planDate.split("-");
 
 		
-		System.out.println("받은 날짜는? "+roastedate);
+		System.out.println("받은 날짜는? "+planDate);
 		int year = Integer.parseInt(rdate[0]);
 		int month = Integer.parseInt(rdate[1]);
 		int day = Integer.parseInt(rdate[2]);
