@@ -142,8 +142,10 @@
 			
 
 				<span style="float: right;">
+				<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">생산지시 등록</button>
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">BOM등록</button>
+				</c:if>
 				</span>
 
 </div>
@@ -228,10 +230,10 @@ function fetchData(searchBtnValue) {
 <th scope="col" style="display: none;">아이템ID</th>
 <th scope="col" style="display: none;">포장지시량</th>
 <th scope="col" style="display: none;">생산량</th>
-
+<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 <th scope="col">상태변경</th>
 <th scope="col">공정관리</th>
-
+</c:if>
 <th scope="col" style="display: none;">생산코드</th>
 <th scope="col" style="display: none;">재고ID1</th>
 <th scope="col" style="display: none;">재고ID2</th>
@@ -254,6 +256,8 @@ function fetchData(searchBtnValue) {
 <td style="display: none;">${plist.itemid }</td>
 <td style="display: none;">${plist.packagevol }</td>
 <td style="display: none;">${plist.amount }</td>
+
+<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
 <td>
 
 	<!-- 블렌딩 대기 상태일때, 상태변경 버튼 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
@@ -275,6 +279,7 @@ function fetchData(searchBtnValue) {
 
 	
 </td>
+
 <td>	
 
 	<!-- 삭제 버튼은 생산공정이 블렌딩이고, 상태가 대기중일 때만 표시 -->
@@ -289,6 +294,7 @@ function fetchData(searchBtnValue) {
 	</c:if>	
 
 </td>
+</c:if>
 <td style="display: none;">${plist.producecode }</td>
 <td style="display: none;">${plist.stockid1 }</td>
 <td style="display: none;">${plist.stockid2 }</td>
