@@ -9,11 +9,10 @@
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
 		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
-		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
+		sh.itemname, sh.clientname,
 		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
 		FROM ship sh
 		JOIN member mb ON sh.membercode = mb.membercode
-		LEFT JOIN stock st ON sh.stockid = st.stockid
 		<where>
 		<if test="shipsts != null" >
 			shipsts=#{shipsts}
@@ -37,7 +36,6 @@
    SELECT count(*)
 	FROM ship sh
 	JOIN member mb ON sh.membercode = mb.membercode
-	LEFT JOIN stock st ON sh.stockid = st.stockid
 		<where>
 		<if test="shipsts != null" >
 			shipsts=#{shipsts}
@@ -125,7 +123,7 @@
 		<!-- select * from ship -->
 		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
        wk.pocode, wk.itemname,
-       wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
+       wk.worksts, wk.pocnt, wk.workdate2,
        wk.membercode, mb.membername
 		FROM work wk
 		JOIN member mb ON wk.membercode = mb.membercode
@@ -223,7 +221,7 @@
  	<select id="selectWKListExcel" resultType="WorkVO">
  		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
        wk.pocode, wk.itemname,
-       wk.worksts, wk.pocnt, wk.workupdate, wk.workdate2,
+       wk.worksts, wk.pocnt, wk.workdate2,
        wk.membercode, mb.membername
 		FROM work wk
 		JOIN member mb ON wk.membercode = mb.membercode
