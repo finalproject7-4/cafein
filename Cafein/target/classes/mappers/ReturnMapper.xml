@@ -55,8 +55,8 @@
  	
 	<!-- 반품 등록 -->
 	<insert id="insertReturn" >
-		insert into returns(returncode, itemid, returnname, returndate, exchangedate, returnquantity, returnstatus, reprocessmethod, returntype, returnReason, returninfo)
-    values(#{returncode}, (select itemid from item where itemname = #{returnname}), #{returnname}, #{returndate}, #{exchangedate}, #{returnquantity}, #{returnstatus}, #{reprocessmethod}, #{returntype}, #{returnReason}, #{returninfo}) 	
+		insert into returns(returncode, itemid, returnname,membercode, returndate, refunddate, returnquantity, returnstatus, reprocessmethod, returntype, returnReason, returninfo)
+    values(#{returncode}, (select itemid from item where itemname = #{returnname}), #{returnname},#{membercode},#{returndate}, #{refunddate}, #{returnquantity}, #{returnstatus}, #{reprocessmethod}, #{returntype}, #{returnReason}, #{returninfo}) 	
 	</insert>
  	
  	
@@ -68,7 +68,7 @@
  	
  	<!-- 반품 수정 -->
  	<update id="updateReturn">
- 		update returns set returnquantity=#{returnquantity},exchangedate=#{exchangedate} 
+ 		update returns set returnquantity=#{returnquantity},refunddate=#{refunddate},membercode=#{membercode} 
  		where returnid=#{returnid}
  	</update>
  
@@ -89,7 +89,7 @@
 	
 	<!-- 환불날짜 등록 -->
 	<update id="refundDate">
-		update returns set exchangedate= date(now())
+		update returns set refunddate= date(now())
 		where returncode= #{returncode}
 	</update>	
  

@@ -34,6 +34,17 @@
 </head>
 <body>
 
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if> 
+
+<%
+  // 세션에서 membercode 가져오기
+  Object memberCodeObject = session.getAttribute("membercode");
+  int memberCodeFromSession = (memberCodeObject != null) ? (int) memberCodeObject : 0;
+%>
+
      <!-- 검색창 -->
    		<div class="col-12" style="margin-top:20px;">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
@@ -112,7 +123,7 @@
 							aria-label="Floating label select example">
 							<optgroup label="반품사유">
 								<option value="제품불량">제품불량</option>
-								<option value="주문오류">주문오류</option>
+								<option value="포장불량">포장불량</option>
 							</optgroup>
 						</select>
 					</div>	
@@ -133,9 +144,14 @@
 							<b>수량</b><input id="returnquantity" name="returnquantity" class="form-control" id="floatingInput">
 						</div>
 					</div><br>
+					<div class="row">
 						<div class="col">
 							<b>반납날짜</b><input type="date" id="returndate" name="returndate" class="form-control" id="returnDateInput" readonly>
 						</div><br>
+						<div class="col">
+							<b>담당자 사번</b><input type="number" name="membercode" id="membercode" value="<%= memberCodeFromSession %>" readonly>
+						</div>
+				</div>
 				</div>
 					
 				<div class="modal-footer">
@@ -196,7 +212,7 @@
 							aria-label="Floating label select example" disabled>
 							<optgroup label="반품사유">
 								<option value="제품불량">제품불량</option>
-								<option value="주문오류">주문오류</option>
+								<option value="포장불량">포장불량</option>
 							</optgroup>
 						</select>
 					</div>	
@@ -220,9 +236,14 @@
 							<b>반납날짜</b><input type="date" id="returndate2" name="returndate" class="form-control" id="floatingInput" value="" disabled>
 						</div>
 					</div><br>
+					<div class="row">
 						<div class="col">
 							<b>환불날짜</b><input type="date" id="refunddate2" name="refunddate" class="form-control" id="floatingInput" value="">
-						</div><br>
+						</div>
+						<div class="col">
+							<b>담당자 사번</b><input type="number" name="membercode" id="membercode" value="<%= memberCodeFromSession %>" readonly>
+						</div>
+					</div><br>		
 				</div>
 					
 				<div class="modal-footer">
@@ -254,9 +275,10 @@
                 <input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success" >
         </form>
         <button type="button" class="btn btn-sm btn-success" onclick="submitExcelDownloadForm()"> 엑셀 파일 다운로드 </button>
-        
+        <c:if test="${departmentname eq '품질' and memberposition eq '팀장' or membername eq 'admin'}">
 		<button type="button" class="btn btn-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#returnAuditModal" data-bs-whatever="@getbootstrap">반품 등록</button>
 		<button id="hiddenRefundButton" class="btn btn-dark btn-sm m-2" onclick="submitRefundForm()"> 환불 </button>
+		</c:if>
 		</div>
 		
 		</div>
@@ -270,6 +292,7 @@
                     	<th scope="col">선택</th>
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
+                        <th scope="col">담당자 사번</th>                        
                         <th scope="col">제품명</th>
                         <th scope="col">품목</th>
                         <th scope="col">반품날짜</th>
@@ -278,8 +301,10 @@
                         <th scope="col">반품상태</th>
                         <th scope="col">검수상태</th>
                         <th scope="col">반품 처리</th>
+                        <c:if test="${departmentname eq '품질' and memberposition eq '팀장' or membername eq 'admin'}">
                         <th scope="col">수정 & 삭제</th>
                         <th scope="col">품질관리등록</th>
+                        </c:if>
                     </tr>
                 </thead>
                 <tbody>
@@ -295,6 +320,7 @@
                         	</c:choose>
                             <td>${returnVO.returnid}</td>
                             <td>${returnVO.returncode}</td>
+                            <td>${returnVO.membercode}</td>
                             <td>${returnVO.returnname}</td>
                             <td>${returnVO.returntype}</td>
                             <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
@@ -303,6 +329,7 @@
                             <td>${returnVO.returnstatus}</td>
                             <td>${returnVO.reprocessmethod}</td>
                             <td>${returnVO.returninfo}</td>
+                            <c:if test="${departmentname eq '품질' and memberposition eq '팀장' or membername eq 'admin'}">
                             <td>
 										<!-- 버튼 수정 -->
 										<button type="button" class="btn btn-dark btn-sm" 
@@ -321,6 +348,7 @@
 									등록
 							</button>
 							</td>
+							</c:if>
                         </tr>
                     </c:forEach>
                 </tbody>
