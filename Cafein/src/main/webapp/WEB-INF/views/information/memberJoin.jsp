@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+    
+<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
+<c:if test="${empty membercode}">
+	<c:redirect url="/main/login" />
+</c:if>    
 	
 	<!-- Modal -->
 	<div class="modal fade" id="memberJoinModal">
@@ -34,10 +40,10 @@
 			</select>
 			
 			직급 <span style="color:red;">*</span>
-			<select name="memberposition" class="form-select mb-3" id="insertPosition" aria-label="select Departmentname">
+			<select name="memberposition" class="form-select mb-3" id="insertPosition" aria-label="select Position">
 				<option value="사원">사원</option>
-				<option value="주임">주임</option>
 				<option value="대리">대리</option>
+				<option value="팀장">팀장</option>
 				<option value="과장">과장</option>
 			</select>
 				
