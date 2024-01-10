@@ -179,7 +179,7 @@ public class WorkController {
 			
 		    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 		    Row headerRow = (Row) sheet.createRow(0);
-		    String[] headers = {"작업지시번호", "작업지시일", "작업지시코드", "수주코드", "납품처명", "품목명", "지시상태", "지시수량", "완료일자", "담당자"};
+		    String[] headers = {"작업지시번호", "작업지시일", "작업지시코드", "수주코드", "납품처명", "품목명", "지시수량", "지시상태", "완료일자", "담당자"};
 		    
 		    CellStyle headerStyle = workbook.createCellStyle();
 		    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
