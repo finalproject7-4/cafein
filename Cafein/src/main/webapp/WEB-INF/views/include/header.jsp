@@ -73,7 +73,8 @@
         <div class="sidebar pe-4 pb-3" style="background-color: #FBF8EF;">
             <nav class="navbar bg-light navbar-light">
                 <a href="/main/main" style="margin-top: -45px;">
-                    <img width="194px" height="160px" src="../resources/img/cafein.png" alt="cafein_logo">
+                    <img width="194px" height="160px" src="../resources/img/cafein.png" alt="cafein_logo"
+                    style="margin-top: 30px;margin-left:15px;scale: 1.3;">
                 </a>
                 <div class="navbar-nav w-100">
                     <div class="nav-item dropdown">
