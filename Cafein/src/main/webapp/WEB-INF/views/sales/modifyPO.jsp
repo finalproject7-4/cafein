@@ -19,10 +19,10 @@
 				<input type="hidden" name="itemid" id="itemid3">
 				
 				<div class="modal-body">
-				납품처/코드
+				납품처
 				<input autocomplete="off" id="clientid2" name="clientname" class="form-control mb-3" type="text"  readonly="readonly">
 				
-				품목명/코드
+				품목명
 				<input autocomplete="off" id="itemid2" name="itemname" class="form-control mb-3" type="text"  >
 					<div class="mb-3">
 						<label for="postate" class="col-form-label"><b>수주상태</b></label>

@@ -15,8 +15,8 @@
 				<input type="hidden" name="searchBtn" value="${param.searchBtn}" placeholder="납품처명을 입력하세요">
 				</c:if>
 				<span style="display:flex;">
-				<label style="margin: 5px 10px 0 0;">납품처조회</label>
-				<input type="text" name="searchText" placeholder="납품처명을 입력하세요" class="form-control fcsearch">
+				<label style="margin: 5px 10px 0 0;">검색어</label>
+				<input type="text" name="searchText" placeholder="납품처명 또는 품명을 입력하세요" class="form-control fcsearch">
 				<label style="margin: 5px 10px 0 0; margin-left:10em;">수주일자</label>		
 				<input type="date" id="startDate" name="startDate" class="form-control fc fcsearch"> &nbsp; ~ &nbsp;
 				<input type="date" id="endDate" name="endDate" class="form-control fc fcsearch">
@@ -58,7 +58,7 @@
 			<button type="button" class="btn btn-sm btn-danger" id="cancel">취소</button>
 		</div>
 
-				<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
+				<c:if test="${sessionScope.departmentname eq '영업' and memberposition eq '팀장' or membername eq 'admin'}">
 				 <input type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal"
 					data-bs-target="#registModal" id="regist" value="등록">
 					</c:if> 
@@ -80,7 +80,7 @@
 								<th scope="col">수정일자</th>
 								<th scope="col">완납예정일</th>
 								<th scope="col">담당자</th>
-								<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
+								<c:if test="${sessionScope.departmentname eq '영업' and memberposition eq '팀장' or departmentname eq 'admin' and memberposition eq 'admin'}">
 								<th scope="col">진행</th>
 								<th scope="col">관리</th>
 								</c:if>
@@ -123,7 +123,7 @@
 											<td>${counter }</td>
 											<td><b>${po.postate }</b></td>
 											<td class="pocodeColor"
-											onclick="openDetailModal('${po.poid}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
+											onclick="openDetailModal('${po.poid}','${po.pocode}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 											${po.pocode }</td>
 											<td>${po.clientname}</td>
 											<td>${po.itemname}</td>
@@ -143,7 +143,7 @@
 											onclick="memberCall('${po.membername}','${po.memberphone}','${po.departmentname}','${po.memberposition}','${po.memberemail}')">
 											<u>${po.membername}</u></td>
 											
-											<c:if test="${sessionScope.membercode eq '1003' or membername eq 'admin'}">
+											<c:if test="${sessionScope.departmentname eq '영업' and memberposition eq '팀장' or departmentname eq 'admin' and memberposition eq 'admin'}">
 											<td><input value="진행" type="submit" class="btn btn-sm btn-primary ingUpdate" data-poid="${po.poid}"></td>
 											<td>
 												<button type="button" class="btn btn-sm btn-warning updateInfo"

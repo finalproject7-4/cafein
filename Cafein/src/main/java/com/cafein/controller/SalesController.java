@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -206,59 +207,96 @@ public class SalesController {
 		
 	    // 첫 번째 행에 열의 헤더 추가 (엑셀 첫 행에 컬럼명 추가입니다. 쓰실 분만 쓰시면 됩니다.)
 	    Row headerRow = (Row) sheet.createRow(0);
-	    String[] headers = {"수주번호", "수주상태", "수주코드", "납품처코드-납품처명", "품목코드-품목명", "수량", "수주일자", "수정일자", "납품예정일", "담당자"};
+	    String[] headers = {"번호", "진행상태", "수주코드", "납품처코드-납품처명", "품목코드-품목명", "수량", "수주일자", "수정일자", "납품예정일", "담당자"};
 	    
 	    CellStyle headerStyle = workbook.createCellStyle();
 	    headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); 
 	    headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 	    
+	    // 중앙 정렬을 위한 스타일
+	    CellStyle centerAlignStyle = workbook.createCellStyle();
+	    centerAlignStyle.setAlignment(HorizontalAlignment.CENTER);
+	    // 좌측 정렬을 위한 스타일
+	    CellStyle leftAlignStyle = workbook.createCellStyle();
+	    leftAlignStyle.setAlignment(HorizontalAlignment.LEFT);
+	    
+	    // 엑셀 데이터로 변환합니다.
 	    for (int i = 0; i < headers.length; i++) {
 	        Cell cell = headerRow.createCell(i);
 	        cell.setCellValue(headers[i]);
-	        cell.setCellStyle(headerStyle);
+	        if (i == 0) {
+	            cell.setCellStyle(headerStyle);
+//	            cell.setCellStyle(centerAlignStyle);
+	        } else {
+	            // 나머지 열은 색상만 적용
+	            cell.setCellStyle(headerStyle);
+	        }
 	    }
+	    
 	    // 첫 번째 행에 열의 헤더 추가
-
 		int rowNum = 1; // 컬럼명을 추가했으면 1, 컬럼명을 추가하지 않았으면 0으로 시작하시면 됩니다.
+		int countpoid=1;
 		for (SalesVO vo2 : list) { // 향상된 for문 사용 (서비스에서 받아온 목록을 해당 VO에 대입)
 			Row row = sheet.createRow(rowNum++);
-
 			int colNum = 0;
-			// 컬럼 내용 추가 (vo의 Getter를 사용하시면 됩니다.)
-			row.createCell(colNum++).setCellValue(vo2.getPoid());
-			row.createCell(colNum++).setCellValue(vo2.getPostate());
-			row.createCell(colNum++).setCellValue(vo2.getPocode());
-			row.createCell(colNum++).setCellValue(vo2.getClientcode() + " - " + vo2.getClientname());
-			sheet.setColumnWidth(colNum - 1, 20*256); 
-			row.createCell(colNum++).setCellValue(vo2.getItemcode() + " - " + vo2.getItemname());
-			sheet.setColumnWidth(colNum - 1, 20*256);  // 현재 열의 너비를 자동으로 조정
-			row.createCell(colNum++).setCellValue(vo2.getPocnt());
-			
-			DataFormat dataFormat = workbook.createDataFormat(); // 날짜 형식 변환입니다. 형식을 정하지 않으면 날짜가 제대로 표기되지 않습니다.
-			CellStyle dateCellStyle = workbook.createCellStyle();
-			dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+			// 데이터 부분에 중앙 정렬 스타일 적용
+			for (int i = 0; i < headers.length; i++) {
+		        Cell dataCell = row.createCell(colNum);
 
-			Cell registrationDateCell = row.createCell(colNum++);
-			registrationDateCell.setCellValue(vo2.getOrdersdate()); // 날짜 데이터인 경우에는 위와 다르게 형식을 정하고 이렇게 넣으셔야 합니다.
-			registrationDateCell.setCellStyle(dateCellStyle);
-			// 셀 크기 조정
-			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+		        CellStyle currentStyle;
+		        if (i == 0) {
+		            currentStyle = workbook.createCellStyle();
+		            currentStyle.cloneStyleFrom(headerStyle);
+		            currentStyle.setAlignment(centerAlignStyle.getAlignment());
+		        } else {
+		            currentStyle = leftAlignStyle; // 기본적으로 좌측 정렬 스타일을 적용
 
-			Cell updateDateCell = row.createCell(colNum++);
-			updateDateCell.setCellValue(vo2.getUpdatedate()); // 위와 동일
-			updateDateCell.setCellStyle(dateCellStyle);
-			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
-			
-			Cell OrdersdueDateCell = row.createCell(colNum++);
-			OrdersdueDateCell.setCellValue(vo2.getOrdersduedate()); // 위와 동일
-			OrdersdueDateCell.setCellStyle(dateCellStyle);
-			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
+		            if (i == 1 || i == 5 || i == 9) {
+		                // 1, 5, 9행에 대해서 중앙 정렬 스타일을 추가로 적용
+		                currentStyle.setAlignment(centerAlignStyle.getAlignment());
+		            }
+		        }
 
-			row.createCell(colNum++).setCellValue(vo2.getMembercode());
-			sheet.autoSizeColumn(colNum - 1);
+
+		        
+		        // 컬럼 내용 추가 (vo의 Getter를 사용하시면 됩니다.)
+		        if (i == 0) {
+		            dataCell.setCellValue(countpoid);
+		            sheet.setColumnWidth(colNum, 5*256); // 열 너비 설정
+		            countpoid++;
+		        } else if (i == 1) {
+		            dataCell.setCellValue(vo2.getPostate());
+		        } else if (i == 2) {
+		            dataCell.setCellValue(vo2.getPocode());
+		            sheet.setColumnWidth(colNum, 15*256); // 열 너비 설정
+		        } else if (i == 3) {
+		            dataCell.setCellValue(vo2.getClientcode() + " - " + vo2.getClientname());
+		            sheet.setColumnWidth(colNum, 20*256); // 열 너비 설정
+		        } else if (i == 4) {
+		            dataCell.setCellValue(vo2.getItemcode() + " - " + vo2.getItemname());
+		            sheet.setColumnWidth(colNum, 25*256); // 열 너비 설정
+		        } else if (i == 5) {
+		            dataCell.setCellValue(vo2.getPocnt());
+		            sheet.setColumnWidth(colNum, 5*256); 
+		        } else if (i == 6 || i == 7 || i == 8) {
+		            DataFormat dataFormat = workbook.createDataFormat();
+		            CellStyle dateCellStyle = workbook.createCellStyle();
+		            dateCellStyle.setDataFormat(dataFormat.getFormat("yyyy-MM-dd"));
+
+		            Cell dateCell = row.createCell(colNum);
+		            dateCell.setCellValue(i == 6 ? vo2.getOrdersdate() : (i == 7 ? vo2.getUpdatedate() : vo2.getOrdersduedate()));
+		            dateCell.setCellStyle(dateCellStyle);
+		            sheet.autoSizeColumn(colNum);  // 현재 열의 너비를 자동으로 조정
+		        } else if (i == 9) {
+		            dataCell.setCellValue(vo2.getMembercode());
+		        }
+		        
+		        colNum++;  // 셀을 생성한 후에 증가시켜 다음 열로 이동
+		    }
 		}
+
 		
-		String fileName = "수주 전체 리스트.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
+		String fileName = "POList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
 
 		// 3. 엑셀 파일을 저장합니다.
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // 엑셀 형식입니다

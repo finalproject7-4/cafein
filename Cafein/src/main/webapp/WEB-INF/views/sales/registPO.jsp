@@ -17,13 +17,14 @@
 
 				<input type="hidden" name="clientid" id="clientidd">
 				<input type="hidden" name="itemid" id="itemidd">
+				<input type="hidden" name="clientcode" id="addclientcode">
 
 				<div class="modal-body">
-				납품처/코드
-				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처/코드(클릭)" aria-label="default input example" required="required">
+				납품처
+				<input autocomplete="off" id="clientid" name="clientname" class="form-control mb-3" type="text" placeholder="납품처(클릭)" aria-label="default input example" required="required">
 				
-				품목명/코드
-				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명/코드(클릭)" aria-label="default input example" required="required">
+				품목명
+				<input autocomplete="off"  id="itemid" name="itemname" class="form-control mb-3" type="text" placeholder="품목명(클릭)" aria-label="default input example" required="required">
 					<div class="mb-3">
 						<label for="itemtype" class="col-form-label"><b>수주상태</b></label>
 						<select class="form-select" id="floatingSelect" name="postate"
@@ -159,6 +160,7 @@ $(document).ready(function() {
 	    console.log("clientid:", clientid);
 	    $("#clientidd").val(clientid);
 	});
+	    
 	$(".itemset").click(function() {
 	    var itemid = $(this).find('td:eq(0)').text();
 	    console.log("itemid:", itemid);

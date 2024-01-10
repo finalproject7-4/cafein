@@ -273,11 +273,12 @@
 	}
 	
 	/* 리스트 값 상세내역 모달로 값 전달 */
-	function openDetailModal(poid, clientid, itemid, clientname, itemname,
+	function openDetailModal(poid, pocode, clientid, itemid, clientname, itemname,
 			postate, pocnt, ordersdate, ordersduedate, membercode) {
 
 		// 가져온 값들을 모달에 설정
 		$("#poid4").val(poid);
+		$("#pocode4").val(pocode);
 		$("#clientid4").val(clientid);
 		$("#itemid4").val(itemid);
 		$("#clientid5").val(clientname);

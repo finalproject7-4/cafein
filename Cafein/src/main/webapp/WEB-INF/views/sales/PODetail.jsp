@@ -17,12 +17,21 @@
 				<input type="hidden" name="clientid" id="clientid4">
 				<input type="hidden" name="itemid" id="itemid4">
 				
-				<div class="modal-body">
-				납품처/코드
-				<input autocomplete="off" id="clientid5" name="clientname" class="form-control mb-3" type="text"  readonly>
+				<div class="modal-body" style="font-weight:bold;">
+				수주코드
+				<input autocomplete="off" id="pocode4" name="pocode" class="form-control mb-3" type="text" readonly>
 				
-				품목명/코드
+				<div class="row">
+				<div class="col">
+				납품처
+				<input autocomplete="off" id="clientid5" name="clientname" class="form-control mb-3" type="text"  readonly>
+				</div>
+				
+				<div class="col">
+				품목명
 				<input autocomplete="off" id="itemid5" name="itemname" class="form-control mb-3" type="text" readonly>
+				</div>
+				</div>
 				
 				<div class="row row1">
 					<div class="col">
