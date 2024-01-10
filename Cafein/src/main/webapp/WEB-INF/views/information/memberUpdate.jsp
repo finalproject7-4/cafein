@@ -49,8 +49,8 @@
 			수정할 직급 <span style="color:red; font-size: 0.8em;">* 수정하지 않아도 입력해 주세요.</span>
 			<select name="memberposition" class="form-select mb-3" id="updatePosition" aria-label="select Departmentname">
 				<option value="사원">사원</option>
-				<option value="주임">주임</option>
 				<option value="대리">대리</option>
+				<option value="팀장">팀장</option>
 				<option value="과장">과장</option>
 			</select>	
 				

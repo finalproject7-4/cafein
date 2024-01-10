@@ -35,7 +35,7 @@
 			<h6 class="mb-4">거래처 목록</h6>
 			<span class="mb-4">총 ${pageVO.totalCount} 건</span>
 			<span style="margin-left: 82%;">
-			<c:if test="${memberposition eq '과장' or membername eq 'admin'}">
+			<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-2" 
 						data-bs-toggle="modal" data-bs-target="#clientJoinModal" 
 						data-bs-whatever="@getbootstrap">거래처 등록</button>
@@ -56,7 +56,7 @@
 							<th scope="col">팩스번호</th>
 							<th scope="col">이메일</th>
 							
-							<c:if test="${memberposition eq '과장' or membername eq 'admin'}">
+							<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
 								<th scope="col">관리</th>
 							</c:if>
 							
@@ -81,7 +81,7 @@
 								
 								<td>${vo.clientemail }</td>
 							
-								<c:if test="${memberposition eq '과장' or membername eq 'admin'}">
+								<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
 									<td>
 										<button type="button" class="btn btn-sm btn-warning m-1" 
 												onclick="clientUpdateModal('${vo.clientid }', '${vo.clientname }', '${vo.categoryofclient }', '${vo.typeofclient }', '${vo.businessnumber }', 

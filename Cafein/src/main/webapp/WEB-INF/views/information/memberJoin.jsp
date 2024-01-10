@@ -42,8 +42,8 @@
 			직급 <span style="color:red;">*</span>
 			<select name="memberposition" class="form-select mb-3" id="insertPosition" aria-label="select Position">
 				<option value="사원">사원</option>
-				<option value="주임">주임</option>
 				<option value="대리">대리</option>
+				<option value="팀장">팀장</option>
 				<option value="과장">과장</option>
 			</select>
 				
