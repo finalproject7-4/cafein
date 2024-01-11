@@ -165,7 +165,7 @@
 <td>${rlist.itemname }</td>
 <td>${rlist.weight }</td>
 <td><fmt:formatDate value="${rlist.roasteddate }" pattern="yyyy-MM-dd" /></td>
-<td>${rlist.defect =='Y' ? '정상' : '-' } </td>
+<td>${rlist.auditstatus =='Y' ? '정상' : '-' } </td>
 <td>${rlist.lotnumber }</td>
 <td id="barcode${status.index }">
 <input type="button" class="btn btn-sm btn-primary" value="출력" id="barcodeButton" onclick="openbarcodeModal('${rlist.itemname}','${rlist.weight }', '${rlist.lotnumber }','${rlist.roasteddate }' )" data-bs-toggle="modal" data-bs-target="#barcodeModal" data-bs-whatever="@getbootstrap">
