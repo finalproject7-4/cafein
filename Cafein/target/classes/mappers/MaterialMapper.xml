@@ -263,7 +263,7 @@
 		select count(*) 
 		from releases rl
 		join stock sto 
-		on rl.stockid = sto.stockid
+		on rl.itemid = sto.itemid
 		left outer join item it
 		on sto.itemid = it.itemid
 		left outer join member mem
