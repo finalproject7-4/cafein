@@ -523,7 +523,7 @@ public class RestController {
 			int normalquantity = vo.getNormalquantity();
 			int defectquantity = vo.getDefectquantity();
 			
-			vo.setAuditquantity(auditquantity + vo.getWeight()); // 검수량 변경 (기존 검수량 + 중량)
+			// vo.setAuditquantity(auditquantity + vo.getWeight()); // 검수량 변경 (기존 검수량 + 중량)
 			
 			if(vo.getDefect() != null && vo.getDefect().equals("Y")) { // 불량 있음
 				
@@ -541,8 +541,8 @@ public class RestController {
 						vo.setAuditcode(vo.getAuditcode());
 					}
 					
-					vo.setDefectquantity(defectquantity + weight);
-					vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
+					// vo.setDefectquantity(defectquantity + weight);
+					// vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
 					qService.productAuditFull(vo);
 					
 					
@@ -570,8 +570,8 @@ public class RestController {
 						vo.setAuditcode(vo.getAuditcode());
 					}
 					
-					vo.setDefectquantity(defectquantity + weight);
-					vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
+					// vo.setDefectquantity(defectquantity + weight);
+					// vo.setNormalquantity(vo.getAuditquantity() - vo.getDefectquantity());
 					qService.produceAudit(vo);
 				}
 				
@@ -591,8 +591,8 @@ public class RestController {
 						vo.setAuditcode(vo.getAuditcode());
 					}
 					
-					vo.setNormalquantity(normalquantity + weight);
-					vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
+					// vo.setNormalquantity(normalquantity + weight);
+					// vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
 					qService.productAuditFull(vo);
 					
 					if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
@@ -618,8 +618,8 @@ public class RestController {
 						vo.setAuditcode(vo.getAuditcode());
 					}
 					
-					vo.setNormalquantity(normalquantity + weight);
-					vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
+					// vo.setNormalquantity(normalquantity + weight);
+					// vo.setDefectquantity(vo.getAuditquantity() - vo.getNormalquantity());
 					qService.produceAudit(vo);
 				}
 			}
