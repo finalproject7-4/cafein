@@ -118,33 +118,23 @@
 								</a>
 		
 								<script>
-									$(document)
-											.ready(
-													function() {
-														$('.pageBlockPrev')
-																.click(
-																		function(e) {
-																			e
-																					.preventDefault(); // 기본 이벤트 제거
+									$(document).ready(function() {
+										$('.pageBlockPrev').click(function(e) {
+										e.preventDefault(); // 기본 이벤트 제거
 		
-																			let prevPage = $(
-																					this)
-																					.data(
-																							'page');
+										let prevPage = $(this).data('page');
 		
-																			let keyword = "${param.keyword}";
+										let keyword = "${param.keyword}";
 		
-																			url = "/information/members?page="
-																					+ prevPage;
+										url = "/information/members?page=" + prevPage;
 		
-																			if (keyword) {
-																				url += "&keyword="
-																						+ encodeURIComponent(keyword);
-																			}
+										if (keyword) {
+											url += "&keyword=" + encodeURIComponent(keyword);
+										}
 		
-																			location.href = url;
-																		});
-													});
+										location.href = url;
+										});
+									});
 								</script>
 							</c:if></li>
 						<!-- 버튼 이동에 따른 파라미터 전달 (이전) -->
@@ -157,33 +147,22 @@
 							</li>
 		
 							<script>
-								$(document)
-										.ready(
-												function() {
-													$('.pageBlockNum')
-															.click(
-																	function(e) {
-																		e
-																				.preventDefault(); // 기본 이벤트 제거
+								$(document).ready(function() {
+									$('.pageBlockNum').click(function(e) {
+										e.preventDefault(); // 기본 이벤트 제거
 		
-																		let pageValue = $(
-																				this)
-																				.data(
-																						'page');
+										let pageValue = $(this).data('page');
 		
-																		let keyword = "${param.keyword}";
+										let keyword = "${param.keyword}";
 		
-																		url = "/information/members?page="
-																				+ pageValue;
+										url = "/information/members?page=" + pageValue;
 		
-																		if (keyword) {
-																			url += "&keyword="
-																					+ encodeURIComponent(keyword);
-																		}
+										if (keyword) {url += "&keyword=" + encodeURIComponent(keyword);
+										}
 		
-																		location.href = url;
-																	});
-												});
+										location.href = url;
+									});
+								});
 							</script>
 						</c:forEach>
 						<!-- 버튼 이동에 따른 파라미터 전달 (현재) -->
@@ -195,33 +174,22 @@
 								</a>
 		
 								<script>
-									$(document)
-											.ready(
-													function() {
-														$('.pageBlockNext')
-																.click(
-																		function(e) {
-																			e
-																					.preventDefault(); // 기본 이벤트 제거
+									$(document).ready(function() {
+										$('.pageBlockNext').click(function(e) {
+											e.preventDefault(); // 기본 이벤트 제거
 		
-																			let nextPage = $(
-																					this)
-																					.data(
-																							'page');
+											let nextPage = $(this).data('page');
 		
-																			let keyword = "${param.keyword}";
+											let keyword = "${param.keyword}";
 		
-																			url = "/information/members?page="
-																					+ nextPage;
+											url = "/information/members?page=" + nextPage;
 		
-																			if (keyword) {
-																				url += "&keyword="
-																						+ encodeURIComponent(keyword);
-																			}
+											if (keyword) {url += "&keyword=" + encodeURIComponent(keyword);
+											}
 		
-																			location.href = url;
-																		});
-													});
+											location.href = url;
+											});
+									});
 								</script>
 							</c:if></li>
 						<!-- 버튼 이동에 따른 파라미터 전달 (다음) -->
