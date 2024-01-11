@@ -47,8 +47,9 @@
 
      <!-- 검색창 -->
    		<div class="col-12" style="margin-top:20px;">
-		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
+		<div class="bg-light rounded h-100 p-2" style="margin-top: 20px;">
         <form action="" method="get">
+        <h6>반품 조회</h6>
 	<div class="d-flex align-items-center">
             <div class="form-group" style="width: 200px; margin-right: 20px;">
                 <input type="text" class="form-control" id="returncode" name="returncode" value="${returnVO.returncode }" placeholder="반품 코드">
@@ -287,11 +288,10 @@
 	
 		<div class="col-12" style="margin-top:20px;">
 		<div class="bg-light rounded h-100 p-4">
-		<h6  class="mb-4">반품 목록</h6>
 		
 		<div class="d-flex justify-content-between">
 		<div>
-		<h6>총 ${vo.totalCount}건</h6>
+		<h6>반품 관리 [총 ${vo.totalCount}건]</h6>
 		</div>
 		
 		<div class="d-flex align-items-center">

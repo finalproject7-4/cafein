@@ -43,7 +43,7 @@
 		
 		<form action="releaseListExcelDownload" method="GET">
 		<div class="buttonarea1">
-			<b>총 ${pageVO.totalCount} 건</b>		
+			<span style="color: black;"><b>출고 관리 [총 ${pageVO.totalCount}건]</b></span>		
 			<span style="float: right;">
 				<input type="submit" value="엑셀 파일 다운로드" class="btn btn-sm btn-success">
 				<!-- <button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#releaseRegistModal" data-bs-whatever="@getbootstrap">등록</button> -->

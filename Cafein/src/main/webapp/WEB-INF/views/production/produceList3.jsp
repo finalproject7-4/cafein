@@ -129,8 +129,7 @@
 <!-- 생산지시 목록 테이블 -->
 <div class="col-12" style="margin-top:20px;">
 <div class="bg-light rounded h-100 p-4">
-<h6 class="mb-4">생산 지시 목록</h6>
-<h6 class="mb-4">총 ${pageVO.totalCount } 건</h6>
+<h6 class="mb-4">생산 지시 관리 [총 ${pageVO.totalCount }건]</h6>
 
 <!-- 생산 상태에 따른 페이지 출력 (버튼) 시작 -->
 <div class="buttonarea1" style="margin-bottom: 10px;">

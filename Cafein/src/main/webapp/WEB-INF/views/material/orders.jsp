@@ -59,7 +59,7 @@
 		
 		<form action="orderListExcelDownload" method="GET">
 		<div class="buttonarea1">
-			<b>총 ${pageVO.totalCount} 건</b>				
+			<span style="color: black;"><b>발주 관리 [총 ${pageVO.totalCount}건]</b></span>				
 			<span style="float: right;">
 			  <c:if test="${departmentname eq '자재' and memberposition eq '팀장' or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#orderRegistModal" data-bs-whatever="@getbootstrap">등록</button>

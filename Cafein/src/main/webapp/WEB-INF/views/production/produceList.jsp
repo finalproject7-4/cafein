@@ -72,7 +72,7 @@ function getCurrentPageNumber() {
 <!-- 검색 폼 -->
 <div class="col-12" style="margin-top:20px;">
 <div class="bg-light rounded h-100 p-4">
-<h6 class="mb-4">생산지시조회</h6>
+<h6 class="mb-4">생산지시 조회</h6>
 
 <!-- 제품명 조회 -->
 <div >

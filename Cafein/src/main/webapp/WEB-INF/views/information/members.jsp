@@ -14,6 +14,7 @@
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4" style="margin-top: 20px;">
 			<form action="/information/members" method="get">
+				<h6>직원 조회</h6>
 				<div class="d-flex align-items-center">
 				  <div class="me-2">
 					<select name="option" class="form-select" style="width: 120px;" aria-label="search member">
@@ -38,17 +39,14 @@
 	<!-- 직원 목록 -->
 	<div class="col-12">
 		<div class="bg-light rounded h-100 p-4">
-			<h6 class="mb-4">직원 목록</h6>
-			<div class="buttonarea1">
-				<b>총 ${pageVO.totalCount} 건</b>
-				<span style="float: right;">
-				<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
-					<button type="button" class="btn btn-sm btn-dark m-2"
-						data-bs-toggle="modal" data-bs-target="#memberJoinModal"
-						data-bs-whatever="@getbootstrap">직원 등록</button>
-				</c:if>		
-				</span>
-			</div>
+			<span style="color: black;"><b>직원 관리 [총 ${pageVO.totalCount}건]</b></span>
+			<span style="float: right;">
+			<c:if test="${memberposition eq '팀장' or membername eq 'admin'}">
+				<button type="button" class="btn btn-sm btn-dark m-2"
+					data-bs-toggle="modal" data-bs-target="#memberJoinModal"
+					data-bs-whatever="@getbootstrap">직원 등록</button>
+			</c:if>		
+			</span>
 	
 			<div class="table-responsive">
 				<table class="table">
