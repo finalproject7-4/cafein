@@ -170,6 +170,13 @@ public class ShipServiceImpl implements ShipService {
 		shdao.updateCompletWork(wvo);
 	}
 	
+	// 출하 완료 -> 수주 완료
+	@Override
+	public void updateCompletSale(SalesVO ssvo) throws Exception {
+		logger.debug("Service - 수주 완료로 변경!");
+		shdao.updateCompletSale(ssvo);
+	}
+
 	// 작업 지시 엑셀
 	@Override
 	public List<WorkVO> WKListExcel(WorkVO wvo) throws Exception {

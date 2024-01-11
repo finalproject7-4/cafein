@@ -136,6 +136,7 @@ public class WorkController {
 	        svo.setShipdate1(wvo.getWorkdate1());
 	        svo.setShipcode(makeSHcode(svo));
 	        svo.setWorkcode(wvo.getWorkcode());
+	        svo.setPocode(wvo.getPocode());
 	        svo.setClientname(wvo.getClientname());
 	        svo.setItemname(wvo.getItemname());
 	        svo.setShipsts(wvo.getWorksts());

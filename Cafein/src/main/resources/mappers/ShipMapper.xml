@@ -8,7 +8,7 @@
 	<!-- 출하 조회 -->
 	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
 		<!-- select * from ship -->
-		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode, sh.pocode,
 		sh.itemname, sh.clientname,
 		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
 		FROM ship sh
@@ -102,6 +102,12 @@
 	<update id="updateCompletWork">
 		update work set worksts = '완료', workdate2 = #{workdate2}
 		where workcode=#{workcode}
+	</update>
+
+	<!-- 출하 완료시 수주 완료 변경 -->
+	<update id="updateCompletSale">
+		update purchaseorder po set postate = '완료'
+		where pocode=#{pocode}
 	</update>
 
 	<!-- 리스트 출력 -->
@@ -213,8 +219,8 @@
 	
 	<!-- 출하 리스트 삽입 -->
 	<insert id="insertShipList">
-		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode)
-		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode} )
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode ,pocode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode}, #{pocode} )
 	</insert>
 	
 	<!-- 리스트 출력 -->

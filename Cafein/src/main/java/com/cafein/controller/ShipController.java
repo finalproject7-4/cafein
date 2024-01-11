@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cafein.domain.Criteria;
 import com.cafein.domain.PageVO;
+import com.cafein.domain.SalesVO;
 import com.cafein.domain.ShipVO;
 import com.cafein.domain.WorkVO;
 import com.cafein.service.ShipService;
@@ -126,13 +127,15 @@ public class ShipController {
 	//출하상태 완료 변경
 		// http://localhost:8088/sales/SHList
 		@RequestMapping(value = "/ingUpdate1", method = RequestMethod.POST)
-		public String ingUpdate(ShipVO svo, WorkVO wvo, @RequestParam("shipid") int shipid,
-				@RequestParam("workcode") String workcode,
+		public String ingUpdate(ShipVO svo, WorkVO wvo, SalesVO ssvo, @RequestParam("shipid") int shipid,
+				@RequestParam("workcode") String workcode, @RequestParam("pocode") String pocode,
 				HttpSession session, Model model) throws Exception {
 
 			logger.debug("/sales/ingUpdate1() 호출!");
 			svo.setShipid(shipid);
 			wvo.setWorkcode(workcode);
+			ssvo.setPocode(pocode);
+			
 				
 			// 출하 완료 시간 설정
 			Date shipDate2 = new Date(System.currentTimeMillis());
@@ -147,8 +150,10 @@ public class ShipController {
 
 			logger.debug("작업지시상태 업데이트 성공!");
 
-			// 작업지시상태 업데이트
+			// 작업지시 상태 완료로 업데이트
 			wvo.setWorksts(svo.getShipsts());
+			// 수주 상태 완료로 업데이트
+			ssvo.setPostate(svo.getShipsts());
 			
 			// 작업지시 완료 시간 설정
 			Date workDate2 = new Date(System.currentTimeMillis());
@@ -156,6 +161,7 @@ public class ShipController {
 			
 			logger.debug("updateCompletWork 메서드 호출 - 작업상태: " + wvo.getWorksts() + ", 작업코드: " + wvo.getWorkcode());
 			shService.updateCompletWork(wvo);
+			shService.updateCompletSale(ssvo);
 			logger.debug("updateCompletWork 메서드 호출 완료!");
 			
 			

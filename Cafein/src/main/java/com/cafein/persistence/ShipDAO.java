@@ -74,6 +74,9 @@ public interface ShipDAO {
 	// 출하 완료-> 작업지시 완료
 	public void updateCompletWork(WorkVO wvo) throws Exception;
 	
+	// 출하 완료-> 수주 완료
+	public void updateCompletSale(SalesVO ssvo) throws Exception;
+	
 	// 작업지시 엑셀출력
 	public List<WorkVO> selectWKListExcel(WorkVO wvo) throws Exception;
 	
