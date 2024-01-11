@@ -219,7 +219,7 @@ function fetchData(searchBtnValue) {
 <thead>
 <tr>
 <th scope="col">번호</th>
-<th scope="col">등록일</th>
+<th scope="col" style="display: none;">등록일</th>
 <th scope="col">생산일</th>
 <th scope="col">제품명</th>
 <th scope="col">생산라인</th>
@@ -246,7 +246,7 @@ function fetchData(searchBtnValue) {
 <c:forEach var="plist" items="${produceList }">
 <tr>
 <td>${plist.produceid }</td>
-<td><fmt:formatDate value="${plist.submitdate }" pattern="yyyy-MM-dd" /> </td>
+<td style="display: none;"><fmt:formatDate value="${plist.submitdate }" pattern="yyyy-MM-dd" /> </td>
 <td><fmt:formatDate value="${plist.producedate }" pattern="yyyy-MM-dd" /></td>
 <td> ${plist.itemname }</td>
 <td>${plist.produceline }</td>
