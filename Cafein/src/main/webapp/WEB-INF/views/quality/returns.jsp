@@ -81,7 +81,7 @@
                     <input type="date" class="form-control" id="endDate" name="endDate" value="${returnVO.endDate}">
                 </div>
             </div>
-           <div >
+           <div class="form-group">
             <button type="submit" class="btn btn-dark btn-sm m-2">조회</button>
            </div>
 	</div>
@@ -89,6 +89,8 @@
 		</div>
 		</div>
      <!-- 검색창 -->
+     
+     
      
 	<!-- 반품 등록 모달창 -->   
     <div class="modal fade" id="returnAuditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -257,7 +259,29 @@
 	</div> 
 	<!-- 수정 등록 모달창 끝 -->	
 	
-        
+	<script>
+    // 문서가 로드될 때 초기 설정을 위해 호출
+    window.onload = function () {
+        checkReturnType();
+    };
+
+    function checkReturnType() {
+        var returnTypeSelect = document.getElementById("returnTypeSelect2");
+        var refunddateInput = document.getElementById("refunddate2");
+
+        // 선택한 반품유형이 "완제품"인 경우
+        if (returnTypeSelect.value === "완제품") {
+            refunddateInput.removeAttribute("disabled");
+        } else {
+            refunddateInput.setAttribute("disabled", true);
+        }
+    }
+
+    // 모달이 열릴 때마다 호출하여 초기값에 따라 "환불날짜" 입력란을 적절히 처리
+    $('#ModifyModal').on('shown.bs.modal', function () {
+        checkReturnType();
+    });
+</script>
 	
 	<!-- 반품조회 테이블 -->
 	
@@ -293,8 +317,8 @@
                         <th scope="col">반품ID</th>
                         <th scope="col">반품코드</th>
                         <th scope="col">담당자 사번</th>                        
-                        <th scope="col">제품명</th>
                         <th scope="col">품목</th>
+                        <th scope="col">제품명</th>
                         <th scope="col">반품날짜</th>
                         <th scope="col">환불날짜</th>
                         <th scope="col">수량</th>
@@ -314,15 +338,15 @@
 	                        	<c:when test="${fn:startsWith(returnVO.returncode, 'PRO') and empty returnVO.refunddate}">
 	                        		<td><input type="checkbox" name="selectedReturnId" value="${returnVO.returncode}" class="form-check-input"></td>
 	                        	</c:when>
-	                        	<c:otherwise>
-	                        		<td><input type="checkbox" class="form-check-input" disabled></td>
-	                        	</c:otherwise>
+                        	<c:otherwise>
+	                        		<td><input type="checkbox" class="form-check-input" disabled style="display: none;"></td>
+                        	</c:otherwise>
                         	</c:choose>
                             <td>${returnVO.returnid}</td>
                             <td>${returnVO.returncode}</td>
                             <td>${returnVO.membercode}</td>
-                            <td>${returnVO.returnname}</td>
                             <td>${returnVO.returntype}</td>
+                            <td>${returnVO.returnname}</td>
                             <td><fmt:formatDate value="${returnVO.returndate }" pattern="yyyy-MM-dd" /></td>
                             <td>${returnVO.refunddate}</td>                          
                             <td>${returnVO.returnquantity}</td>
@@ -342,12 +366,14 @@
 												삭제
 										</button>
 							</td>
+							<c:if test="${returnVO.returntype eq '완제품'}">
 							<td>
 							<button type="button" class="btn btn-primary btn-sm" 
 									onclick="addReturn('${returnVO.returnid}')">
 									등록
 							</button>
 							</td>
+							</c:if>
 							</c:if>
                         </tr>
                     </c:forEach>
