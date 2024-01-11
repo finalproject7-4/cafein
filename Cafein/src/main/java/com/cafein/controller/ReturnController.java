@@ -102,12 +102,15 @@ public class ReturnController {
 		  rvo.setReturncode(generateReturnCode(rvo));
 		  
 		  // 등록시 기본 설정
-		  rvo.setReturnstatus("대기");
-		  rvo.setReprocessmethod("검수중");
-		  rvo.setReturninfo("확인중");
-		  
-		 rService.returnRegist(rvo); 
-		  
+		    if ("원자재".equals(rvo.getReturntype()) || "부자재".equals(rvo.getReturntype())) {
+		        rvo.setReturnstatus("완료");
+		    } else {
+		        rvo.setReturnstatus("대기");
+		    }
+		    rvo.setReprocessmethod("검수중");
+		    rvo.setReturninfo("확인중");
+
+		    rService.returnRegist(rvo); 
 		  
 		  return "redirect:/quality/returns"; 
 	  }

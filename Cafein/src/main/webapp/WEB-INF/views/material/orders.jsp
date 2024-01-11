@@ -346,7 +346,7 @@
 				
 				<div class="modal-body">
 					<div class="col-12">
-                        <div class="bg-light rounded h-100">
+                        <div class="bg-light rounded h-100" style="font-size: 13px;">
 							<table class="table">
 								<thead>
 									<tr style="text-align: center;">

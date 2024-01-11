@@ -33,12 +33,11 @@
 								<label for="state" class="col-form-label">생산상태</label> 
 								<input id="statePack" name="state" value="완료" class="form-control" readonly="readonly">
 							</div>
+						</div>
+						<div class="row">
+							
 							<div class="col" style="display: none;">
-								<label for="weight" class="col-form-label">포장량</label> 
-								<input id="packagevolPack" name="weight" class="form-control">
-							</div>
-							<div class="col" style="display: none;">
-								<label for="amount" class="col-form-label" >총 생산량</label> 
+								<label for="amount" class="col-form-label" >총 생산량(g)</label> 
 								<input id="amountPack" name="amount" class="form-control">
 							</div>
 						</div>
@@ -47,11 +46,15 @@
 								<label for="planDate" class="col-form-label">생산일</label> 
 								<input type="text" name="planDate" class="form-control" id="producedatePack" min="150" max="250" step="10" readonly="readonly">
 							</div>
-							<div class="col">
+							<div class="col" style="display: none;">
 								<label for="produceline" class="col-form-label">생산라인</label> 
 								<input type="text" name="produceline" class="form-control" id="producelinePack" min="15" max="30" readonly="readonly">
 							</div>
 							<div class="col">
+								<label for="weight" class="col-form-label">포장단위(g)</label> 
+								<input id="packagevolPack" name="weight" class="form-control" readonly="readonly">
+							</div>
+							<div class="col" style="display: none;">
 								<label for="producetime" class="col-form-label">생산시간</label> 
 								<input type="text" name="producetime" class="form-control" id="producetimePack" min="15" max="30" readonly="readonly">
 							</div>

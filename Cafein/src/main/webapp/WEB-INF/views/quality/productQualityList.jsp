@@ -485,12 +485,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 	</div>	
 	
 <!-- 생산 검수 모달창 - LOT 선택 (포장) -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">생산 검수 (포장)</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="closebtn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       	<div class="row">
@@ -658,7 +658,7 @@ $(document).ready(function() {
                 	const row = "<tr><td>" 
                 	+ item.lotnumber +
                 	"</td><td>" + 
-					"<form class='defect-form' action='/roastedBeanDefect' method='POST'>" +
+					"<form class='normal-form' action='/roastedBeanDefect' method='POST'>" +
 					"<c:if test='${empty param.page}'>" +
 					"<input type='hidden' name='page' value='1'>" +
 					"</c:if>" + 
@@ -682,9 +682,9 @@ $(document).ready(function() {
 					"<input type='hidden' name='defect' value='N'>" + 
 					"<input type='hidden' name='weight' value='" + weight + "'>" +
 					"<input type='hidden' name='productquantity' value='" + productquantity + "'>" +
-					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
-					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
-					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
+					"<input type='hidden' id='normal1' name='auditquantity' value='" + auditquantity + "'>" +
+					"<input type='hidden' id='normal2' name='normalquantity' value='" + normalquantity + "'>" +
+					"<input type='hidden' id='normal3' name='defectquantity' value='" + defectquantity + "'>" +
 					"<input type='submit' class='normalbtn btn btn-sm btn-primary' value='정상'></form></td><td>" +
 					"<form class='defect-form' action='/roastedBeanDefect' method='POST'>" +
 					"<c:if test='${empty param.page}'>" +
@@ -710,16 +710,24 @@ $(document).ready(function() {
 					"<input type='hidden' name='defect' value='Y'>" + 
 					"<input type='hidden' name='weight' value='" + weight + "'>" +
 					"<input type='hidden' name='productquantity' value='" + productquantity + "'>" +
-					"<input type='hidden' name='auditquantity' value='" + auditquantity + "'>" +
-					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
-					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
+					"<input type='hidden' id='defect1' name='auditquantity' value='" + auditquantity + "'>" +
+					"<input type='hidden' id='defect2' name='normalquantity' value='" + normalquantity + "'>" +
+					"<input type='hidden' id='defect3' name='defectquantity' value='" + defectquantity + "'>" +
 					"<input type='submit' class='defectbtn btn btn-sm btn-danger' value='불량'></form></td>";
                     tableBody.innerHTML += row;
                 });
                 
              // 정상/불량 버튼 처리를 위한 이벤트 리스너 추가
-                $('.defect-form').on('submit', function(event) {
+                $('.normal-form').on('submit', function(event) {
                     event.preventDefault();
+                	auditquantity = parseInt(auditquantity) + parseInt(weight);
+                	normalquantity = parseInt(normalquantity) + parseInt(weight);
+                	defectquantity = parseInt(auditquantity) - parseInt(normalquantity);
+                    
+                    $('#normal1').val(auditquantity);
+                    $('#normal2').val(normalquantity);
+                    $('#normal3').val(defectquantity);
+                	
                     var form = $(this);
                     var formData = form.serialize();
 
@@ -729,6 +737,45 @@ $(document).ready(function() {
                         data: formData,
                         success: function(response) {
                         	Swal.fire("검수가 성공적으로 저장되었습니다.");
+                        	
+                            aqinputField.value = auditquantity;
+                            dqinputField.value = defectquantity;
+                            nqinputField.value = normalquantity;
+                        	
+                            fetchLotData(produceid);
+                        },
+                        error: function(error) {
+                            console.error("Error submitting form:", error);
+                        	Swal.fire("검수 저장에 실패했습니다.");
+                            fetchLotData(produceid);
+                        }
+                    });
+                });
+             
+                $('.defect-form').on('submit', function(event) {
+                    event.preventDefault();
+                	auditquantity = parseInt(auditquantity) + parseInt(weight);
+                	defectquantity = parseInt(defectquantity) + parseInt(weight);
+                	normalquantity = parseInt(auditquantity) - parseInt(defectquantity);
+                    
+                    $('#defect1').val(auditquantity);
+                    $('#defect2').val(normalquantity);
+                    $('#defect3').val(defectquantity);
+                	
+                    var form = $(this);
+                    var formData = form.serialize();
+
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: formData,
+                        success: function(response) {
+                        	Swal.fire("검수가 성공적으로 저장되었습니다.");
+                        	
+                            aqinputField.value = auditquantity;
+                            dqinputField.value = defectquantity;
+                            nqinputField.value = normalquantity;
+                        	
                             fetchLotData(produceid);
                         },
                         error: function(error) {
