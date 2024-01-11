@@ -9,6 +9,7 @@
  	<!-- 반품 목록 -->
 	<select id="searchReturns" resultType="com.cafein.domain.ReturnVO">
 		 SELECT * FROM returns
+		 order by returnid DESC
 		 LIMIT #{startPage}, #{pageSize}
 	</select>
  	
@@ -32,6 +33,7 @@
 				AND #{rvo.endDate} &gt;= returndate
 			</if>
 		</where>
+		order by returnid DESC
 		LIMIT #{cri.startPage}, #{cri.pageSize}
 	</select>
  
@@ -68,9 +70,17 @@
  	
  	<!-- 반품 수정 -->
  	<update id="updateReturn">
- 		update returns set returnquantity=#{returnquantity},refunddate=#{refunddate},membercode=#{membercode} 
- 		where returnid=#{returnid}
- 	</update>
+    	UPDATE returns
+	    <set>
+	        returnquantity=#{returnquantity},
+	        <if test="refunddate != null and refunddate != ''">
+	            refunddate=#{refunddate},
+	        </if>
+	        membercode=#{membercode}
+	    </set>
+    	WHERE returnid=#{returnid}
+	</update>
+ 
  
  	<!-- 반품 삭제 -->
  	<delete id="deleteReturn">

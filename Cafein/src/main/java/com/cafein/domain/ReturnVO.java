@@ -15,7 +15,7 @@ public class ReturnVO {
     private String returnname;
     private int itemid;
     private Date returndate;
-    private Date refunddate;
+    private String refunddate;
     private String returnstatus;
     private int returnquantity;
     private String reprocessmethod;
