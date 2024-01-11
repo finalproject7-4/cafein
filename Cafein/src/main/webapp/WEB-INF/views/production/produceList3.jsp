@@ -142,7 +142,7 @@
 			
 
 				<span style="float: right;">
-				<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
+				<c:if test="${(departmentname eq '생산' and memberposition eq '팀장') or membername eq 'admin'}">
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">생산지시 등록</button>
 				<button type="button" class="btn btn-sm btn-dark m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-bs-whatever="@getbootstrap">BOM등록</button>
 				</c:if>
@@ -226,11 +226,12 @@ function fetchData(searchBtnValue) {
 <th scope="col">공정과정</th>
 <th scope="col">품질검수</th>
 <th scope="col">상태</th>
-<th scope="col" style="display: none;">생산타임</th>
+<th scope="col">생산타임</th>
 <th scope="col" style="display: none;">아이템ID</th>
 <th scope="col" style="display: none;">포장지시량</th>
 <th scope="col" style="display: none;">생산량</th>
-<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
+
+<c:if test="${(departmentname eq '생산' and memberposition eq '팀장') or memberposition eq 'admin'}">
 <th scope="col">상태변경</th>
 <th scope="col">공정관리</th>
 </c:if>
@@ -252,12 +253,13 @@ function fetchData(searchBtnValue) {
 <td>${plist.process }</td>
 <td style="${plist.qualitycheck == '정상'? 'style=color:red; font-weight: bold;' : ''}">${plist.qualitycheck }</td>
 <td style="font-weight: bold; ${plist.state == '완료'? 'color:red;' : ''} ${plist.state == '생산중'? 'color:blue;' : ''}">${plist.state }</td>
-<td style="display: none;">${plist.producetime }</td>
+<td>${plist.producetime }</td>
 <td style="display: none;">${plist.itemid }</td>
 <td style="display: none;">${plist.packagevol }</td>
 <td style="display: none;">${plist.amount }</td>
 
-<c:if test="${departmentname eq '생산' and memberposition eq '팀장' or membername eq 'admin'}">
+
+<c:if test="${(departmentname eq '생산' and memberposition eq '팀장') or memberposition eq 'admin'}">
 <td>
 
 	<!-- 블렌딩 대기 상태일때, 상태변경 버튼 '대기' 인경우 표시해서 클릭시 '완료'로 변경 -->
