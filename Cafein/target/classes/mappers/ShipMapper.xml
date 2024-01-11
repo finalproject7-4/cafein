@@ -177,8 +177,8 @@
 	
 	<!-- 작업 지시 등록 -->
 	<insert id="registWK" parameterType="com.cafein.domain.WorkVO">
-		INSERT INTO work (workdate1, workcode, pocode, clientname, itemname, worksts, membercode, pocnt)
-		VALUES ( #{workdate1}, #{workcode}, #{pocode}, #{clientname}, #{itemname}, #{worksts}, #{membercode}, #{pocnt} )
+		INSERT INTO work (workdate1, workcode, pocode, clientname, itemname, worksts, membercode, pocnt, returncount)
+		VALUES ( #{workdate1}, #{workcode}, #{pocode}, #{clientname}, #{itemname}, #{worksts}, #{membercode}, #{pocnt}, #{returncount} )
 	</insert>
 	
 	<!-- 작업지시 등록 수주 코드 -->
