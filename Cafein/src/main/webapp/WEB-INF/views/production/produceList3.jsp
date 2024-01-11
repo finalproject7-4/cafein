@@ -228,8 +228,8 @@ function fetchData(searchBtnValue) {
 <th scope="col">상태</th>
 <th scope="col">생산타임</th>
 <th scope="col" style="display: none;">아이템ID</th>
-<th scope="col" style="display: none;">포장지시량</th>
-<th scope="col" style="display: none;">생산량</th>
+<th style="display: none;">포장지시량</th>
+<th>생산량(g)</th>
 
 <c:if test="${(departmentname eq '생산' and memberposition eq '팀장') or memberposition eq 'admin'}">
 <th scope="col">상태변경</th>
@@ -256,7 +256,7 @@ function fetchData(searchBtnValue) {
 <td>${plist.producetime }</td>
 <td style="display: none;">${plist.itemid }</td>
 <td style="display: none;">${plist.packagevol }</td>
-<td style="display: none;">${plist.amount }</td>
+<td> ${plist.amount }</td>
 
 
 <c:if test="${(departmentname eq '생산' and memberposition eq '팀장') or memberposition eq 'admin'}">
