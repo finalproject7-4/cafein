@@ -142,18 +142,24 @@
 									</c:forEach>
 								</select>
 						</div>
-						<div class="col">
-							<b>수량</b><input id="returnquantity" name="returnquantity" class="form-control" id="floatingInput">
-						</div>
+							<div class="col">
+            					<label for="returnquantity" class="col-form-label"><b>수량</b></label>
+            						<input type="text" class="form-control" name="returnquantity" value="" required>
+  								</div>
 					</div><br>
 					<div class="row">
+<!-- 						<div class="col"> -->
+<!-- 							<b>반납날짜</b><input type="date" id="returndate" name="returndate" class="form-control" id="returnDateInput" readonly> -->
+<!-- 						</div><br> -->
 						<div class="col">
-							<b>반납날짜</b><input type="date" id="returndate" name="returndate" class="form-control" id="returnDateInput" readonly>
-						</div><br>
+            				<label for="returndate" class="col-form-label"><b>반납날짜</b></label>
+            				<input type="date" class="form-control" name="returndate" id="returndate" value="" readonly>
+  						</div>
 						<div class="col">
-							<b>담당자 사번</b><input type="number" name="membercode" id="membercode" value="<%= memberCodeFromSession %>" readonly>
-						</div>
-				</div>
+            				<label for="membercode" class="col-form-label"><b>담당자 사번</b></label>
+            				<input type="text" class="form-control" name="membercode" value="<%= memberCodeFromSession %>" readonly>
+  						</div>
+					</div>
 				</div>
 					
 				<div class="modal-footer">
@@ -239,12 +245,17 @@
 						</div>
 					</div><br>
 					<div class="row">
+<!-- 						<div class="col"> -->
+<!-- 							<b>환불날짜</b><input type="date" id="refunddate2" name="refunddate" class="form-control" id="floatingInput" value=""> -->
+<!-- 						</div> -->
 						<div class="col">
-							<b>환불날짜</b><input type="date" id="refunddate2" name="refunddate" class="form-control" id="floatingInput" value="">
-						</div>
+            				<label for="refunddate" class="col-form-label"><b>환불날짜</b></label>
+            				<input type="date" class="form-control" name="refunddate" id="refunddate2" value="">
+  						</div>
 						<div class="col">
-							<b>담당자 사번</b><input type="number" name="membercode" id="membercode" value="<%= memberCodeFromSession %>" readonly>
-						</div>
+            				<label for="membercode" class="col-form-label"><b>담당자 사번</b></label>
+            				<input type="text" class="form-control" name="membercode" value="<%= memberCodeFromSession %>" readonly>
+  						</div>
 					</div><br>		
 				</div>
 					
