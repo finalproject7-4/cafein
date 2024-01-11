@@ -568,7 +568,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="button" class="closebtn btn btn-secondary" data-bs-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>
@@ -658,7 +658,7 @@ $(document).ready(function() {
                 	const row = "<tr><td>" 
                 	+ item.lotnumber +
                 	"</td><td>" + 
-					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<form class='defect-form' action='/roastedBeanDefect' method='POST'>" +
 					"<c:if test='${empty param.page}'>" +
 					"<input type='hidden' name='page' value='1'>" +
 					"</c:if>" + 
@@ -686,7 +686,7 @@ $(document).ready(function() {
 					"<input type='hidden' name='normalquantity' value='" + normalquantity + "'>" +
 					"<input type='hidden' name='defectquantity' value='" + defectquantity + "'>" +
 					"<input type='submit' class='normalbtn btn btn-sm btn-primary' value='정상'></form></td><td>" +
-					"<form action='/quality/roastedBeanDefect' method='POST'>" +
+					"<form class='defect-form' action='/roastedBeanDefect' method='POST'>" +
 					"<c:if test='${empty param.page}'>" +
 					"<input type='hidden' name='page' value='1'>" +
 					"</c:if>" + 
@@ -716,6 +716,28 @@ $(document).ready(function() {
 					"<input type='submit' class='defectbtn btn btn-sm btn-danger' value='불량'></form></td>";
                     tableBody.innerHTML += row;
                 });
+                
+             // 정상/불량 버튼 처리를 위한 이벤트 리스너 추가
+                $('.defect-form').on('submit', function(event) {
+                    event.preventDefault();
+                    var form = $(this);
+                    var formData = form.serialize();
+
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: formData,
+                        success: function(response) {
+                        	Swal.fire("검수가 성공적으로 저장되었습니다.");
+                            fetchLotData(produceid);
+                        },
+                        error: function(error) {
+                            console.error("Error submitting form:", error);
+                        	Swal.fire("검수 저장에 실패했습니다.");
+                            fetchLotData(produceid);
+                        }
+                    });
+                });
             }
        	// 생산ID(produceid)를 사용하여 데이터를 가져와 테이블을 업데이트
         fetchLotData(produceid);
@@ -723,6 +745,52 @@ $(document).ready(function() {
 });
 </script>
 <!-- 생산 검수 모달창 데이터 - LOT 선택 (포장) -->
+
+<!-- 닫기 버튼 클릭 -->
+<script>
+$(document).ready(function(){
+	$(".closebtn").click(function(){
+		var page = "${param.page}";
+		var searchBtn = "${param.searchBtn}";
+		var startDate = "${param.startDate}";
+		var endDate = "${param.endDate}";
+		
+		var formData = {};
+		
+		if(page){
+			formData.page = page;
+		}else{
+			formData.page = 1;
+		}
+		
+		if(searchBtn){
+			formData.searchBtn = searchBtn;
+		}
+		
+		if(startDate){
+			formData.startDate = startDate;
+		}
+		
+		if(endDate){
+			formData.endDate = endDate;
+		}
+		
+		$.ajax({
+            url: "/quality/productQualityList",
+            type: "GET",
+            data: formData,
+            success: function(data) {
+                // 성공적으로 데이터를 받아왔을 때 처리할 코드
+                $("#qualityListContainer").html(data); // 결과를 화면에 표시
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+		});
+	});
+});
+</script>
+<!-- 닫기 버튼 클릭 -->
 
 <!-- 생산 검수 모달창 (포장 X) -->
 <div class="modal fade" id="produceAuditModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
