@@ -99,6 +99,13 @@ public class ShipDAOImpl implements ShipDAO {
 		return sqlSession.update(NAMESPACE+".ingSHState",svo);
 	}
 	
+	// 출하 완료 -> 수주 완료
+	@Override
+	public void updateCompletSale(SalesVO ssvo) throws Exception {
+		logger.debug("DAO : 수주 완료로 변경");
+		sqlSession.update(NAMESPACE+".updateCompletSale",ssvo);
+	}
+
 	// 출하 엑셀
 	@Override
 	public List<ShipVO> selectSHListExcel(ShipVO svo) throws Exception {

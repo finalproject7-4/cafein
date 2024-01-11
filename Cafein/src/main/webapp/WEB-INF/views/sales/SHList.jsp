@@ -159,6 +159,7 @@
 									</c:if>
 									</td>
 									</c:if>
+								<td style="display: none;">${sh.pocode }</td>
 								</tr>
 								<c:set var="counter" value="${counter+1 }" />
 							</c:forEach>
@@ -178,10 +179,12 @@
 				var shipid = $(this).data("shipid");
 				var shipsts = $(this).closest('tr').find('td:nth-child(8)').text(); // 주문 상태 가져오기
 				var workcode = $(this).closest('tr').find('td:nth-child(4)').text();
+				var pocode = $(this).closest('tr').find('td:nth-child(12)').text();
 				
 				console.log('shipid 값:', shipid);
 				console.log('shipsts 값:', shipsts);
 				console.log('workcode 값:', workcode);
+				console.log('pocode:', pocode);
 				
 			
 			Swal.fire({
@@ -202,7 +205,8 @@
 				url : '/sales/ingUpdate1',
 				data : {
 					shipid : shipid,
-					workcode : workcode
+					workcode : workcode,
+					pocode: pocode
 				},
 				success : function(response) {
 					console.log('Ajax success:', response);
