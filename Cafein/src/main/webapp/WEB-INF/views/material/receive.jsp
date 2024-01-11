@@ -264,7 +264,7 @@
                 
                 <div class="modal-body">
                 	<div class="col-12">
-                    	<div class="bg-light rounded h-100 p-4">
+                    	<div class="bg-light rounded h-100 p-4" style="font-size: 13px;">
                         	<table class="table">
                             	<thead>
                                 	<tr>
