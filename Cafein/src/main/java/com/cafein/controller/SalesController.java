@@ -157,9 +157,8 @@ public class SalesController {
 		model.addAttribute("membercode", session.getAttribute("membercode")); 
 
 		// 서비스 - 정보수정 동작
-		int result = sService.POModify(svo);
+		sService.POModify(svo);
 		rttr.addFlashAttribute("result", "modifyOK");
-		logger.debug("result", result);
 		return "redirect:/sales/POList";
 	}
 	

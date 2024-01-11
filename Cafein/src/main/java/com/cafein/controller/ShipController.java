@@ -246,12 +246,15 @@ public class ShipController {
 			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
 			
 			row.createCell(colNum++).setCellValue(vo2.getShipcode());
+			sheet.setColumnWidth(colNum - 1, 20*256);
 			row.createCell(colNum++).setCellValue(vo2.getWorkcode());
+			sheet.setColumnWidth(colNum - 1, 20*256);
 			row.createCell(colNum++).setCellValue(vo2.getClientname());
 			sheet.setColumnWidth(colNum - 1, 20*256); 
 			row.createCell(colNum++).setCellValue(vo2.getItemname());
 			sheet.setColumnWidth(colNum - 1, 20*256);  // 현재 열의 너비를 자동으로 조정
 			row.createCell(colNum++).setCellValue(vo2.getPocnt());
+			row.createCell(colNum++).setCellValue(vo2.getShipsts());
 			
 			Cell updateDateCell = row.createCell(colNum++);
 			updateDateCell.setCellValue(vo2.getShipdate2()); // 위와 동일
@@ -259,7 +262,7 @@ public class ShipController {
 			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
 
 			row.createCell(colNum++).setCellValue(vo2.getMembername());
-			sheet.autoSizeColumn(colNum - 1);
+			sheet.setColumnWidth(colNum - 1, 20*256);
 		}
 		
 		String fileName = "ShipList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])
@@ -324,6 +327,7 @@ public class ShipController {
 			sheet.autoSizeColumn(colNum - 1);  // 현재 열의 너비를 자동으로 조정
 			
 			row.createCell(colNum++).setCellValue(vo2.getWorkcode());
+			sheet.setColumnWidth(colNum - 1, 20*256);
 			row.createCell(colNum++).setCellValue(vo2.getClientname());
 			sheet.setColumnWidth(colNum - 1, 20*256); 
 			row.createCell(colNum++).setCellValue(vo2.getItemname());
@@ -332,7 +336,7 @@ public class ShipController {
 			row.createCell(colNum++).setCellValue(vo2.getReturncount());
 			row.createCell(colNum++).setCellValue(vo2.getReturnreason());
 			row.createCell(colNum++).setCellValue(vo2.getMembername());
-			sheet.autoSizeColumn(colNum - 1);
+			sheet.setColumnWidth(colNum - 1, 20*256);
 		}
 		
 		String fileName = "PFList.xlsx"; // 저장하는 파일명입니다 (기호에 파일명 맞게 수정하시면 됩니다 [확장자만 xlsx])

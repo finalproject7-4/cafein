@@ -773,7 +773,12 @@ $("#openReceiptModal").modal('show');
 		</div>
 	</div>
 </fieldset>
-
+<script>
+var result ="${result}"; 
+if(result =="modifyOK") {
+	Swal.fire("수주 수정 완료");
+}
+</script>
 
 <%@ include file="../sales/POListJS.jsp"%>
 <%@ include file="../include/footer.jsp"%>

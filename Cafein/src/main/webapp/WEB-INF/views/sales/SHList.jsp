@@ -186,7 +186,7 @@
 			
 			Swal.fire({
 					title : '출하를 완료하시겠습니까?',
-					text : '출하 완료로업데이트 됩니다.',
+					text : '출하 상태가 완료됩니다.',
 					icon : 'warning',
 					showCancelButton : true,
 					confirmButtonColor : '#3085d6',

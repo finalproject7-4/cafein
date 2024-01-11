@@ -221,10 +221,7 @@ public class ProductionController {
 		qvo.setItemid(vo.getItemid());
 		qvo.setProductquantity(vo.getAmount());
 		pService.regQualityList(qvo);
-				
-				
-		// 출고리스트 상태 업데이트
-		pService.updateCompletRelease(vo);
+
 				
 	}
 	
