@@ -15,7 +15,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body">
-    	<b>${materialToast.itemtype} 검수 ${materialToast.qualityid }</b>번의 <b>${materialToast.itemname }</b>이(가) <b>${materialToast.auditstatus }</b>(으)로 지연 중입니다.
+    	<b>${materialToast.registerationdate }</b>에 등록된 <b>${materialToast.itemtype} 검수 ${materialToast.qualityid }</b>번의 <b>${materialToast.itemname }</b>이(가) <b>${materialToast.auditstatus }</b>(으)로 지연 중입니다.
     </div>
   </div>
 </div>
