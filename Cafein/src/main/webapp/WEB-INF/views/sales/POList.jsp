@@ -137,7 +137,8 @@
 											onclick="openDetailModal('${po.poid}','${po.pocode}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
 											${po.pocode }</td>
 											<td class="memberCall"
-											onclick="clientDetail('${po.clientname}','${po.clientcode}','${po.businessnumber}','${po.representative}','${po.clientaddress}','${po.clientphone}', '${po.clientfax}', '${po.clientemail}')">${po.clientname }</td>
+											onclick="clientDetail('${po.clientname}','${po.clientcode}','${po.businessnumber}','${po.representative}','${po.clientaddress}','${po.clientphone}', '${po.clientfax}', '${po.clientemail}')">
+											<u>${po.clientname }</u></td>
 											<td>${po.itemname}</td>
 											<td>${po.pocnt}</td>
 											<td><fmt:formatDate value="${po.ordersdate}" dateStyle="short" pattern="yyyy-MM-dd" /></td>
@@ -153,7 +154,7 @@
 											
 											<td class="memberCall" 
 											onclick="memberCall('${po.membername}','${po.memberphone}','${po.departmentname}','${po.memberposition}','${po.memberemail}')">
-											<u>${po.membername}</u></td>
+											<i>${po.membername}</i></td>
 											
 											<c:if test="${sessionScope.departmentname eq '영업' and memberposition eq '팀장' or departmentname eq 'admin' and memberposition eq 'admin'}">
 											<td><input value="진행" type="submit" class="btn btn-sm btn-primary ingUpdate" data-poid="${po.poid}"></td>
