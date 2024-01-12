@@ -127,11 +127,12 @@
 
 								</c:when>
 								<c:otherwise>
-									<c:set var="counter" value="1" />
 									<c:forEach items="${POList}" var="po" varStatus="status">
 										<tr>
 											<td id="poidCancel" style="display: none;">${po.poid }</td>
-											<td>${counter }</td>
+											<td>
+												<c:out value="${pageVO.totalCount - ((pageVO.cri.page - 1) * pageVO.cri.pageSize + status.index)}"/>
+											</td>
 											<td><b>${po.postate }</b></td>
 											<td class="pocodeColor"
 											onclick="openDetailModal('${po.poid}','${po.pocode}','${po.clientid}','${po.itemid}','${po.clientname}', '${po.itemname}', '${po.postate}', '${po.pocnt}', '${po.ordersdate}', '${po.ordersduedate}', '${po.membercode}')">
@@ -197,7 +198,6 @@
 											<td style="display: none;">${po.postate}</td>
 											
 										</tr>
-										<c:set var="counter" value="${counter+1 }" />
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
