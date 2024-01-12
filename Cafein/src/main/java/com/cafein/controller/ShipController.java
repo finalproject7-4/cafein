@@ -157,7 +157,9 @@ public class ShipController {
 			
 			// 작업지시 완료 시간 설정
 			Date workDate2 = new Date(System.currentTimeMillis());
-			wvo.setShipdate2(workDate2);
+				wvo.setWorkdate2(workDate2);
+				
+			logger.debug("작업지시 완료 시간 설정: {}", wvo.getShipdate2());
 			
 			logger.debug("updateCompletWork 메서드 호출 - 작업상태: " + wvo.getWorksts() + ", 작업코드: " + wvo.getWorkcode());
 			shService.updateCompletWork(wvo);
