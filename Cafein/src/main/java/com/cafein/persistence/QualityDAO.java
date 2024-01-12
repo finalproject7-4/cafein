@@ -83,4 +83,17 @@ public interface QualityDAO {
 	
 	// 품질 관리 토스트 데이터 조회 (자재)
 	public QualityVO selectMaterialQualityToast() throws Exception;
+	
+	// 반품 번호 생성 (원자재)
+	public String createMotReturnCode() throws Exception;
+	
+	// 반품 번호 생성 (부자재)
+	public String createSatReturnCode() throws Exception;
+	
+	// 반품 입력 (원자재)
+	public void insertMotReturns(QualityVO vo) throws Exception;
+	
+	// 반품 입력 (부자재)
+	public void insertSatReturns(QualityVO vo) throws Exception;
+	
 }

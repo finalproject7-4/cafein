@@ -530,6 +530,46 @@
 		LIMIT 0, 1
 	</select>
 	<!-- 품질 관리 토스트 데이터 조회 (자재) -->
+	
+	<!-- 반품 번호 생성 (원자재) -->
+	<select id="motReturnCode" resultType="string">
+		SELECT CONCAT('MOT', LPAD(substring(returncode, 4) + 1, 5, 0)) 
+		FROM returns 
+		WHERE returncode LIKE 'MOT%' 
+		ORDER BY returncode DESC 
+		LIMIT 0, 1
+	</select>	
+	<!-- 반품 번호 생성 (원자재) -->
+	
+	<!-- 반품 번호 생성 (부자재) -->
+	<select id="satReturnCode" resultType="string">
+		SELECT CONCAT('SAT', LPAD(substring(returncode, 4) + 1, 5, 0))
+		FROM returns
+		WHERE returncode LIKE 'SAT%'
+		ORDER BY returncode DESC
+		LIMIT 0, 1
+	</select>	
+	<!-- 반품 번호 생성 (부자재) -->
+	
+	<!-- 반품 입력 (원자재) -->
+	<insert id="insertReturnsMOT">
+		INSERT INTO returns (qualityid, returncode, returnname, returndate, returnstatus, 
+		returnquantity, reprocessmethod, membercode, returntype, returnReason, returninfo, itemid) 
+		VALUE (#{qualityid}, #{returncode}, #{itemname}, NOW(), '완료', #{returnquantity}, 
+		'불량', #{membercode}, '원자재', '제품불량', '폐기', #{itemid});	
+	</insert>
+	<!-- 반품 입력 (원자재) -->
+	
+	<!-- 반품 입력 (부자재) -->
+	<insert id="insertReturnsSAT">
+		INSERT INTO returns (qualityid, returncode, returnname, returndate, returnstatus, 
+		returnquantity, reprocessmethod, membercode, returntype, returnReason, returninfo, itemid) 
+		VALUE (#{qualityid}, #{returncode}, #{itemname}, NOW(), '완료', #{returnquantity}, 
+		'불량', #{membercode}, '부자재', '제품불량', '폐기', #{itemid});
+	</insert>
+	<!-- 반품 입력 (부자재) -->
+	
+	
 
 	<!-- 품질 관리 목록 (생산 / 반품) 추가 : WHERE q.itemtype = '생산' OR q.itemtype = '반품' -->
 </mapper>

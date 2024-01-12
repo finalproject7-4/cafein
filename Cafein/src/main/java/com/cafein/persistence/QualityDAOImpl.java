@@ -195,6 +195,34 @@ public class QualityDAOImpl implements QualityDAO {
 		return sqlSession.selectOne(NAMESPACE + ".materialQualityToast");
 	}
 
+	// 반품 번호 생성 (원자재)
+	@Override
+	public String createMotReturnCode() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".motReturnCode");
+	}
+
+	// 반품 번호 생성 (부자재)
+	@Override
+	public String createSatReturnCode() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".satReturnCode");
+	}
+
+	// 반품 입력 (원자재)
+	@Override
+	public void insertMotReturns(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertReturnsMOT", vo);
+	}
+
+	// 반품 입력 (부자재)
+	@Override
+	public void insertSatReturns(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertReturnsSAT", vo);
+	}
+
 	
 	
 	
