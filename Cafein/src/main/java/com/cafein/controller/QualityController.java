@@ -390,8 +390,8 @@ public class QualityController {
 	
 	// 불량 현황 입력 처리 (자재) - POST
 	@PostMapping(value = "/materialNewDefect")
-	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
-		
+	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+		int membercode = (int) session.getAttribute("membercode");
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
 			logger.debug(" 불량 현황 입력 실패 ");
@@ -401,6 +401,19 @@ public class QualityController {
 		logger.debug(" 불량 현황 입력 성공 ");
 		// 품질 관리에서 불량 등록 여부 업데이트
 		qService.registerDefectY(vo);
+		if(vo.getItemtype() != null && vo.getItemtype().equals("원자재")) {
+			vo.setReturncode(qService.motReturnCode());
+			vo.setMembercode(membercode);
+			vo.setReturnquantity(vo.getDefectquantity());
+			qService.motReturns(vo);
+		}
+		if(vo.getItemtype() != null && vo.getItemtype().equals("부자재")) {
+			vo.setReturncode(qService.satReturnCode());
+			vo.setMembercode(membercode);
+			vo.setReturnquantity(vo.getDefectquantity());
+			qService.satReturns(vo);
+			
+		}
 		rttr.addFlashAttribute("DEFECT", "O");
 		return "redirect:/quality/qualitiesMaterial";
 	}

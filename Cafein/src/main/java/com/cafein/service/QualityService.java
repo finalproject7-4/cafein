@@ -83,4 +83,16 @@ public interface QualityService {
 	
 	// 품질 관리 토스트 데이터 조회 (자재)
 	public QualityVO materialQualityToast() throws Exception;
+	
+	// 반품 번호 생성 (원자재)
+	public String motReturnCode() throws Exception;
+	
+	// 반품 번호 생성 (부자재)
+	public String satReturnCode() throws Exception;
+	
+	// 반품 입력 (원자재)
+	public void motReturns(QualityVO vo) throws Exception;
+	
+	// 반품 입력 (부자재)
+	public void satReturns(QualityVO vo) throws Exception;
 }

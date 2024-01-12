@@ -201,6 +201,34 @@ public class QualityServiceImpl implements QualityService {
 		// TODO Auto-generated method stub
 		return qdao.selectMaterialQualityToast();
 	}
+
+	// 반품 번호 생성 (원자재)
+	@Override
+	public String motReturnCode() throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.createMotReturnCode();
+	}
+
+	// 반품 번호 생성 (부자재)
+	@Override
+	public String satReturnCode() throws Exception {
+		// TODO Auto-generated method stub
+		return qdao.createSatReturnCode();
+	}
+
+	// 반품 입력 (원자재)
+	@Override
+	public void motReturns(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		qdao.insertMotReturns(vo);
+	}
+
+	// 반품 입력 (부자재)
+	@Override
+	public void satReturns(QualityVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		qdao.insertSatReturns(vo);
+	}
 	
 	
 	

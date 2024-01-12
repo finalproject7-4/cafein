@@ -38,7 +38,7 @@
 						</select>
 					</div>	
 					수량
-					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" placeholder="숫자만 입력하세요" aria-label="default input example" required="required">
+					<input autocomplete="off"  id="pocnt" name="pocnt" class="form-control mb-3" type="number" min="10" placeholder="숫자만 입력하세요" aria-label="default input example" required="required">
 					<div class="row">
 					<div class="col">
 					수주일자

@@ -525,6 +525,7 @@ $(document).ready(function() {
       </div>
       <div class="modal-body">
       	<input type="hidden" name="qualityid" value="" readonly>
+      	<input type="hidden" name="itemid" value="" readonly>
       	<div class="row">
  			<div class="col">
            		<label for="auditcode" class="col-form-label">검수번호:</label>
@@ -583,6 +584,7 @@ $(document).ready(function() {
         let qualityid = button.getAttribute('data-qualityid'); // qualityid
         let receiveid = button.getAttribute('data-receiveid'); // receiveid
         let auditcode = button.getAttribute('data-auditcode'); // auditcode
+        let itemid = button.getAttribute('data-itemid'); // itemid
         let itemtype = button.getAttribute('data-itemtype'); // itemtype
         let itemcode = button.getAttribute('data-itemcode'); // itemcode
         let itemname = button.getAttribute('data-itemname'); // itemname
@@ -594,6 +596,9 @@ $(document).ready(function() {
         
         let ainputField = myModal.querySelector('input[name="auditcode"]');
         ainputField.value = auditcode;
+        
+        let idinputField = myModal.querySelector('input[name="itemid"]');
+        idinputField.value = itemid;
         
         let iinputField = myModal.querySelector('input[name="itemtype"]');
         iinputField.value = itemtype;

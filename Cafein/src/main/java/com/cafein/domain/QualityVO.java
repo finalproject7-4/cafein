@@ -72,7 +72,7 @@ public class QualityVO {
 	private String itemname2;
 	private String itemname3;
 	private int amount;
-	private String membercode;
+	private int membercode;
 	private String qualitycheck;
 	private String state;
 	
@@ -113,6 +113,9 @@ public class QualityVO {
 	private String reprocessmethod;
 	private String returnstatus;
 	private String returninfo;
+	
+	private String returncode;
+	private int returnquantity;
 	
 	// 검색용 특별 변수
 	private String startDate;
