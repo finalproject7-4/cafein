@@ -605,6 +605,13 @@ public class QualityController {
 		
 		int produceid = vo.getProduceid();
 		List<QualityVO> lotnumbers = sService.roastedBeanLot(produceid);
+		
+		if(lotnumbers == null) {
+			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
+			return "redirect:/quality/qualities";
+		}
+		
 		int normalCount = 0;
 		int defectCount = 0;
 		
@@ -642,6 +649,15 @@ public class QualityController {
 		}
 		
 		int result = qService.produceAudit(vo);
+		
+		if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+			vo.setQualitycheck("정상");
+			qService.productQualityCheck(vo);
+					
+		}else { // 생산 검수 - 불량
+			vo.setQualitycheck("불량");
+			qService.productQualityCheck(vo);
+		}
 		
 		if(result == 0) {
 			logger.debug(" 검수 실패 ");
