@@ -760,9 +760,7 @@ $(document).ready(function() {
                         url: form.attr('action'),
                         data: formData,
                         success: function(response) {
-                        	if(productquantity == auditquantity){
-                        		Swal.fire("검수가 성공적으로 저장되었습니다.");
-                        	}
+                        	Swal.fire("검수가 성공적으로 저장되었습니다.");
                         	
                             aqinputField.value = auditquantity;
                             dqinputField.value = defectquantity;
@@ -796,9 +794,7 @@ $(document).ready(function() {
                         url: form.attr('action'),
                         data: formData,
                         success: function(response) {
-                        	if(productquantity == auditquantity){
-                        		Swal.fire("검수가 성공적으로 저장되었습니다.");
-                        	}
+							Swal.fire("검수가 성공적으로 저장되었습니다.");
                         	
                             aqinputField.value = auditquantity;
                             dqinputField.value = defectquantity;
