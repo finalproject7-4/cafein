@@ -34,10 +34,12 @@ $(document).ready(function() {
 	if (searchBtn) {
 		dataObject.searchBtn = searchBtn;
 	}
+	
 	if (startDate) {
 		dataObject.startDate = startDate;
 	}
-		if (endDate) {
+	
+	if (endDate) {
 	 dataObject.endDate = endDate;
 	}
 	

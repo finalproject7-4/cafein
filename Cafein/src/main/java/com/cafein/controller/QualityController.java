@@ -49,7 +49,8 @@ public class QualityController {
 	// 품질 관리 페이지 (자재)
 	// http://localhost:8088/quality/qualitiesMaterial
 	@GetMapping(value = "/qualitiesMaterial")
-	public void materialQualityGET(HttpSession session) {
+	public void materialQualityGET(HttpSession session, @RequestParam(name = "page", required = false) Integer page, 
+			@RequestParam(name = "searchBtn", required = false) String searchBtn, @RequestParam(name = "startDate", required = false) String startDate, @RequestParam(name = "endDate", required = false) String endDate) {
 		session.getAttribute("membercode");
 		
 	}
@@ -313,7 +314,21 @@ public class QualityController {
 	
 	// 자재 검수 입력 처리 - POST
 	@PostMapping(value = "/materialAudit")
-	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri, HttpSession session) throws Exception{
+	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, 
+			@ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
@@ -375,7 +390,20 @@ public class QualityController {
 	
 	// 불량 현황 입력 처리 (생산 + 반품) - POST
 	@PostMapping(value = "/productReturnNewDefect")
-	public String productReturnQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String productReturnQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, 
+			@ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
 		
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
@@ -392,7 +420,21 @@ public class QualityController {
 	
 	// 불량 현황 입력 처리 (자재) - POST
 	@PostMapping(value = "/materialNewDefect")
-	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, 
+			@ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		int membercode = (int) session.getAttribute("membercode");
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
