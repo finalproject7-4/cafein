@@ -484,7 +484,7 @@ public class RestController {
 		
 		// roastedBean lotnumber AJAX 정보 호출용
 		@GetMapping(value = "/roastedBeanLot")
-		public List<QualityVO> roastedBeanLotGET(@ModelAttribute("produceid") String produceid) throws Exception {
+		public List<QualityVO> roastedBeanLotGET(@ModelAttribute("produceid") int produceid) throws Exception {
 			logger.debug(" roastedBeanLot() 호출 ");
 			return sService.roastedBeanLot(produceid);
 		}

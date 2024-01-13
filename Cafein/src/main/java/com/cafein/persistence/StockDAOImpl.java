@@ -158,7 +158,7 @@ public class StockDAOImpl implements StockDAO {
 
 	// roastedBean - lotnumber 테이블 조회
 	@Override
-	public List<QualityVO> selectRoastedBeanLot(String produceid) throws Exception {
+	public List<QualityVO> selectRoastedBeanLot(int produceid) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(NAMESPACE + ".selectRoastedBeanLot", produceid);
 	}
