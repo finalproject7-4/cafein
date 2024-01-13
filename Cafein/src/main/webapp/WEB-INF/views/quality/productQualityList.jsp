@@ -493,6 +493,24 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
         <button type="button" class="closebtn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      <form action="/quality/autoAudit" method="POST">
+
+	  <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+
       	<div class="row">
       		<div class="col">
            		<label for="qualityid" class="col-form-label">품질관리번호:</label>
@@ -549,6 +567,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
             	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" style="margin-bottom: 10px;" readonly>
   			</div>
 		</div>
+		<div class="row">
+ 			<div class="d-grid gap-2 col-12 mx-auto">
+            	<input type="submit" class="btn btn-primary" style="margin-bottom: 10px;" value="자동 검수">
+  			</div>
+		</div>
+		</form>
 		<div class="row">
  			<div class="col">
  			<label for="lottable">LOT번호별 품질 검사:</label>
@@ -736,7 +760,9 @@ $(document).ready(function() {
                         url: form.attr('action'),
                         data: formData,
                         success: function(response) {
-                        	Swal.fire("검수가 성공적으로 저장되었습니다.");
+                        	if(productquantity == auditquantity){
+                        		Swal.fire("검수가 성공적으로 저장되었습니다.");
+                        	}
                         	
                             aqinputField.value = auditquantity;
                             dqinputField.value = defectquantity;
@@ -770,7 +796,9 @@ $(document).ready(function() {
                         url: form.attr('action'),
                         data: formData,
                         success: function(response) {
-                        	Swal.fire("검수가 성공적으로 저장되었습니다.");
+                        	if(productquantity == auditquantity){
+                        		Swal.fire("검수가 성공적으로 저장되었습니다.");
+                        	}
                         	
                             aqinputField.value = auditquantity;
                             dqinputField.value = defectquantity;

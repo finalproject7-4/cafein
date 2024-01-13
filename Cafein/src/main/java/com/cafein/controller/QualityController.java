@@ -2,6 +2,8 @@ package com.cafein.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -581,5 +583,73 @@ public class QualityController {
 	// 품질 관리 미완료 알림 토스트 (자재)
 	public void materalQualityToast(Model model) throws Exception{
 		model.addAttribute("materialToast", qService.materialQualityToast());
+	}
+	
+	@PostMapping(value = "/autoAudit")
+	// 포장 자동 검수
+	public String packageAutoAudit(HttpSession session, QualityVO vo, RedirectAttributes rttr, @ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		
+		// 페이지 유지를 위한 페이지 정보 가져오기
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
+		int produceid = vo.getProduceid();
+		List<QualityVO> lotnumbers = sService.roastedBeanLot(produceid);
+		int normalCount = 0;
+		int defectCount = 0;
+		
+		for(QualityVO vo2 : lotnumbers) {
+			String lotnumber = vo2.getLotnumber();
+			vo.setLotnumber(lotnumber);
+			
+			String defect = (new Random().nextBoolean()? "Y" : "N");
+			vo.setDefect(defect);
+			
+			if(defect.equals("Y")) {
+				defectCount += 1;
+			}
+			if(defect.equals("N")) {
+				normalCount += 1;
+			}
+			
+			qService.roastedBeanDefect(vo);	
+		}
+		
+		vo.setAuditbycode((int) session.getAttribute("membercode"));
+		vo.setAuditquantity(vo.getProductquantity());
+		vo.setNormalquantity(vo.getNormalquantity() + (vo.getWeight() * normalCount));
+		vo.setDefectquantity(vo.getDefectquantity() + (vo.getWeight() * defectCount));
+		vo.setAuditstatus("검수완료");
+		
+		if(vo.getAuditcode().equals("")) {
+		LocalDateTime now = LocalDateTime.now();
+		String fmt = "yyMMddHHmmss";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+		String dateTime = now.format(dtf);
+		vo.setAuditcode("QC" + dateTime);
+		}else if(!vo.getAuditcode().equals("")) {
+			vo.setAuditcode(vo.getAuditcode());
+		}
+		
+		int result = qService.produceAudit(vo);
+		
+		if(result == 0) {
+			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
+			return "redirect:/quality/qualities";
+		}
+		logger.debug(" 검수 성공 ");
+		rttr.addFlashAttribute("AUDIT", "O");
+		return "redirect:/quality/qualities";
 	}
 }
