@@ -605,10 +605,11 @@ public class QualityController {
 		
 		int produceid = vo.getProduceid();
 		List<QualityVO> lotnumbers = sService.roastedBeanLot(produceid);
+		logger.debug(" lotnumbers : " + lotnumbers);
 		
-		if(lotnumbers == null) {
+		if(lotnumbers.isEmpty()) {
 			logger.debug(" 검수 실패 ");
-			rttr.addFlashAttribute("AUDIT", "X");
+			rttr.addFlashAttribute("LOT", "X");
 			return "redirect:/quality/qualities";
 		}
 		
@@ -619,7 +620,7 @@ public class QualityController {
 			String lotnumber = vo2.getLotnumber();
 			vo.setLotnumber(lotnumber);
 			
-			String defect = (new Random().nextBoolean()? "Y" : "N");
+			String defect = (new Random().nextFloat() < 0.95? "N" : "Y");
 			vo.setDefect(defect);
 			
 			if(defect.equals("Y")) {

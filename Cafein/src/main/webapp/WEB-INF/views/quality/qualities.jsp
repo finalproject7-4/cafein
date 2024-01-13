@@ -86,6 +86,7 @@ $(document).ready(function() {
  var result = "${result}";
  var resultAudit = "${AUDIT}";
  var resultDefect = "${DEFECT}";
+ var hasLotnumber = "${LOT}";
  
  if(result == "duplicate"){
 	 Swal.fire("이미 불량 정보가 등록된 검수 내역입니다.");
@@ -105,6 +106,10 @@ $(document).ready(function() {
 	 Swal.fire("상품의 불량 현황이 등록되었습니다.");
  }else if(resultDefect == "X"){
 	 Swal.fire("상품 불량 등록이 실패했습니다.")
+ }
+ 
+ if(hasLotnumber == "X"){
+	 Swal.fire("포장 완료된 상품이 아닙니다."); 
  }
 </script>
 <!-- 경고 메세지 출력 -->

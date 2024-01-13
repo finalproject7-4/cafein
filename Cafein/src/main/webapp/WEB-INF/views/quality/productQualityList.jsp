@@ -569,7 +569,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 		</div>
 		<div class="row">
  			<div class="d-grid gap-2 col-12 mx-auto">
-            	<input type="submit" class="btn btn-primary" style="margin-bottom: 10px;" value="자동 검수">
+            	<input type="submit" class="autoBtn btn btn-primary" style="margin-bottom: 10px;" value="자동 검수">
   			</div>
 		</div>
 		</form>
@@ -666,6 +666,15 @@ $(document).ready(function() {
                 success: function(data) {
                 	console.log(data);
                 	updateTableWithData(data);
+                	
+                    var tbodyIsEmpty = $("#lottable tbody").is(':empty');
+
+                    if (!tbodyIsEmpty) {
+                        $(".autoBtn").show();
+                    } else {
+                        $(".autoBtn").hide();
+                    }
+                    
                 },
                 error: function(error) {
                     console.error("Error fetching data:", error);
