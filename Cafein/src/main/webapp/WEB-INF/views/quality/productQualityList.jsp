@@ -667,6 +667,7 @@ $(document).ready(function() {
                 	console.log(data);
                 	updateTableWithData(data);
                 	
+                    // LOT번호가 조회될 때만 자동 검수 버튼 출력
                     var tbodyIsEmpty = $("#lottable tbody").is(':empty');
 
                     if (!tbodyIsEmpty) {

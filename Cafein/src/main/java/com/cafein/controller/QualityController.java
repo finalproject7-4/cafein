@@ -620,6 +620,7 @@ public class QualityController {
 			String lotnumber = vo2.getLotnumber();
 			vo.setLotnumber(lotnumber);
 			
+			// 자동 검수일 때 랜덤으로 정상, 불량 처리 [불량 확률 5%로 조정 (95% 정상)]
 			String defect = (new Random().nextFloat() < 0.95? "N" : "Y");
 			vo.setDefect(defect);
 			

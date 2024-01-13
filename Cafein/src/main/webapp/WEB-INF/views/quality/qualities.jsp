@@ -114,7 +114,7 @@ $(document).ready(function() {
 </script>
 <!-- 경고 메세지 출력 -->
 
-<!-- 토스트창 ajax 호출 (30초 간격) -->
+<!-- 토스트창 Ajax 호출 (30초 간격) -->
 <script>
 $(document).ready(function(){
     function fetchProductQualityToast() {
@@ -139,6 +139,6 @@ $(document).ready(function(){
     setInterval(fetchProductQualityToast, 60000); // 60,000 밀리초 = 1분
 });
 </script>
-<!-- 토스트창 ajax 호출 (60초 간격) -->
+<!-- 토스트창 Ajax 호출 (60초 간격) -->
 
 <%@ include file="../include/footer.jsp" %>
