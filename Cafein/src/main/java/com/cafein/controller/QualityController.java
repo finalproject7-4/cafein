@@ -648,7 +648,7 @@ public class QualityController {
 			vo.setAuditcode(vo.getAuditcode());
 		}
 		
-		int result = qService.produceAudit(vo);
+		int result = qService.productAuditFull(vo);
 		
 		if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
 			vo.setQualitycheck("정상");
