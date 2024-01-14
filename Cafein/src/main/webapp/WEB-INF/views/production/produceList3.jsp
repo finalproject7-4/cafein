@@ -743,9 +743,9 @@ function fetchData(searchBtnValue) {
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
-/* 			var searchBtn = "${param.searchBtn}";
+ 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
-			var endDate = "${param.endDate}"; */
+			var endDate = "${param.endDate}"; 
 
 			var dataObject = {
 					"produceid" : produceId,	
@@ -771,7 +771,7 @@ function fetchData(searchBtnValue) {
 			$.ajax({
 				url : "/production/processUpdateRoasting",
 				type : "POST",
-				data : dataObject ,
+				data : dataObject,
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
 					console.log("상태 업데이트 성공!");
