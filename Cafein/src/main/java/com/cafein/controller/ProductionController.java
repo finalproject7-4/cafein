@@ -365,6 +365,11 @@ public class ProductionController {
 	public String deleteProducePlan(ProduceVO vo) throws Exception{
 		logger.debug("블렌딩 작업 지시 삭제!");
 		
+		ReleasesVO rvo = new ReleasesVO();
+		
+		rvo.setProducecode(vo.getProducecode());
+		pService.deleteReleasePlan(rvo);
+		
 		pService.deleteProducePlan(vo);
 		
 		return "redirect: /production/produceList";

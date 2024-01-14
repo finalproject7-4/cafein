@@ -682,6 +682,7 @@ function fetchData(searchBtnValue) {
 		          if (result.value) {
 
 			var produceId = $(this).closest("tr").find("td:first").text(); // 생산아이디 값
+			var produceCode = $(this).closest("tr").find("td:eq(14)").text();
 			
 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
@@ -706,7 +707,8 @@ function fetchData(searchBtnValue) {
 				url : "/production/deletePlan",
 				type : "POST",
 				data : {
-					produceid : produceId
+					produceid : produceId,
+					producecode : produceCode
 				},
 				success : function(response) {
 					// 성공적으로 처리된 경우 수행할 코드
@@ -743,9 +745,7 @@ function fetchData(searchBtnValue) {
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
- 			var searchBtn = "${param.searchBtn}";
-			var startDate = "${param.startDate}";
-			var endDate = "${param.endDate}"; 
+ 			
 
 			var dataObject = {
 					"produceid" : produceId,	
@@ -753,9 +753,12 @@ function fetchData(searchBtnValue) {
 					"amount" : amount,
 					process : "로스팅"
 				};
-	
-				var currentPage = getCurrentPageNumber();
-				var dataObjectCom = {
+			
+			var searchBtn = "${param.searchBtn}";
+			var startDate = "${param.startDate}";
+			var endDate = "${param.endDate}"; 
+			var currentPage = getCurrentPageNumber();
+			var dataObjectCom = {
 						"page" : currentPage	
 					};
 				if (searchBtn) {

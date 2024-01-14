@@ -191,6 +191,11 @@
 		delete from produce where produceid = #{produceid}
 	</delete>
 	
+	<!-- 생산지시 블렌딩 삭제시 출하 목록도 삭제(블렌딩, 대기, 검사전) -->
+	<delete id="deleteReleasePlan">
+		delete from releases where producecode = #{producecode}
+	</delete>
+	
 	<!-- 포장완료된 제품 roastedbean 테이블에 추가. -->
 	<insert id="insertRoastedbean">
 		insert into roastedbean(produceid, itemname, itemid, weight, lotnumber, roasteddate, note)
@@ -337,6 +342,9 @@
 		select * from produce where DATE(producedate) = CURDATE()
 		order by producetime
 	</select>
+	
+	
+	
 	
 </mapper>
 

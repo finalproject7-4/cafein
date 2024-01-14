@@ -276,6 +276,16 @@ public class ProductionDAOImpl implements ProductionDAO {
 		logger.debug("DAO - 생산지시리스트 출력(메인용)");
 		return sqlSession.selectList(NAMESPACE+".getProduceList");
 	}
+
+
+	// 블렌딩 공정 삭제시 출하 목록 같이 삭제
+	@Override
+	public void deleteReleasePlan(ReleasesVO vo) throws Exception {
+		logger.debug("DAO - 생산공정 삭제, 출하목록 같이 삭제!");
+		
+		sqlSession.delete(NAMESPACE+".deleteReleasePlan", vo);
+		
+	}
 	
 	
 	

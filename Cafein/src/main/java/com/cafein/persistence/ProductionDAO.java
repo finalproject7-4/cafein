@@ -52,6 +52,9 @@ public interface ProductionDAO {
 	// 대기중인 블렌딩 공정과정 삭제
 	public void deleteProducePlan(ProduceVO vo) throws Exception;
 	
+	// 블렌딩 삭제시 출하 목록도 같이 삭제
+	public void deleteReleasePlan(ReleasesVO vo) throws Exception;
+	
 	// 로스팅 온도값 조회
 	public int getRoastingTemper(ProduceVO vo) throws Exception;
 	

@@ -376,6 +376,14 @@ public class ProductionServiceImpl implements ProductionService{
 		logger.debug("Service - 생산지시리스트 메인용 getProduceList() 호출!");
 		return pdao.getProduceList();
 	}
+
+	@Override
+	public void deleteReleasePlan(ReleasesVO vo) throws Exception {
+		logger.debug("Service - 생산지시 삭제, 출하목록도 같이 삭제 deleteReleasePlan() 호출!");
+		
+		pdao.deleteReleasePlan(vo);
+		
+	}
 	
 	
 	
