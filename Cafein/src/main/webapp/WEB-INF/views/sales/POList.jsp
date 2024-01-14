@@ -511,7 +511,6 @@
                         <tbody>
                               <tr class="fs19">
                                  <th>품명</th>
-                                 <th>원산지</th>
                                  <th>중량(g)</th>
                                  <th>단가(원)</th>
                                  <th>수량(개)</th>
@@ -521,7 +520,6 @@
                               </tr>
                               <tr class="inputWidth">
                                  <td><input id="ritemname" name="itemname" class="form-control form-control-sm" type="text" readonly ></td>
-                                 <td><input id="rorigin" name="origin" class="form-control form-control-sm" type="text" value="" readonly></td>
                                  <td><input id="ritemweight" name="itemweight" class="form-control form-control-sm" type="number" value="" readonly></td>
                                  <td><input id="ritemprice" name="itemprice" class="form-control form-control-sm" type="number" value="" readonly></td>
                                  <td><input id="rpocnt" name="pocnt" class="form-control form-control-sm" type="number" value="" readonly></td>
@@ -529,11 +527,11 @@
                                  <td><input id="rtax" name="tax" class="form-control form-control-sm" type="number" value="" readonly></td>
                                  <td><input  name="total" class="form-control form-control-sm rtotal" type="number"  readonly></td>
                               </tr>
-                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                              <tr class="tdempty"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                               <tr>
                            </table>
                               <table class="table table-bordered thirdtable">
