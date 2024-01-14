@@ -127,12 +127,10 @@
 	<select id="selectReceiveList" resultType="ReceiveVO">
 		select rc.receiveid, rc.receivecode, rc.orderscode, rc.receivequantity, rc.receivedate,
 	   		   rc.itemid, rc.storagecode, rc.lotnumber, rc.membercode, rc.receivestate,
-	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername, sto.stockid
+	   		   od.ordersquantity, it.itemcode, it.itemname, cli.clientname, mem.membername
 		from receive rc
 		join item it 
-		on rc.itemid = it.itemid
-		left outer join stock sto
-		on it.itemid = sto.itemid		
+		on rc.itemid = it.itemid	
 		left outer join member mem
 		on rc.membercode = mem.membercode
 		left outer join orders od
