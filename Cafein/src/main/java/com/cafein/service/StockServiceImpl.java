@@ -150,7 +150,7 @@ public class StockServiceImpl implements StockService {
 
 	// roastedBean - lotnumber 테이블 조회
 	@Override
-	public List<QualityVO> roastedBeanLot(String produceid) throws Exception {
+	public List<QualityVO> roastedBeanLot(int produceid) throws Exception {
 		// TODO Auto-generated method stub
 		return sdao.selectRoastedBeanLot(produceid);
 	}

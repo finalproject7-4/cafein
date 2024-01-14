@@ -94,7 +94,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 									<td>${clist.itemcode }</td>
 									<td>
 									<c:if test="${!empty clist.produceprocess && clist.produceprocess.equals('포장') }">
-									${clist.itemname } (${clist.weight }g)
+										<c:if test="${clist.weight != 0 }">
+											${clist.itemname } (${clist.weight }g)
+										</c:if>
+										<c:if test="${clist.weight == 0 }">
+											${clist.itemname } (미포장)
+										</c:if>
 									</c:if>
 									<c:if test="${!empty clist.produceprocess && !clist.produceprocess.equals('포장') }">
 									${clist.itemname }
@@ -493,6 +498,24 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
         <button type="button" class="closebtn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+      <form action="/quality/autoAudit" method="POST">
+
+	  <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+
       	<div class="row">
       		<div class="col">
            		<label for="qualityid" class="col-form-label">품질관리번호:</label>
@@ -549,6 +572,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
             	<input type="text" class="form-control" id="normalquantity" name="normalquantity" value="" style="margin-bottom: 10px;" readonly>
   			</div>
 		</div>
+		<div class="row">
+ 			<div class="d-grid gap-2 col-12 mx-auto">
+            	<input type="submit" class="autoBtn btn btn-primary" style="margin-bottom: 10px;" value="자동 검수">
+  			</div>
+		</div>
+		</form>
 		<div class="row">
  			<div class="col">
  			<label for="lottable">LOT번호별 품질 검사:</label>
@@ -642,6 +671,16 @@ $(document).ready(function() {
                 success: function(data) {
                 	console.log(data);
                 	updateTableWithData(data);
+                	
+                    // LOT번호가 조회될 때만 자동 검수 버튼 출력
+                    var tbodyIsEmpty = $("#lottable tbody").is(':empty');
+
+                    if (!tbodyIsEmpty) {
+                        $(".autoBtn").show();
+                    } else {
+                        $(".autoBtn").hide();
+                    }
+                    
                 },
                 error: function(error) {
                     console.error("Error fetching data:", error);
@@ -770,7 +809,7 @@ $(document).ready(function() {
                         url: form.attr('action'),
                         data: formData,
                         success: function(response) {
-                        	Swal.fire("검수가 성공적으로 저장되었습니다.");
+							Swal.fire("검수가 성공적으로 저장되었습니다.");
                         	
                             aqinputField.value = auditquantity;
                             dqinputField.value = defectquantity;
@@ -1215,6 +1254,23 @@ $(document).ready(function() {
 <div class="modal fade" id="newProductDefectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/quality//productReturnNewDefect" method="POST">
+  
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+  
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel2">불량 등록 (생산)</h1>
@@ -1314,9 +1370,26 @@ $(document).ready(function() {
 <div class="modal fade" id="newReturnDefectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/quality//productReturnNewDefect" method="POST">
+    
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+    
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel2">불량 등록 (생산)</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel2">불량 등록 (반품)</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

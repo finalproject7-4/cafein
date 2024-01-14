@@ -568,8 +568,6 @@
 		'불량', #{membercode}, '부자재', '제품불량', '폐기', #{itemid});
 	</insert>
 	<!-- 반품 입력 (부자재) -->
-	
-	
 
 	<!-- 품질 관리 목록 (생산 / 반품) 추가 : WHERE q.itemtype = '생산' OR q.itemtype = '반품' -->
 </mapper>

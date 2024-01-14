@@ -64,7 +64,7 @@ public interface StockService {
 	public QualityVO roastedBeanInfo(String lotnumber) throws Exception;
 	
 	// roastedBean - lotnumber 테이블 조회
-	public List<QualityVO> roastedBeanLot(String produceid) throws Exception;
+	public List<QualityVO> roastedBeanLot(int produceid) throws Exception;
 	
 	// receive 테이블 조회
 	public QualityVO receiveInfo(String receiveid) throws Exception;

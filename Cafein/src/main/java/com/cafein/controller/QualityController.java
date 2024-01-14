@@ -2,6 +2,8 @@ package com.cafein.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -47,7 +49,8 @@ public class QualityController {
 	// 품질 관리 페이지 (자재)
 	// http://localhost:8088/quality/qualitiesMaterial
 	@GetMapping(value = "/qualitiesMaterial")
-	public void materialQualityGET(HttpSession session) {
+	public void materialQualityGET(HttpSession session, @RequestParam(name = "page", required = false) Integer page, 
+			@RequestParam(name = "searchBtn", required = false) String searchBtn, @RequestParam(name = "startDate", required = false) String startDate, @RequestParam(name = "endDate", required = false) String endDate) {
 		session.getAttribute("membercode");
 		
 	}
@@ -311,7 +314,21 @@ public class QualityController {
 	
 	// 자재 검수 입력 처리 - POST
 	@PostMapping(value = "/materialAudit")
-	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, Criteria cri, HttpSession session) throws Exception{
+	public String materialQualityAuditPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, 
+			@ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		if(vo.getAuditquantity() == 0) {
 			logger.debug(" 검수량 0개 불가 ");
 			rttr.addFlashAttribute("auditQuantity", "zero");
@@ -373,7 +390,20 @@ public class QualityController {
 	
 	// 불량 현황 입력 처리 (생산 + 반품) - POST
 	@PostMapping(value = "/productReturnNewDefect")
-	public String productReturnQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr) throws Exception{
+	public String productReturnQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, 
+			@ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
 		
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
@@ -390,7 +420,21 @@ public class QualityController {
 	
 	// 불량 현황 입력 처리 (자재) - POST
 	@PostMapping(value = "/materialNewDefect")
-	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String materialQualityNewDefectPOST(QualityVO vo, RedirectAttributes rttr, HttpSession session, 
+			@ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
 		int membercode = (int) session.getAttribute("membercode");
 		int result = qService.produceReturnDefects(vo);
 		if(result == 0) {
@@ -581,5 +625,91 @@ public class QualityController {
 	// 품질 관리 미완료 알림 토스트 (자재)
 	public void materalQualityToast(Model model) throws Exception{
 		model.addAttribute("materialToast", qService.materialQualityToast());
+	}
+	
+	@PostMapping(value = "/autoAudit")
+	// 포장 자동 검수
+	public String packageAutoAudit(HttpSession session, QualityVO vo, RedirectAttributes rttr, @ModelAttribute("page") int page, @ModelAttribute("searchBtn") String searchBtn, 
+			@ModelAttribute("startDate") String startDate, @ModelAttribute("endDate") String endDate) throws Exception{
+		
+		// 페이지 유지를 위한 페이지 정보 가져오기
+		rttr.addFlashAttribute("page", page);
+		
+		if(searchBtn != null) {
+			rttr.addFlashAttribute("searchBtn", searchBtn);
+		}
+		if(startDate != null) {
+			rttr.addFlashAttribute("startDate", startDate);
+		}
+		if(endDate != null) {
+			rttr.addFlashAttribute("endDate", endDate);
+		}
+		
+		int produceid = vo.getProduceid();
+		List<QualityVO> lotnumbers = sService.roastedBeanLot(produceid);
+		logger.debug(" lotnumbers : " + lotnumbers);
+		
+		if(lotnumbers.isEmpty()) {
+			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("LOT", "X");
+			return "redirect:/quality/qualities";
+		}
+		
+		int normalCount = 0;
+		int defectCount = 0;
+		
+		for(QualityVO vo2 : lotnumbers) {
+			String lotnumber = vo2.getLotnumber();
+			vo.setLotnumber(lotnumber);
+			
+			// 자동 검수일 때 랜덤으로 정상, 불량 처리 [불량 확률 5%로 조정 (95% 정상)]
+			String defect = (new Random().nextFloat() < 0.95? "N" : "Y");
+			vo.setDefect(defect);
+			
+			if(defect.equals("Y")) {
+				defectCount += 1;
+			}
+			if(defect.equals("N")) {
+				normalCount += 1;
+			}
+			
+			qService.roastedBeanDefect(vo);	
+		}
+		
+		vo.setAuditbycode((int) session.getAttribute("membercode"));
+		vo.setAuditquantity(vo.getProductquantity());
+		vo.setNormalquantity(vo.getNormalquantity() + (vo.getWeight() * normalCount));
+		vo.setDefectquantity(vo.getDefectquantity() + (vo.getWeight() * defectCount));
+		vo.setAuditstatus("검수완료");
+		
+		if(vo.getAuditcode().equals("")) {
+		LocalDateTime now = LocalDateTime.now();
+		String fmt = "yyMMddHHmmss";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(fmt);
+		String dateTime = now.format(dtf);
+		vo.setAuditcode("QC" + dateTime);
+		}else if(!vo.getAuditcode().equals("")) {
+			vo.setAuditcode(vo.getAuditcode());
+		}
+		
+		int result = qService.productAuditFull(vo);
+		
+		if((double) vo.getDefectquantity() / vo.getProductquantity() >= 0 && (double) vo.getDefectquantity() / vo.getProductquantity() <= 0.3) { // 생산 검수 - 정상 [불량 비율 : 0.3 (30%)]
+			vo.setQualitycheck("정상");
+			qService.productQualityCheck(vo);
+					
+		}else { // 생산 검수 - 불량
+			vo.setQualitycheck("불량");
+			qService.productQualityCheck(vo);
+		}
+		
+		if(result == 0) {
+			logger.debug(" 검수 실패 ");
+			rttr.addFlashAttribute("AUDIT", "X");
+			return "redirect:/quality/qualities";
+		}
+		logger.debug(" 검수 성공 ");
+		rttr.addFlashAttribute("AUDIT", "O");
+		return "redirect:/quality/qualities";
 	}
 }

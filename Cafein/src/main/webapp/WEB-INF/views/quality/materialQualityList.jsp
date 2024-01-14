@@ -345,15 +345,29 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js
 <div class="modal fade" id="materialAuditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/quality/materialAudit" method="POST">
+  
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">자재 검수</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      	<c:if test="${!empty param.page }">
-      	<input type="hidden" name="page" value="${param.page }">
-      	</c:if>
       	<div class="row">
  			<div class="col">
            		<label for="qualityid" class="col-form-label">품질관리번호:</label>
@@ -518,6 +532,23 @@ $(document).ready(function() {
 <div class="modal fade" id="newMaterialDefectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
   <form action="/quality/materialNewDefect" method="POST">
+  
+      <c:if test="${empty param.page }">
+      	<input type="hidden" name="page" value="1">
+      </c:if>
+      <c:if test="${!empty param.page }">
+      	<input type="hidden" name="page" value="${param.page }">
+      </c:if>
+      <c:if test="${!empty param.searchBtn }">
+      	<input type="hidden" name="searchBtn" value="${param.searchBtn }">
+      </c:if>
+	  <c:if test="${!empty param.startDate }">
+		<input type="hidden" value="${param.startDate }" name="startDate">
+	  </c:if>
+	  <c:if test="${!empty param.endDate }">
+	  	<input type="hidden" value="${param.endDate }" name="endDate">
+	  </c:if>
+  
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel2">불량 등록 (생산)</h1>

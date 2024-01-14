@@ -34,10 +34,12 @@ $(document).ready(function() {
 	if (searchBtn) {
 		dataObject.searchBtn = searchBtn;
 	}
+	
 	if (startDate) {
 		dataObject.startDate = startDate;
 	}
-		if (endDate) {
+	
+	if (endDate) {
 	 dataObject.endDate = endDate;
 	}
 	
@@ -86,6 +88,7 @@ $(document).ready(function() {
  var result = "${result}";
  var resultAudit = "${AUDIT}";
  var resultDefect = "${DEFECT}";
+ var hasLotnumber = "${LOT}";
  
  if(result == "duplicate"){
 	 Swal.fire("이미 불량 정보가 등록된 검수 내역입니다.");
@@ -106,10 +109,14 @@ $(document).ready(function() {
  }else if(resultDefect == "X"){
 	 Swal.fire("상품 불량 등록이 실패했습니다.")
  }
+ 
+ if(hasLotnumber == "X"){
+	 Swal.fire("포장 완료된 상품이 아닙니다."); 
+ }
 </script>
 <!-- 경고 메세지 출력 -->
 
-<!-- 토스트창 ajax 호출 (30초 간격) -->
+<!-- 토스트창 Ajax 호출 (30초 간격) -->
 <script>
 $(document).ready(function(){
     function fetchProductQualityToast() {
@@ -134,6 +141,6 @@ $(document).ready(function(){
     setInterval(fetchProductQualityToast, 60000); // 60,000 밀리초 = 1분
 });
 </script>
-<!-- 토스트창 ajax 호출 (60초 간격) -->
+<!-- 토스트창 Ajax 호출 (60초 간격) -->
 
 <%@ include file="../include/footer.jsp" %>
