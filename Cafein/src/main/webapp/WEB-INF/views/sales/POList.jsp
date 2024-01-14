@@ -4,6 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+ <c:if test="${empty membercode}">
+    <c:redirect url="/main/login" />
+</c:if>
 <br>
 <fieldset>
 
