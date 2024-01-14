@@ -549,15 +549,6 @@ function fetchData(searchBtnValue) {
 					"state" : stateValue					
 				};
 				
-				if (searchBtn) {
-				    dataObject.searchBtn = searchBtn;
-				}
-				if (startDate) {
-				    dataObject.startDate = startDate;
-				}
-				if (endDate) {
-				    dataObject.endDate = endDate;
-				}
 				
 				var currentPage = getCurrentPageNumber();
 				var dataObjectCom = {
@@ -565,6 +556,12 @@ function fetchData(searchBtnValue) {
 					};
 		        if (searchBtn) {
 		        	dataObjectCom.searchBtn = searchBtn;
+				}
+		        if (startDate) {
+		        	dataObjectCom.startDate = startDate;
+				}
+				if (endDate) {
+					dataObjectCom.endDate = endDate;
 				}
 				
 			// AJAX 요청 수행
@@ -626,23 +623,19 @@ function fetchData(searchBtnValue) {
 				"stockid2" : stockId2,
 				"stockid3" : stockId3				
 			};
-			
-			if (searchBtn) {
-			    dataObject.searchBtn = searchBtn;
-			}
-			if (startDate) {
-			    dataObject.startDate = startDate;
-			}
-			if (endDate) {
-			    dataObject.endDate = endDate;
-			}
 
 			var currentPage = getCurrentPageNumber();
 			var dataObjectCom = {
 					"page" : currentPage	
 				};
-	        if (searchBtn) {
+			if (searchBtn) {
 	        	dataObjectCom.searchBtn = searchBtn;
+			}
+	        if (startDate) {
+	        	dataObjectCom.startDate = startDate;
+			}
+			if (endDate) {
+				dataObjectCom.endDate = endDate;
 			}
 			// AJAX 요청 수행
 			$.ajax({
@@ -699,8 +692,14 @@ function fetchData(searchBtnValue) {
 			var dataObjectCom = {
 					"page" : currentPage	
 				};
-	        if (searchBtn) {
+			if (searchBtn) {
 	        	dataObjectCom.searchBtn = searchBtn;
+			}
+	        if (startDate) {
+	        	dataObjectCom.startDate = startDate;
+			}
+			if (endDate) {
+				dataObjectCom.endDate = endDate;
 			}
 			// AJAX 요청 수행
 			$.ajax({
@@ -744,9 +743,9 @@ function fetchData(searchBtnValue) {
 			var itemID = $(this).closest("tr").find("td:eq(9)").text(); // 아이템id 값
 			var amount = $(this).closest("tr").find("td:eq(11)").text(); // 생산량 값
 			
-			var searchBtn = "${param.searchBtn}";
+/* 			var searchBtn = "${param.searchBtn}";
 			var startDate = "${param.startDate}";
-			var endDate = "${param.endDate}";
+			var endDate = "${param.endDate}"; */
 
 			var dataObject = {
 					"produceid" : produceId,	
@@ -754,24 +753,19 @@ function fetchData(searchBtnValue) {
 					"amount" : amount,
 					process : "로스팅"
 				};
-				
-				if (searchBtn) {
-				    dataObject.searchBtn = searchBtn;
-				}
-				if (startDate) {
-				    dataObject.startDate = startDate;
-				}
-				if (endDate) {
-				    dataObject.endDate = endDate;
-				}
-				
 	
 				var currentPage = getCurrentPageNumber();
 				var dataObjectCom = {
 						"page" : currentPage	
 					};
-		        if (searchBtn) {
+				if (searchBtn) {
 		        	dataObjectCom.searchBtn = searchBtn;
+				}
+		        if (startDate) {
+		        	dataObjectCom.startDate = startDate;
+				}
+				if (endDate) {
+					dataObjectCom.endDate = endDate;
 				}
 			// AJAX 요청 수행
 			$.ajax({

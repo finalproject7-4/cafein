@@ -94,6 +94,8 @@ $(document).ready(function() {
 
         var formData = $(this).serialize(); // 폼 데이터 직렬화
 
+        var startDate = "${param.startDate}";
+		var endDate = "${param.endDate}";
         var searchBtn = "${param.searchBtn}";
         
         var currentPage = getCurrentPageNumber();
@@ -103,6 +105,12 @@ $(document).ready(function() {
         if (searchBtn) {
         	dataObjectCom.searchBtn = searchBtn;
 		}
+        if(startDate){
+        	dataObjectCom.startDate = startDate;
+        }
+        if(endDate){
+        	dataObjectCom.endDate = endDate;
+        }
         
         $.ajax({
             url: '/production/updateRoastedbeanList',

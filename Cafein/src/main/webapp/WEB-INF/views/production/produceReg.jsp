@@ -242,6 +242,12 @@
 	        if (searchBtn) {
 	        	dataObjectCom.searchBtn = searchBtn;
 			}
+	        if(startDate){
+	        	dataObjectCom.startDate = startDate;
+	        }
+	        if(endDate){
+	        	dataObjectCom.endDate = endDate;
+	        }
 	        
 	        $.ajax({
 	            url: '/production/produceReg',

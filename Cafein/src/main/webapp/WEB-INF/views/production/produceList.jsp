@@ -48,25 +48,6 @@ function getCurrentPageNumber() {
 	return currentPage;
 	 }
 
-/* function getList(pageNumber) {
-	$.ajax({
-		 url: "/production/produceList3",
-		 type: "GET",
-		 data: {
-  		  page: pageNumber // 현재 페이지 번호 전달
-   		 // 나머지 필요한 데이터도 전달 가능
-		 },
-		 dataType: "html",
-		 success: function(data) {
-  		  $("#produceListAll").html(data);
-		 },
-		error: function(error) {
-			Swal.fire("페이지를 찾을 수 없습니다.");
-    		console.error("Error fetching quality list:", error);
-		}
-	});
-} */
-
 </script>
 
 <!-- 검색 폼 -->
