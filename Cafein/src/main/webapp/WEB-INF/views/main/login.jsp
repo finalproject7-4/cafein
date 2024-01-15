@@ -47,7 +47,7 @@
 					<div class="d-flex align-items-center justify-content-between mb-3">
 						<h3>Cafe In</h3>
 					</div>
-					<form action="/main/login" method="post" id="login">
+					<form action="/login" method="post" id="login">
 						<div class="form-group m-2">
 							<input class="form-control" type="text" name="membercode" id="membercode"
 								   placeholder="사원번호" aria-label="default input example">

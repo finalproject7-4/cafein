@@ -30,9 +30,11 @@ public class MainController2 {
 	// 로그인 - GET
 	// http://localhost:8088/login
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public void loginGET() throws Exception {
+	public String loginGET() throws Exception {
 		logger.debug(" loginGET() 호출 ");
-		logger.debug(" /views/login.jsp 페이지로 이동 ");
+		logger.debug(" /views/main/login.jsp 페이지로 이동 ");
+		
+		return "/main/login";
 	}
 	
 	// 로그인 - POST
@@ -44,7 +46,7 @@ public class MainController2 {
 		
 		// 사원번호와 비밀번호가 일치할 때 동작
 		if(resultVO != null) {
-			logger.debug(" /views/main.jsp 페이지로 이동 ");
+			logger.debug(" /views/main/main.jsp 페이지로 이동 ");
 			
 			// 로그인 할 때 세션에 필요한 정보 담아가기
 			session.setAttribute("membercode", resultVO.getMembercode()); // 직원번호(사원번호)
@@ -56,7 +58,7 @@ public class MainController2 {
 		}
 		
 		// 사원번호와 비밀번호가 일치하지 않을 때 alert을 띄우고자 페이지 이동
-		return "/msg";
+		return "/main/msg";
 	}
 	
 	// 메인페이지 - GET
@@ -64,7 +66,7 @@ public class MainController2 {
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String cafeinMain(Model model, ProduceVO vo) throws Exception {
 		logger.debug(" mainGET() 호출 ");
-		logger.debug("/views/main.jsp 페이지로 이동 ");
+		logger.debug("/views/main/main.jsp 페이지로 이동 ");
 			
 		model.addAttribute("today", proService.getProduceAmountToday());
 		model.addAttribute("thisMonth", proService.getProduceAmountThisMonth());
@@ -72,7 +74,7 @@ public class MainController2 {
 		model.addAttribute("todayGoal", proService.getProduceAmountTodayGoal());
 		model.addAttribute("produceList", proService.getProduceList());
 		
-		return "/main";
+		return "/main/main";
 		
 	}
 	
