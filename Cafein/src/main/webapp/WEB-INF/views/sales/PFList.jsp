@@ -5,9 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
-<c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
-</c:if> 
+<c:if test="${empty sessionScope.membercode}">
+    <script>
+    	location.href="/login";
+    </script>
+</c:if> if> 
 <br>
 <fiedset>
 	<!-- 검색 폼 -->
