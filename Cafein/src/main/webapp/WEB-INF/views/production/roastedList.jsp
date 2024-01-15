@@ -6,7 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 <!-- SweetAlert 추가 -->
 <c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
+    <c:redirect url="/login" />
 </c:if> 
 
 

@@ -236,12 +236,10 @@
 	<select id="selectReleasesList" resultType="ReleasesVO">
 		select rl.releaseid, rl.releasecode, rl.producecode, 
 			   rl.releasestate , rl.releasedate, rl.releasequantity, 
-			   sto.stockquantity, it.itemname, mem.membername
+			   it.itemname, mem.membername
 		from releases rl
-		join stock sto 
-		on rl.itemid = sto.itemid
 		left outer join item it
-		on sto.itemid = it.itemid
+		on rl.itemid = it.itemid
 		left outer join member mem
 		on rl.membercode = mem.membercode
 		<where>
@@ -260,10 +258,8 @@
 	<select id="selectReleasesCount" resultType="integer">
 		select count(*) 
 		from releases rl
-		join stock sto 
-		on rl.itemid = sto.itemid
 		left outer join item it
-		on sto.itemid = it.itemid
+		on rl.itemid = it.itemid
 		left outer join member mem
 		on rl.membercode = mem.membercode
 		<where>
@@ -286,12 +282,10 @@
 	<select id="selectReleaseListExcel" resultType="ReleasesVO">
 		select rl.releaseid, rl.releasecode, rl.producecode, 
 			   rl.releasestate , rl.releasedate, rl.releasequantity, 
-			   sto.stockquantity, it.itemname, mem.membername
+			   it.itemname, mem.membername
 		from releases rl
-		join stock sto 
-		on rl.itemid = sto.itemid
 		left outer join item it
-		on sto.itemid = it.itemid
+		on rl.itemid = it.itemid
 		left outer join member mem
 		on rl.membercode = mem.membercode
 		<where>

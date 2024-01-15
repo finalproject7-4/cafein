@@ -7,8 +7,10 @@
 <link href="../resources/css/po.css" rel="stylesheet">
 
 <!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
-<c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
+<c:if test="${empty sessionScope.membercode}">
+    <script>
+    	location.href="/login";
+    </script>
 </c:if> 
 
 <br>

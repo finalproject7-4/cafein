@@ -3,7 +3,7 @@
 <%@ include file="../include/header.jsp" %>
 
 <c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
+    <c:redirect url="/login" />
 </c:if> 
 
 <!-- SweetAlert 추가 -->
