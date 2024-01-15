@@ -71,7 +71,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3" style="background-color: #FBF8EF;">
             <nav class="navbar bg-light navbar-light">
-                <a href="/main/main" style="margin-top: -45px;">
+                <a href="/" style="margin-top: -45px;">
                     <img width="194px" height="160px" src="../resources/img/cafein.png" alt="cafein_logo"
                     style="margin-top: 30px;margin-left:15px;scale: 1.3;">
                 </a>
@@ -138,7 +138,7 @@
                             <span class="d-none d-lg-inline-flex">${membername}(${membercode })</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                            <a href="/main/logout" class="dropdown-item">로그아웃</a>
+                            <a href="/logout" class="dropdown-item">로그아웃</a>
                         </div>
                     </div>
                 </div>
