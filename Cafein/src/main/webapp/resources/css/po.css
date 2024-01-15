@@ -1,0 +1,187 @@
+@charset "UTF-8";
+
+#regist {
+	margin-right: 170px;
+    float: right;
+    margin-top: -33px;
+    margin-bottom: 23px;
+}
+
+#ListExcel {
+	margin-right: 26px;
+	margin-top: 50px;
+	float:right;
+}
+.tableMargin {
+	margin-top: 20px;
+}
+
+.settingPO {
+	margin-top: -15px;
+    margin-bottom: 23.15px;
+}
+
+.rectipt-body {
+    left: -21em;
+    width: 70rem;
+    height: 80em;
+    overflow-y: auto;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.recript-title {
+    font-size: 30px;
+}
+.receiptTitle {
+	text-align: center;
+    font-size: 35px;
+    letter-spacing: 10px;
+}
+#rordersdate {
+    width: 150px;
+    margin-top: -5px;
+    font-size: 20px;
+}
+
+.odate {
+	color:black;
+	margin-bottom: 15px;
+	float:right;
+	display:flex;
+	margin-top: 30px;
+	font-size: 20px;
+}
+
+/* .form-control-sm{ */
+/* 	color: black; */
+/*     font-size: 19px !important; */
+/*     border: none !important; */
+/*     text-align: center !important; */
+/*     background: none !important; */
+/* } */
+
+.pt15 {
+	color: black;
+	font-size: 19px;
+	padding-top: 15px !important;
+   	width: 10em;	
+}
+.fs19 {
+	color: black;
+    background: #DDDEDF;
+	font-size: 19px;
+}
+
+
+.inputWidth input {
+	width:100%;
+}
+
+.rowspan6 {
+	color: black;
+    background: #DDDEDF;
+	width: 5em;
+	font-size: 23px;
+    font-weight: bold;
+    letter-spacing: 24px;
+    padding-right: 42px !important;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: nowrap;
+}
+
+.tdempty {
+	height:3.2em;
+}
+
+.rem13 {
+	color: black;
+    background: #DDDEDF;
+	font-size: 19px;
+	width:13rem;
+	padding-top: 15px !important;
+}
+
+.thirdtable {
+    width: 470px;
+}
+.bgray {
+	background: #F8F9FA;
+}
+
+@media print {
+  input {
+    border: none;
+  }
+    body, .rectipt-body {
+    color: black;
+  }
+  
+  .fs19, .rowspan6, .rem13 {
+      background: #DDDEDF;
+   }
+  
+}
+
+.thirdtable input{
+	margin-left: auto;
+    margin-right: auto;
+}
+.ReceiptPDF {
+	float:right;
+}
+
+.bclose {
+	float:right;
+}
+
+.fc {
+   border-radius: 5px; 
+}
+
+.fcsearch {
+	width:17%;
+}
+.fcsearch2 {
+	width:10%;
+}
+
+.searchmini {
+	margin-top: 3px !important;
+}
+
+.col2 {
+	margin-top: 12px !important;	
+}
+
+.row1 {
+	    margin-bottom: 20px !important;
+}
+
+.podetail-content {
+	margin-top: 37% !important;
+	height:37em;
+}
+
+.memberCall {
+	cursor: pointer;
+}
+
+.pocodeColor {
+	color:#009CFF;
+	cursor: pointer;
+}
+
+.rpocode {
+	margin-top: -6px;
+	width:50%;
+	font-size: 15px !important;
+}
+#rpocodeid{
+	float: left;
+    margin-top: -50px;
+}
+.swal2-popup {
+  width: 48em;
+}

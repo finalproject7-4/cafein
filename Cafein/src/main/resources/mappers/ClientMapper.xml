@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- ClientMapper.xml -->
+<mapper namespace="com.cafein.mapper.ClientMapper">
+
+<!-- 디비 컬럼과 도메인 객체를 매핑 -->
+<!-- 프로퍼티명과 컬럼명이 동일할 때 생략할 수 있음 -->
+<resultMap type="com.cafein.domain.ClientVO" id="client">
+	<result property="clientid" column="clientid"/>
+	<result property="clientcode" column="clientcode"/>
+	<result property="clientname" column="clientname"/>
+	<result property="categoryofclient" column="categoryofclient"/>
+	<result property="typeofclient" column="typeofclient"/>
+	<result property="businessnumber" column="businessnumber"/>
+	<result property="representative" column="representative"/>
+	<result property="manager" column="manager"/>
+	<result property="clientaddress" column="clientaddress"/>
+	<result property="clientphone" column="clientphone"/>
+	<result property="clientfax" column="clientfax"/>
+	<result property="clientemail" column="clientemail"/>
+	<result property="available" column="available"/>
+</resultMap>
+
+<!-- 거래처 등록 -->
+<insert id="insertClient">
+	insert into client(clientcode,clientname,categoryofclient,typeofclient,businessnumber,representative,
+	manager,clientaddress,clientphone,clientfax,clientemail) 
+	values(#{clientcode},#{clientname},#{categoryofclient},#{typeofclient},#{businessnumber},#{representative},
+	#{manager},#{clientaddress},#{clientphone},#{clientfax},#{clientemail})
+</insert>
+
+<!-- 최신 등록된 거래처의 거래처 코드 확인 -->
+<select id="getMaxClientCode" resultType="int" parameterType="ClientVO">
+	select count(*) from client 
+		<where>
+		  <choose>
+			<when test="categoryofclient == '납품'">
+				and clientcode like '%D%';
+			</when>
+			<when test="categoryofclient == '공급'">
+				and clientcode like '%S%';
+			</when>
+		  </choose>
+		</where>
+</select>
+
+<!-- 거래처 목록 (페이징) -->
+<select id="getClientPageList" resultType="ClientVO">
+	select * from client 
+	where available = 'Y'
+	<if test="option == 'clientname'">
+		and clientname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'categoryofclient'">
+		and categoryofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'typeofclient'">
+		and typeofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'manager'">
+		and manager LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	order by clientid desc		
+	limit #{cri.startPage}, #{cri.pageSize}
+</select>
+
+<!-- 거래처 목록 총 개수 -->
+<select id="getClientCount" resultType="integer">
+	select count(*) from client
+	where available = 'Y'
+	<if test="option == 'clientname'">
+		and clientname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'categoryofclient'">
+		and categoryofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'typeofclient'">
+		and typeofclient LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'manager'">
+		and manager LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+</select>
+
+<!-- 거래처 정보를 list에 담기 -->
+<select id="getClientList" resultType="ClientVO">
+	select * from client 
+</select>
+
+<!-- 거래처 정보 조회 -->
+<select id="getClient" resultType="ClientVO">
+	select * from client 
+	where clientid=#{clientid}
+</select>
+
+<!-- 거래처 정보 수정 -->
+<update id="updateClient">
+    update client 
+    set clientname=#{clientname}, categoryofclient=#{categoryofclient}, 
+        typeofclient=case
+            when categoryofclient = '납품' then null
+            else #{typeofclient}
+        end,
+        businessnumber=#{businessnumber}, representative=#{representative}, manager=#{manager}, clientaddress=#{clientaddress}, 
+        clientphone=#{clientphone}, clientfax=#{clientfax}, clientemail=#{clientemail}, available=#{available} 
+    where clientid=#{clientid}
+</update>
+
+<!-- 거래처 정보 삭제(비활성화) -->
+<update id="deleteClient">
+	update client 
+	set available="N" 
+	where clientid=#{clientid}
+</update>
+
+</mapper>

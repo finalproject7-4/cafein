@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.cafein.mapper.qualityMapper">
+
+	<!-- 품질 관리 목록 (생산 / 반품) -->
+	<select id="selectQualityList" resultType="QualityVO">
+		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, process, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
+		productquantity, auditquantity, normalquantity, defectquantity, 
+		auditstatus, registerationdate, completedate 
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		LEFT OUTER JOIN produce p
+		ON q.produceid = p.produceid
+		WHERE q.itemtype = '생산' OR q.itemtype = '반품'
+		ORDER BY q.qualityid DESC
+	</select>
+	
+	<!-- 검수 폼 출력 (생산) -->
+	<select id="selectProduceInfo" resultType="QualityVO">
+		SELECT qualityid, auditcode, q.produceid, process, q.itemid, itemcode, i.itemname, auditbycode, 
+		productquantity, auditquantity, normalquantity, defectquantity
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		JOIN produce p
+		ON q.produceid = p.produceid 
+		WHERE q.produceid = #{produceid}
+	</select>
+	
+	<!-- 검수 입력 (생산) -->
+	<update id="updateProduceAudit">
+		UPDATE quality
+		SET auditbycode = #{auditbycode}, auditquantity = #{auditquantity}, 
+		normalquantity = #{normalquantity}, defectquantity = #{defectquantity},
+		auditstatus = #{auditstatus}, auditcode = #{auditcode}
+		WHERE qualityid = #{qualityid}
+	</update>
+	
+	<!-- 검수 입력 - 완료 (생산) -->
+	<update id="updateProduceAuditFull">
+		UPDATE quality
+		SET auditbycode = #{auditbycode}, auditquantity = #{auditquantity}, 
+		normalquantity = #{normalquantity}, defectquantity = #{defectquantity},
+		auditstatus = #{auditstatus}, completedate = NOW(), auditcode = #{auditcode}
+		WHERE qualityid = #{qualityid}
+	</update>
+	
+	<!-- 검수 - 합격 / 불합격 (생산) -->
+	<update id="updateProduceQualityCheck">
+		UPDATE produce SET qualitycheck = #{qualitycheck} WHERE produceid = #{produceid}
+	</update>
+	
+	<!-- 검수 폼 출력 (반품) -->
+	<select id="selectReturnInfo" resultType="QualityVO">
+		SELECT qualityid, auditcode, returnid, q.itemid, itemcode, i.itemname, auditbycode, 
+		productquantity, auditquantity, normalquantity, defectquantity
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		WHERE returnid = #{returnid}
+	</select>
+	
+	<!-- 검수 입력 (반품) -->
+	<update id="updateReturnAudit">
+		UPDATE quality
+		SET auditbycode = #{auditbycode}, auditquantity = #{auditquantity}, 
+		normalquantity = #{normalquantity}, defectquantity = #{defectquantity},
+		auditstatus = #{auditstatus}, auditcode = #{auditcode}
+		WHERE qualityid = #{qualityid}
+	</update>
+	
+	<!-- 검수 입력 - 완료 (반품) -->
+	<update id="updateReturnAuditFull">
+		UPDATE quality
+		SET auditbycode = #{auditbycode}, auditquantity = #{auditquantity}, 
+		normalquantity = #{normalquantity}, defectquantity = #{defectquantity},
+		auditstatus = #{auditstatus}, completedate = NOW(), auditcode = #{auditcode}
+		WHERE qualityid = #{qualityid}
+	</update>
+	
+	<!-- 불량 현황 목록 (생산 / 반품) -->
+	<select id="selectDefectsList" resultType="QualityVO">
+		SELECT defectid, d.qualityid, q.itemtype, process, itemcode, i.itemname, defectquantity, defecttype, processmethod, d.registerationdate
+		FROM defects d
+		JOIN quality q
+		ON d.qualityid = q.qualityid
+		LEFT OUTER JOIN produce p
+		ON q.produceid = p.produceid 
+		JOIN item i
+		ON q.itemid = i.itemid
+		ORDER BY defectid DESC
+	</select>
+	
+	<!-- 불량 현황 폼 출력 (생산 / 반품) -->
+	<select id="selectDefects" resultType="QualityVO">
+		SELECT q.qualityid, auditcode, q.itemtype, q.produceid, returnid, process, itemcode, i.itemname, defectquantity 
+		FROM quality q
+		JOIN item i
+		ON q.itemid = i.itemid
+		LEFT OUTER JOIN produce p
+		ON q.produceid = p.produceid
+		WHERE qualityid = #{qualityid}
+	</select>
+	
+	<!-- 불량 현황 등록 (생산 / 반품) -->
+	<insert id="insertDefects">
+		INSERT INTO defects (qualityid, defecttype, processmethod)
+		VALUES (#{qualityid}, #{defecttype}, #{processmethod})
+	</insert>
+	
+	<!-- 불량 현황 중복 확인 (생산 / 반품) -->
+	<select id="selectDupilcateDefects" resultType="integer">
+		SELECT defectid FROM defects WHERE qualityid = #{qualityid}
+	</select>
+
+	<!-- 품질 관리 목록 (생산 / 반품) 추가 : WHERE q.itemtype = '생산' OR q.itemtype = '반품' -->
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!-- ReturnMapper.xml -->
+	<mapper namespace="com.cafein.mapper.ReturnMapper"> 
+ 	
+ 	<!-- 반품 목록 -->
+	<select id="searchReturns" resultType="com.cafein.domain.ReturnVO">
+		 SELECT * FROM returns
+		 order by returnid DESC
+		 LIMIT #{startPage}, #{pageSize}
+	</select>
+ 	
+ 	<!-- 반품 검색 -->
+ 	<select id="searchReturnsByCondition" resultType="com.cafein.domain.ReturnVO">
+        SELECT * FROM returns
+		<where>
+			<if test="rvo.returncode != ''">
+				returncode LIKE CONCAT('%', #{rvo.returncode}, '%')
+			</if>
+			<if test="rvo.returntype != '품목-전체'">
+				AND returntype = #{rvo.returntype}
+			</if>
+			<if test="rvo.returnstatus != '반품상태-전체'">
+				AND returnstatus = #{rvo.returnstatus}
+			</if>
+			<if test="rvo.startDate != ''">
+				AND returndate &gt;= #{rvo.startDate}
+			</if>
+			<if test="rvo.endDate != ''">
+				AND #{rvo.endDate} &gt;= returndate
+			</if>
+		</where>
+		order by returnid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+ 
+ 	<!-- 반품 유형별 개수 -->
+ 	<select id="getReturnCount" resultType="int" parameterType="com.cafein.domain.ReturnVO" >
+		select count(*) from returns
+		<where>
+			<choose>
+				<when test="returntype == '원자재'">
+					and returncode like '%MOT%'
+				</when>
+				<when test="returntype == '부자재'">
+					and returncode like '%SAT%'
+				</when>
+				<otherwise>
+					and returncode like '%PRO%'
+				</otherwise>
+			</choose>
+		</where>
+	</select> 	
+ 	
+	<!-- 반품 등록 -->
+	<insert id="insertReturn" >
+		insert into returns(returncode, itemid, returnname,membercode, returndate, refunddate, returnquantity, returnstatus, reprocessmethod, returntype, returnReason, returninfo)
+    values(#{returncode}, (select itemid from item where itemname = #{returnname}), #{returnname},#{membercode},#{returndate}, #{refunddate}, #{returnquantity}, #{returnstatus}, #{reprocessmethod}, #{returntype}, #{returnReason}, #{returninfo}) 	
+	</insert>
+ 	
+ 	
+ 	<!-- 아이템 목록 -->
+ 	<select id="itList" resultType="com.cafein.domain.ItemVO">
+ 		SELECT itemid,itemcode, itemtype, itemname FROM item
+ 	</select>
+ 	
+ 	
+ 	<!-- 반품 수정 -->
+ 	<update id="updateReturn">
+    	UPDATE returns
+	    <set>
+	        returnquantity=#{returnquantity},
+	        <if test="refunddate != null and refunddate != ''">
+	            refunddate=#{refunddate},
+	        </if>
+	        membercode=#{membercode}
+	    </set>
+    	WHERE returnid=#{returnid}
+	</update>
+ 
+ 
+ 	<!-- 반품 삭제 -->
+ 	<delete id="deleteReturn">
+ 	DELETE FROM returns WHERE returnid = #{returnid}
+ 	</delete>
+ 	
+
+ 	
+	<!-- 품질 관리 등록 -->
+	<insert id="addReturn">
+		insert into quality (itemtype, returnid, itemid, productquantity)
+		values ('반품', #{returnid}, 
+		(SELECT itemid FROM returns WHERE returnid = #{returnid}),
+		(SELECT returnquantity FROM returns WHERE returnid = #{returnid}))
+	</insert>
+	
+	<!-- 환불날짜 등록 -->
+	<update id="refundDate">
+		update returns set refunddate= date(now())
+		where returncode= #{returncode}
+	</update>	
+ 
+ 	<!-- 검색 결과 총개수 -->
+ 	<select id="returnPageCnt" resultType="int">
+ 		SELECT count(*) FROM returns
+		<where>
+			<if test="returncode != ''">
+				returncode LIKE CONCAT('%', #{returncode}, '%')
+			</if>
+			<if test="returntype != '품목-전체'">
+				AND returntype = #{returntype}
+			</if>
+			<if test="returnstatus != '반품상태-전체'">
+				AND returnstatus = #{returnstatus}
+			</if>
+			<if test="startDate != ''">
+				AND returndate &gt;= #{startDate}
+			</if>
+			<if test="endDate != ''">
+				AND #{endDate} &gt;= returndate
+			</if>
+		</where>
+	</select>
+ 
+ 	<!-- 전체 글 총개수 -->
+ 	<select id="returnAllCnt" resultType="int">
+ 		SELECT count(*) FROM returns
+ 	</select>
+ 	
+ 	<!-- 반품 목록 (엑셀 파일 다운로드) -->
+ 	<select id="returnListExcel" resultType="com.cafein.domain.ReturnVO">
+ 		 SELECT * FROM returns
+ 	</select>
+ 	
+ 	
+ 	
+ 
+</mapper>

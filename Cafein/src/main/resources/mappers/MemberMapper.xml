@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- MemberMapper.xml -->
+<mapper namespace="com.cafein.mapper.MemberMapper">
+
+<!-- 디비 컬럼과 도메인 객체를 매핑 -->
+<!-- 프로퍼티명과 컬럼명이 동일할 때 생략할 수 있음 -->
+<resultMap type="com.cafein.domain.MemberVO" id="member">
+	<result property="memberid" column="memberid"/>
+	<result property="membercode" column="membercode"/>
+	<result property="membername" column="membername"/>
+	<result property="memberpw" column="memberpw"/>
+	<result property="memberbirth" column="memberbirth"/>
+	<result property="memberhire" column="memberhire"/>
+	<result property="memberupdate" column="memberupdate"/>
+	<result property="departmentname" column="departmentname"/>
+	<result property="memberposition" column="memberposition"/>
+	<result property="memberemail" column="memberemail"/>
+	<result property="memberdeptphone" column="memberdeptphone"/>
+	<result property="memberphone" column="memberphone"/>
+	<result property="available" column="available"/>
+</resultMap>
+
+<!-- 직원 등록 -->
+<insert id="insertMember">
+	insert into member(membercode,membername,memberpw,
+	<choose>
+		<when test="memberbirth eq null or memberbirth.toString() eq ''"/>
+		<when test="memberbirth neq null and memberbirth.toString() neq ''">memberbirth,</when>
+	</choose> 
+	<choose>
+		<when test="memberhire eq null or memberhire.toString() eq ''"/>
+		<when test="memberhire neq null and memberhire.toString() neq ''">memberhire,</when>
+	</choose>
+	departmentname,memberposition,memberemail,memberdeptphone,memberphone)
+	values(${membercode},#{membername},#{memberpw},
+	<choose>
+		<when test="memberbirth eq null or memberbirth.toString() eq ''"/>
+		<when test="memberbirth neq null and memberbirth.toString() neq ''">#{memberbirth},</when>
+	</choose> 
+	<choose>
+		<when test="memberhire eq null or memberhire.toString() eq ''"/>
+		<when test="memberhire neq null and memberhire.toString() neq ''">#{memberhire},</when>
+	</choose>
+	#{departmentname},#{memberposition},#{memberemail},#{memberdeptphone},#{memberphone})
+</insert>
+
+<!-- 최신 등록된 직원의 직원 코드 확인 -->
+<select id="getMaxMemberCode" resultType="int" parameterType="MemberVO">
+	select max(membercode) from member;
+</select>
+
+<!-- 직원 목록 (페이징) -->
+<select id="getmemberPageList" resultType="MemberVO">
+	select * from member 
+	where available = 'Y'
+	<if test="option == 'membername'">
+		and membername LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'departmentname'">
+		and departmentname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	order by memberid desc		
+	limit #{cri.startPage}, #{cri.pageSize}
+</select>
+
+<!-- 직원 목록 총 개수 -->
+<select id="getMemberCount" resultType="integer">
+	select count(*) from member
+	where available = 'Y'
+	<if test="option == 'membername'">
+		and membername LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+	<if test="option == 'departmentname'">
+		and departmentname LIKE CONCAT('%', #{keyword}, '%')
+	</if>
+</select>
+
+<!-- 직원 정보를 LIst에 담기 -->
+<select id="getMemberList" resultType="MemberVO">
+	select * from member
+</select>
+	
+<!-- 직원 정보 조회 -->
+<select id="getMember" resultType="MemberVO">
+	select * from member 
+	where memberid=#{memberid}
+</select>
+
+<!-- 직원 정보 수정 -->
+<update id="updateMember">
+	update member 
+	set membername=#{membername}, memberpw=#{memberpw}, 
+	
+	memberbirth=
+	
+	<choose>
+		<when test="memberbirth eq null or memberbirth.toString() eq ''"/>
+		<when test="memberbirth neq null and memberbirth.toString() neq ''">#{memberbirth},</when>
+	</choose> 
+	
+	memberhire=
+	<choose>
+		<when test="memberhire eq null or memberhire.toString() eq ''"/>
+		<when test="memberhire neq null and memberhire.toString() neq ''">#{memberhire},</when>
+	</choose>
+	
+	memberupdate=now(), 
+	departmentname=#{departmentname}, memberposition=#{memberposition}, memberemail=#{memberemail}, memberdeptphone=#{memberdeptphone}, 
+	memberphone=#{memberphone}, available=#{available}  
+	where memberid=#{memberid}
+</update>
+
+<!-- 직원 정보 삭제(비활성화) -->
+<update id="deleteMember">
+	update member 
+	set available="N" 
+	where memberid=#{memberid}
+</update>
+
+  
+</mapper>

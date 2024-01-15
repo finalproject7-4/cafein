@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- ClientMapper.xml -->
+<mapper namespace="com.cafein.mapper.ClientMapper">
+
+<!-- 거래처 등록 -->
+<insert id="insertClient">
+	insert into client(clientcode,clientname,categoryofclient,typeofclient,businessnumber,representative,
+	manager,clientaddress,clientphone,clientfax,clientemail) 
+	values(#{clientcode},#{clientname},#{categoryofclient},#{typeofclient},#{businessnumber},#{representative},
+	#{manager},#{clientaddress},#{clientphone},#{clientfax},#{clientemail})
+</insert>
+
+<!-- 거래처 목록 조회 -->
+<select id="getClientList" resultType="ClientVO">
+	select * from client
+</select>
+
+<!-- 거래처 정보 조회 -->
+<select id="getClient" resultType="ClientVO">
+	select * from client 
+	where clientid=#{clientid}
+</select>
+
+<!-- 거래처 정보 수정 -->
+<update id="updateClient">
+	update client 
+	set clientname=#{clientname}, categoryofclient=#{categoryofclient}, typeofclient=#{typeofclient}, businessnumber=#{businessnumber}, representative=#{representative}, 
+	manager=#{manager}, clientaddress=#{clientaddress}, clientphone=#{clientphone}, clientfax=#{clientfax}, clientemail=#{clientemail} 
+	where clientid=#{clientid}
+</update>
+
+<!-- 거래처 정보 삭제(비활성화) -->
+<update id="deleteClient">
+	update client 
+	set available="N" 
+	where clientid=#{clientid}
+</update>
+
+</mapper>

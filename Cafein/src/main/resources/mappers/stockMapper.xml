@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.cafein.mapper.stockMapper">
+ 	<!-- 재고 목록 조회 검색 버튼 (생산 [포장] + 반품) -->
+ 	<select id="selectStockList" resultType="QualityVO">
+ 		SELECT DISTINCT stockid, s.qualityid, q.produceid, q.returnid, 
+ 		q.itemtype, s.itemid, i.itemcode, i.itemname, 
+ 		weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', 
+ 		DATE(updatedate) AS 'updatedate', updatehistory, workerbycode 
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		LEFT OUTER JOIN roastedbean r
+ 		ON q.produceid = r.produceid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		<where>
+ 		(q.itemtype = '생산' OR q.itemtype = '반품')
+		<if test="searchBtn != null and searchText == null">
+ 		AND q.itemtype = #{searchBtn}
+ 		</if>
+ 		<if test="searchBtn != null and searchText != null">
+ 		AND q.itemtype = #{searchBtn} 
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%') 
+ 		</if>
+ 		<if test="searchBtn == null and searchText != null">
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%') 	
+ 		</if>
+ 		</where>
+ 		ORDER BY stockid DESC
+ 		LIMIT #{cri.startPage}, #{cri.pageSize} 
+ 	</select>
+ 	
+ 	<!-- 재고 목록 조회 검색 버튼 개수 조회 (생산 [포장] + 반품) -->
+ 	<select id="selectStockListCount" resultType="integer">
+		SELECT COUNT(*)
+		FROM
+		(SELECT DISTINCT stockid, s.qualityid, q.produceid, q.returnid, 
+ 		q.itemtype, s.itemid, i.itemcode, i.itemname, 
+ 		weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', 
+ 		DATE(updatedate) AS 'updatedate', updatehistory, workerbycode 
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		LEFT OUTER JOIN roastedbean r
+ 		ON q.produceid = r.produceid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		<where>
+ 		(q.itemtype = '생산' OR q.itemtype = '반품')
+		<if test="searchBtn != null and searchText == null">
+ 		AND q.itemtype = #{searchBtn}
+ 		</if>
+ 		<if test="searchBtn != null and searchText != null">
+ 		AND q.itemtype = #{searchBtn} 
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')
+ 		</if>
+ 		<if test="searchBtn == null and searchText != null">
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')
+ 		</if>
+ 		</where>
+ 		) AS subquery
+ 	</select>
+ 	
+ 	<!-- 재고 목록 조회 검색 버튼 (자재) -->
+ 	<select id="selectMaterialStockList" resultType="QualityVO">
+ 		SELECT stockid, s.qualityid, q.receiveid, r.lotnumber, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
+ 		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		JOIN receive r
+ 		ON q.receiveid = r.receiveid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		<where>
+ 		(q.itemtype = '자재')
+		<if test="searchBtn != null and searchText == null">
+ 		AND i.itemtype = #{searchBtn}
+ 		</if>
+ 		<if test="searchBtn != null and searchText != null">
+ 		AND i.itemtype = #{searchBtn} 
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')
+ 		</if>
+ 		<if test="searchBtn == null and searchText != null">
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')		
+ 		</if>
+ 		</where>
+ 		ORDER BY stockid DESC
+ 		LIMIT #{cri.startPage}, #{cri.pageSize} 
+ 	</select>
+ 	
+ 	<!-- 재고 목록 조회 검색 버튼 개수 조회 (자재) -->
+ 	<select id="selectMaterialStockListCount" resultType="integer">
+ 		SELECT COUNT(*)
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		JOIN receive r
+ 		ON q.receiveid = r.receiveid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		<where>
+ 		(q.itemtype = '자재')
+		<if test="searchBtn != null and searchText == null">
+ 		AND i.itemtype = #{searchBtn}
+ 		</if>
+ 		<if test="searchBtn != null and searchText != null">
+ 		AND i.itemtype = #{searchBtn} 
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%') 
+ 		</if>
+ 		<if test="searchBtn == null and searchText != null">
+ 		AND 
+ 		i.itemname LIKE CONCAT('%', #{searchText}, '%')	
+ 		</if>
+ 		</where>
+ 		ORDER BY stockid DESC
+ 	</select>
+ 	
+ 	<!-- roastedbean - LOT번호 조회 -->
+ 	<select id="selectRoastedBeanLotNum" resultType="string">
+ 		SELECT lotnumber 
+ 		FROM roastedbean
+ 		WHERE produceid = #{produceid}
+ 	</select>
+ 	
+ 	<!-- receive - LOT 번호 조회 -->
+ 	<select id="selectReceiveLotNum" resultType="string">
+ 		SELECT lotnumber 
+ 		FROM receive
+ 		WHERE receiveid = #{receiveid} 	
+ 	</select>
+ 	
+ 	<!-- 재고 입력 (생산 [포장] + 반품) -->
+ 	<insert id="insertStock">
+ 	<if test="storageid == 0">
+ 		INSERT INTO stock (qualityid, itemid, stockquantity, workerbycode)
+ 		VALUES (#{qualityid}, #{itemid}, #{stockquantity}, #{workerbycode})
+ 	</if>
+ 	 <if test="storageid != 0">
+ 		INSERT INTO stock (qualityid, itemid, stockquantity, storageid, workerbycode)
+ 		VALUES (#{qualityid}, #{itemid}, #{stockquantity}, #{storageid}, #{workerbycode})
+ 	</if>
+ 	</insert>
+ 	 	
+ 	<!-- 재고 등록 중복 확인 (생산 [포장] + 반품) -->
+	<select id="selectDupilcateStock" resultType="integer">
+		SELECT stockid FROM stock WHERE qualityid = #{qualityid}
+	</select>
+	
+	<!-- 재고량 변경 (생산 [포장] + 반품) -->
+	<update id="updateStockQuantity">
+		UPDATE stock
+		SET stockquantity = #{stockquantity}, updatedate = NOW(), 
+		updatehistory = '재고량 변경', 
+		workerbycode = #{workerbycode}
+		WHERE stockid = #{stockid}
+	</update>                                                                            
+	
+	<!-- 창고 목록 조회 (생산 [포장] + 반품) -->
+	<select id="selectStorageList" resultType="QualityVO">
+		SELECT storageid, storagename, storagecode, storagetype
+		FROM storage
+		WHERE storagetype = '완제품'
+	</select>
+	
+	<!-- 창고 목록 조회 (원자재) -->
+	<select id="selectRawMaterialStorageList" resultType="QualityVO">
+		SELECT storageid, storagename, storagecode, storagetype
+		FROM storage
+		WHERE storagetype = '원자재'
+	</select>
+	
+	<!-- 창고 목록 조회 (부자재) -->
+	<select id="selectSubMaterialStorageList" resultType="QualityVO">
+		SELECT storageid, storagename, storagecode, storagetype
+		FROM storage
+		WHERE storagetype = '부자재'
+	</select>
+	
+	<!-- 창고 변경 (생산 [포장] + 반품) -->
+	<update id="updateStockStorage">
+		UPDATE stock 
+		SET storageid = #{storageid}, updatedate = NOW(), updatehistory = '창고 변경', workerbycode = #{workerbycode} 
+		WHERE stockid = #{stockid}
+	</update> 
+ 	
+ 	<!-- 재고 등록 여부 업데이트 -->
+ 	<update id="updateRegisterStock">
+		UPDATE quality 
+		SET registerstock = 'Y'
+		WHERE qualityid = #{qualityid}
+	</update>
+	
+	<!-- 재고 토스트 데이터 (생산 [포장] + 반품) -->
+	<select id="productStockToast" resultType="QualityVO">
+		<![CDATA[
+		SELECT stockid, s.qualityid, q.produceid, q.returnid, q.itemtype, s.itemid, i.itemcode, i.itemname, weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		LEFT OUTER JOIN roastedbean r
+ 		ON q.produceid = r.produceid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		WHERE (q.itemtype = '생산' OR q.itemtype = '반품') AND stockquantity > 0
+ 		ORDER BY stockquantity
+ 		LIMIT 0, 1
+		]]>
+	</select>
+	
+	<!-- 재고 토스트 데이터 (자재) -->
+	<select id="materialStockToast" resultType="QualityVO">
+	 	<![CDATA[
+	 	SELECT stockid, s.qualityid, q.receiveid, r.lotnumber, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
+ 		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		JOIN receive r
+ 		ON q.receiveid = r.receiveid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		WHERE q.itemtype = '자재' AND stockquantity > 0
+ 		ORDER BY stockquantity
+ 		LIMIT 0, 1
+		]]> 		
+	</select>
+	
+	<!-- 재고 엑셀 출력용 목록 조회 (생산 [포장] + 반품) -->
+ 	<select id="selectStockListExcel" resultType="QualityVO">
+ 		SELECT DISTINCT stockid, s.qualityid, q.produceid, q.returnid, 
+ 		q.itemtype, s.itemid, i.itemcode, i.itemname, 
+ 		weight, stockquantity, s.storageid, 
+ 		storagename, storagecode, DATE(s.registerationdate) AS 'registerationdate', 
+ 		DATE(updatedate) AS 'updatedate', updatehistory, workerbycode 
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		LEFT OUTER JOIN roastedbean r
+ 		ON q.produceid = r.produceid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		<where>
+ 		(q.itemtype = '생산' OR q.itemtype = '반품')
+		<if test="searchBtn != null and searchText == null">
+ 		AND q.itemtype = #{searchBtn}
+ 		</if>
+ 		<if test="searchBtn != null and searchText != null">
+ 		AND q.itemtype = #{searchBtn} 
+ 		AND 
+ 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
+ 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))
+ 		</if>
+ 		<if test="searchBtn == null and searchText != null">
+ 		AND 
+ 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
+ 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))	
+ 		</if>
+ 		</where>
+ 		ORDER BY stockid DESC
+ 	</select>
+ 	
+ 	<!-- 재고 엑셀 출력용 목록 조회 (자재) -->
+  	<select id="selectMaterialStockListExcel" resultType="QualityVO">
+ 		SELECT stockid, s.qualityid, q.receiveid, i.itemtype, s.itemid, i.itemcode, i.itemname, stockquantity, s.storageid, 
+ 		storagename, str.storagecode, DATE(s.registerationdate) AS 'registerationdate', DATE(updatedate) AS 'updatedate', updatehistory, workerbycode
+ 		FROM stock s
+ 		JOIN quality q
+ 		ON s.qualityid = q.qualityid
+ 		JOIN item i
+ 		ON s.itemid = i.itemid
+ 		JOIN receive r
+ 		ON q.receiveid = r.receiveid
+ 		LEFT OUTER JOIN storage str
+ 		ON s.storageid = str.storageid
+ 		<where>
+ 		(q.itemtype = '자재')
+		<if test="searchBtn != null and searchText == null">
+ 		AND i.itemtype = #{searchBtn}
+ 		</if>
+ 		<if test="searchBtn != null and searchText != null">
+ 		AND i.itemtype = #{searchBtn} 
+ 		AND 
+ 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
+ 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))
+ 		</if>
+ 		<if test="searchBtn == null and searchText != null">
+ 		AND 
+ 		(i.itemname LIKE CONCAT('%', #{searchText}, '%') OR
+ 		s.lotnumber LIKE CONCAT('%', #{searchText}, '%'))		
+ 		</if>
+ 		</where>
+ 		ORDER BY stockid DESC
+ 	</select>
+ 	
+ 	<!-- roastedBean 테이블 조회 -->
+	<select id="selectRoastedBean" resultType="QualityVO">
+		SELECT productid, produceid, itemname, itemid, weight, roasteddate, lotnumber, note 
+		FROM roastedbean
+		WHERE lotnumber = #{lotnumber}
+	</select>
+ 	<!-- roastedBean 테이블 조회 -->
+ 	
+ 	<!-- roastedBean lotnumber 미검수 조회 -->
+ 	<select id="selectRoastedBeanLot" resultType="QualityVO">
+ 		SELECT lotnumber
+ 		FROM roastedbean
+ 		WHERE produceid = #{produceid} 
+ 		AND auditstatus = 'N' 
+ 		AND defect = 'N'
+ 	</select>
+ 	<!-- roastedBean lotnumber 미검수 조회 -->
+ 	
+ 	<!-- receive 테이블 조회 -->
+ 	<select id="selectReceiveInfo" resultType="QualityVO">
+ 		SELECT r.receiveid, r.receivecode, r.membercode, i.itemcode, r.storagecode, r.lotnumber, r.receivedate, r.receivequantity
+ 		FROM receive r
+ 		JOIN item i
+ 		ON r.itemid = i.itemid
+ 		WHERE receiveid = #{receiveid}
+ 	</select>
+ 	<!-- receive 테이블 조회 -->
+ 	
+ 	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
+ 	<insert id="insertNormalRoastedBeanLot">
+ 		INSERT INTO productlot (stockid, itemid, produceid, lotnumber)
+ 		SELECT s.stockid, q.itemid, r.produceid, r.lotnumber
+ 		FROM roastedbean r
+ 		JOIN quality q
+ 		ON r.produceid = q.produceid
+ 		JOIN stock s
+ 		ON q.qualityid = s.qualityid
+ 		WHERE r.produceid = #{produceid} 
+ 		AND r.auditstatus = 'Y' 
+ 		AND r.defect = 'N'
+ 	</insert>
+ 	<!-- produceid로 정상 roastedBean - LOT번호 검색 후 입력 (포장) -->
+ 	
+ 	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
+ 	<insert id="insertNormalRoastedBeanLotMat">
+ 		INSERT INTO productlot (stockid, itemid, receiveid, lotnumber)
+ 		SELECT s.stockid, q.itemid, r.receiveid, r.lotnumber
+		FROM receive r
+		JOIN quality q
+		ON r.receiveid = q.receiveid
+		JOIN stock s
+		ON q.qualityid = s.qualityid
+		WHERE r.receiveid = #{receiveid}
+ 	</insert>
+ 	<!-- receiveid로 정상 receive LOT번호 검색 후 입력 (자재) -->
+ 	
+ 	<!-- 정상 LOT번호 검색 -->
+ 	<select id="selectNormalLot" resultType="QualityVO">
+ 		SELECT lotnumber
+ 		FROM productlot
+		WHERE produceid = #{produceid} OR receiveid = #{receiveid}
+ 	</select>
+ 	<!-- 정상 LOT번호 검색 -->
+ 
+ </mapper>

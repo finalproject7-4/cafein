@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cafein.mapper.ShipMapper">
+
+	<!-- 출하 조회 -->
+	<select id="getSHList" resultType="com.cafein.domain.ShipVO">
+		<!-- select * from ship -->
+		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode, sh.pocode,
+		sh.itemname, sh.clientname,
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
+		FROM ship sh
+		JOIN member mb ON sh.membercode = mb.membercode
+		<where>
+		<if test="shipsts != null" >
+			shipsts=#{shipsts}
+		</if>
+		<if test="searchText != null and !searchText.equals('')">
+            AND (sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.shipcode LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+		ORDER BY shipdate1 DESC, shipid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+	<!-- 총 개수 -->
+	<select id="countSH" resultType="int" parameterType="com.cafein.domain.ShipVO">
+   SELECT count(*)
+	FROM ship sh
+	JOIN member mb ON sh.membercode = mb.membercode
+		<where>
+		<if test="shipsts != null" >
+			shipsts=#{shipsts}
+		</if>
+		<if test="searchText != null and !searchText.equals('')">
+            AND (sh.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.shipcode LIKE CONCAT('%', #{searchText}, '%')
+            OR sh.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+		ORDER BY shipdate1 DESC, shipid DESC
+	</select>
+	
+	<!-- 출하 등록 -->
+	<insert id="registSH" parameterType="com.cafein.domain.ShipVO">
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode} )
+	</insert>
+	
+	<!-- 출하 등록 작업지시코드 -->
+	<select id="wcList" resultType="com.cafein.domain.WorkVO">
+		SELECT wk.workcode, wk.clientname, wk.itemname, wk.pocnt, wk.workdate1
+		FROM work wk
+	</select>
+	
+	<!-- 출하 등록 재고량 -->
+	<select id="stList" resultType="com.cafein.domain.WorkVO">
+		SELECT it.itemname, st.stockquantity
+		FROM stock st
+        JOIN item it ON st.itemid = it.itemid
+	</select>
+	
+	<!-- 출하 등록 멤버코드 -->
+	<select id="mcList" resultType="com.cafein.domain.MemberVO">
+		SELECT * from member
+	</select>
+	
+	<!-- 출하 코드 생성 -->
+	<select id="getSHCount" resultType="int" parameterType="com.cafein.domain.ShipVO">
+    select count(*) from ship
+	<where>
+    and shipcode like 'SH%'
+	</where>
+	</select>
+
+	<!-- 출하 수정 -->
+	<update id="updateSH">
+	 	update ship set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, shipsts=#{shipsts}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, shipdate1=#{shipdate1}, shipdate2=#{shipdate2}
+	 	where shipid=#{shipid}
+	 </update>
+	 
+	 <!-- 출하 상태 완료 -->
+	 <update id="ingSHState">
+	 	update ship set shipsts = '완료', shipdate2 = #{shipdate2}
+	 	where shipid=#{shipid}
+	 </update>
+	 
+	<!-- 출하 완료시 작업지시 완료 변경 -->
+	<update id="updateCompletWork">
+		update work set worksts = '완료', workdate2 = #{workdate2}
+		where workcode=#{workcode}
+	</update>
+
+	<!-- 출하 완료시 수주 완료 변경 -->
+	<update id="updateCompletSale">
+		update purchaseorder po set postate = '완료'
+		where pocode=#{pocode}
+	</update>
+
+	<!-- 리스트 출력 -->
+ 	<select id="selectSHListExcel" resultType="ShipVO">
+		SELECT sh.shipid, sh.shipdate1, sh.shipcode, sh.workcode,
+		sh.stockid, st.stockquantity, sh.itemname, sh.clientname,
+		sh.pocnt, sh.shipsts, sh.shipdate2, sh.membercode, mb.membername
+		FROM ship sh
+		JOIN member mb ON sh.membercode = mb.membercode
+		LEFT JOIN stock st ON sh.stockid = st.stockid
+		ORDER BY shipdate1 DESC, shipid DESC
+ 	</select>
+	
+
+
+	
+	<!-- 작업지시 조회 -->
+	<select id="getWKList" resultType="com.cafein.domain.WorkVO">
+		<!-- select * from ship -->
+		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
+       wk.pocode, wk.itemname,
+       wk.worksts, wk.pocnt, wk.workdate2,
+       wk.membercode, mb.membername
+		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
+		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
+		<where>
+		<if test="worksts != null" >
+			worksts=#{worksts}
+		</if>
+		<if test="searchText != null and !searchText.equals('')">
+            AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.workcode LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.pocode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+		ORDER BY workdate1 DESC, workid DESC
+		LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+	<!-- 총 개수 -->
+	<select id="countWK" resultType="int" parameterType="com.cafein.domain.WorkVO">
+   		SELECT COUNT(*)
+        FROM
+		(SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
+		wk.pocode, wk.itemname,
+		wk.worksts, wk.pocnt, wk.workdate2,
+		wk.membercode
+		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
+		JOIN purchaseorder po ON wk.pocode = po.pocode
+		<where>
+		<if test="worksts != null" >
+			worksts=#{worksts}
+		</if>
+		<if test="searchText != null and !searchText.equals('')">
+                AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+                OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+                OR wk.workcode LIKE CONCAT('%', #{searchText}, '%')
+                OR wk.pocode LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+			and DATE(sh.shipdate1) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+			ORDER BY workdate1 desc, workid desc
+			) as subquery;
+	</select>
+	
+	<!-- 작업 지시 등록 -->
+	<insert id="registWK" parameterType="com.cafein.domain.WorkVO">
+		INSERT INTO work (workdate1, workcode, pocode, clientname, itemname, worksts, membercode, pocnt, returncount)
+		VALUES ( #{workdate1}, #{workcode}, #{pocode}, #{clientname}, #{itemname}, #{worksts}, #{membercode}, #{pocnt}, #{returncount} )
+	</insert>
+	
+	<!-- 작업지시 등록 수주 코드 -->
+	<select id="pcList" resultType="com.cafein.domain.WorkVO">
+		SELECT po.pocode, po.clientid, cli.clientname, po.itemid, it.itemname, po.pocnt
+		FROM purchaseorder po
+		JOIN client cli ON po.clientid = cli.clientid
+		JOIN item it ON po.itemid = it.itemid
+		WHERE postate = '진행'
+	</select>
+	
+	<!-- 작업지시 코드 생성 -->
+	<select id="getWKCount" resultType="int" parameterType="com.cafein.domain.WorkVO">
+    select count(*) from work
+	<where>
+    and workcode like concat ('%','WK','%')
+	</where>
+	</select>
+	
+	<!-- 작업 지시 수정 -->
+	<update id="updateWK">
+	 	update work set pocode=#{pocode}, clientname=#{clientname}, itemname=#{itemname}, worksts=#{worksts}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, workdate1=#{workdate1}
+	 	where workid=#{workid}
+	 </update>
+	 
+	 <!-- 작업지시 삭제 -->
+	<delete id="deleteWK">
+		delete from work
+		where workid=#{workid}
+	</delete>
+	
+	<!-- 출하 리스트 삽입 -->
+	<insert id="insertShipList">
+		INSERT INTO ship (shipdate1, shipcode, workcode, itemname, clientname, pocnt, shipsts, membercode ,pocode)
+		VALUES ( #{shipdate1}, #{shipcode}, #{workcode}, #{itemname}, #{clientname}, #{pocnt}, #{shipsts}, #{membercode}, #{pocode} )
+	</insert>
+	
+	<!-- 리스트 출력 -->
+ 	<select id="selectWKListExcel" resultType="WorkVO">
+ 		SELECT distinct wk.workid, wk.workdate1, wk.workcode, wk.clientname,
+       wk.pocode, wk.itemname,
+       wk.worksts, wk.pocnt, wk.workdate2,
+       wk.membercode, mb.membername
+		FROM work wk
+		JOIN member mb ON wk.membercode = mb.membercode
+		LEFT JOIN purchaseorder po ON wk.pocode = po.pocode
+		ORDER BY workdate1 DESC, workid DESC
+ 	</select>
+	 
+	 
+	 
+	
+	<!-- 실적 조회 -->
+	<select id="getPFList" resultType="com.cafein.domain.WorkVO">
+    SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
+           wk.pocnt, wk.membercode, mb.membername, wk.returncount, wk.returnreason
+    FROM work wk
+    JOIN member mb ON wk.membercode = mb.membercode
+ 		<where>
+		wk.worksts = '완료'
+		<if test="searchText != null and !searchText.equals('')">
+            AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(wk.workdate2) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+    ORDER BY workid DESC 
+    LIMIT #{cri.startPage}, #{cri.pageSize}
+	</select>
+	
+ 	<!-- 총 개수 -->
+	<select id="countPF" resultType="int" parameterType="com.cafein.domain.WorkVO">
+   SELECT count(*)
+	FROM work wk
+ 		<where>
+		wk.worksts = '완료'
+		<if test="searchText != null and !searchText.equals('')">
+            AND (wk.clientname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.itemname LIKE CONCAT('%', #{searchText}, '%')
+            OR wk.workcode LIKE CONCAT('%', #{searchText}, '%'))
+        </if>
+		<if test="startDate != null and !startDate.equals('') and endDate != null and !endDate.equals('')">
+		and DATE(wk.workdate2) BETWEEN #{startDate} AND #{endDate}
+		</if>
+		</where>
+	</select>
+	
+	<!-- 실적 수정 -->
+	<update id="updatePF">
+	 	update work set workcode=#{workcode}, clientname=#{clientname}, itemname=#{itemname}, membercode=#{membercode},
+	 	pocnt=#{pocnt}, workdate1=#{workdate2}, returncount=#{returncount}, returnreason=#{returnreason}
+	 	where workid=#{workid}
+	 </update>
+	 
+	<!-- 리스트 출력 -->
+ 	<select id="selectPFListExcel" resultType="WorkVO">
+ 		SELECT wk.workid, wk.workdate2, wk.workcode, wk.clientname, wk.itemname,
+        wk.pocnt, wk.membercode, mb.membername, wk.returncount, wk.returnreason
+    	FROM work wk
+    	JOIN member mb ON wk.membercode = mb.membercode
+    	WHERE wk.worksts = '완료'
+		ORDER BY workid DESC 
+ 	</select>
+
+</mapper>
