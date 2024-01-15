@@ -34,10 +34,13 @@
 </head>
 <body>
 
-<!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
-<c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
-</c:if> 
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
+<c:if test="${empty sessionScope.membercode }">
+	<script>
+		location.href="/login";
+	</script>
+</c:if>
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
 
 <%
   // 세션에서 membercode 가져오기
