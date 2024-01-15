@@ -4,8 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ include file="../include/header.jsp"%>
 <link href="../resources/css/po.css" rel="stylesheet">
+<!-- 세션에 정보 없는 경우 로그인 페이지로 이동 -->
  <c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
+    <script>
+    	location.href="/login";
+    </script>
 </c:if>
 <br>
 <fieldset>
