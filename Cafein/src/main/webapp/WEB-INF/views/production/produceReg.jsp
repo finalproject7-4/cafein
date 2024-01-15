@@ -239,7 +239,7 @@
 			var dataObjectCom = {
 					"page" : currentPage	
 				};
-	        if (searchBtn) {
+/* 	        if (searchBtn) {
 	        	dataObjectCom.searchBtn = searchBtn;
 			}
 	        if(startDate){
@@ -247,7 +247,7 @@
 	        }
 	        if(endDate){
 	        	dataObjectCom.endDate = endDate;
-	        }
+	        } */
 	        
 	        $.ajax({
 	            url: '/production/produceReg',
