@@ -186,7 +186,7 @@ public class ProductionController {
 	      // 출고코드 개수 계산
 	      int counter = mateService.releasecodeCount(datePart) + 1;
 
-	      String formattedCounter = String.format("%02d", counter);
+	      String formattedCounter = String.format("%04d", counter);
 	      return prefix + datePart + formattedCounter;
 	   }
 	
