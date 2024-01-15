@@ -5,7 +5,7 @@
 
 <!-- 로그인 여부(세션정보)에 따라서 페이지 이동 -->
 <c:if test="${empty membercode}">
-    <c:redirect url="/main/login" />
+    <c:redirect url="/login" />
 </c:if> 
 
 <!-- 출고관리 페이지 시작 -->
