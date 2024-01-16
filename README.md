@@ -1,5 +1,6 @@
 ## CAFFEIN
-**스프링 부트 + JSP 파싱_커피원두 공정 MES**
+**Spring 기반 납품 원두 공정 MES**
+- [🔗웹 사이트 바로가기 URL](http://class7-team4.itwillbs.com:8080/)<br>
 
 ### 🖥️ 프로젝트 소개
 커피원두 공정 MES 프로그램입니다.
@@ -18,7 +19,7 @@
 
 ### ⚙️ 개발 환경
 **✔️Language**  
-Java 11.0.15 
+Java<br>
 JSP  
 HTML5  
 CSS3  
