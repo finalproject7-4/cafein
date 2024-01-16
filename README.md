@@ -60,3 +60,5 @@ Spring boot 4.3.8
 Mybatis   
 
 ### 📌 주요 기능
+![image](https://github.com/finalproject7-4/cafein/assets/141491896/4373c9d9-806e-4846-95e5-bf56510634de)
+
