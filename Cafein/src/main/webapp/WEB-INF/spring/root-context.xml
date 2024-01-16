@@ -14,9 +14,9 @@
 	<bean id="hikariConfig"
 	     class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-		<property name="jdbcUrl"  value="jdbc:log4jdbc:mysql://itwillbs-rds-class7-team4.cwyqfeylunq5.ap-northeast-2.rds.amazonaws.com:3306/c7d2307t4_2"/>
-		<property name="username" value="root" />
-		<property name="password" value="class70718"/>
+		<property name="jdbcUrl"  value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2307t4_2"/>
+		<property name="username" value="c7d2307t4" />
+		<property name="password" value="1234"/>
 	</bean>
 	
 	<!-- dataSource(CP): 디비연결 -->
